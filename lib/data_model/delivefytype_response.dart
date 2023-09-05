@@ -12,7 +12,7 @@ String deliverytypeToJson(Deliverytype data) => json.encode(data.toJson());
 class Deliverytype {
   bool success;
   int status;
-  List<Datum> data;
+  List<Data> data;
 
   Deliverytype({
     required this.success,
@@ -23,7 +23,7 @@ class Deliverytype {
   factory Deliverytype.fromJson(Map<String, dynamic> json) => Deliverytype(
         success: json["success"],
         status: json["status"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<Data>.from(json["data"].map((x) => Data.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -33,7 +33,7 @@ class Deliverytype {
       };
 }
 
-class Datum {
+class Data {
   int id;
   int stateId;
   int cityId;
@@ -42,7 +42,7 @@ class Datum {
   String deliveryDescription;
   int status;
 
-  Datum({
+  Data({
     required this.id,
     required this.stateId,
     required this.cityId,
@@ -52,7 +52,7 @@ class Datum {
     required this.status,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         stateId: json["state_id"],
         cityId: json["city_id"],

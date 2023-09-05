@@ -1740,7 +1740,7 @@ class _ProductDetailsState extends State<ProductDetails>
             width: MediaQuery.of(context).size.width - (107 + 45),
             child: Scrollbar(
               controller: _variantScrollController,
-              isAlwaysShown: false,
+              thumbVisibility: false,
               child: Wrap(
                 children: List.generate(
                     choice_options[choice_options_index].options.length,
@@ -2638,7 +2638,7 @@ class _ProductDetailsState extends State<ProductDetails>
             width: 64,
             child: Scrollbar(
               controller: _imageScrollController,
-              isAlwaysShown: false,
+              thumbVisibility: false,
               thickness: 4.0,
               child: Padding(
                 padding: app_language_rtl.$!

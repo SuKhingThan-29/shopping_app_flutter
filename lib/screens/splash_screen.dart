@@ -64,7 +64,6 @@ class _SplashScreenState extends State<SplashScreen> {
       color:  MyTheme.splash_screen_color,
       child: InkWell(
         child: Stack(
-
           // mainAxisAlignment: MainAxisAlignment.start,
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -123,9 +122,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 ],
               ),
             ),
-
-
-
             Positioned.fill(
               child: Align(
                 alignment: Alignment.bottomCenter,

@@ -28,7 +28,7 @@ import 'package:http/http.dart' as http;
 
 class AddressRepository {
   Future<dynamic> getAddressList() async {
-    String url = ("${AppConfig.BASE_URL}/user/shipping/address");
+    String url = ("${AppConfig.BASE_URL}${AppConfig.shipping_address}");
     final response = await ApiRequest.get(
       url: url,
       headers: {
@@ -37,6 +37,7 @@ class AddressRepository {
         "App-Language": app_language.$!,
       },
     );
+    print('Response address: ${response.body}');
     bool checkResult = ResponseCheck.apply(response.body);
     if (!checkResult) return responseCheckModelFromJson(response.body);
 

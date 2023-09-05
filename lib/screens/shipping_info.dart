@@ -21,15 +21,11 @@ import 'package:active_ecommerce_flutter/screens/checkout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
-
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/repositories/address_repository.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_flutter/data_model/city_response.dart';
-import 'package:active_ecommerce_flutter/data_model/country_response.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:toast/toast.dart';
-import 'package:active_ecommerce_flutter/screens/address.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ShippingInfo extends StatefulWidget {

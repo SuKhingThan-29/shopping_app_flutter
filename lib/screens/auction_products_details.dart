@@ -2012,7 +2012,7 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
             width: 64,
             child: Scrollbar(
               controller: _imageScrollController,
-              isAlwaysShown: false,
+              thumbVisibility: false,
               thickness: 4.0,
               child: Padding(
                 padding: app_language_rtl.$!

@@ -9,7 +9,7 @@ import 'package:active_ecommerce_flutter/repositories/api-request.dart';
 
 class ShippingRepository {
   Future<dynamic> getDeliveryInfo() async {
-    String url = ("${AppConfig.BASE_URL}/delivery-info");
+    String url = ("${AppConfig.BASE_URL}${AppConfig.deliver_info}");
     print(url.toString());
     final response = await ApiRequest.get(
       url: url,
@@ -24,6 +24,7 @@ class ShippingRepository {
 
     if (!checkResult) return responseCheckModelFromJson(response.body);
 
+    print("Delivery Info: ${response.body}");
     return deliveryInfoResponseFromJson(response.body);
   }
 
@@ -34,7 +35,7 @@ class ShippingRepository {
     final response = await ApiRequest.get(
       url: url,
     );
-    print(deliverytypeFromJson(response.body));
+    print('GetDeliveryType: ${deliverytypeFromJson(response.body)}');
     return deliverytypeFromJson(response.body);
   }
 }
