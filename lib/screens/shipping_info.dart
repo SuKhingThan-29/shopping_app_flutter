@@ -29,7 +29,6 @@ import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class ShippingInfo extends StatefulWidget {
   ShippingInfo({Key? key}) : super(key: key);
 
@@ -44,6 +43,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   List<DeliveryInfoResponse> _deliveryInfoList = [];
 
+  List<DeliveryTypeData> _delivery = [];
+
+  int _selectedValue = 0;
 
   String? _shipping_cost_string = ". . .";
 
@@ -116,12 +118,14 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   _getCarriers() async {
     Deliverytype carriers = await ShippingRepository().getCarrierList();
-    List<DeliveryTypeData> mDeliveryTypeData=carriers.deliveryTypeData;
-    print('Response from DeliveryType:  length: ${carriers.deliveryTypeData.length}');
-    for(var i in mDeliveryTypeData){
+    List<DeliveryTypeData> mDeliveryTypeData = carriers.deliveryTypeData;
+    _delivery.addAll(carriers.deliveryTypeData);
+    print(
+        'Response from DeliveryType:  length: ${carriers.deliveryTypeData.length}');
+    for (var i in mDeliveryTypeData) {
       print('DeliveryName: ${i.deliveryName}');
     }
-
+    print(mDeliveryTypeData);
     _fetchCarrier = true;
     setState(() {});
   }
@@ -931,7 +935,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
                 borderRadius: BorderRadius.circular(0.0),
               ),
               child: Text(
-                AppLocalizations.of(context)!.proceed_to_checkout,
+                'Continue To Payment',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -1238,12 +1242,61 @@ class _ShippingInfoState extends State<ShippingInfo> {
         SizedBox(
           height: 5,
         ),
-        buildChooseShippingOptions(context, index),
+        // buildChooseShippingOptions(context, index),
         SizedBox(
           height: 10,
         ),
-        buildShippingListBody(index),
+        // buildShippingListBody(index),
+        SizedBox(
+          height: 10,
+        ),
+        buildDeliveryList(),
       ],
+    );
+  }
+
+  buildDeliveryList() {
+    return ListView.builder(
+      itemCount: _delivery.length,
+      scrollDirection: Axis.vertical,
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Column(
+            children: [
+              Text(
+                _delivery[index].deliveryName,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: _selectedValue == index ? Colors.white : Colors.black,
+                ),
+              ),
+              Text(
+                _delivery[index].deliveryDescription,
+                style: TextStyle(
+                  fontSize: 8,
+                  color: _selectedValue == index ? Colors.white : Colors.white,
+                ),
+              ),
+            ],
+          ),
+          selected:
+              _selectedValue == index, // Check if the current item is selected
+          selectedTileColor: MyTheme.accent_color,
+          trailing: Radio(
+            value: index, // Use the index as the value for the radio button
+            groupValue: _selectedValue,
+            onChanged: (int? value) {
+              print(value);
+              setState(() {
+                _selectedValue = value!;
+              });
+            },
+            activeColor: Colors.black,
+          ),
+        );
+      },
     );
   }
 

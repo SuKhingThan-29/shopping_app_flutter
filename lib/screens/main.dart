@@ -50,7 +50,7 @@ class _MainState extends State<Main> {
       return;
     }
 
-    if (i == 3) {
+    if (i == 4) {
       app_language_rtl.$!
           ? AIZRoute.slideLeft(context, Profile())
           : AIZRoute.slideRight(context, Profile());
@@ -78,11 +78,7 @@ class _MainState extends State<Main> {
         from_navigation: true,
         counter: counter,
       ),
-      Cart(
-        has_bottomnav: true,
-        from_navigation: true,
-        counter: counter,
-      ),
+      Coupon(),
       Profile()
     ];
     fetchAll();
@@ -224,14 +220,14 @@ class _MainState extends State<Main> {
                       height: 16,
                     ),
                   ),
-                  label: AppLocalizations.of(context)!.point_shop,
+                  label: AppLocalizations.of(context)!.coupons_ucf,
                 ),
                 BottomNavigationBarItem(
                   icon: Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Image.asset(
                       "assets/profile.png",
-                      color: _currentIndex == 3
+                      color: _currentIndex == 4
                           ? MyTheme.accent_color
                           : Color.fromRGBO(153, 153, 153, 1),
                       height: 16,
