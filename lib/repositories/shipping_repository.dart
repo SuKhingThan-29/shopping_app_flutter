@@ -30,7 +30,7 @@ class ShippingRepository {
 
   Future<Deliverytype> getCarrierList() async {
     String url =
-        ("https://gmpwyh-l.ethical-digit.com/api/v2/getdeliverytype/104");
+        ("https://gmpwyh-l.ethical-digit.com/api/v2/getdeliverytype/107");
     print(url.toString());
     final response = await ApiRequest.get(
       url: url,

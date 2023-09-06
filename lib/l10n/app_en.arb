@@ -670,5 +670,7 @@
     "product_file_ucf": "Product File",
     "purchase_price_ucf": "Purchase Price",
      "digital_product_ucf": "Digital Products",
-    "a":""
+    "a":"",
+
+    "point_shop":"Point Shop"
 }

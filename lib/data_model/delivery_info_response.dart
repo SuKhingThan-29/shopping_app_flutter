@@ -45,10 +45,10 @@ class Carriers {
     this.data,
   });
 
-  List<Datum>? data;
+  List<Data>? data;
 
   factory Carriers.fromJson(Map<String, dynamic> json) => Carriers(
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<Data>.from(json["data"].map((x) => Data.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -56,8 +56,8 @@ class Carriers {
   };
 }
 
-class Datum {
-  Datum({
+class Data {
+  Data({
     this.id,
     this.name,
     this.logo,
@@ -73,7 +73,7 @@ class Datum {
   bool? freeShipping;
   String? transitPrice;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
     id: json["id"],
     name: json["name"],
     logo: json["logo"],

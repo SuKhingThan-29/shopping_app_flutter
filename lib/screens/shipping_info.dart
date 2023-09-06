@@ -13,6 +13,7 @@ import 'package:active_ecommerce_flutter/data_model/delivefytype_response.dart';
 import 'package:active_ecommerce_flutter/data_model/delivefytype_response.dart';
 import 'package:active_ecommerce_flutter/data_model/delivefytype_response.dart';
 import 'package:active_ecommerce_flutter/data_model/delivery_info_response.dart';
+import 'package:active_ecommerce_flutter/data_model/delivery_type_data.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/pickup_points_repository.dart';
@@ -28,6 +29,7 @@ import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+
 class ShippingInfo extends StatefulWidget {
   ShippingInfo({Key? key}) : super(key: key);
 
@@ -42,7 +44,6 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   List<DeliveryInfoResponse> _deliveryInfoList = [];
 
-  List<dynamic> _carrierList = [];
 
   String? _shipping_cost_string = ". . .";
 
@@ -114,9 +115,13 @@ class _ShippingInfoState extends State<ShippingInfo> {
   }*/
 
   _getCarriers() async {
-    var carriers = await ShippingRepository().getCarrierList();
-    _carrierList.addAll(carriers.data);
-    print('$carriers');
+    Deliverytype carriers = await ShippingRepository().getCarrierList();
+    List<DeliveryTypeData> mDeliveryTypeData=carriers.deliveryTypeData;
+    print('Response from DeliveryType:  length: ${carriers.deliveryTypeData.length}');
+    for(var i in mDeliveryTypeData){
+      print('DeliveryName: ${i.deliveryName}');
+    }
+
     _fetchCarrier = true;
     setState(() {});
   }

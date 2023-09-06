@@ -18,6 +18,8 @@ import 'package:one_context/one_context.dart';
 import 'package:provider/provider.dart';
 import 'package:route_transitions/route_transitions.dart';
 
+import 'coupon.dart';
+
 class Main extends StatefulWidget {
   Main({Key? key, go_back = true}) : super(key: key);
 
@@ -70,6 +72,11 @@ class _MainState extends State<Main> {
       Home(),
       CategoryList(
         is_base_category: true,
+      ),
+      Cart(
+        has_bottomnav: true,
+        from_navigation: true,
+        counter: counter,
       ),
       Cart(
         has_bottomnav: true,
@@ -206,6 +213,19 @@ class _MainState extends State<Main> {
                       ),
                     ),
                     label: AppLocalizations.of(context)!.cart_ucf),
+                BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Image.asset(
+                      "assets/coupon.png",
+                      color: _currentIndex == 3
+                          ? MyTheme.accent_color
+                          : Color.fromRGBO(153, 153, 153, 1),
+                      height: 16,
+                    ),
+                  ),
+                  label: AppLocalizations.of(context)!.point_shop,
+                ),
                 BottomNavigationBarItem(
                   icon: Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),

@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:active_ecommerce_flutter/data_model/delivery_type_data.dart';
+
 Deliverytype deliverytypeFromJson(String str) =>
     Deliverytype.fromJson(json.decode(str));
 
@@ -12,63 +14,25 @@ String deliverytypeToJson(Deliverytype data) => json.encode(data.toJson());
 class Deliverytype {
   bool success;
   int status;
-  List<Data> data;
+  List<DeliveryTypeData> deliveryTypeData;
 
   Deliverytype({
     required this.success,
     required this.status,
-    required this.data,
+    required this.deliveryTypeData,
   });
 
   factory Deliverytype.fromJson(Map<String, dynamic> json) => Deliverytype(
         success: json["success"],
         status: json["status"],
-        data: List<Data>.from(json["data"].map((x) => Data.fromJson(x))),
+    deliveryTypeData: List<DeliveryTypeData>.from(json["data"].map((x) => DeliveryTypeData.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "success": success,
         "status": status,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(deliveryTypeData.map((x) => x.toJson())),
       };
 }
 
-class Data {
-  int id;
-  int stateId;
-  int cityId;
-  int price;
-  String deliveryName;
-  String deliveryDescription;
-  int status;
 
-  Data({
-    required this.id,
-    required this.stateId,
-    required this.cityId,
-    required this.price,
-    required this.deliveryName,
-    required this.deliveryDescription,
-    required this.status,
-  });
-
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-        id: json["id"],
-        stateId: json["state_id"],
-        cityId: json["city_id"],
-        price: json["price"],
-        deliveryName: json["delivery_name"],
-        deliveryDescription: json["delivery_description"],
-        status: json["status"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "state_id": stateId,
-        "city_id": cityId,
-        "price": price,
-        "delivery_name": deliveryName,
-        "delivery_description": deliveryDescription,
-        "status": status,
-      };
-}
