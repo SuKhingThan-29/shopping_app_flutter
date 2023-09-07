@@ -47,6 +47,8 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   int _selectedValue = 0;
 
+  int? _deliveryid;
+
   String? _shipping_cost_string = ". . .";
 
   // Boolean variables
@@ -202,7 +204,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   onPressProceed(context) async {
     var shippingCostResponse;
-
+    print(_deliveryid);
+    var postdeliveryinfo =
+        await ShippingRepository().postDeliveryInfo(_deliveryid);
     // print(jsonEncode(_sellerWiseShipping));
 
     var _sellerWiseShippingOptionValidation =
@@ -238,6 +242,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
       return Checkout(
         title: AppLocalizations.of(context)!.checkout_ucf,
         paymentFor: PaymentFor.Order,
+        delivery_id: _deliveryid,
       );
     })).then((value) {
       onPopped(value);
@@ -1288,9 +1293,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
             value: index, // Use the index as the value for the radio button
             groupValue: _selectedValue,
             onChanged: (int? value) {
-              print(value);
               setState(() {
                 _selectedValue = value!;
+                _deliveryid = _delivery[_selectedValue].id;
               });
             },
             activeColor: Colors.black,

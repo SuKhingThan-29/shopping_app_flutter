@@ -37,7 +37,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
-   HomePresenter homeData = HomePresenter();
+  HomePresenter homeData = HomePresenter();
 
   @override
   void initState() {
@@ -58,9 +58,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void dispose() {
     homeData.pirated_logo_controller.dispose();
-  //  ChangeNotifierProvider<HomePresenter>.value(value: value)
+    //  ChangeNotifierProvider<HomePresenter>.value(value: value)
     super.dispose();
-
   }
 
   @override
@@ -74,227 +73,233 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       },
       child: Directionality(
         textDirection:
-        app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+            app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
         child: SafeArea(
           child: Scaffold(
-            //key: homeData.scaffoldKey,
+              //key: homeData.scaffoldKey,
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(50),
                 child: buildAppBar(statusBarHeight, context),
               ),
               //drawer: MainDrawer(),
               body: ListenableBuilder(
-                listenable: homeData,
-                builder: (context,child) {
-                  return Stack(
-                    children: [
-                      RefreshIndicator(
-                        color: MyTheme.accent_color,
-                        backgroundColor: Colors.white,
-                        onRefresh: homeData.onRefresh,
-                        displacement: 0,
-                        child: CustomScrollView(
-                          controller: homeData.mainScrollController,
-                          physics: const BouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics()),
-                          slivers: <Widget>[
-                            SliverList(
-                              delegate: SliverChildListDelegate([
-                                AppConfig.purchase_code == ""
-                                    ? Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                    9.0,
-                                    16.0,
-                                    9.0,
-                                    0.0,
-                                  ),
-                                  child: Container(
-                                    height: 140,
-                                    color: Colors.black,
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                            left: 20,
-                                            top: 0,
-                                            child: AnimatedBuilder(
-                                                animation: homeData
-                                                    .pirated_logo_animation,
-                                                builder: (context, child) {
-                                                  return Image.asset(
-                                                    "assets/pirated_square.png",
-                                                    height: homeData
-                                                        .pirated_logo_animation
-                                                        .value,
-                                                    color: Colors.white,
-                                                  );
-                                                })),
-                                        Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 24.0,
-                                                left: 24,
-                                                right: 24),
-                                            child: Text(
-                                              "This is a pirated app. Do not use this. It may have security issues.",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 18),
+                  listenable: homeData,
+                  builder: (context, child) {
+                    return Stack(
+                      children: [
+                        RefreshIndicator(
+                          color: MyTheme.accent_color,
+                          backgroundColor: Colors.white,
+                          onRefresh: homeData.onRefresh,
+                          displacement: 0,
+                          child: CustomScrollView(
+                            controller: homeData.mainScrollController,
+                            physics: const BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                            slivers: <Widget>[
+                              SliverList(
+                                delegate: SliverChildListDelegate([
+                                  AppConfig.purchase_code == ""
+                                      ? Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                            9.0,
+                                            16.0,
+                                            9.0,
+                                            0.0,
+                                          ),
+                                          child: Container(
+                                            height: 140,
+                                            color: Colors.black,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                    left: 20,
+                                                    top: 0,
+                                                    child: AnimatedBuilder(
+                                                        animation: homeData
+                                                            .pirated_logo_animation,
+                                                        builder:
+                                                            (context, child) {
+                                                          return Image.asset(
+                                                            "assets/pirated_square.png",
+                                                            height: homeData
+                                                                .pirated_logo_animation
+                                                                .value,
+                                                            color: Colors.white,
+                                                          );
+                                                        })),
+                                                Center(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 24.0,
+                                                            left: 24,
+                                                            right: 24),
+                                                    child: Text(
+                                                      "This is a pirated app. Do not use this. It may have security issues.",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 18),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
+                                        )
+                                      : Container(),
+                                  buildHomeCarouselSlider(context, homeData),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                      18.0,
+                                      0.0,
+                                      18.0,
+                                      0.0,
+                                    ),
+                                    child: buildHomeMenuRow1(context, homeData),
+                                  ),
+                                  buildHomeBannerOne(context, homeData),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                      18.0,
+                                      0.0,
+                                      18.0,
+                                      0.0,
+                                    ),
+                                    child: buildHomeMenuRow2(context),
+                                  ),
+                                ]),
+                              ),
+                              SliverList(
+                                delegate: SliverChildListDelegate([
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                      18.0,
+                                      20.0,
+                                      18.0,
+                                      0.0,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .featured_categories_ucf,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w700),
                                         ),
                                       ],
                                     ),
                                   ),
-                                )
-                                    : Container(),
-                                buildHomeCarouselSlider(context, homeData),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                    18.0,
-                                    0.0,
-                                    18.0,
-                                    0.0,
-                                  ),
-                                  child: buildHomeMenuRow1(context, homeData),
-                                ),
-                                buildHomeBannerOne(context, homeData),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                    18.0,
-                                    0.0,
-                                    18.0,
-                                    0.0,
-                                  ),
-                                  child: buildHomeMenuRow2(context),
-                                ),
-                              ]),
-                            ),
-                            SliverList(
-                              delegate: SliverChildListDelegate([
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                    18.0,
-                                    20.0,
-                                    18.0,
-                                    0.0,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        AppLocalizations.of(context)!
-                                            .featured_categories_ucf,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ]),
-                            ),
-                            SliverToBoxAdapter(
-                              child: SizedBox(
-                                height: 154,
-                                child: buildHomeFeaturedCategories(
-                                    context, homeData),
+                                ]),
                               ),
-                            ),
-                            SliverList(
-                              delegate: SliverChildListDelegate([
-                                Container(
-                                  color: MyTheme.accent_color,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        height: 180,
-                                        width: double.infinity,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.end,
+                              SliverToBoxAdapter(
+                                child: SizedBox(
+                                  height: 154,
+                                  child: buildHomeFeaturedCategories(
+                                      context, homeData),
+                                ),
+                              ),
+                              SliverList(
+                                delegate: SliverChildListDelegate([
+                                  Container(
+                                    color: MyTheme.accent_color,
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          height: 180,
+                                          width: double.infinity,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Image.asset(
+                                                  "assets/background_1.png")
+                                            ],
+                                          ),
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Image.asset("assets/background_1.png")
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10.0,
+                                                  right: 18.0,
+                                                  left: 18.0),
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .featured_products_ucf,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                            ),
+                                            buildHomeFeatureProductHorizontalList(
+                                                homeData)
                                           ],
                                         ),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 10.0,
-                                                right: 18.0,
-                                                left: 18.0),
-                                            child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .featured_products_ucf,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                          ),
-                                          buildHomeFeatureProductHorizontalList(
-                                              homeData)
-                                        ],
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ]),
-                            ),
-                            SliverList(
-                              delegate: SliverChildListDelegate(
-                                [
-                                  buildHomeBannerTwo(context, homeData),
-                                ],
+                                ]),
                               ),
-                            ),
-                            SliverList(
-                              delegate: SliverChildListDelegate([
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                    18.0,
-                                    18.0,
-                                    20.0,
-                                    0.0,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        AppLocalizations.of(context)!
-                                            .all_products_ucf,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
-                                  ),
+                              SliverList(
+                                delegate: SliverChildListDelegate(
+                                  [
+                                    buildHomeBannerTwo(context, homeData),
+                                  ],
                                 ),
-                                SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      buildHomeAllProducts2(context, homeData),
-                                    ],
+                              ),
+                              SliverList(
+                                delegate: SliverChildListDelegate([
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                      18.0,
+                                      18.0,
+                                      20.0,
+                                      0.0,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .all_products_ucf,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  height: 80,
-                                )
-                              ]),
-                            ),
-                          ],
+                                  SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        buildHomeAllProducts2(
+                                            context, homeData),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 80,
+                                  )
+                                ]),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Align(
-                          alignment: Alignment.center,
-                          child: buildProductLoadingContainer(homeData))
-                    ],
-                  );
-                }
-              )),
+                        Align(
+                            alignment: Alignment.center,
+                            child: buildProductLoadingContainer(homeData))
+                      ],
+                    );
+                  })),
         ),
       ),
     );
@@ -365,8 +370,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               stroked_price: homeData.allProductList[index].stroked_price,
               has_discount: homeData.allProductList[index].has_discount,
               discount: homeData.allProductList[index].discount,
-              is_wholesale:
-              homeData.allProductList[index].isWholesale,
+              is_wholesale: homeData.allProductList[index].isWholesale,
             );
           });
     } else if (homeData.totalAllProductData == 0) {
@@ -696,42 +700,43 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             ),
           ),
         ),
-        if(vendor_system.$)
-          SizedBox(width: 10,),
-
-        if(vendor_system.$)
-        Flexible(
-          flex: 1,
-          fit: FlexFit.tight,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return TopSellingProducts();
-              }));
-            },
-            child: Container(
-              height: 90,
-              width: MediaQuery.of(context).size.width / 3 - 4,
-              decoration: BoxDecorations.buildBoxDecoration_1(),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Container(
-                        height: 20,
-                        width: 20,
-                        child: Image.asset("assets/top_sellers.png")),
-                  ),
-                  Text(AppLocalizations.of(context)!.top_sellers_ucf,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Color.fromRGBO(132, 132, 132, 1),
-                          fontWeight: FontWeight.w300)),
-                ],
+        if (vendor_system.$)
+          SizedBox(
+            width: 10,
+          ),
+        if (vendor_system.$)
+          Flexible(
+            flex: 1,
+            fit: FlexFit.tight,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return TopSellingProducts();
+                }));
+              },
+              child: Container(
+                height: 90,
+                width: MediaQuery.of(context).size.width / 3 - 4,
+                decoration: BoxDecorations.buildBoxDecoration_1(),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Container(
+                          height: 20,
+                          width: 20,
+                          child: Image.asset("assets/top_sellers.png")),
+                    ),
+                    Text(AppLocalizations.of(context)!.top_sellers_ucf,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Color.fromRGBO(132, 132, 132, 1),
+                            fontWeight: FontWeight.w300)),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }

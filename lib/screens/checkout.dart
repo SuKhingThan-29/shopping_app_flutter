@@ -35,10 +35,12 @@ class Checkout extends StatefulWidget {
   final PaymentFor? paymentFor;
   final double rechargeAmount;
   final String? title;
+  final int? delivery_id;
   var packageId;
 
   Checkout(
       {Key? key,
+      this.delivery_id,
       this.order_id = 0,
       this.paymentFor,
       this.list = "both",
@@ -408,7 +410,8 @@ class _CheckoutState extends State<Checkout> {
   pay_by_cod() async {
     loading();
     var orderCreateResponse = await PaymentRepository()
-        .getOrderCreateResponseFromCod(_selected_payment_method_key);
+        .getOrderCreateResponseFromCod(
+            _selected_payment_method_key, widget.delivery_id);
     Navigator.of(loadingcontext).pop();
     if (orderCreateResponse.result == false) {
       ToastComponent.showDialog(orderCreateResponse.message,

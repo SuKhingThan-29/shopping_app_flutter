@@ -99,10 +99,16 @@ class PaymentRepository {
     return orderCreateResponseFromJson(response.body);
   }
 
-  Future<dynamic> getOrderCreateResponseFromCod(payment_method) async {
-    var post_body = jsonEncode(
-        {"user_id": "${user_id.$}", "payment_type": "${payment_method}"});
+  Future<dynamic> getOrderCreateResponseFromCod(
+      payment_method, delivery_id) async {
+    var post_body = jsonEncode({
+      "user_id": "${user_id.$}",
+      "payment_type": "${payment_method}",
+      "delivery_id": delivery_id
+    });
     print(payment_method);
+    print(user_id.$);
+    print(delivery_id);
     String url = ("${AppConfig.BASE_URL}/payments/pay/cod");
 
     print(url);
@@ -110,7 +116,8 @@ class PaymentRepository {
         url: url,
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer ${access_token.$}"
+          "Authorization": "Bearer ${access_token.$}",
+          "App-Language": app_language.$!
         },
         body: post_body,
         middleware: BannedUser());
