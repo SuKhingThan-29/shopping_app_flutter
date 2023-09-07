@@ -83,7 +83,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
       _sellerWiseShippingOption.add(
           new SellerWithShipping(element.ownerId, shippingOption, shippingId));
     });
-    getSetShippingCost();
+    //getSetShippingCost();
     setState(() {});
   }
 
@@ -129,6 +129,10 @@ class _ShippingInfoState extends State<ShippingInfo> {
     }
     print(mDeliveryTypeData);
     _fetchCarrier = true;
+    if(_delivery.isNotEmpty){
+      _deliveryid=_delivery[0].id;
+      _shipping_cost_string=_delivery[0].price.toString();
+    }
     setState(() {});
   }
 
@@ -140,7 +144,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
     if (shippingCostResponse.result == true) {
       _shipping_cost_string = shippingCostResponse.value_string;
     } else {
-      _shipping_cost_string = "0.0";
+      //_shipping_cost_string = "0.0";
     }
     setState(() {});
   }
@@ -197,16 +201,16 @@ class _ShippingInfoState extends State<ShippingInfo> {
       }
     }
     _sellerWiseShippingOption[index].shippingOption = option;
-    getSetShippingCost();
+    //getSetShippingCost();
 
     setState(() {});
   }
 
   onPressProceed(context) async {
     var shippingCostResponse;
-    print(_deliveryid);
+    print('DeliveryId:$_deliveryid');
     var postdeliveryinfo =
-        await ShippingRepository().postDeliveryInfo(_deliveryid);
+        await ShippingRepository().postDeliveryInfo(_deliveryid.toString());
     // print(jsonEncode(_sellerWiseShipping));
 
     var _sellerWiseShippingOptionValidation =
@@ -644,7 +648,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
                   .id;
         }
         setState(() {});
-        getSetShippingCost();
+       // getSetShippingCost();
       },
       child: Container(
         decoration: BoxDecorations.buildBoxDecoration_1(radius: 8).copyWith(
@@ -800,7 +804,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
                   .data![carrierIndex]
                   .id;
           setState(() {});
-          getSetShippingCost();
+         // getSetShippingCost();
         }
       },
       child: Container(
@@ -1296,6 +1300,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
               setState(() {
                 _selectedValue = value!;
                 _deliveryid = _delivery[_selectedValue].id;
+                _shipping_cost_string=_delivery[_selectedValue].price.toString();
               });
             },
             activeColor: Colors.black,

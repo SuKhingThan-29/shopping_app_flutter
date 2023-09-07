@@ -17,7 +17,7 @@ class DeliveryResponse {
   ShippingInfo shippingInfo;
   int total;
   Delivery delivery;
-  User user;
+  //User user;
   List<dynamic> availableCoupons;
 
   DeliveryResponse({
@@ -27,7 +27,7 @@ class DeliveryResponse {
     required this.shippingInfo,
     required this.total,
     required this.delivery,
-    required this.user,
+   // required this.user,
     required this.availableCoupons,
   });
 
@@ -39,7 +39,7 @@ class DeliveryResponse {
         shippingInfo: ShippingInfo.fromJson(json["shipping_info"]),
         total: json["total"],
         delivery: Delivery.fromJson(json["delivery"]),
-        user: User.fromJson(json["user"]),
+        //user: User.fromJson(json["user"]),
         availableCoupons:
             List<dynamic>.from(json["availableCoupons"].map((x) => x)),
       );
@@ -51,7 +51,7 @@ class DeliveryResponse {
         "shipping_info": shippingInfo.toJson(),
         "total": total,
         "delivery": delivery.toJson(),
-        "user": user.toJson(),
+        //"user": user.toJson(),
         "availableCoupons": List<dynamic>.from(availableCoupons.map((x) => x)),
       };
 }
@@ -330,7 +330,7 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         referredBy: json["referred_by"],
-        provider: json["provider"],
+        provider: json["provider"]??"",
         providerId: json["provider_id"],
         refreshToken: json["refresh_token"],
         accessToken: json["access_token"],
