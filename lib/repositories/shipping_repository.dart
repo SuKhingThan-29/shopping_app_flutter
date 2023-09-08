@@ -31,14 +31,15 @@ class ShippingRepository {
     return deliveryInfoResponseFromJson(response.body);
   }
 
-  Future<Deliverytype> getCarrierList() async {
-    String url = ("${AppConfig.BASE_URL}/getdeliverytype/6");
+  Future<Deliverytype> getCarrierList(int? selectedAddressId) async {
+    String url = ("${AppConfig.BASE_URL}/getdeliverytype/$selectedAddressId");
     print(url.toString());
     final response = await ApiRequest.get(
       url: url,
       headers: {
         "Authorization": "Bearer ${access_token.$}",
       },
+
     );
     print('GetDeliveryType: ${deliverytypeFromJson(response.body)}');
     return deliverytypeFromJson(response.body);
@@ -46,7 +47,7 @@ class ShippingRepository {
 
   Future<dynamic> postDeliveryInfo(deliverid) async {
     var post_body = jsonEncode({"assigneddeliverytype_id": deliverid});
-    print(deliverid);
+    print("PostDelivery: $deliverid");
     String url = ("${AppConfig.BASE_URL}/store_delivery_info");
 
     final response = await ApiRequest.post(

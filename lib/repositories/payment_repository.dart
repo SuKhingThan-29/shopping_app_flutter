@@ -55,7 +55,7 @@ class PaymentRepository {
   }
 
   Future<PaypalUrlResponse> getPaypalUrlResponse(String payment_type,
-      int? combined_order_id, var package_id, double? amount) async {
+      int? combined_order_id, var package_id, int? amount) async {
     String url =
         ("${AppConfig.BASE_URL}/paypal/payment/url?payment_type=${payment_type}&combined_order_id=${combined_order_id}&amount=${amount}&user_id=${user_id.$}&package_id=$package_id");
     final response = await ApiRequest.get(url: url, headers: {

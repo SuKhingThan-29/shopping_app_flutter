@@ -1,6 +1,7 @@
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/data_model/check_response_model.dart';
 import 'package:active_ecommerce_flutter/data_model/delivefytype_response.dart';
+import 'package:active_ecommerce_flutter/data_model/postal_code_response.dart';
 import 'package:active_ecommerce_flutter/helpers/response_check.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/middlewares/banned_user.dart';
@@ -179,10 +180,19 @@ class AddressRepository {
 
     return addressDeleteResponseFromJson(response.body);
   }
+  Future<dynamic> getPostalCodeByCidty(city_id)async{
+    String url=('${AppConfig.BASE_URL}/postalcode-by-city/$city_id');
+    print("Postal URl: $url");
+    final response = await ApiRequest.get(url: url,middleware: BannedUser());
 
-  Future<dynamic> getCityListByState({state_id = 0, name = ""}) async {
+    return postalResponseFromJson(response.body);
+  }
+
+  Future<dynamic> getCityListByState({state_id, name = ""}) async {
     String url =
         ("${AppConfig.BASE_URL}/cities-by-state/${state_id}?name=${name}");
+    print("City URL: $url");
+
     final response = await ApiRequest.get(url: url, middleware: BannedUser());
     return cityResponseFromJson(response.body);
   }
@@ -190,7 +200,9 @@ class AddressRepository {
   Future<dynamic> getStateListByCountry({country_id = 0, name = ""}) async {
     String url =
         ("${AppConfig.BASE_URL}/states-by-country/${country_id}?name=${name}");
+    print("State URL: $url");
     final response = await ApiRequest.get(url: url, middleware: BannedUser());
+
     return myStateResponseFromJson(response.body);
   }
 
@@ -200,7 +212,7 @@ class AddressRepository {
     return countryResponseFromJson(response.body);
   }
 
-  Future<dynamic> getShippingCostResponse({shipping_type = ""}) async {
+  Future<dynamic> getShippingCostResponse({shipping_type}) async {
     var post_body = jsonEncode({"seller_list": shipping_type});
 
     String url = ("${AppConfig.BASE_URL}/shipping_cost");
@@ -221,7 +233,8 @@ class AddressRepository {
   }
 
   Future<dynamic> getAddressUpdateInCartResponse(
-      {int? address_id = 0, int pickup_point_id = 0}) async {
+      {int? address_id, int pickup_point_id = 0}) async {
+    print("Selected Address Id: $address_id");
     var post_body = jsonEncode({
       "address_id": "${address_id}",
       "pickup_point_id": "${pickup_point_id}",

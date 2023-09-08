@@ -30,7 +30,8 @@ import 'package:toast/toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ShippingInfo extends StatefulWidget {
-  ShippingInfo({Key? key}) : super(key: key);
+  int? seleted_shipping_address;
+  ShippingInfo(this.seleted_shipping_address, {Key? key}) : super(key: key);
 
   @override
   _ShippingInfoState createState() => _ShippingInfoState();
@@ -48,6 +49,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
   int _selectedValue = 0;
 
   int? _deliveryid;
+  int? seleted_shipping_address;
 
   String? _shipping_cost_string = ". . .";
 
@@ -58,6 +60,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
   //double variables
   double mWidth = 0;
   double mHeight = 0;
+
 
   fetchAll() {
     getDeliveryInfo();
@@ -119,7 +122,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
   }*/
 
   _getCarriers() async {
-    Deliverytype carriers = await ShippingRepository().getCarrierList();
+    _delivery.clear();
+    print("AddressID: ${widget.seleted_shipping_address}");
+    Deliverytype carriers = await ShippingRepository().getCarrierList(widget.seleted_shipping_address);
     List<DeliveryTypeData> mDeliveryTypeData = carriers.deliveryTypeData;
     _delivery.addAll(carriers.deliveryTypeData);
     print(
@@ -136,18 +141,18 @@ class _ShippingInfoState extends State<ShippingInfo> {
     setState(() {});
   }
 
-  getSetShippingCost() async {
-    var shippingCostResponse;
-    shippingCostResponse = await AddressRepository()
-        .getShippingCostResponse(shipping_type: _sellerWiseShippingOption);
-
-    if (shippingCostResponse.result == true) {
-      _shipping_cost_string = shippingCostResponse.value_string;
-    } else {
-      //_shipping_cost_string = "0.0";
-    }
-    setState(() {});
-  }
+  // getSetShippingCost() async {
+  //   var shippingCostResponse;
+  //   shippingCostResponse = await AddressRepository()
+  //       .getShippingCostResponse(shipping_type: _sellerWiseShippingOption);
+  //
+  //   if (shippingCostResponse.result == true) {
+  //     _shipping_cost_string = shippingCostResponse.value_string;
+  //   } else {
+  //     //_shipping_cost_string = "0.0";
+  //   }
+  //   setState(() {});
+  // }
 
   resetData() {
     clearData();
@@ -209,7 +214,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
   onPressProceed(context) async {
     var shippingCostResponse;
     print('DeliveryId:$_deliveryid');
-    var postdeliveryinfo =
+
         await ShippingRepository().postDeliveryInfo(_deliveryid.toString());
     // print(jsonEncode(_sellerWiseShipping));
 
@@ -1368,6 +1373,31 @@ class _ShippingInfoState extends State<ShippingInfo> {
                       fontSize: 12,
                       fontWeight: FontWeight.w400),
                 ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(top: 23.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          SystemConfig.systemCurrency!.symbol!+" "+
+                              (_deliveryInfoList[sellerIndex]
+                                  .cartItems![itemIndex]
+                                  .price! *
+                                  _deliveryInfoList[sellerIndex]
+                                      .cartItems![itemIndex]
+                                      .quantity!)
+                                  .toStringAsFixed(2),
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: TextStyle(
+                              color: MyTheme.accent_color,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),

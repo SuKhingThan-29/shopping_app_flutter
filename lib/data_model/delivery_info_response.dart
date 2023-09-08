@@ -92,6 +92,8 @@ class Data {
   };
 }
 
+
+
 class CartItem {
   CartItem({
     this.id,
@@ -100,6 +102,14 @@ class CartItem {
     this.productId,
     this.productName,
     this.productThumbnailImage,
+    this.variation,
+    this.price,
+    this.currency_symbol,
+    this.tax,
+    this.shipping_cost,
+    this.quantity,
+    this.lowerLimit,
+    this.upperLimit
   });
 
   var id;
@@ -108,6 +118,14 @@ class CartItem {
   var productId;
   String? productName;
   String? productThumbnailImage;
+  String? variation;
+  int? price;
+  String? currency_symbol;
+  int? tax;
+  int? shipping_cost;
+  int? quantity;
+  int? lowerLimit;
+  int? upperLimit;
 
   factory CartItem.fromJson(Map<String, dynamic> json) => CartItem(
     id: json["id"],
@@ -116,6 +134,15 @@ class CartItem {
     productId: json["product_id"],
     productName: json["product_name"],
     productThumbnailImage: json["product_thumbnail_image"],
+      variation: json["variation"],
+      price:json["price"],
+      currency_symbol:json["currency_symbol"],
+      tax:json["tax"],
+    shipping_cost: json[ "shipping_cost"],
+    quantity: json["quantity"],
+    lowerLimit: json["lower_limit"],
+    upperLimit: json["upper_limit"]
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -125,6 +152,14 @@ class CartItem {
     "product_id": productId,
     "product_name": productName,
     "product_thumbnail_image": productThumbnailImage,
+    "variation":variation,
+        "price":price,
+        "currency_symbol":currency_symbol,
+        "tax":tax,
+        "shipping_cost":shipping_cost,
+        "quantity":quantity,
+        "lower_limit":lowerLimit,
+        "upper_limit":upperLimit
   };
 }
 

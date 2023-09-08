@@ -113,7 +113,7 @@ class Cart {
         tax: json["tax"],
         shippingCost: json["shipping_cost"],
         shippingType: json["shipping_type"],
-        pickupPoint: json["pickup_point"],
+        pickupPoint: json["pickup_point"]??0,
         carrierId: json["carrier_id"],
         discount: json["discount"],
         productReferralCode: json["product_referral_code"],

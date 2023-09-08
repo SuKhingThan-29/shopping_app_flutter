@@ -13,14 +13,14 @@ import 'package:toast/toast.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaypalScreen extends StatefulWidget {
-  double? amount;
+  int? amount;
   String payment_type;
   String? payment_method_key;
   var package_id;
 
   PaypalScreen(
       {Key? key,
-      this.amount = 0.00,
+      this.amount = 0,
       this.payment_type = "",
       this.package_id = "0",
       this.payment_method_key = ""})

@@ -64,7 +64,7 @@ class _CheckoutState extends State<Checkout> {
   var _paymentTypeList = [];
   bool _isInitial = true;
   String? _totalString = ". . .";
-  double? _grandTotalValue = 0.00;
+  int? _grandTotalValue = 0;
   String? _subTotalString = ". . .";
   String? _taxString = ". . .";
   String _shippingCostString = ". . .";
@@ -99,7 +99,7 @@ class _CheckoutState extends State<Checkout> {
 
     if (is_logged_in.$ == true) {
       if (widget.paymentFor != PaymentFor.Order) {
-        _grandTotalValue = widget.rechargeAmount;
+        _grandTotalValue = widget.rechargeAmount.toInt();
         payment_type = widget.paymentFor == PaymentFor.WalletRecharge
             ? "wallet_payment"
             : "customer_package_payment";
@@ -127,7 +127,8 @@ class _CheckoutState extends State<Checkout> {
   }
 
   fetchSummary() async {
-    var cartSummaryResponse = await CartRepository().getCartSummaryResponse();
+    print("card_summary: ${widget.delivery_id}");
+    var cartSummaryResponse = await CartRepository().getCartSummaryResponse(widget.delivery_id);
 
     if (cartSummaryResponse != null) {
       _subTotalString = cartSummaryResponse.sub_total;
@@ -156,7 +157,7 @@ class _CheckoutState extends State<Checkout> {
 
   reset_summary() {
     _totalString = ". . .";
-    _grandTotalValue = 0.00;
+    _grandTotalValue = 0;
     _subTotalString = ". . .";
     _taxString = ". . .";
     _shippingCostString = ". . .";
@@ -221,7 +222,7 @@ class _CheckoutState extends State<Checkout> {
           duration: Toast.lengthLong);
       return;
     }
-    if (_grandTotalValue == 0.00) {
+    if (_grandTotalValue == 0) {
       ToastComponent.showDialog(AppLocalizations.of(context)!.nothing_to_pay,
           gravity: Toast.center, duration: Toast.lengthLong);
       return;
@@ -230,7 +231,7 @@ class _CheckoutState extends State<Checkout> {
     if (_selected_payment_method == "stripe_payment") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return StripeScreen(
-          amount: _grandTotalValue,
+          amount: _grandTotalValue!.toDouble(),
           payment_type: payment_type,
           payment_method_key: _selected_payment_method_key,
           package_id: widget.packageId.toString(),
@@ -253,7 +254,7 @@ class _CheckoutState extends State<Checkout> {
     } else if (_selected_payment_method == "razorpay") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return RazorpayScreen(
-          amount: _grandTotalValue,
+          amount: _grandTotalValue!.toDouble(),
           payment_type: payment_type,
           payment_method_key: _selected_payment_method_key,
           package_id: widget.packageId.toString(),
@@ -264,7 +265,7 @@ class _CheckoutState extends State<Checkout> {
     } else if (_selected_payment_method == "paystack") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return PaystackScreen(
-          amount: _grandTotalValue,
+          amount: _grandTotalValue!.toDouble(),
           payment_type: payment_type,
           payment_method_key: _selected_payment_method_key,
           package_id: widget.packageId.toString(),
@@ -275,7 +276,7 @@ class _CheckoutState extends State<Checkout> {
     } else if (_selected_payment_method == "iyzico") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return IyzicoScreen(
-          amount: _grandTotalValue,
+          amount: _grandTotalValue!.toDouble(),
           payment_type: payment_type,
           payment_method_key: _selected_payment_method_key,
           package_id: widget.packageId.toString(),
@@ -286,7 +287,7 @@ class _CheckoutState extends State<Checkout> {
     } else if (_selected_payment_method == "bkash") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return BkashScreen(
-          amount: _grandTotalValue,
+          amount: _grandTotalValue!.toDouble(),
           payment_type: payment_type,
           payment_method_key: _selected_payment_method_key,
           package_id: widget.packageId.toString(),
@@ -297,7 +298,7 @@ class _CheckoutState extends State<Checkout> {
     } else if (_selected_payment_method == "nagad") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return NagadScreen(
-          amount: _grandTotalValue,
+          amount: _grandTotalValue!.toDouble(),
           payment_type: payment_type,
           payment_method_key: _selected_payment_method_key,
           package_id: widget.packageId.toString(),
@@ -308,7 +309,7 @@ class _CheckoutState extends State<Checkout> {
     } else if (_selected_payment_method == "sslcommerz_payment") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return SslCommerzScreen(
-          amount: _grandTotalValue,
+          amount: _grandTotalValue!.toDouble(),
           payment_type: payment_type,
           payment_method_key: _selected_payment_method_key,
           package_id: widget.packageId.toString(),
@@ -319,7 +320,7 @@ class _CheckoutState extends State<Checkout> {
     } else if (_selected_payment_method == "flutterwave") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return FlutterwaveScreen(
-          amount: _grandTotalValue,
+          amount: _grandTotalValue?.toDouble(),
           payment_type: payment_type,
           payment_method_key: _selected_payment_method_key,
           package_id: widget.packageId.toString(),
@@ -330,7 +331,7 @@ class _CheckoutState extends State<Checkout> {
     } else if (_selected_payment_method == "paytm") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return PaytmScreen(
-          amount: _grandTotalValue,
+          amount: _grandTotalValue!.toDouble(),
           payment_type: payment_type,
           payment_method_key: _selected_payment_method_key,
           package_id: widget.packageId.toString(),
@@ -341,7 +342,7 @@ class _CheckoutState extends State<Checkout> {
     } else if (_selected_payment_method == "khalti") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return KhaltiScreen(
-          amount: _grandTotalValue,
+          amount: _grandTotalValue!.toDouble(),
           payment_type: payment_type,
           payment_method_key: _selected_payment_method_key,
           package_id: widget.packageId.toString(),
@@ -353,7 +354,7 @@ class _CheckoutState extends State<Checkout> {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return OnlinePay(
           title: AppLocalizations.of(context)!.pay_with_instamojo,
-          amount: _grandTotalValue,
+          amount: _grandTotalValue?.toDouble(),
           payment_type: payment_type,
           payment_method_key: _selected_payment_method_key,
           package_id: widget.packageId.toString(),
@@ -394,7 +395,7 @@ class _CheckoutState extends State<Checkout> {
   pay_by_wallet() async {
     var orderCreateResponse = await PaymentRepository()
         .getOrderCreateResponseFromWallet(
-            _selected_payment_method_key, _grandTotalValue);
+            _selected_payment_method_key, _grandTotalValue!.toDouble());
 
     if (orderCreateResponse.result == false) {
       ToastComponent.showDialog(orderCreateResponse.message,

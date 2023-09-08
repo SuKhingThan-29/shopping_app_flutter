@@ -35,6 +35,7 @@ class _AddressState extends State<Address> {
 
   bool _isInitial = true;
   List<dynamic> _shippingAddressList = [];
+  String? postal_code;
 
   //controllers for add purpose
   TextEditingController _addressController = TextEditingController();
@@ -244,7 +245,7 @@ class _AddressState extends State<Address> {
 
   onAddressAdd(context) async {
     var address = _addressController.text.toString();
-    var postal_code = _postalCodeController.text.toString();
+     postal_code = _postalCodeController.text.toString();
     var phone = _phoneController.text.toString();
 
     if (address == "") {
@@ -284,7 +285,7 @@ class _AddressState extends State<Address> {
         country_id: _selected_country!.id,
         state_id: _selected_state!.id,
         city_id: _selected_city!.id,
-        postal_code: postal_code,
+        postal_code: postal_code!,
         phone: phone);
 
     if (addressAddResponse.result == false) {
@@ -302,7 +303,7 @@ class _AddressState extends State<Address> {
 
   onAddressUpdate(context, index, id) async {
     var address = _addressControllerListForUpdate[index].text.toString();
-    var postal_code = _postalCodeControllerListForUpdate[index].text.toString();
+     postal_code = _postalCodeControllerListForUpdate[index].text.toString();
     var phone = _phoneControllerListForUpdate[index].text.toString();
 
     if (address == "") {
@@ -344,7 +345,7 @@ class _AddressState extends State<Address> {
             country_id: _selected_country_list_for_update[index].id,
             state_id: _selected_state_list_for_update[index]!.id,
             city_id: _selected_city_list_for_update[index]!.id,
-            postal_code: postal_code,
+            postal_code: postal_code!,
             phone: phone);
 
     if (addressUpdateResponse.result == false) {
@@ -395,7 +396,14 @@ class _AddressState extends State<Address> {
     });
   }
 
-  onSelectCityDuringAdd(city, setModalState) {
+  onSelectCityDuringAdd(city, setModalState) async{
+    print("PostalResponse: ${city.id}" );
+    var postalResponse=await AddressRepository().getPostalCodeByCidty(city.id);
+    print("PostalResponse aa: ${postalResponse.success}" );
+    setState(() {
+      postal_code=postalResponse.data.toString();
+      _postalCodeController.text=postal_code!;
+    });
     if (_selected_city != null && city.id == _selected_city!.id) {
       setModalState(() {
         _cityController.text = city.name;
@@ -667,7 +675,7 @@ class _AddressState extends State<Address> {
                             suggestionsCallback: (name) async {
                               if (_selected_country == null) {
                                 var stateResponse = await AddressRepository()
-                                    .getStateListByCountry(); // blank response
+                                    .getStateListByCountry();
                                 return stateResponse.states;
                               }
                               var stateResponse = await AddressRepository()
@@ -812,6 +820,7 @@ class _AddressState extends State<Address> {
                           child: TextField(
                             controller: _postalCodeController,
                             autofocus: false,
+                            enabled: false,
                             decoration: buildAddressInputDecoration(context, AppLocalizations.of(context)!
                                 .enter_postal_code_ucf),
                           ),
@@ -1703,5 +1712,7 @@ class _AddressState extends State<Address> {
     );
   }
 }
+
+
 
 enum MenuOptions { Edit, Delete, AddLocation }

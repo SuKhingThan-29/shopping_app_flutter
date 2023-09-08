@@ -112,8 +112,8 @@ class CartRepository {
     return cartAddResponseFromJson(response.body);
   }
 
-  Future<dynamic> getCartSummaryResponse() async {
-    String url=("${AppConfig.BASE_URL}/cart-summary");
+  Future<dynamic> getCartSummaryResponse(delivery_id) async {
+    String url=("${AppConfig.BASE_URL}/cart-summary/$delivery_id");
     print(" cart summary");
     final response = await ApiRequest.get(
       url:url,

@@ -121,7 +121,7 @@ class _SelectAddressState extends State<SelectAddress> {
         gravity: Toast.center, duration: Toast.lengthLong);
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return ShippingInfo();
+      return ShippingInfo(_seleted_shipping_address!);
     })).then((value) {
       onPopped(value);
     });
