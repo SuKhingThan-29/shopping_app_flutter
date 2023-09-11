@@ -139,6 +139,7 @@ class _MyAppState extends State<MyApp> {
             routes:
               {
                 "/":(context)=>SplashScreen(),
+                "/deeplink_order_details":(context)=>OrderDetails(),
                 "/classified_ads":(context)=>ClassifiedAds(),
                 "/classified_ads_details":(context)=>ClassifiedAdsDetails(id:0),
                 "/my_classified_ads":(context)=>MyClassifiedAds(),

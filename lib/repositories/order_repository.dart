@@ -74,7 +74,7 @@ class OrderRepository {
   Future<dynamic> getOrderDetails({int? id = 0}) async {
     String url =
         ("${AppConfig.BASE_URL}/purchase-history-details/" + id.toString());
-
+print("Order Detail: $url");
     final response = await ApiRequest.get(
         url: url,
         headers: {

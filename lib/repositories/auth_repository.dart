@@ -119,6 +119,7 @@ class AuthRepository {
     });
 
     String url = ("${AppConfig.BASE_URL}/auth/signup");
+    print('Signup: $post_body');
     final response = await ApiRequest.post(
         url: url,
         headers: {
@@ -126,6 +127,7 @@ class AuthRepository {
           "App-Language": app_language.$!,
         },
         body: post_body);
+    print("Signup response: ${response.body}");
 
     return loginResponseFromJson(response.body);
   }

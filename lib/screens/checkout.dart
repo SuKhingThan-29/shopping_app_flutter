@@ -2,6 +2,7 @@ import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/enum_classes.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/data_model/order_create_ed_response.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
@@ -23,6 +24,7 @@ import 'package:active_ecommerce_flutter/screens/payment_method_screen/paytm_scr
 import 'package:active_ecommerce_flutter/screens/payment_method_screen/razorpay_screen.dart';
 import 'package:active_ecommerce_flutter/screens/payment_method_screen/sslcommerz_screen.dart';
 import 'package:active_ecommerce_flutter/screens/payment_method_screen/stripe_screen.dart';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -239,18 +241,6 @@ class _CheckoutState extends State<Checkout> {
       })).then((value) {
         onPopped(value);
       });
-    } else if (_selected_payment_method == "ed_payment") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return PaypalScreen(
-          amount: _grandTotalValue,
-          payment_type: payment_type,
-          payment_method_key: _selected_payment_method_key,
-          package_id: widget.packageId.toString(),
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-      ;
     } else if (_selected_payment_method == "razorpay") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return RazorpayScreen(
@@ -367,7 +357,10 @@ class _CheckoutState extends State<Checkout> {
       pay_by_wallet();
     } else if (_selected_payment_method == "cash_payment") {
       pay_by_cod();
-    } else if (_selected_payment_method == "manual_payment" &&
+    } else if(_selected_payment_method == "ed_payment"){
+      pay_by_edpayment();
+    }
+    else if (_selected_payment_method == "manual_payment" &&
         widget.paymentFor == PaymentFor.Order) {
       pay_by_manual_payment();
     } else if (_selected_payment_method == "manual_payment" &&
@@ -428,6 +421,39 @@ class _CheckoutState extends State<Checkout> {
     }));
   }
 
+  pay_by_edpayment() async {
+   loading();
+    var orderCreateEDResponse = await PaymentRepository()
+        .getOrderCreateResponseFrom_Ed_Payment(
+        _selected_payment_method_key, widget.delivery_id);
+     Navigator.of(loadingcontext).pop();
+   print("order create ed response: ${orderCreateEDResponse.url}");
+    if (orderCreateEDResponse.result == false) {
+      ToastComponent.showDialog(orderCreateEDResponse.message,
+          gravity: Toast.center, duration: Toast.lengthLong);
+      Navigator.of(context).pop();
+      return;
+    }
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return OrderList(from_checkout: true);
+    }));
+
+  }
+  callJWT(OrderCreateEdResponse response){
+    // Generate a JSON Web Token
+// You can provide the payload as a key-value map or a string
+    final jwt = JWT(
+      // Payload
+      response,
+      issuer: 'https://github.com/jonasroussel/dart_jsonwebtoken',
+    );
+
+// Sign it (default with HS256 algorithm)
+    final token = jwt.sign(SecretKey('secret passphrase'));
+
+    print('Signed token: $token\n');
+  }
   pay_by_manual_payment() async {
     loading();
     var orderCreateResponse = await PaymentRepository()
@@ -500,35 +526,35 @@ class _CheckoutState extends State<Checkout> {
                         ),
                       ],
                     )),
-                Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 120,
-                          child: Text(
-                            AppLocalizations.of(context)!.tax_all_capital,
-                            textAlign: TextAlign.end,
-                            style: TextStyle(
-                                color: MyTheme.font_grey,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        Spacer(),
-                        Text(
-                          SystemConfig.systemCurrency != null
-                              ? _taxString!.replaceAll(
-                                  SystemConfig.systemCurrency!.code!,
-                                  SystemConfig.systemCurrency!.symbol!)
-                              : _taxString!,
-                          style: TextStyle(
-                              color: MyTheme.font_grey,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    )),
+                // Padding(
+                //     padding: const EdgeInsets.only(bottom: 8),
+                //     child: Row(
+                //       children: [
+                //         Container(
+                //           width: 120,
+                //           child: Text(
+                //             AppLocalizations.of(context)!.tax_all_capital,
+                //             textAlign: TextAlign.end,
+                //             style: TextStyle(
+                //                 color: MyTheme.font_grey,
+                //                 fontSize: 14,
+                //                 fontWeight: FontWeight.w600),
+                //           ),
+                //         ),
+                //         Spacer(),
+                //         Text(
+                //           SystemConfig.systemCurrency != null
+                //               ? _taxString!.replaceAll(
+                //                   SystemConfig.systemCurrency!.code!,
+                //                   SystemConfig.systemCurrency!.symbol!)
+                //               : _taxString!,
+                //           style: TextStyle(
+                //               color: MyTheme.font_grey,
+                //               fontSize: 14,
+                //               fontWeight: FontWeight.w600),
+                //         ),
+                //       ],
+                //     )),
                 Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Row(

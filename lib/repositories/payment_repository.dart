@@ -1,5 +1,6 @@
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/data_model/check_response_model.dart';
+import 'package:active_ecommerce_flutter/data_model/order_create_ed_response.dart';
 import 'package:active_ecommerce_flutter/helpers/response_check.dart';
 import 'package:active_ecommerce_flutter/middlewares/banned_user.dart';
 import 'package:active_ecommerce_flutter/repositories/api-request.dart';
@@ -123,7 +124,31 @@ class PaymentRepository {
 
     return orderCreateResponseFromJson(response.body);
   }
+  Future<dynamic> getOrderCreateResponseFrom_Ed_Payment(
+      payment_method, delivery_id) async {
+    var post_body = jsonEncode({
+      "user_id": "${user_id.$}",
+      "payment_type": "${payment_method}",
+      "delivery_id": delivery_id
+    });
+    String url = ("${AppConfig.ED_URL}/payments/pay/ed");
 
+    print("edpay url: $url");
+    print('edpay token: ${access_token.$}');
+    print("edpay  request: ${post_body}");
+   //  final response = await ApiRequest.post(
+   //      url: url,
+   //      headers: {
+   //        "Content-Type": "application/json",
+   //        "Authorization": "Bearer ${access_token.$}",
+   //        "App-Language": app_language.$!
+   //      },
+   //      body: post_body,
+   //      middleware: BannedUser());
+   //  print("Response ED:${response.body}");
+   //
+   // return orderCreateEdResponseFromJson(response.body);
+  }
   Future<dynamic> getOrderCreateResponseFromManualPayment(
       payment_method) async {
     var post_body = jsonEncode(

@@ -1407,7 +1407,7 @@ class _AddressState extends State<Address> {
                         Container(
                           width: 175,
                           child: Text(
-                            _shippingAddressList[index].address,
+                            _shippingAddressList[index].address??"",
                             maxLines: 2,
                             style: TextStyle(
                                 color: MyTheme.dark_grey,

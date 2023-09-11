@@ -1269,6 +1269,12 @@ class _ShippingInfoState extends State<ShippingInfo> {
     );
   }
 
+  selectedValue(int? value){
+    _selectedValue = value!;
+    _deliveryid = _delivery[_selectedValue].id;
+    _shipping_cost_string=_delivery[_selectedValue].price.toString();
+  }
+
   buildDeliveryList() {
     return ListView.builder(
       itemCount: _delivery.length,
@@ -1276,39 +1282,44 @@ class _ShippingInfoState extends State<ShippingInfo> {
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Column(
-            children: [
-              Text(
-                _delivery[index].deliveryName,
-                style: TextStyle(
-                  fontSize: 15,
-                  color: _selectedValue == index ? Colors.white : Colors.black,
+        return GestureDetector(
+          onTap: (){
+            setState(() {
+              selectedValue(index);
+            });
+          },
+          child: ListTile(
+            title: Column(
+              children: [
+                Text(
+                  _delivery[index].deliveryName,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: _selectedValue == index ? Colors.white : Colors.black,
+                  ),
                 ),
-              ),
-              Text(
-                _delivery[index].deliveryDescription,
-                style: TextStyle(
-                  fontSize: 8,
-                  color: _selectedValue == index ? Colors.white : Colors.white,
+                Text(
+                  _delivery[index].deliveryDescription,
+                  style: TextStyle(
+                    fontSize: 8,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          selected:
-              _selectedValue == index, // Check if the current item is selected
-          selectedTileColor: MyTheme.accent_color,
-          trailing: Radio(
-            value: index, // Use the index as the value for the radio button
-            groupValue: _selectedValue,
-            onChanged: (int? value) {
-              setState(() {
-                _selectedValue = value!;
-                _deliveryid = _delivery[_selectedValue].id;
-                _shipping_cost_string=_delivery[_selectedValue].price.toString();
-              });
-            },
-            activeColor: Colors.black,
+              ],
+            ),
+            selected:
+            _selectedValue == index, // Check if the current item is selected
+            selectedTileColor: MyTheme.accent_color,
+            trailing: Radio(
+              value: index, // Use the index as the value for the radio button
+              groupValue: _selectedValue,
+              onChanged: (int? value) {
+                setState(() {
+                  selectedValue(value);
+                });
+              },
+              activeColor: Colors.black,
+            ),
           ),
         );
       },

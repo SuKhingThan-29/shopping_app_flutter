@@ -499,7 +499,7 @@ class _SelectAddressState extends State<SelectAddress> {
           Container(
             width: 175,
             child: Text(
-              _shippingAddressList[index].address??'There is no address',
+              _shippingAddressList[index].address??'',
               maxLines: 2,
               style: TextStyle(
                   color: MyTheme.dark_grey, fontWeight: FontWeight.w600),
