@@ -228,7 +228,7 @@ class ShippingInfo {
   factory ShippingInfo.fromJson(Map<String, dynamic> json) => ShippingInfo(
         id: json["id"],
         userId: json["user_id"],
-        address: json["address"],
+        address: json["address"]??"",
         countryId: json["country_id"],
         stateId: json["state_id"],
         cityId: json["city_id"],

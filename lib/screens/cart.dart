@@ -606,7 +606,7 @@ class _CartState extends State<Cart> {
               //color: Colors.red,
               width: DeviceInfo(context).width!/3,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,

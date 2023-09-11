@@ -107,9 +107,6 @@ class PaymentRepository {
       "payment_type": "${payment_method}",
       "delivery_id": delivery_id
     });
-    print(payment_method);
-    print(user_id.$);
-    print(delivery_id);
     String url = ("${AppConfig.BASE_URL}/payments/pay/cod");
 
     print("order body: ${post_body}");
