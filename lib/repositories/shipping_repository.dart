@@ -22,7 +22,6 @@ class ShippingRepository {
         "App-Language": app_language.$!,
       },
     );
-
     bool checkResult = ResponseCheck.apply(response.body);
 
     if (!checkResult) return responseCheckModelFromJson(response.body);

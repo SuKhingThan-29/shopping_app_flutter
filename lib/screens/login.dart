@@ -186,9 +186,9 @@ class _LoginState extends State<Login> {
           await googleUser.authentication;
       String? accessToken = googleSignInAuthentication.accessToken;
 
-      print("displayName ${googleUser.displayName}");
-      print("email ${googleUser.email}");
-      print("googleUser.id ${googleUser.id}");
+      print("Google displayName ${googleUser.displayName}");
+      print("Google email ${googleUser.email}");
+      print("Google googleUser.id ${googleUser.id}");
 
       var loginResponse = await AuthRepository().getSocialLoginResponse(
           "google", googleUser.displayName, googleUser.email, googleUser.id,
@@ -207,7 +207,7 @@ class _LoginState extends State<Login> {
       }
       GoogleSignIn().disconnect();
     } on Exception catch (e) {
-      print("error is ....... $e");
+      print("Google error is ....... $e");
       // TODO
     }
   }

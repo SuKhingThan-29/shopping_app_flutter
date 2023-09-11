@@ -239,7 +239,7 @@ class _CheckoutState extends State<Checkout> {
       })).then((value) {
         onPopped(value);
       });
-    } else if (_selected_payment_method == "paypal_payment") {
+    } else if (_selected_payment_method == "ed_payment") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return PaypalScreen(
           amount: _grandTotalValue,
@@ -350,7 +350,8 @@ class _CheckoutState extends State<Checkout> {
       })).then((value) {
         onPopped(value);
       });
-    } else if (_selected_payment_method == "instamojo_payment") {
+    }
+    else if (_selected_payment_method == "instamojo_payment") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return OnlinePay(
           title: AppLocalizations.of(context)!.pay_with_instamojo,
@@ -414,6 +415,7 @@ class _CheckoutState extends State<Checkout> {
         .getOrderCreateResponseFromCod(
             _selected_payment_method_key, widget.delivery_id);
     Navigator.of(loadingcontext).pop();
+    print("order create response: ${orderCreateResponse.result}");
     if (orderCreateResponse.result == false) {
       ToastComponent.showDialog(orderCreateResponse.message,
           gravity: Toast.center, duration: Toast.lengthLong);

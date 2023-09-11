@@ -25,6 +25,7 @@ class PaymentRepository {
     String url =
         ("${AppConfig.BASE_URL}/payment-types?mode=${mode}&list=${list}");
 
+    print("Payment-type: $url");
     final response = await ApiRequest.get(
         url: url,
         headers: {
@@ -111,7 +112,7 @@ class PaymentRepository {
     print(delivery_id);
     String url = ("${AppConfig.BASE_URL}/payments/pay/cod");
 
-    print(url);
+    print("order body: ${post_body}");
     final response = await ApiRequest.post(
         url: url,
         headers: {
@@ -121,7 +122,7 @@ class PaymentRepository {
         },
         body: post_body,
         middleware: BannedUser());
-    print(response.body);
+    print("Response COD:${response.body}");
 
     return orderCreateResponseFromJson(response.body);
   }

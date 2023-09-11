@@ -26,7 +26,7 @@ class OrderRepository {
       {page = 1, payment_status = "", delivery_status = ""}) async {
     String url = ("${AppConfig.BASE_URL}/purchase-history" +
         "?page=${page}&payment_status=${payment_status}&delivery_status=${delivery_status}");
-    print("url:" + url.toString());
+    print("order list url:" + url.toString());
     print("token:" + access_token.$!);
     final response = await ApiRequest.get(
         url: url,
