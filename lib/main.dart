@@ -111,8 +111,13 @@ main() async {
   //   },
   //
   //   debugShowCheckedModeBanner: false,
-  //   home:  SharedValue.wrapApp(MyApp())
+  //   theme: ThemeData(
+  //     primarySwatch: Colors.deepPurple,
+  //   ),
+  //   title: 'Better player demo',
+  //   home:  SplashScreen(),
   // ));
+
 }
 
 class MyApp extends StatefulWidget {
@@ -144,6 +149,22 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    // FirebaseDynamicLinks.instance.onLink(
+    //     onSuccess: (PendingDynamicLinkData dynamicLink) async {
+    //       final Uri deepLink = dynamicLink?.link;
+    //
+    //       // Handle the deep link and navigate to the appropriate screen
+    //       if (deepLink != null) {
+    //         // Extract information from the deep link, if needed
+    //          String path = deepLink.path;
+    //
+    //         // Use your Provider to handle the navigation
+    //         // context.read<YourProvider>().handleDeepLink(path);
+    //       }
+    //     }, onError: (OnLinkErrorException e) async {
+    //   print('onLinkError');
+    //   print(e.message);
+    // });
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => LocaleProvider()),
@@ -156,7 +177,6 @@ class _MyAppState extends State<MyApp> {
             initialRoute: "/",
             routes:
               {
-                "/profiles":(context) => ProfileTest(),
                 "/":(context)=>SplashScreen(),
                 "/classified_ads":(context)=>ClassifiedAds(),
                 "/classified_ads_details":(context)=>ClassifiedAdsDetails(id:0),

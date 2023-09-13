@@ -44,6 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Provider.of<LocaleProvider>(context,listen: false).setLocale(app_mobile_language.$!);
         Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
+
             return Main(go_back: false,);
           },
           ),(route)=>false,);

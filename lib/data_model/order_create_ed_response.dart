@@ -13,7 +13,7 @@ class OrderCreateEdResponse {
     this.combined_order_id,
     this.message,
     this.result,
-    this.url,
+   this.url,
 
   });
 
@@ -28,7 +28,7 @@ class OrderCreateEdResponse {
     combined_order_id: json["combined_order_id"],
     message: json["message"],
     result: json["result"],
-      url: json["url"],
+    url: json["url"],
   );
 
   Map<String, dynamic> toJson() => {

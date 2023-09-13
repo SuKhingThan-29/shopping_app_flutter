@@ -131,23 +131,23 @@ class PaymentRepository {
       "payment_type": "${payment_method}",
       "delivery_id": delivery_id
     });
-    String url = ("${AppConfig.ED_URL}/payments/pay/ed");
+    String url = ("${AppConfig.BASE_URL}/payments/pay/ed");
 
     print("edpay url: $url");
     print('edpay token: ${access_token.$}');
     print("edpay  request: ${post_body}");
-   //  final response = await ApiRequest.post(
-   //      url: url,
-   //      headers: {
-   //        "Content-Type": "application/json",
-   //        "Authorization": "Bearer ${access_token.$}",
-   //        "App-Language": app_language.$!
-   //      },
-   //      body: post_body,
-   //      middleware: BannedUser());
-   //  print("Response ED:${response.body}");
-   //
-   // return orderCreateEdResponseFromJson(response.body);
+    final response = await ApiRequest.post(
+        url: url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${access_token.$}",
+          "App-Language": app_language.$!
+        },
+        body: post_body,
+        middleware: BannedUser());
+    print("Response ED:${response.body}");
+
+   return orderCreateEdResponseFromJson(response.body);
   }
   Future<dynamic> getOrderCreateResponseFromManualPayment(
       payment_method) async {
