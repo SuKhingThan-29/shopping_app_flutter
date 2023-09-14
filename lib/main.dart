@@ -186,7 +186,7 @@ class _MyAppState extends State<MyApp> {
         child: Consumer<DeepLinkProvider>(builder: (context, provider, snapshot) {
           print("Deeplink route provider: ${provider.deepLinkRoute}");
           return MaterialApp(
-            initialRoute: provider.deepLinkRoute??'/',
+            initialRoute: provider.deepLinkRoute==''?'/':provider.deepLinkRoute,
             routes:
               {
                 "/":(context)=>SplashScreen(),
