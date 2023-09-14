@@ -7,6 +7,7 @@ import 'package:active_ecommerce_flutter/presenter/cart_counter.dart';
 import 'package:active_ecommerce_flutter/presenter/currency_presenter.dart';
 import 'package:active_ecommerce_flutter/presenter/home_presenter.dart';
 import 'package:active_ecommerce_flutter/profile_test.dart';
+import 'package:active_ecommerce_flutter/providers/deep_link_provider.dart';
 import 'package:active_ecommerce_flutter/screens/address.dart';
 import 'package:active_ecommerce_flutter/screens/cart.dart';
 import 'package:active_ecommerce_flutter/screens/category_list.dart';
@@ -128,11 +129,20 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  initDynamicLinks()async{
+    try {
+      final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
+      print("Dynamic link: ${data!.link}");
+      // Handle the deep link here
+    } catch (e) {
+      print('Error getting initial link: $e');
+    }
+
+  }
   @override
   void initState() {
     super.initState();
-  //  initDynamicLinks();
-
+   initDynamicLinks();
     Future.delayed(Duration.zero).then(
       (value) async {
         Firebase.initializeApp().then((value) {
@@ -170,14 +180,17 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider(create: (_) => LocaleProvider()),
           ChangeNotifierProvider(create: (context) => CartCounter()),
           ChangeNotifierProvider(create: (context) => CurrencyPresenter()),
-           // ChangeNotifierProvider(create: (context) => HomePresenter())
+          ChangeNotifierProvider(create: (_) => DeepLinkProvider()),
+
         ],
-        child: Consumer<LocaleProvider>(builder: (context, provider, snapshot) {
+        child: Consumer<DeepLinkProvider>(builder: (context, provider, snapshot) {
+          print("Deeplink route provider: ${provider.deepLinkRoute}");
           return MaterialApp(
-            initialRoute: "/",
+            initialRoute: provider.deepLinkRoute??'/',
             routes:
               {
                 "/":(context)=>SplashScreen(),
+                "/gap":(context) =>ProfileTest(),
                 "/classified_ads":(context)=>ClassifiedAds(),
                 "/classified_ads_details":(context)=>ClassifiedAdsDetails(id:0),
                 "/my_classified_ads":(context)=>MyClassifiedAds(),
@@ -242,7 +255,7 @@ class _MyAppState extends State<MyApp> {
               GlobalCupertinoLocalizations.delegate,
               AppLocalizations.delegate,
             ],
-            locale: provider.locale,
+            //locale: provider.locale,
             supportedLocales: LangConfig().supportedLocales(),
             localeResolutionCallback: (deviceLocale, supportedLocales) {
               if (AppLocalizations.delegate.isSupported(deviceLocale!)) {
