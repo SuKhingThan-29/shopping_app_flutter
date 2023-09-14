@@ -88,6 +88,7 @@ _MainScreenState createState() => _MainScreenState();
 
 class _MainScreenState extends State<MyApp> {
   FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void initState() {
@@ -109,12 +110,20 @@ class _MainScreenState extends State<MyApp> {
         child: DeepLinkHandler(
           child: Consumer<DeepLinkProvider>(builder: (context, provider, snapshot) {
             print("Deeplink route provider: ${provider.deepLinkRoute}");
+            if(provider.deepLinkRoute=="/purchase-history"){
+              navigatorKey.currentState?.push(MaterialPageRoute(
+                builder: (context) {
+                  return OrderList();
+                },
+              ));
+            }
             return MaterialApp(
+              navigatorKey: navigatorKey,
               initialRoute: provider.deepLinkRoute??'/',
               routes:
               {
                 '/': (BuildContext context) => SplashScreen(),
-                "/home":(BuildContext context) =>ProfileTest(),
+                "/purchase-history":(BuildContext context) =>ProfileTest(),
                 "/classified_ads":(context)=>ClassifiedAds(),
                 "/classified_ads_details":(context)=>ClassifiedAdsDetails(id:0),
                 "/my_classified_ads":(context)=>MyClassifiedAds(),
@@ -134,7 +143,7 @@ class _MainScreenState extends State<MyApp> {
                 "/clubpoint":(context)=>Clubpoint(),
                 "/flash_deal_list":(context)=>FlashDealList(),
                 "/flash_deal_products":(context)=>FlashDealProducts(),
-                "/homes":(context)=>Home(),
+                "/home":(context)=>Home(),
                 "/login":(context)=>Login(),
                 "/main":(context)=>Main(),
                 "/map_location":(context)=>MapLocation(),
@@ -153,7 +162,7 @@ class _MainScreenState extends State<MyApp> {
 
               },
               builder: OneContext().builder,
-              navigatorKey: OneContext().navigator.key,
+              // navigatorKey: OneContext().navigator.key,
               title: AppConfig.app_name,
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
