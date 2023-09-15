@@ -11,6 +11,7 @@ import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/coupon_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/order_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/payment_repository.dart';
+import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/order_list.dart';
 import 'package:active_ecommerce_flutter/screens/payment_method_screen/bkash_screen.dart';
 import 'package:active_ecommerce_flutter/screens/payment_method_screen/flutterwave_screen.dart';
@@ -30,6 +31,7 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:toast/toast.dart';
 
 class Checkout extends StatefulWidget {
@@ -442,17 +444,19 @@ class _CheckoutState extends State<Checkout> {
     Navigator.of(loadingcontext).pop();
     print("order create ed response: ${orderCreateEDResponse.url}");
     if (orderCreateEDResponse.result == false) {
-      ToastComponent.showDialog(orderCreateEDResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
-      Navigator.of(context).pop();
-      return;
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return Main();
+      }));
     }
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return OrderList(from_checkout: true);
-    }));
+    if(orderCreateEDResponse.result == true && orderCreateEDResponse.url!=null){
+      print("Invoice ID: ${orderCreateEDResponse.combined_order_id}");
+      _launchUrl(orderCreateEDResponse.url);
+    }
   }
-
+  Future<void> _launchUrl(_url)async{
+    await FlutterWebBrowser.openWebPage(url:_url);
+  }
   callJWT(OrderCreateEdResponse response) {
     // Generate a JSON Web Token
 // You can provide the payload as a key-value map or a string
