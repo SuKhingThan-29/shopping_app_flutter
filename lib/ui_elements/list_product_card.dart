@@ -50,6 +50,7 @@ class _ListProductCardState extends State<ListProductCard> {
                   child: FadeInImage.assetNetwork(
                     placeholder: 'assets/placeholder.png',
                     image: widget.image!,
+
                     fit: BoxFit.cover,
                   ))),
           Container(

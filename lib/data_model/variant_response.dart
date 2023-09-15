@@ -30,6 +30,28 @@ class VariantResponse {
         "data": variantData!.toJson(),
       };
 }
+class Buy_x_get_x_quantity {
+  int? outOfQuantity;
+  int? plus;
+
+
+  Buy_x_get_x_quantity({
+    this.outOfQuantity,
+    this.plus,
+  });
+
+  factory Buy_x_get_x_quantity.fromJson(Map<String, dynamic> json) => Buy_x_get_x_quantity(
+    outOfQuantity: json["outOfQuantity"]??0,
+    plus: json["plus"]??0,
+
+  );
+
+  Map<String, dynamic> toJson() => {
+    "outOfQuantity": outOfQuantity,
+    "plus": plus,
+
+  };
+}
 
 class VariantData {
   String? price;
@@ -41,6 +63,7 @@ class VariantData {
   int? maxLimit;
   int? inStock;
   String? image;
+  Buy_x_get_x_quantity? buy_x_get_x_quantity;
 
   VariantData({
     this.price,
@@ -52,6 +75,7 @@ class VariantData {
     this.maxLimit,
     this.inStock,
     this.image,
+    this.buy_x_get_x_quantity,
   });
 
   factory VariantData.fromJson(Map<String, dynamic> json) => VariantData(
@@ -64,6 +88,7 @@ class VariantData {
         maxLimit: int.parse(json["max_limit"].toString()),
         inStock: int.parse(json["in_stock"].toString()),
         image: json["image"],
+    buy_x_get_x_quantity: Buy_x_get_x_quantity.fromJson(json['buy_x_get_x_quantity'])
       );
 
   Map<String, dynamic> toJson() => {
@@ -75,5 +100,6 @@ class VariantData {
         "max_limit": maxLimit,
         "in_stock": inStock,
         "image": image,
+        "buy_x_get_x_quantity":buy_x_get_x_quantity!.toJson()
       };
 }
