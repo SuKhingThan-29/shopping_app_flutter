@@ -110,7 +110,8 @@ class _MainScreenState extends State<MyApp> {
         child: DeepLinkHandler(
           child: Consumer<DeepLinkProvider>(builder: (context, provider, snapshot) {
             print("Deeplink route provider: ${provider.deepLinkRoute}");
-            if(provider.deepLinkRoute=="/purchase-history"){
+            // if(provider.deepLinkRoute=="/purchase-history"){
+            if(provider.deepLinkRoute=="/gmp"){
               navigatorKey.currentState?.push(MaterialPageRoute(
                 builder: (context) {
                   return OrderList();
@@ -123,7 +124,9 @@ class _MainScreenState extends State<MyApp> {
               routes:
               {
                 '/': (BuildContext context) => SplashScreen(),
-                "/purchase-history":(BuildContext context) =>ProfileTest(),
+                "/gmp":(BuildContext context) =>OrderList(),
+
+                // "/purchase-history":(BuildContext context) =>OrderList(),
                 "/classified_ads":(context)=>ClassifiedAds(),
                 "/classified_ads_details":(context)=>ClassifiedAdsDetails(id:0),
                 "/my_classified_ads":(context)=>MyClassifiedAds(),
