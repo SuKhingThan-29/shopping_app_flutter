@@ -4,16 +4,16 @@
 
     <!-- Replace "000000000000" with your Facebook App ID here. -->
 
-    <string name="facebook_app_id"></string>
+    <string name="facebook_app_id">1257764744931699</string>
 
 
-    <string name="facebook_client_token"></string>
+    <string name="facebook_client_token">cf5583eb2acd23a5af95379716476041</string>
 
     <!--
       Replace "000000000000" with your Facebook App ID here.
       **NOTE**: The scheme needs to start with `fb` and then your ID.
     -->
-    <string name="fb_login_protocol_scheme">fb</string>
+    <string name="fb_login_protocol_scheme">fb1257764744931699</string>
 
     <string name="flutter_downloader_notification_started">Download started</string>
     <string name="flutter_downloader_notification_in_progress">Download in progress</string>

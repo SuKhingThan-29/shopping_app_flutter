@@ -87,6 +87,7 @@ dependencies:
   coupon_uikit: ^0.2.0
   dart_jsonwebtoken: ^2.11.0
   jwt_decode: ^0.3.1
+  dropdown_textfield: ^1.0.8
 
 dev_dependencies:
   flutter_test:

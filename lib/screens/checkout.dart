@@ -9,6 +9,7 @@ import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/coupon_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/order_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/payment_repository.dart';
 import 'package:active_ecommerce_flutter/screens/order_list.dart';
 import 'package:active_ecommerce_flutter/screens/payment_method_screen/bkash_screen.dart';
@@ -25,6 +26,7 @@ import 'package:active_ecommerce_flutter/screens/payment_method_screen/razorpay_
 import 'package:active_ecommerce_flutter/screens/payment_method_screen/sslcommerz_screen.dart';
 import 'package:active_ecommerce_flutter/screens/payment_method_screen/stripe_screen.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -62,8 +64,11 @@ class _CheckoutState extends State<Checkout> {
   String? _selected_payment_method_key = "";
 
   ScrollController _mainScrollController = ScrollController();
-  TextEditingController _couponController = TextEditingController();
+  SingleValueDropDownController _couponControllerValue =
+      SingleValueDropDownController();
+  String? _couponController;
   var _paymentTypeList = [];
+  var _mycouponsList = [];
   bool _isInitial = true;
   String? _totalString = ". . .";
   int? _grandTotalValue = 0;
@@ -98,7 +103,7 @@ class _CheckoutState extends State<Checkout> {
 
   fetchAll() {
     fetchList();
-
+    fetchMyCoupons();
     if (is_logged_in.$ == true) {
       if (widget.paymentFor != PaymentFor.Order) {
         _grandTotalValue = widget.rechargeAmount.toInt();
@@ -130,7 +135,8 @@ class _CheckoutState extends State<Checkout> {
 
   fetchSummary() async {
     print("card_summary: ${widget.delivery_id}");
-    var cartSummaryResponse = await CartRepository().getCartSummaryResponse(widget.delivery_id);
+    var cartSummaryResponse =
+        await CartRepository().getCartSummaryResponse(widget.delivery_id);
 
     if (cartSummaryResponse != null) {
       _subTotalString = cartSummaryResponse.sub_total;
@@ -140,10 +146,17 @@ class _CheckoutState extends State<Checkout> {
       _totalString = cartSummaryResponse.grand_total;
       _grandTotalValue = cartSummaryResponse.grand_total_value;
       _used_coupon_code = cartSummaryResponse.coupon_code ?? _used_coupon_code;
-      _couponController.text = _used_coupon_code;
+      _couponController = _used_coupon_code;
       _coupon_applied = cartSummaryResponse.coupon_applied;
       setState(() {});
     }
+  }
+
+  fetchMyCoupons() async {
+    var orderResponse = await OrderRepository().getMyCoupon();
+    _mycouponsList.addAll(orderResponse.data);
+    _isInitial = false;
+    setState(() {});
   }
 
   reset() {
@@ -165,7 +178,7 @@ class _CheckoutState extends State<Checkout> {
     _shippingCostString = ". . .";
     _discountString = ". . .";
     _used_coupon_code = "";
-    _couponController.text = _used_coupon_code!;
+    _couponController = _used_coupon_code!;
     _coupon_applied = false;
 
     setState(() {});
@@ -182,7 +195,7 @@ class _CheckoutState extends State<Checkout> {
   }
 
   onCouponApply() async {
-    var coupon_code = _couponController.text.toString();
+    var coupon_code = _couponController.toString();
     if (coupon_code == "") {
       ToastComponent.showDialog(AppLocalizations.of(context)!.enter_coupon_code,
           gravity: Toast.center, duration: Toast.lengthLong);
@@ -214,6 +227,8 @@ class _CheckoutState extends State<Checkout> {
     reset_summary();
     fetchSummary();
   }
+
+  List<DropDownValueModel> dropDownList = [];
 
   onPressPlaceOrderOrProceed() {
     print(_selected_payment_method);
@@ -340,8 +355,7 @@ class _CheckoutState extends State<Checkout> {
       })).then((value) {
         onPopped(value);
       });
-    }
-    else if (_selected_payment_method == "instamojo_payment") {
+    } else if (_selected_payment_method == "instamojo_payment") {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return OnlinePay(
           title: AppLocalizations.of(context)!.pay_with_instamojo,
@@ -357,10 +371,9 @@ class _CheckoutState extends State<Checkout> {
       pay_by_wallet();
     } else if (_selected_payment_method == "cash_payment") {
       pay_by_cod();
-    } else if(_selected_payment_method == "ed_payment"){
+    } else if (_selected_payment_method == "ed_payment") {
       pay_by_edpayment();
-    }
-    else if (_selected_payment_method == "manual_payment" &&
+    } else if (_selected_payment_method == "manual_payment" &&
         widget.paymentFor == PaymentFor.Order) {
       pay_by_manual_payment();
     } else if (_selected_payment_method == "manual_payment" &&
@@ -422,12 +435,12 @@ class _CheckoutState extends State<Checkout> {
   }
 
   pay_by_edpayment() async {
-   loading();
+    loading();
     var orderCreateEDResponse = await PaymentRepository()
         .getOrderCreateResponseFrom_Ed_Payment(
-        _selected_payment_method_key, widget.delivery_id);
-     Navigator.of(loadingcontext).pop();
-   print("order create ed response: ${orderCreateEDResponse.url}");
+            _selected_payment_method_key, widget.delivery_id);
+    Navigator.of(loadingcontext).pop();
+    print("order create ed response: ${orderCreateEDResponse.url}");
     if (orderCreateEDResponse.result == false) {
       ToastComponent.showDialog(orderCreateEDResponse.message,
           gravity: Toast.center, duration: Toast.lengthLong);
@@ -438,9 +451,9 @@ class _CheckoutState extends State<Checkout> {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return OrderList(from_checkout: true);
     }));
-
   }
-  callJWT(OrderCreateEdResponse response){
+
+  callJWT(OrderCreateEdResponse response) {
     // Generate a JSON Web Token
 // You can provide the payload as a key-value map or a string
     final jwt = JWT(
@@ -454,6 +467,7 @@ class _CheckoutState extends State<Checkout> {
 
     print('Signed token: $token\n');
   }
+
   pay_by_manual_payment() async {
     loading();
     var orderCreateResponse = await PaymentRepository()
@@ -695,7 +709,7 @@ class _CheckoutState extends State<Checkout> {
                           height: 140,
                         )
                       ]),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -725,7 +739,7 @@ class _CheckoutState extends State<Checkout> {
                               widget.paymentFor == PaymentFor.Order
                                   ? Padding(
                                       padding:
-                                          const EdgeInsets.only(bottom: 16.0),
+                                          const EdgeInsets.only(bottom: 10.0),
                                       child: buildApplyCouponRow(context),
                                     )
                                   : Container(),
@@ -734,43 +748,47 @@ class _CheckoutState extends State<Checkout> {
                           ),
                         ),
                       ),
-              )
+              ),
             ],
           )),
     );
   }
 
   Row buildApplyCouponRow(BuildContext context) {
+    for (int i = 0; i < _mycouponsList.length; i++) {
+      String name = _mycouponsList[i].code;
+      String value = _mycouponsList[i].code;
+
+      dropDownList.add(DropDownValueModel(name: name, value: value));
+    }
     return Row(
       children: [
         Container(
           height: 42,
           width: (MediaQuery.of(context).size.width - 32) * (2 / 3),
-          child: TextFormField(
-            controller: _couponController,
-            readOnly: _coupon_applied!,
-            autofocus: false,
-            decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)!.enter_coupon_code,
-                hintStyle:
-                    TextStyle(fontSize: 14.0, color: MyTheme.textfield_grey),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: MyTheme.textfield_grey, width: 0.5),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: const Radius.circular(8.0),
-                    bottomLeft: const Radius.circular(8.0),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: MyTheme.medium_grey, width: 0.5),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: const Radius.circular(8.0),
-                    bottomLeft: const Radius.circular(8.0),
-                  ),
-                ),
-                contentPadding: EdgeInsets.only(left: 16.0)),
+          child: DropDownTextField(
+            controller: _couponControllerValue,
+            clearOption: true,
+            // enableSearch: true,
+            // dropdownColor: Colors.green,
+            searchDecoration: const InputDecoration(
+                hintText: "enter your custom hint text here"),
+            validator: (value) {
+              if (value == null) {
+                return "Required field";
+              } else {
+                return null;
+              }
+            },
+            dropDownItemCount: _mycouponsList.length,
+
+            dropDownList: dropDownList,
+            onChanged: (val) {
+              setState(() {
+                print(val.value);
+                _couponController = val.value;
+              });
+            },
           ),
         ),
         !_coupon_applied!

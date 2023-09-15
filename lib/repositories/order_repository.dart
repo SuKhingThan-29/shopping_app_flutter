@@ -54,6 +54,22 @@ class OrderRepository {
     return couponFromJson(response.body);
   }
 
+  Future<dynamic> getMyCoupon(
+      {page = 1, payment_status = "", delivery_status = ""}) async {
+    String url = ("${AppConfig.BASE_URL}/my-coupons");
+    print("url:" + url.toString());
+    print("token:" + access_token.$!);
+    final response = await ApiRequest.get(
+        url: url,
+        headers: {
+          "App-Language": app_language.$!,
+          "Authorization": "Bearer ${access_token.$}",
+        },
+        middleware: BannedUser());
+    print(response.body);
+    return couponFromJson(response.body);
+  }
+
   Future<dynamic> buyCoupon(id) async {
     var post_body = jsonEncode({"coupon_id": "$id"});
     String url = ("${AppConfig.BASE_URL}/point-shop/coupons");
@@ -74,7 +90,7 @@ class OrderRepository {
   Future<dynamic> getOrderDetails({int? id = 0}) async {
     String url =
         ("${AppConfig.BASE_URL}/purchase-history-details/" + id.toString());
-print("Order Detail: $url");
+    print("Order Detail: $url");
     final response = await ApiRequest.get(
         url: url,
         headers: {
