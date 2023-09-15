@@ -298,6 +298,7 @@ class ProductRepository {
       "variants": variants,
       "quantity": qty
     });
+    print('Product variant: $postBody');
 
     final response = await ApiRequest.post(
         url: url,
