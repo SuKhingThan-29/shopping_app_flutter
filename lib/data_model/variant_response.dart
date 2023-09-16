@@ -51,8 +51,37 @@ class Buy_x_get_x_quantity {
     "plus": plus,
 
   };
-}
 
+
+}
+class Buy_x_get_y_quantity {
+  int? productId;
+  int? stockId;
+  String? name;
+
+
+  Buy_x_get_y_quantity({
+    this.productId,
+    this.stockId,
+    this.name
+  });
+
+  factory Buy_x_get_y_quantity.fromJson(Map<String, dynamic> json) => Buy_x_get_y_quantity(
+    productId: json["productId"]??0,
+    stockId: json["stockId"]??0,
+    name:json["name"]??""
+
+  );
+
+  Map<String, dynamic> toJson() => {
+    "productId": productId,
+    "stockId": stockId,
+    "name":name
+
+  };
+
+
+}
 class VariantData {
   String? price;
   int? stock;
@@ -64,6 +93,7 @@ class VariantData {
   int? inStock;
   String? image;
   Buy_x_get_x_quantity? buy_x_get_x_quantity;
+  List<Buy_x_get_y_quantity>? buy_x_get_y_quantity;
 
   VariantData({
     this.price,
@@ -76,6 +106,7 @@ class VariantData {
     this.inStock,
     this.image,
     this.buy_x_get_x_quantity,
+     this.buy_x_get_y_quantity,
   });
 
   factory VariantData.fromJson(Map<String, dynamic> json) => VariantData(
@@ -88,7 +119,8 @@ class VariantData {
         maxLimit: int.parse(json["max_limit"].toString()),
         inStock: int.parse(json["in_stock"].toString()),
         image: json["image"],
-    buy_x_get_x_quantity: Buy_x_get_x_quantity.fromJson(json['buy_x_get_x_quantity'])
+    buy_x_get_x_quantity: Buy_x_get_x_quantity.fromJson(json['buy_x_get_x_quantity']),
+    buy_x_get_y_quantity: List<Buy_x_get_y_quantity>.from(json["buy_x_get_y_quantity"].map((x) =>Buy_x_get_y_quantity.fromJson(x))).isEmpty?[]:List<Buy_x_get_y_quantity>.from(json["buy_x_get_y_quantity"].map((x) =>Buy_x_get_y_quantity.fromJson(x)))
       );
 
   Map<String, dynamic> toJson() => {
@@ -100,6 +132,8 @@ class VariantData {
         "max_limit": maxLimit,
         "in_stock": inStock,
         "image": image,
-        "buy_x_get_x_quantity":buy_x_get_x_quantity!.toJson()
-      };
+        "buy_x_get_x_quantity":buy_x_get_x_quantity!.toJson(),
+    "buy_x_get_y_quantity": List<dynamic>.from(buy_x_get_y_quantity!.map((x) => x.toJson())),
+
+  };
 }

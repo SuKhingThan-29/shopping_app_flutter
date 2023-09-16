@@ -295,7 +295,7 @@ class _ProductDetailsState extends State<ProductDetails>
         color: color_string,
         variants: _choiceString,
         qty: _quantity);
-    print("Buyxgetx: ${variantResponse.variantData!.buy_x_get_x_quantity!.plus!}");
+    print("Buyxgety: ${variantResponse.variantData!.buy_x_get_y_quantity!.length}");
     /*print("vr"+variantResponse.toJson().toString());
     return;*/
 

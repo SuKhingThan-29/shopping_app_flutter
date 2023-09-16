@@ -603,35 +603,35 @@ class _CheckoutState extends State<Checkout> {
                         ),
                       ],
                     )),
-                Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 120,
-                          child: Text(
-                            AppLocalizations.of(context)!.discount_all_capital,
-                            textAlign: TextAlign.end,
-                            style: TextStyle(
-                                color: MyTheme.font_grey,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        Spacer(),
-                        Text(
-                          SystemConfig.systemCurrency != null
-                              ? _discountString!.replaceAll(
-                                  SystemConfig.systemCurrency!.code!,
-                                  SystemConfig.systemCurrency!.symbol!)
-                              : _discountString!,
-                          style: TextStyle(
-                              color: MyTheme.font_grey,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    )),
+                // Padding(
+                //     padding: const EdgeInsets.only(bottom: 8),
+                //     child: Row(
+                //       children: [
+                //         Container(
+                //           width: 120,
+                //           child: Text(
+                //             AppLocalizations.of(context)!.discount_all_capital,
+                //             textAlign: TextAlign.end,
+                //             style: TextStyle(
+                //                 color: MyTheme.font_grey,
+                //                 fontSize: 14,
+                //                 fontWeight: FontWeight.w600),
+                //           ),
+                //         ),
+                //         Spacer(),
+                //         Text(
+                //           SystemConfig.systemCurrency != null
+                //               ? _discountString!.replaceAll(
+                //                   SystemConfig.systemCurrency!.code!,
+                //                   SystemConfig.systemCurrency!.symbol!)
+                //               : _discountString!,
+                //           style: TextStyle(
+                //               color: MyTheme.font_grey,
+                //               fontSize: 14,
+                //               fontWeight: FontWeight.w600),
+                //         ),
+                //       ],
+                //     )),
                 Divider(),
                 Padding(
                     padding: const EdgeInsets.only(bottom: 8),
