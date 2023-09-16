@@ -26,9 +26,9 @@ class VariantResponse {
       );
 
   Map<String, dynamic> toJson() => {
-        "result": result,
-        "data": variantData!.toJson(),
-      };
+    "result": result,
+    "data": variantData!.toJson(),
+  };
 }
 class Buy_x_get_x_quantity {
   int? outOfQuantity;
@@ -67,9 +67,9 @@ class Buy_x_get_y_quantity {
   });
 
   factory Buy_x_get_y_quantity.fromJson(Map<String, dynamic> json) => Buy_x_get_y_quantity(
-    productId: json["productId"]??0,
-    stockId: json["stockId"]??0,
-    name:json["name"]??""
+      productId: json["productId"]??0,
+      stockId: json["stockId"]??0,
+      name:json["name"]??""
 
   );
 
@@ -106,33 +106,33 @@ class VariantData {
     this.inStock,
     this.image,
     this.buy_x_get_x_quantity,
-     this.buy_x_get_y_quantity,
+    this.buy_x_get_y_quantity,
   });
 
   factory VariantData.fromJson(Map<String, dynamic> json) => VariantData(
-        price: json["price"],
-        stock: int.parse(json["stock"].toString()),
-        stockTxt: json["stock_txt"],
-        digital: int.parse(json["digital"].toString()),
-        variant: json["variant"],
-        variation: json["variation"],
-        maxLimit: int.parse(json["max_limit"].toString()),
-        inStock: int.parse(json["in_stock"].toString()),
-        image: json["image"],
-    buy_x_get_x_quantity: Buy_x_get_x_quantity.fromJson(json['buy_x_get_x_quantity']),
-    buy_x_get_y_quantity: List<Buy_x_get_y_quantity>.from(json["buy_x_get_y_quantity"].map((x) =>Buy_x_get_y_quantity.fromJson(x))).isEmpty?[]:List<Buy_x_get_y_quantity>.from(json["buy_x_get_y_quantity"].map((x) =>Buy_x_get_y_quantity.fromJson(x)))
-      );
+      price: json["price"],
+      stock: int.parse(json["stock"].toString()),
+      stockTxt: json["stock_txt"],
+      digital: int.parse(json["digital"].toString()),
+      variant: json["variant"],
+      variation: json["variation"],
+      maxLimit: int.parse(json["max_limit"].toString()),
+      inStock: int.parse(json["in_stock"].toString()),
+      image: json["image"],
+      buy_x_get_x_quantity: Buy_x_get_x_quantity.fromJson(json['buy_x_get_x_quantity']),
+      buy_x_get_y_quantity: List<Buy_x_get_y_quantity>.from(json["buy_x_get_y_quantity"].map((x) =>Buy_x_get_y_quantity.fromJson(x))).isEmpty?[]:List<Buy_x_get_y_quantity>.from(json["buy_x_get_y_quantity"].map((x) =>Buy_x_get_y_quantity.fromJson(x)))
+  );
 
   Map<String, dynamic> toJson() => {
-        "price": price,
-        "stock": stock,
-        "digital": digital,
-        "variant": variant,
-        "variation": variation,
-        "max_limit": maxLimit,
-        "in_stock": inStock,
-        "image": image,
-        "buy_x_get_x_quantity":buy_x_get_x_quantity!.toJson(),
+    "price": price,
+    "stock": stock,
+    "digital": digital,
+    "variant": variant,
+    "variation": variation,
+    "max_limit": maxLimit,
+    "in_stock": inStock,
+    "image": image,
+    "buy_x_get_x_quantity":buy_x_get_x_quantity!.toJson(),
     "buy_x_get_y_quantity": List<dynamic>.from(buy_x_get_y_quantity!.map((x) => x.toJson())),
 
   };

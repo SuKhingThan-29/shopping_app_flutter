@@ -295,7 +295,7 @@ class _ProductDetailsState extends State<ProductDetails>
         color: color_string,
         variants: _choiceString,
         qty: _quantity);
-    print("Buyxgety: ${variantResponse.variantData!.buy_x_get_y_quantity!.length}");
+    print("single price ${variantResponse.variantData!.price}");
     /*print("vr"+variantResponse.toJson().toString());
     return;*/
 
@@ -304,9 +304,6 @@ class _ProductDetailsState extends State<ProductDetails>
     _stock_txt = variantResponse.variantData!.stockTxt;
     if (_quantity! > _stock!) {
       _quantity = _stock;
-    }
-    if(variantResponse.variantData!.buy_x_get_x_quantity!.plus!=null && variantResponse.variantData!.buy_x_get_x_quantity!.plus! >0){
-      _plus=variantResponse.variantData!.buy_x_get_x_quantity!.plus!;
     }
 
     _variant = variantResponse.variantData!.variant;
