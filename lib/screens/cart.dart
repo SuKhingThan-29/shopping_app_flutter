@@ -100,7 +100,6 @@ class _CartState extends State<Cart> {
       });
     }
 
-    setState(() {});
   }
 
   partialTotalString(index) {

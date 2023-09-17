@@ -16,6 +16,7 @@ class CouponRepository {
     var post_body =
         jsonEncode({"user_id": "${user_id.$}", "coupon_code": "$coupon_code"});
 
+    print('coupon token key: ${access_token.$}');
     String url=("${AppConfig.BASE_URL}/coupon-apply");
     final response = await ApiRequest.post(url:url,
         headers: {

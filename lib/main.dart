@@ -113,7 +113,7 @@ class _MainScreenState extends State<MyApp> {
             if(provider.deepLinkRoute=="/purchase-history"){
               navigatorKey.currentState?.push(MaterialPageRoute(
                 builder: (context) {
-                  return OrderList();
+                  return OrderList(from_checkout: true);
                 },
               ));
             }
@@ -123,9 +123,7 @@ class _MainScreenState extends State<MyApp> {
               routes:
               {
                 '/': (BuildContext context) => SplashScreen(),
-                "/purchase-history":(BuildContext context) =>OrderList(),
-
-                // "/purchase-history":(BuildContext context) =>OrderList(),
+                "/purchase-history":(BuildContext context) =>OrderList(from_checkout: true),
                 "/classified_ads":(context)=>ClassifiedAds(),
                 "/classified_ads_details":(context)=>ClassifiedAdsDetails(id:0),
                 "/my_classified_ads":(context)=>MyClassifiedAds(),

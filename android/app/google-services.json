@@ -102,6 +102,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "1004636433134-4fv19um5782cifapc0ubgk0i4et0ok20.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.active_ecommerce_flutter",
+            "certificate_hash": "802a32ac063c891a6e7f942a07140bd574450f58"
+          }
+        },
+        {
+          "client_id": "1004636433134-aftcnbcp5n7jgd06o1ilel9c21iptgpq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.active_ecommerce_flutter",
+            "certificate_hash": "8253b5fcc9a81b69352ef11409ae436ad37e5384"
+          }
+        },
+        {
           "client_id": "1004636433134-ies4anfrjh7rcsf15gir1dcb2fhgf55h.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

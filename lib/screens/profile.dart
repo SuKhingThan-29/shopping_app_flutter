@@ -5,6 +5,7 @@ import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/device_info.dart';
 import 'package:active_ecommerce_flutter/custom/lang_text.dart';
+import 'package:active_ecommerce_flutter/data_model/user_info_response.dart';
 import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
 import 'package:active_ecommerce_flutter/presenter/home_presenter.dart';
 import 'package:active_ecommerce_flutter/screens/auction_products.dart';
@@ -64,6 +65,8 @@ class _ProfileState extends State<Profile> {
   int? _orderCounter = 0;
   String _orderCounterString = "00";
   late BuildContext loadingcontext;
+  String? _member_level;
+  UserInformation? _userInfo;
 
   @override
   void initState() {
@@ -92,8 +95,22 @@ class _ProfileState extends State<Profile> {
 
   fetchAll() {
     fetchCounters();
+    getUserInfo();
   }
+  getUserInfo() async {
 
+    var userInfoRes = await ProfileRepository().getUserInfoResponse();
+    if(userInfoRes.data.isNotEmpty) {
+      _userInfo = userInfoRes.data.first;
+      _member_level=_userInfo!.member_level;
+      print("member level: $_member_level");
+
+
+    }
+
+
+    setState(() {});
+  }
   fetchCounters() async {
     var profileCountersResponse =
         await ProfileRepository().getProfileCountersResponse();
@@ -1373,15 +1390,19 @@ class _ProfileState extends State<Profile> {
                     color: MyTheme.white,
                     fontWeight: FontWeight.w600),
               ),
-              Padding(
+              (_member_level==null || _member_level=="")?Container():Padding(
                   padding: const EdgeInsets.only(top: 4.0),
-                  child: Text(
-                    //if user email is not available then check user phone if user phone is not available use empty string
-                    "${user_email.$ != "" && user_email.$ != null ? user_email.$ : user_phone.$ != "" && user_phone.$ != null ? user_phone.$ : ''}",
-                    style: TextStyle(
-                      color: MyTheme.light_grey,
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    decoration:BoxDecoration(border: Border.all(color: MyTheme.grey_153,width: 2),borderRadius: BorderRadius.all(Radius.circular(12))),
+                    child: Text(
+                      _member_level??"",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
-                  )),
+                  )
+              ),
             ],
           )
         : Text(

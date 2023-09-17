@@ -2,7 +2,6 @@ import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/enum_classes.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
-import 'package:active_ecommerce_flutter/data_model/order_create_ed_response.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
@@ -11,6 +10,7 @@ import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/coupon_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/order_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/payment_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/wallet_repository.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/order_list.dart';
 import 'package:active_ecommerce_flutter/screens/payment_method_screen/bkash_screen.dart';
@@ -26,7 +26,6 @@ import 'package:active_ecommerce_flutter/screens/payment_method_screen/paytm_scr
 import 'package:active_ecommerce_flutter/screens/payment_method_screen/razorpay_screen.dart';
 import 'package:active_ecommerce_flutter/screens/payment_method_screen/sslcommerz_screen.dart';
 import 'package:active_ecommerce_flutter/screens/payment_method_screen/stripe_screen.dart';
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -46,14 +45,14 @@ class Checkout extends StatefulWidget {
 
   Checkout(
       {Key? key,
-      this.delivery_id,
-      this.order_id = 0,
-      this.paymentFor,
-      this.list = "both",
-      //this.offLinePaymentFor,
-      this.rechargeAmount = 0.0,
-      this.title,
-      this.packageId = 0})
+        this.delivery_id,
+        this.order_id = 0,
+        this.paymentFor,
+        this.list = "both",
+        //this.offLinePaymentFor,
+        this.rechargeAmount = 0.0,
+        this.title,
+        this.packageId = 0})
       : super(key: key);
 
   @override
@@ -67,8 +66,9 @@ class _CheckoutState extends State<Checkout> {
 
   ScrollController _mainScrollController = ScrollController();
   SingleValueDropDownController _couponControllerValue =
-      SingleValueDropDownController();
+  SingleValueDropDownController();
   String? _couponController;
+  int? _disprice;
   var _paymentTypeList = [];
   var _mycouponsList = [];
   bool _isInitial = true;
@@ -83,6 +83,8 @@ class _CheckoutState extends State<Checkout> {
   late BuildContext loadingcontext;
   String payment_type = "cart_payment";
   String? _title;
+  dynamic _balanceDetails = null;
+
 
   @override
   void initState() {
@@ -95,6 +97,7 @@ class _CheckoutState extends State<Checkout> {
     print(user_name.$);*/
 
     fetchAll();
+    fetchBalanceDetails();
   }
 
   @override
@@ -121,11 +124,11 @@ class _CheckoutState extends State<Checkout> {
   fetchList() async {
     var paymentTypeResponseList = await PaymentRepository()
         .getPaymentResponseList(
-            list: widget.list,
-            mode: widget.paymentFor != PaymentFor.Order &&
-                    widget.paymentFor != PaymentFor.ManualPayment
-                ? "wallet"
-                : "order");
+        list: widget.list,
+        mode: widget.paymentFor != PaymentFor.Order &&
+            widget.paymentFor != PaymentFor.ManualPayment
+            ? "wallet"
+            : "order");
     _paymentTypeList.addAll(paymentTypeResponseList);
     if (_paymentTypeList.length > 0) {
       _selected_payment_method = _paymentTypeList[0].payment_type;
@@ -136,9 +139,8 @@ class _CheckoutState extends State<Checkout> {
   }
 
   fetchSummary() async {
-    print("card_summary: ${widget.delivery_id}");
     var cartSummaryResponse =
-        await CartRepository().getCartSummaryResponse(widget.delivery_id);
+    await CartRepository().getCartSummaryResponse(widget.delivery_id);
 
     if (cartSummaryResponse != null) {
       _subTotalString = cartSummaryResponse.sub_total;
@@ -153,11 +155,18 @@ class _CheckoutState extends State<Checkout> {
       setState(() {});
     }
   }
+  fetchBalanceDetails() async {
+    var balanceDetailsResponse = await WalletRepository().getBalance();
 
+    _balanceDetails = balanceDetailsResponse;
+
+    setState(() {});
+  }
   fetchMyCoupons() async {
     var orderResponse = await OrderRepository().getMyCoupon();
     _mycouponsList.addAll(orderResponse.data);
     _isInitial = false;
+    print("My coupon list: ${_mycouponsList.length}");
     setState(() {});
   }
 
@@ -205,11 +214,19 @@ class _CheckoutState extends State<Checkout> {
     }
 
     var couponApplyResponse =
-        await CouponRepository().getCouponApplyResponse(coupon_code);
+    await CouponRepository().getCouponApplyResponse(coupon_code);
     if (couponApplyResponse.result == false) {
       ToastComponent.showDialog(couponApplyResponse.message,
           gravity: Toast.center, duration: Toast.lengthLong);
       return;
+    }
+    if (couponApplyResponse.result == true) {
+      _disprice;
+      print("Coupon price: $_disprice");
+      setState(() {
+       // _grandTotalValue = _grandTotalValue! - _disprice!;
+      });
+      print("Coupon price grand total: $_grandTotalValue");
     }
 
     reset_summary();
@@ -218,12 +235,21 @@ class _CheckoutState extends State<Checkout> {
 
   onCouponRemove() async {
     var couponRemoveResponse =
-        await CouponRepository().getCouponRemoveResponse();
+    await CouponRepository().getCouponRemoveResponse();
 
     if (couponRemoveResponse.result == false) {
       ToastComponent.showDialog(couponRemoveResponse.message,
           gravity: Toast.center, duration: Toast.lengthLong);
       return;
+    }
+
+    if (couponRemoveResponse.result == true) {
+      print(_grandTotalValue!.toDouble());
+      setState(() {
+      //  _grandTotalValue = _grandTotalValue! + _disprice!;
+      });
+
+      print(_grandTotalValue);
     }
 
     reset_summary();
@@ -241,170 +267,211 @@ class _CheckoutState extends State<Checkout> {
           duration: Toast.lengthLong);
       return;
     }
-    if (_grandTotalValue == 0) {
+    if (_grandTotalValue == 0.00) {
       ToastComponent.showDialog(AppLocalizations.of(context)!.nothing_to_pay,
           gravity: Toast.center, duration: Toast.lengthLong);
       return;
     }
-
-    if (_selected_payment_method == "stripe_payment") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return StripeScreen(
-          amount: _grandTotalValue!.toDouble(),
-          payment_type: payment_type,
-          payment_method_key: _selected_payment_method_key,
-          package_id: widget.packageId.toString(),
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } else if (_selected_payment_method == "razorpay") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return RazorpayScreen(
-          amount: _grandTotalValue!.toDouble(),
-          payment_type: payment_type,
-          payment_method_key: _selected_payment_method_key,
-          package_id: widget.packageId.toString(),
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } else if (_selected_payment_method == "paystack") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return PaystackScreen(
-          amount: _grandTotalValue!.toDouble(),
-          payment_type: payment_type,
-          payment_method_key: _selected_payment_method_key,
-          package_id: widget.packageId.toString(),
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } else if (_selected_payment_method == "iyzico") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return IyzicoScreen(
-          amount: _grandTotalValue!.toDouble(),
-          payment_type: payment_type,
-          payment_method_key: _selected_payment_method_key,
-          package_id: widget.packageId.toString(),
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } else if (_selected_payment_method == "bkash") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return BkashScreen(
-          amount: _grandTotalValue!.toDouble(),
-          payment_type: payment_type,
-          payment_method_key: _selected_payment_method_key,
-          package_id: widget.packageId.toString(),
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } else if (_selected_payment_method == "nagad") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return NagadScreen(
-          amount: _grandTotalValue!.toDouble(),
-          payment_type: payment_type,
-          payment_method_key: _selected_payment_method_key,
-          package_id: widget.packageId.toString(),
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } else if (_selected_payment_method == "sslcommerz_payment") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return SslCommerzScreen(
-          amount: _grandTotalValue!.toDouble(),
-          payment_type: payment_type,
-          payment_method_key: _selected_payment_method_key,
-          package_id: widget.packageId.toString(),
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } else if (_selected_payment_method == "flutterwave") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return FlutterwaveScreen(
-          amount: _grandTotalValue?.toDouble(),
-          payment_type: payment_type,
-          payment_method_key: _selected_payment_method_key,
-          package_id: widget.packageId.toString(),
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } else if (_selected_payment_method == "paytm") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return PaytmScreen(
-          amount: _grandTotalValue!.toDouble(),
-          payment_type: payment_type,
-          payment_method_key: _selected_payment_method_key,
-          package_id: widget.packageId.toString(),
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } else if (_selected_payment_method == "khalti") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return KhaltiScreen(
-          amount: _grandTotalValue!.toDouble(),
-          payment_type: payment_type,
-          payment_method_key: _selected_payment_method_key,
-          package_id: widget.packageId.toString(),
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } else if (_selected_payment_method == "instamojo_payment") {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return OnlinePay(
-          title: AppLocalizations.of(context)!.pay_with_instamojo,
-          amount: _grandTotalValue?.toDouble(),
-          payment_type: payment_type,
-          payment_method_key: _selected_payment_method_key,
-          package_id: widget.packageId.toString(),
-        );
-      })).then((value) {
-        onPopped(value);
-      });
-    } else if (_selected_payment_method == "wallet_system") {
-      pay_by_wallet();
-    } else if (_selected_payment_method == "cash_payment") {
+    if (_selected_payment_method == "cash_payment") {
       pay_by_cod();
     } else if (_selected_payment_method == "ed_payment") {
       pay_by_edpayment();
-    } else if (_selected_payment_method == "manual_payment" &&
-        widget.paymentFor == PaymentFor.Order) {
-      pay_by_manual_payment();
-    } else if (_selected_payment_method == "manual_payment" &&
-        (widget.paymentFor == PaymentFor.ManualPayment ||
-            widget.paymentFor == PaymentFor.WalletRecharge ||
-            widget.paymentFor == PaymentFor.PackagePay)) {
+    }
+
+//     if (_selected_payment_method == "stripe_payment") {
+//       Navigator.push(context, MaterialPageRoute(builder: (context) {
+//         return StripeScreen(
+//           amount: _grandTotalValue,
+//           payment_type: payment_type,
+//           payment_method_key: _selected_payment_method_key,
+//           package_id: widget.packageId.toString(),
+//         );
+//       })).then((value) {
+//         onPopped(value);
+//       });
+//     } else if (_selected_payment_method == "paypal_payment") {
+//       Navigator.push(context, MaterialPageRoute(builder: (context) {
+//         return PaypalScreen(
+//           amount: _grandTotalValue,
+//           payment_type: payment_type,
+//           payment_method_key: _selected_payment_method_key,
+//           package_id: widget.packageId.toString(),
+//         );
+//       })).then((value) {
+//         onPopped(value);
+//       });
+//     } else if (_selected_payment_method == "razorpay") {
+//       Navigator.push(context, MaterialPageRoute(builder: (context) {
+//         return RazorpayScreen(
+//           amount: _grandTotalValue,
+//           payment_type: payment_type,
+//           payment_method_key: _selected_payment_method_key,
+//           package_id: widget.packageId.toString(),
+//         );
+//       })).then((value) {
+//         onPopped(value);
+//       });
+//     } else if (_selected_payment_method == "paystack") {
+//       Navigator.push(context, MaterialPageRoute(builder: (context) {
+//         return PaystackScreen(
+//           amount: _grandTotalValue,
+//           payment_type: payment_type,
+//           payment_method_key: _selected_payment_method_key,
+//           package_id: widget.packageId.toString(),
+//         );
+//       })).then((value) {
+//         onPopped(value);
+//       });
+//     } else if (_selected_payment_method == "iyzico") {
+//       Navigator.push(context, MaterialPageRoute(builder: (context) {
+//         return IyzicoScreen(
+//           amount: _grandTotalValue,
+//           payment_type: payment_type,
+//           payment_method_key: _selected_payment_method_key,
+//           package_id: widget.packageId.toString(),
+//         );
+//       })).then((value) {
+//         onPopped(value);
+//       });
+//     } else if (_selected_payment_method == "bkash") {
+//       Navigator.push(context, MaterialPageRoute(builder: (context) {
+//         return BkashScreen(
+//           amount: _grandTotalValue,
+//           payment_type: payment_type,
+//           payment_method_key: _selected_payment_method_key,
+//           package_id: widget.packageId.toString(),
+//         );
+//       })).then((value) {
+//         onPopped(value);
+//       });
+//     } else if (_selected_payment_method == "nagad") {
+//       Navigator.push(context, MaterialPageRoute(builder: (context) {
+//         return NagadScreen(
+//           amount: _grandTotalValue,
+//           payment_type: payment_type,
+//           payment_method_key: _selected_payment_method_key,
+//           package_id: widget.packageId.toString(),
+//         );
+//       })).then((value) {
+//         onPopped(value);
+//       });
+//     } else if (_selected_payment_method == "sslcommerz_payment") {
+//       Navigator.push(context, MaterialPageRoute(builder: (context) {
+//         return SslCommerzScreen(
+//           amount: _grandTotalValue,
+//           payment_type: payment_type,
+//           payment_method_key: _selected_payment_method_key,
+//           package_id: widget.packageId.toString(),
+//         );
+//       })).then((value) {
+//         onPopped(value);
+//       });
+//     } else if (_selected_payment_method == "flutterwave") {
+//       Navigator.push(context, MaterialPageRoute(builder: (context) {
+//         return FlutterwaveScreen(
+//           amount: _grandTotalValue,
+//           payment_type: payment_type,
+//           payment_method_key: _selected_payment_method_key,
+//           package_id: widget.packageId.toString(),
+//         );
+//       })).then((value) {
+//         onPopped(value);
+//       });
+//     } else if (_selected_payment_method == "paytm") {
+//       Navigator.push(context, MaterialPageRoute(builder: (context) {
+//         return PaytmScreen(
+//           amount: _grandTotalValue,
+//           payment_type: payment_type,
+//           payment_method_key: _selected_payment_method_key,
+//           package_id: widget.packageId.toString(),
+//         );
+//       })).then((value) {
+//         onPopped(value);
+//       });
+//     } else if (_selected_payment_method == "khalti") {
+//       Navigator.push(context, MaterialPageRoute(builder: (context) {
+//         return KhaltiScreen(
+//           amount: _grandTotalValue,
+//           payment_type: payment_type,
+//           payment_method_key: _selected_payment_method_key,
+//           package_id: widget.packageId.toString(),
+//         );
+//       })).then((value) {
+//         onPopped(value);
+//       });
+//     } else if (_selected_payment_method == "instamojo_payment") {
+//       Navigator.push(context, MaterialPageRoute(builder: (context) {
+//         return OnlinePay(
+//           title: AppLocalizations.of(context)!.pay_with_instamojo,
+//           amount: _grandTotalValue,
+//           payment_type: payment_type,
+//           payment_method_key: _selected_payment_method_key,
+//           package_id: widget.packageId.toString(),
+//         );
+//       })).then((value) {
+//         onPopped(value);
+//       });
+//     } else if (_selected_payment_method == "wallet_system") {
+//       pay_by_wallet();
+//     } else if (_selected_payment_method == "cash_payment") {
+//       pay_by_cod();
+//     } else if (_selected_payment_method == "ed_payment") {
+//       pay_by_edpayment();
+//     }
+//     else if (_selected_payment_method == "manual_payment" &&
+//         widget.paymentFor == PaymentFor.Order) {
+//       pay_by_manual_payment();
+//     } else if (_selected_payment_method == "manual_payment" &&
+//(widget.paymentFor == PaymentFor.ManualPayment ||
+//             widget.paymentFor == PaymentFor.WalletRecharge ||
+//             widget.paymentFor == PaymentFor.PackagePay)) {
+//       Navigator.push(context, MaterialPageRoute(builder: (context) {
+//         return OfflineScreen(
+//           order_id: widget.order_id,
+//           paymentInstruction:
+//           _paymentTypeList[_selected_payment_method_index].details,
+//           offline_payment_id: _paymentTypeList[_selected_payment_method_index]
+//               .offline_payment_id,
+//           rechargeAmount: widget.rechargeAmount,
+//           offLinePaymentFor: widget.paymentFor,
+//           paymentMethod: _paymentTypeList[_selected_payment_method_index].name,
+//           packageId: widget.packageId,
+// //          offLinePaymentFor: widget.offLinePaymentFor,
+//         );
+//       })).then((value) {
+//         onPopped(value);
+//       });
+//     }
+  }
+
+  pay_by_edpayment() async {
+    loading();
+    var orderCreateEDResponse = await PaymentRepository()
+        .getOrderCreateResponseFrom_Ed_Payment(
+        _selected_payment_method_key, widget.delivery_id);
+    Navigator.of(loadingcontext).pop();
+    print("order create ed response: ${orderCreateEDResponse.url}");
+    if (orderCreateEDResponse.result == false) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return OfflineScreen(
-          order_id: widget.order_id,
-          paymentInstruction:
-              _paymentTypeList[_selected_payment_method_index].details,
-          offline_payment_id: _paymentTypeList[_selected_payment_method_index]
-              .offline_payment_id,
-          rechargeAmount: widget.rechargeAmount,
-          offLinePaymentFor: widget.paymentFor,
-          paymentMethod: _paymentTypeList[_selected_payment_method_index].name,
-          packageId: widget.packageId,
-//          offLinePaymentFor: widget.offLinePaymentFor,
-        );
-      })).then((value) {
-        onPopped(value);
-      });
+        return Main();
+      }));
+    }
+
+    if (orderCreateEDResponse.result == true &&
+        orderCreateEDResponse.url != null) {
+      print("Invoice ID: ${orderCreateEDResponse.combined_order_id}");
+      _launchUrl(orderCreateEDResponse.url);
     }
   }
 
-  pay_by_wallet() async {
+  Future<void> _launchUrl(_url) async {
+    await FlutterWebBrowser.openWebPage(url: _url);
+  }
+
+  pay_by_wallet(price) async {
     var orderCreateResponse = await PaymentRepository()
         .getOrderCreateResponseFromWallet(
-            _selected_payment_method_key, _grandTotalValue!.toDouble());
+        _selected_payment_method_key, price!.toDouble());
 
     if (orderCreateResponse.result == false) {
       ToastComponent.showDialog(orderCreateResponse.message,
@@ -412,18 +479,15 @@ class _CheckoutState extends State<Checkout> {
       return;
     }
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return OrderList(from_checkout: true);
-    }));
+
   }
 
   pay_by_cod() async {
     loading();
     var orderCreateResponse = await PaymentRepository()
         .getOrderCreateResponseFromCod(
-            _selected_payment_method_key, widget.delivery_id);
+        _selected_payment_method_key, widget.delivery_id);
     Navigator.of(loadingcontext).pop();
-    print("order create response: ${orderCreateResponse.result}");
     if (orderCreateResponse.result == false) {
       ToastComponent.showDialog(orderCreateResponse.message,
           gravity: Toast.center, duration: Toast.lengthLong);
@@ -434,42 +498,6 @@ class _CheckoutState extends State<Checkout> {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return OrderList(from_checkout: true);
     }));
-  }
-
-  pay_by_edpayment() async {
-    loading();
-    var orderCreateEDResponse = await PaymentRepository()
-        .getOrderCreateResponseFrom_Ed_Payment(
-            _selected_payment_method_key, widget.delivery_id);
-    Navigator.of(loadingcontext).pop();
-    print("order create ed response: ${orderCreateEDResponse.url}");
-    if (orderCreateEDResponse.result == false) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return Main();
-      }));
-    }
-
-    if(orderCreateEDResponse.result == true && orderCreateEDResponse.url!=null){
-      print("Invoice ID: ${orderCreateEDResponse.combined_order_id}");
-      _launchUrl(orderCreateEDResponse.url);
-    }
-  }
-  Future<void> _launchUrl(_url)async{
-    await FlutterWebBrowser.openWebPage(url:_url);
-  }
-  callJWT(OrderCreateEdResponse response) {
-    // Generate a JSON Web Token
-// You can provide the payload as a key-value map or a string
-    final jwt = JWT(
-      // Payload
-      response,
-      issuer: 'https://github.com/jonasroussel/dart_jsonwebtoken',
-    );
-
-// Sign it (default with HS256 algorithm)
-    final token = jwt.sign(SecretKey('secret passphrase'));
-
-    print('Signed token: $token\n');
   }
 
   pay_by_manual_payment() async {
@@ -508,7 +536,7 @@ class _CheckoutState extends State<Checkout> {
       context: context,
       builder: (_) => AlertDialog(
         contentPadding:
-            EdgeInsets.only(top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
+        EdgeInsets.only(top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
         content: Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 16.0),
           child: Container(
@@ -534,8 +562,8 @@ class _CheckoutState extends State<Checkout> {
                         Text(
                           SystemConfig.systemCurrency != null
                               ? _subTotalString!.replaceAll(
-                                  SystemConfig.systemCurrency!.code!,
-                                  SystemConfig.systemCurrency!.symbol!)
+                              SystemConfig.systemCurrency!.code!,
+                              SystemConfig.systemCurrency!.symbol!)
                               : _subTotalString!,
                           style: TextStyle(
                               color: MyTheme.font_grey,
@@ -563,8 +591,8 @@ class _CheckoutState extends State<Checkout> {
                 //         Text(
                 //           SystemConfig.systemCurrency != null
                 //               ? _taxString!.replaceAll(
-                //                   SystemConfig.systemCurrency!.code!,
-                //                   SystemConfig.systemCurrency!.symbol!)
+                //               SystemConfig.systemCurrency!.code!,
+                //               SystemConfig.systemCurrency!.symbol!)
                 //               : _taxString!,
                 //           style: TextStyle(
                 //               color: MyTheme.font_grey,
@@ -593,8 +621,8 @@ class _CheckoutState extends State<Checkout> {
                         Text(
                           SystemConfig.systemCurrency != null
                               ? _shippingCostString!.replaceAll(
-                                  SystemConfig.systemCurrency!.code!,
-                                  SystemConfig.systemCurrency!.symbol!)
+                              SystemConfig.systemCurrency!.code!,
+                              SystemConfig.systemCurrency!.symbol!)
                               : _shippingCostString!,
                           style: TextStyle(
                               color: MyTheme.font_grey,
@@ -603,35 +631,35 @@ class _CheckoutState extends State<Checkout> {
                         ),
                       ],
                     )),
-                // Padding(
-                //     padding: const EdgeInsets.only(bottom: 8),
-                //     child: Row(
-                //       children: [
-                //         Container(
-                //           width: 120,
-                //           child: Text(
-                //             AppLocalizations.of(context)!.discount_all_capital,
-                //             textAlign: TextAlign.end,
-                //             style: TextStyle(
-                //                 color: MyTheme.font_grey,
-                //                 fontSize: 14,
-                //                 fontWeight: FontWeight.w600),
-                //           ),
-                //         ),
-                //         Spacer(),
-                //         Text(
-                //           SystemConfig.systemCurrency != null
-                //               ? _discountString!.replaceAll(
-                //                   SystemConfig.systemCurrency!.code!,
-                //                   SystemConfig.systemCurrency!.symbol!)
-                //               : _discountString!,
-                //           style: TextStyle(
-                //               color: MyTheme.font_grey,
-                //               fontSize: 14,
-                //               fontWeight: FontWeight.w600),
-                //         ),
-                //       ],
-                //     )),
+                Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 120,
+                          child: Text(
+                            AppLocalizations.of(context)!.coupon_ucf,
+                            textAlign: TextAlign.end,
+                            style: TextStyle(
+                                color: MyTheme.font_grey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          SystemConfig.systemCurrency != null
+                              ? _discountString!.replaceAll(
+                              SystemConfig.systemCurrency!.code!,
+                              SystemConfig.systemCurrency!.symbol!)
+                              : _discountString!,
+                          style: TextStyle(
+                              color: MyTheme.font_grey,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    )),
                 Divider(),
                 Padding(
                     padding: const EdgeInsets.only(bottom: 8),
@@ -652,9 +680,9 @@ class _CheckoutState extends State<Checkout> {
                         Spacer(),
                         Text(
                           SystemConfig.systemCurrency != null
-                              ? _totalString!.replaceAll(
-                                  SystemConfig.systemCurrency!.code!,
-                                  SystemConfig.systemCurrency!.symbol!)
+                              ? _grandTotalValue!.toString().replaceAll(
+                              SystemConfig.systemCurrency!.code!,
+                              SystemConfig.systemCurrency!.symbol!)
                               : _totalString!,
                           style: TextStyle(
                               color: MyTheme.accent_color,
@@ -686,7 +714,7 @@ class _CheckoutState extends State<Checkout> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection:
-          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+      app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
           backgroundColor: Colors.white,
           appBar: buildAppBar(context),
@@ -713,7 +741,7 @@ class _CheckoutState extends State<Checkout> {
                           height: 140,
                         )
                       ]),
-                    ),
+                    )
                   ],
                 ),
               ),
@@ -722,37 +750,37 @@ class _CheckoutState extends State<Checkout> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: widget.paymentFor == PaymentFor.WalletRecharge ||
-                        widget.paymentFor == PaymentFor.PackagePay
+                    widget.paymentFor == PaymentFor.PackagePay
                     ? Container()
                     : Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
 
-                          /*border: Border(
+                    /*border: Border(
                       top: BorderSide(color: MyTheme.light_grey,width: 1.0),
                     )*/
-                        ),
-                        height: widget.paymentFor == PaymentFor.ManualPayment
-                            ? 80
-                            : 140,
-                        //color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: [
-                              widget.paymentFor == PaymentFor.Order
-                                  ? Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10.0),
-                                      child: buildApplyCouponRow(context),
-                                    )
-                                  : Container(),
-                              grandTotalSection(),
-                            ],
-                          ),
-                        ),
-                      ),
-              ),
+                  ),
+                  height: widget.paymentFor == PaymentFor.ManualPayment
+                      ? 80
+                      : 140,
+                  //color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        widget.paymentFor == PaymentFor.Order
+                            ? Padding(
+                          padding:
+                          const EdgeInsets.only(bottom: 16.0),
+                          child: buildApplyCouponRow(context),
+                        )
+                            : Container(),
+                        grandTotalSection(),
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ],
           )),
     );
@@ -761,7 +789,7 @@ class _CheckoutState extends State<Checkout> {
   Row buildApplyCouponRow(BuildContext context) {
     for (int i = 0; i < _mycouponsList.length; i++) {
       String name = _mycouponsList[i].code;
-      String value = _mycouponsList[i].code;
+      int value = _mycouponsList[i].discount;
 
       dropDownList.add(DropDownValueModel(name: name, value: value));
     }
@@ -789,59 +817,61 @@ class _CheckoutState extends State<Checkout> {
             dropDownList: dropDownList,
             onChanged: (val) {
               setState(() {
-                print(val.value);
-                _couponController = val.value;
+                print(val.name);
+                _couponController = val.name;
+                _disprice = val.value;
+                print("Coupon: $_disprice");
               });
             },
           ),
         ),
         !_coupon_applied!
             ? Container(
-                width: (MediaQuery.of(context).size.width - 32) * (1 / 3),
-                height: 42,
-                child: Btn.basic(
-                  minWidth: MediaQuery.of(context).size.width,
-                  color: MyTheme.accent_color,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: const BorderRadius.only(
-                    topRight: const Radius.circular(8.0),
-                    bottomRight: const Radius.circular(8.0),
-                  )),
-                  child: Text(
-                    AppLocalizations.of(context)!.apply_coupon_all_capital,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  onPressed: () {
-                    onCouponApply();
-                  },
-                ),
-              )
+          width: (MediaQuery.of(context).size.width - 32) * (1 / 3),
+          height: 42,
+          child: Btn.basic(
+            minWidth: MediaQuery.of(context).size.width,
+            color: MyTheme.accent_color,
+            shape: RoundedRectangleBorder(
+                borderRadius: const BorderRadius.only(
+                  topRight: const Radius.circular(8.0),
+                  bottomRight: const Radius.circular(8.0),
+                )),
+            child: Text(
+              AppLocalizations.of(context)!.apply_coupon_all_capital,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600),
+            ),
+            onPressed: () {
+              onCouponApply();
+            },
+          ),
+        )
             : Container(
-                width: (MediaQuery.of(context).size.width - 32) * (1 / 3),
-                height: 42,
-                child: Btn.basic(
-                  minWidth: MediaQuery.of(context).size.width,
-                  color: MyTheme.accent_color,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: const BorderRadius.only(
-                    topRight: const Radius.circular(8.0),
-                    bottomRight: const Radius.circular(8.0),
-                  )),
-                  child: Text(
-                    AppLocalizations.of(context)!.remove_ucf,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  onPressed: () {
-                    onCouponRemove();
-                  },
-                ),
-              )
+          width: (MediaQuery.of(context).size.width - 32) * (1 / 3),
+          height: 42,
+          child: Btn.basic(
+            minWidth: MediaQuery.of(context).size.width,
+            color: MyTheme.accent_color,
+            shape: RoundedRectangleBorder(
+                borderRadius: const BorderRadius.only(
+                  topRight: const Radius.circular(8.0),
+                  bottomRight: const Radius.circular(8.0),
+                )),
+            child: Text(
+              AppLocalizations.of(context)!.remove_ucf,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600),
+            ),
+            onPressed: () {
+              onCouponRemove();
+            },
+          ),
+        )
       ],
     );
   }
@@ -895,9 +925,9 @@ class _CheckoutState extends State<Checkout> {
           height: 100,
           child: Center(
               child: Text(
-            AppLocalizations.of(context)!.no_payment_method_is_added,
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+                AppLocalizations.of(context)!.no_payment_method_is_added,
+                style: TextStyle(color: MyTheme.font_grey),
+              )));
     }
   }
 
@@ -913,11 +943,11 @@ class _CheckoutState extends State<Checkout> {
             decoration: BoxDecorations.buildBoxDecoration_1().copyWith(
                 border: Border.all(
                     color: _selected_payment_method_key ==
-                            _paymentTypeList[index].payment_type_key
+                        _paymentTypeList[index].payment_type_key
                         ? MyTheme.accent_color
                         : MyTheme.light_grey,
                     width: _selected_payment_method_key ==
-                            _paymentTypeList[index].payment_type_key
+                        _paymentTypeList[index].payment_type_key
                         ? 2.0
                         : 0.0)),
             child: Row(
@@ -929,14 +959,14 @@ class _CheckoutState extends State<Checkout> {
                       child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child:
-                              /*Image.asset(
+                          /*Image.asset(
                           _paymentTypeList[index].image,
                           fit: BoxFit.fitWidth,
                         ),*/
-                              FadeInImage.assetNetwork(
+                          FadeInImage.assetNetwork(
                             placeholder: 'assets/placeholder.png',
                             image: _paymentTypeList[index].payment_type ==
-                                    "manual_payment"
+                                "manual_payment"
                                 ? _paymentTypeList[index].image
                                 : _paymentTypeList[index].image,
                             fit: BoxFit.fitWidth,
@@ -1026,11 +1056,11 @@ class _CheckoutState extends State<Checkout> {
                 widget.paymentFor == PaymentFor.WalletRecharge
                     ? AppLocalizations.of(context)!.recharge_wallet_ucf
                     : widget.paymentFor == PaymentFor.ManualPayment
-                        ? AppLocalizations.of(context)!.proceed_all_caps
-                        : widget.paymentFor == PaymentFor.PackagePay
-                            ? AppLocalizations.of(context)!.buy_package_ucf
-                            : AppLocalizations.of(context)!
-                                .place_my_order_all_capital,
+                    ? AppLocalizations.of(context)!.proceed_all_caps
+                    : widget.paymentFor == PaymentFor.PackagePay
+                    ? AppLocalizations.of(context)!.buy_package_ucf
+                    : AppLocalizations.of(context)!
+                    .place_my_order_all_capital,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -1070,6 +1100,24 @@ class _CheckoutState extends State<Checkout> {
                 padding: const EdgeInsets.only(left: 8.0),
                 child: InkWell(
                   onTap: () {
+                    int? balance=0;
+                    print("Grandtotal: $_grandTotalValue");
+
+                    if(_balanceDetails!=null && _balanceDetails.balance!=0){
+                      balance= int.parse(_balanceDetails.balance.replaceAll(RegExp(r'[^0-9]'),''));
+                    }
+                    if(balance.toDouble() > _grandTotalValue!.toDouble()){
+                    //  _grandTotalValue=balance.toInt() - _grandTotalValue!;
+                      pay_by_wallet(_grandTotalValue);
+                      _grandTotalValue=0;
+                    }else{
+                      _grandTotalValue=_grandTotalValue! - balance!;
+                      pay_by_wallet(balance);
+                    }
+                    print("Grandtotal balance: $_grandTotalValue");
+                    setState(() {
+
+                    });
                     onPressDetails();
                   },
                   child: Text(
@@ -1084,21 +1132,15 @@ class _CheckoutState extends State<Checkout> {
               ),
             ),
             Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: Text(
-                  widget.paymentFor == PaymentFor.ManualPayment
-                      ? widget.rechargeAmount.toString()
-                      : SystemConfig.systemCurrency != null
-                          ? _totalString!.replaceAll(
-                              SystemConfig.systemCurrency!.code!,
-                              SystemConfig.systemCurrency!.symbol!)
-                          : _totalString!,
-                  style: TextStyle(
-                      color: MyTheme.accent_color,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600)),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 16.0),
+            //   child: Text(
+            //       '${detailprice.toString()} ${SystemConfig.systemCurrency!.code!}',
+            //       style: TextStyle(
+            //           color: MyTheme.accent_color,
+            //           fontSize: 14,
+            //           fontWeight: FontWeight.w600)),
+            // ),
           ],
         ),
       ),
@@ -1112,14 +1154,14 @@ class _CheckoutState extends State<Checkout> {
           loadingcontext = context;
           return AlertDialog(
               content: Row(
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(
-                width: 10,
-              ),
-              Text("${AppLocalizations.of(context)!.please_wait_ucf}"),
-            ],
-          ));
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("${AppLocalizations.of(context)!.please_wait_ucf}"),
+                ],
+              ));
         });
   }
 }

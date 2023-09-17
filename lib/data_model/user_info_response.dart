@@ -47,6 +47,8 @@ class UserInformation {
     this.remainingUploads,
     this.packageId,
     this.packageName,
+    this.member_level_id,
+    this.member_level,
   });
 
   String? name;
@@ -59,6 +61,8 @@ class UserInformation {
   String? postalCode;
   String? phone;
   String? balance;
+  int? member_level_id;
+  String? member_level;
   var remainingUploads;
   var packageId;
   String? packageName;
@@ -77,6 +81,9 @@ class UserInformation {
     remainingUploads: json["remaining_uploads"],
     packageId: json["package_id"],
     packageName: json["package_name"],
+    member_level_id: json["member_level_id"]??0,
+    member_level: json["member_level"]??""
+
   );
 
   Map<String, dynamic> toJson() => {
@@ -93,5 +100,7 @@ class UserInformation {
     "remaining_uploads": remainingUploads,
     "package_id": packageId,
     "package_name": packageName,
+    "member_level_id":member_level_id,
+    "member_level":member_level,
   };
 }
