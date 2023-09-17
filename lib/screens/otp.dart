@@ -97,6 +97,7 @@ class _OtpState extends State<Otp> {
                   "assets/splash_login_registration_background_image.png"),
             ),
             Container(
+              padding: EdgeInsets.only(top: 30),
               width: double.infinity,
               child: SingleChildScrollView(
                   child: Column(
