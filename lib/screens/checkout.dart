@@ -95,6 +95,7 @@ class _CheckoutState extends State<Checkout> {
     print(user_name.$);*/
 
     fetchAll();
+    detailprice = _grandTotalValue?.toDouble();
   }
 
   @override
@@ -109,6 +110,7 @@ class _CheckoutState extends State<Checkout> {
     if (is_logged_in.$ == true) {
       if (widget.paymentFor != PaymentFor.Order) {
         _grandTotalValue = widget.rechargeAmount.toInt();
+        detailprice = widget.rechargeAmount.toDouble();
         payment_type = widget.paymentFor == PaymentFor.WalletRecharge
             ? "wallet_payment"
             : "customer_package_payment";
@@ -1106,15 +1108,15 @@ class _CheckoutState extends State<Checkout> {
               ),
             ),
             Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: Text(
-                  '${detailprice.toString()} ${SystemConfig.systemCurrency!.code!}',
-                  style: TextStyle(
-                      color: MyTheme.accent_color,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600)),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 16.0),
+            //   child: Text(
+            //       '${detailprice.toString()} ${SystemConfig.systemCurrency!.code!}',
+            //       style: TextStyle(
+            //           color: MyTheme.accent_color,
+            //           fontSize: 14,
+            //           fontWeight: FontWeight.w600)),
+            // ),
           ],
         ),
       ),
