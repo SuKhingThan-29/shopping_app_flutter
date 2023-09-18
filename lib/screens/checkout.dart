@@ -93,6 +93,11 @@ class _CheckoutState extends State<Checkout> {
     print(access_token.value);
     print(user_id.$);
     print(user_name.$);*/
+    /*print("user data");
+    print(is_logged_in.$);
+    print(access_token.value);
+    print(user_id.$);
+    print(user_name.$);*/
 
     fetchAll();
     detailprice = _grandTotalValue?.toDouble();
