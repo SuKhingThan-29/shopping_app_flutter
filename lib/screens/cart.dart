@@ -100,7 +100,6 @@ class _CartState extends State<Cart> {
       });
     }
 
-    setState(() {});
   }
 
   partialTotalString(index) {
@@ -604,7 +603,7 @@ class _CartState extends State<Cart> {
                     ))),
             Container(
               //color: Colors.red,
-              width: DeviceInfo(context).width!/3,
+              width: DeviceInfo(context).width!/2.5,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.0),
                 child: Column(

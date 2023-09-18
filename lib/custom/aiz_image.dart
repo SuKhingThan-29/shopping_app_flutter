@@ -25,8 +25,9 @@ class AIZImage{
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(image:CachedNetworkImageProvider(url??"",),fit: fit,onError: (obj,e){
-          //  return AssetImage("assets/placeholder_rectangle.png");
+            AssetImage("assets/placeholder_rectangle.png");
           }),
+
         borderRadius: BorderRadius.circular(radius),
           color: Colors.white,
          boxShadow:isShadow?[

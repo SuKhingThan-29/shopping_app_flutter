@@ -90,6 +90,7 @@ dependencies:
   dropdown_textfield: ^1.0.8
   firebase_dynamic_links: ^5.3.5
   flutter_web_browser: "^0.17.1"
+  change_app_package_name: ^1.1.0
 
 dev_dependencies:
   flutter_test:

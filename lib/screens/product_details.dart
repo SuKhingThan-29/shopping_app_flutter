@@ -90,6 +90,7 @@ class _ProductDetailsState extends State<ProductDetails>
   int? _quantity = 1;
   int? _stock = 0;
   var _stock_txt;
+  int _plus=0;
 
   double opacity = 0;
 
@@ -1983,43 +1984,51 @@ class _ProductDetailsState extends State<ProductDetails>
   }
 
   Widget buildClubPointRow() {
-    return Container(
-      constraints: BoxConstraints(maxWidth: 130),
-      //width: ,
-      decoration: BoxDecoration(
-          //border: Border.all(color: MyTheme.golden, width: 1),
-          borderRadius: BorderRadius.circular(6.0),
-          color:
-              //Colors.red,),
-              Color.fromRGBO(253, 235, 212, 1)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
+    return Row(
+      children: [
+        Container(
+          constraints: BoxConstraints(maxWidth: 130),
+          //width: ,
+          decoration: BoxDecoration(
+              //border: Border.all(color: MyTheme.golden, width: 1),
+              borderRadius: BorderRadius.circular(6.0),
+              color:
+                  //Colors.red,),
+                  Color.fromRGBO(253, 235, 212, 1)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(
-                  "assets/clubpoint.png",
-                  width: 18,
-                  height: 12,
-                ),
-                SizedBox(
-                  width: 5,
+                Row(
+                  children: [
+                    Image.asset(
+                      "assets/clubpoint.png",
+                      width: 18,
+                      height: 12,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!.club_point_ucf,
+                      style: TextStyle(color: MyTheme.font_grey, fontSize: 10),
+                    ),
+                  ],
                 ),
                 Text(
-                  AppLocalizations.of(context)!.club_point_ucf,
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 10),
+                  _productDetails!.earn_point.toString(),
+                  style: TextStyle(color: MyTheme.golden, fontSize: 12.0),
                 ),
               ],
             ),
-            Text(
-              _productDetails!.earn_point.toString(),
-              style: TextStyle(color: MyTheme.golden, fontSize: 12.0),
-            ),
-          ],
+          ),
         ),
-      ),
+        Spacer(),
+        Text(_plus!=0?'Free:':'',style: TextStyle(color: Colors.green,fontSize: 16,fontStyle: FontStyle.italic),),SizedBox(width: 10,),Text(_plus!=0?'$_plus':'',style: TextStyle(color: Colors.green,fontSize: 16),),
+
+        Spacer(),
+      ],
     );
   }
 

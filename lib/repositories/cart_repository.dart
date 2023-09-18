@@ -30,6 +30,7 @@ class CartRepository {
       },
       body: '',middleware: BannedUser()
     );
+    print("token key: ${access_token.$}");
 
     return cartResponseFromJson(response.body);
   }

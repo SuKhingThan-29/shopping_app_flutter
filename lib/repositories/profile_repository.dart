@@ -108,6 +108,7 @@ class ProfileRepository {
     final response = await ApiRequest.get(url: url,
         headers: {"Authorization": "Bearer ${access_token.$}","App-Language": app_language.$!,});
 
+    print("token userinfo: ${access_token.$}");
     bool checkResult = ResponseCheck.apply(response.body);
 
     if(!checkResult)
