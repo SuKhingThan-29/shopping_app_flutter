@@ -802,7 +802,6 @@ class _CheckoutState extends State<Checkout> {
 
   Row buildApplyCouponRow(BuildContext context) {
     dropDownList.clear();
-    print("Mycoupon dropdown: ${_mycouponsList.length}");
     for (int i = 0; i < _mycouponsList.length; i++) {
       String name = _mycouponsList[i].code;
       int value = _mycouponsList[i].discount;
