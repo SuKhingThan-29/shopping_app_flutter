@@ -1,5 +1,3 @@
-
-
 import 'package:active_ecommerce_flutter/firebase_options.dart';
 import 'package:active_ecommerce_flutter/presenter/cart_counter.dart';
 import 'package:active_ecommerce_flutter/presenter/currency_presenter.dart';
@@ -58,8 +56,6 @@ import 'screens/product_details.dart';
 import 'screens/seller_details.dart';
 import 'screens/seller_products.dart';
 
-
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // iOS requires you run in release mode to test dynamic links ("flutter run --release").
@@ -82,8 +78,8 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
-@override
-_MainScreenState createState() => _MainScreenState();
+  @override
+  _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MyApp> {
@@ -95,7 +91,6 @@ class _MainScreenState extends State<MyApp> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -105,12 +100,13 @@ class _MainScreenState extends State<MyApp> {
           ChangeNotifierProvider(create: (context) => CartCounter()),
           ChangeNotifierProvider(create: (context) => CurrencyPresenter()),
           ChangeNotifierProvider(create: (context) => DeepLinkProvider()),
-
         ],
         child: DeepLinkHandler(
-          child: Consumer<DeepLinkProvider>(builder: (context, provider, snapshot) {
+          child: Consumer<DeepLinkProvider>(
+              builder: (context, provider, snapshot) {
             print("Deeplink route provider: ${provider.deepLinkRoute}");
             if(provider.deepLinkRoute=="/purchase-history"){
+            // if(provider.deepLinkRoute=="/success"){
               navigatorKey.currentState?.push(MaterialPageRoute(
                 builder: (context) {
                   return OrderList(from_checkout: true);
@@ -119,11 +115,12 @@ class _MainScreenState extends State<MyApp> {
             }
             return MaterialApp(
               navigatorKey: navigatorKey,
-              initialRoute: provider.deepLinkRoute??'/',
-              routes:
-              {
+              initialRoute: provider.deepLinkRoute ?? '/',
+              routes: {
                 '/': (BuildContext context) => SplashScreen(),
-                "/purchase-history":(BuildContext context) =>OrderList(from_checkout: true),
+                "/purchase-history":(BuildContext context) =>OrderList(),
+
+                // "/purchase-history":(BuildContext context) =>OrderList(),
                 "/classified_ads":(context)=>ClassifiedAds(),
                 "/classified_ads_details":(context)=>ClassifiedAdsDetails(id:0),
                 "/my_classified_ads":(context)=>MyClassifiedAds(),
@@ -177,7 +174,7 @@ class _MainScreenState extends State<MyApp> {
                 // the below code is getting fonts from http
                 textTheme: GoogleFonts.publicSansTextTheme(textTheme).copyWith(
                   bodyText1:
-                  GoogleFonts.publicSans(textStyle: textTheme.bodyText1),
+                      GoogleFonts.publicSans(textStyle: textTheme.bodyText1),
                   bodyText2: GoogleFonts.publicSans(
                       textStyle: textTheme.bodyText2, fontSize: 12),
                 ),

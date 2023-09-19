@@ -731,7 +731,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   ),
                   Spacer(),
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Text(
                       AppLocalizations.of(context)!.order_placed,
                       textAlign: TextAlign.center,

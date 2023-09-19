@@ -9,6 +9,7 @@ import 'package:active_ecommerce_flutter/screens/cart.dart';
 import 'package:active_ecommerce_flutter/screens/category_list.dart';
 import 'package:active_ecommerce_flutter/screens/home.dart';
 import 'package:active_ecommerce_flutter/screens/login.dart';
+import 'package:active_ecommerce_flutter/screens/pointshop.dart';
 import 'package:active_ecommerce_flutter/screens/profile.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
@@ -17,8 +18,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:one_context/one_context.dart';
 import 'package:provider/provider.dart';
 import 'package:route_transitions/route_transitions.dart';
-
-import 'coupon.dart';
 
 class Main extends StatefulWidget {
   Main({Key? key, go_back = true}) : super(key: key);
@@ -78,7 +77,7 @@ class _MainState extends State<Main> {
         from_navigation: true,
         counter: counter,
       ),
-      Coupon(),
+      PointShop(),
       Profile()
     ];
     fetchAll();
@@ -220,7 +219,7 @@ class _MainState extends State<Main> {
                       height: 16,
                     ),
                   ),
-                  label: AppLocalizations.of(context)!.coupons_ucf,
+                  label: 'Point Shop',
                 ),
                 BottomNavigationBarItem(
                   icon: Padding(

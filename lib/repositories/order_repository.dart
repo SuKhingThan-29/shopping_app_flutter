@@ -4,6 +4,7 @@ import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/data_model/check_response_model.dart';
 import 'package:active_ecommerce_flutter/data_model/common_response.dart';
 import 'package:active_ecommerce_flutter/data_model/coupon_response.dart';
+import 'package:active_ecommerce_flutter/data_model/coupon.dart';
 import 'package:active_ecommerce_flutter/data_model/purchased_ditital_product_response.dart';
 import 'package:active_ecommerce_flutter/data_model/wishlist_delete_response.dart';
 import 'package:active_ecommerce_flutter/helpers/response_check.dart';
@@ -51,7 +52,7 @@ class OrderRepository {
         },
         middleware: BannedUser());
     print(response.body);
-    return couponFromJson(response.body);
+    return buyCouponFromJson(response.body);
   }
 
   Future<dynamic> getMyCoupon(

@@ -90,7 +90,7 @@ class _ProductDetailsState extends State<ProductDetails>
   int? _quantity = 1;
   int? _stock = 0;
   var _stock_txt;
-  int _plus=0;
+  int _plus = 0;
 
   double opacity = 0;
 
@@ -1079,14 +1079,13 @@ class _ProductDetailsState extends State<ProductDetails>
                           ),
                         ),
                         Padding(
-                          padding:
-                              EdgeInsets.only(top: 14, left: 14, right: 14),
-                          child: _productDetails != null
-                              ? buildQuantityRow()
-                              : ShimmerHelper().buildBasicShimmer(
-                                  height: 30.0,
-                                ),
-                        ),
+                            padding:
+                                EdgeInsets.only(top: 14, left: 14, right: 14),
+                            child: _stock_txt != 0
+                                ? buildQuantityRow()
+                                : Container(
+                                    child: Text("Out of stock"),
+                                  )),
                         Padding(
                           padding: EdgeInsets.only(top: 14, bottom: 14),
                           child: _productDetails != null
@@ -2025,8 +2024,18 @@ class _ProductDetailsState extends State<ProductDetails>
           ),
         ),
         Spacer(),
-        Text(_plus!=0?'Free:':'',style: TextStyle(color: Colors.green,fontSize: 16,fontStyle: FontStyle.italic),),SizedBox(width: 10,),Text(_plus!=0?'$_plus':'',style: TextStyle(color: Colors.green,fontSize: 16),),
-
+        Text(
+          _plus != 0 ? 'Free:' : '',
+          style: TextStyle(
+              color: Colors.green, fontSize: 16, fontStyle: FontStyle.italic),
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Text(
+          _plus != 0 ? '$_plus' : '',
+          style: TextStyle(color: Colors.green, fontSize: 16),
+        ),
         Spacer(),
       ],
     );
