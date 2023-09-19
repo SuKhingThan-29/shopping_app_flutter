@@ -15,20 +15,30 @@ class DeliveryResponse {
   int status;
   List<Cart> carts;
   ShippingInfo shippingInfo;
-  int total;
   Delivery delivery;
   //User user;
   List<dynamic> availableCoupons;
+  int subtotal;
+  int discount;
+  String coupon_code;
+  int wallet;
+  int grand_total;
+  int delivery_price;
 
   DeliveryResponse({
     required this.success,
     required this.status,
     required this.carts,
     required this.shippingInfo,
-    required this.total,
     required this.delivery,
    // required this.user,
     required this.availableCoupons,
+    required this.subtotal,
+    required this.discount,
+    required this.coupon_code,
+    required this.wallet,
+    required this.grand_total,
+    required this.delivery_price
   });
 
   factory DeliveryResponse.fromJson(Map<String, dynamic> json) =>
@@ -37,11 +47,16 @@ class DeliveryResponse {
         status: json["status"],
         carts: List<Cart>.from(json["carts"].map((x) => Cart.fromJson(x))),
         shippingInfo: ShippingInfo.fromJson(json["shipping_info"]),
-        total: json["total"],
         delivery: Delivery.fromJson(json["delivery"]),
         //user: User.fromJson(json["user"]),
         availableCoupons:
             List<dynamic>.from(json["availableCoupons"].map((x) => x)),
+        subtotal:json["subtotal"],
+        discount: json["discount"],
+        coupon_code: json["coupon_code"]??"",
+        wallet: json["wallet"],
+        grand_total: json["grand_total"],
+        delivery_price: json["delivery_price"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,10 +64,15 @@ class DeliveryResponse {
         "status": status,
         "carts": List<dynamic>.from(carts.map((x) => x.toJson())),
         "shipping_info": shippingInfo.toJson(),
-        "total": total,
         "delivery": delivery.toJson(),
         //"user": user.toJson(),
         "availableCoupons": List<dynamic>.from(availableCoupons.map((x) => x)),
+        "subtotal":subtotal,
+        "discount":discount,
+        "coupon_code":coupon_code,
+        "wallet":wallet,
+        "grand_total":grand_total,
+        "delivery_price":delivery_price
       };
 }
 

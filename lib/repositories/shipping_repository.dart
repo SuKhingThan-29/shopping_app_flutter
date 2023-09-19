@@ -47,6 +47,8 @@ class ShippingRepository {
   Future<dynamic> postDeliveryInfo(deliverid) async {
     var post_body = jsonEncode({"assigneddeliverytype_id": deliverid});
     print("PostDelivery: $deliverid");
+    print("PostDelivery token: ${access_token.$}");
+
     String url = ("${AppConfig.BASE_URL}/store_delivery_info");
 
     final response = await ApiRequest.post(

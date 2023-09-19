@@ -547,7 +547,7 @@ class _LoginState extends State<Login> {
                   },
                 ),
               ),
-              if (Platform.isIOS)
+              //if (Platform.isIOS)
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),
                   child: SignInWithAppleButton(

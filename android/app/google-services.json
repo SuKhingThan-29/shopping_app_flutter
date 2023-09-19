@@ -66,6 +66,14 @@
           }
         },
         {
+          "client_id": "1004636433134-r6lqo72rpe0fl2nsr7hjf7a3jd7snim4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ethicaldigit.gmp",
+            "certificate_hash": "10bde768cdf66435242dda51d3d4b6899decfa33"
+          }
+        },
+        {
           "client_id": "1004636433134-5jsi1lfbk18fgo4l6ivc8qqa700rh4bu.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -2,6 +2,7 @@ import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/enum_classes.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/data_model/delivery_response.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
@@ -10,6 +11,7 @@ import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/coupon_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/order_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/payment_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/shipping_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/wallet_repository.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/order_list.dart';
@@ -84,6 +86,7 @@ class _CheckoutState extends State<Checkout> {
   String payment_type = "cart_payment";
   String? _title;
   dynamic _balanceDetails = null;
+  DeliveryResponse? deliveryResponse;
 
 
   @override
@@ -104,20 +107,34 @@ class _CheckoutState extends State<Checkout> {
   void dispose() {
     super.dispose();
     _mainScrollController.dispose();
+    _mycouponsList.clear();
   }
+ fetchStoreDeliveryInfo()async{
+    print("checkout deliveryId: ${widget.delivery_id}");
+    deliveryResponse= await ShippingRepository().postDeliveryInfo(widget.delivery_id);
+    print("checkout grandtotal: ${deliveryResponse!.grand_total}");
+    if(deliveryResponse !=null){
+      _subTotalString=deliveryResponse!.subtotal.toString();
+      _shippingCostString=deliveryResponse!.delivery_price.toString();
+      _discountString = deliveryResponse!.discount.toString();
+      _grandTotalValue = deliveryResponse!.grand_total;
+    }
 
+ }
   fetchAll() {
     fetchList();
     fetchMyCoupons();
     if (is_logged_in.$ == true) {
-      if (widget.paymentFor != PaymentFor.Order) {
-        _grandTotalValue = widget.rechargeAmount.toInt();
-        payment_type = widget.paymentFor == PaymentFor.WalletRecharge
-            ? "wallet_payment"
-            : "customer_package_payment";
-      } else {
-        fetchSummary();
-      }
+      // if (widget.paymentFor != PaymentFor.Order) {
+      //   _grandTotalValue = widget.rechargeAmount.toInt();
+      //   payment_type = widget.paymentFor == PaymentFor.WalletRecharge
+      //       ? "wallet_payment"
+      //       : "customer_package_payment";
+      // } else {
+      //   fetchSummary();
+      // }
+      fetchStoreDeliveryInfo();
+
     }
   }
 
@@ -138,23 +155,23 @@ class _CheckoutState extends State<Checkout> {
     setState(() {});
   }
 
-  fetchSummary() async {
-    var cartSummaryResponse =
-    await CartRepository().getCartSummaryResponse(widget.delivery_id);
-
-    if (cartSummaryResponse != null) {
-      _subTotalString = cartSummaryResponse.sub_total;
-      _taxString = cartSummaryResponse.tax;
-      _shippingCostString = cartSummaryResponse.shipping_cost;
-      _discountString = cartSummaryResponse.discount;
-      _totalString = cartSummaryResponse.grand_total;
-      _grandTotalValue = cartSummaryResponse.grand_total_value;
-      _used_coupon_code = cartSummaryResponse.coupon_code ?? _used_coupon_code;
-      _couponController = _used_coupon_code;
-      _coupon_applied = cartSummaryResponse.coupon_applied;
-      setState(() {});
-    }
-  }
+  // fetchSummary() async {
+  //   var cartSummaryResponse =
+  //   await CartRepository().getCartSummaryResponse(widget.delivery_id);
+  //
+  //   if (cartSummaryResponse != null) {
+  //     _subTotalString = cartSummaryResponse.sub_total;
+  //     _taxString = cartSummaryResponse.tax;
+  //     _shippingCostString = cartSummaryResponse.shipping_cost;
+  //     _discountString = cartSummaryResponse.discount;
+  //     _totalString = cartSummaryResponse.grand_total;
+  //     _grandTotalValue = cartSummaryResponse.grand_total_value;
+  //     _used_coupon_code = cartSummaryResponse.coupon_code ?? _used_coupon_code;
+  //     _couponController = _used_coupon_code;
+  //     _coupon_applied = cartSummaryResponse.coupon_applied;
+  //     setState(() {});
+  //   }
+  // }
   fetchBalanceDetails() async {
     var balanceDetailsResponse = await WalletRepository().getBalance();
 
@@ -163,10 +180,11 @@ class _CheckoutState extends State<Checkout> {
     setState(() {});
   }
   fetchMyCoupons() async {
+    _mycouponsList.clear();
     var orderResponse = await OrderRepository().getMyCoupon();
     _mycouponsList.addAll(orderResponse.data);
     _isInitial = false;
-    print("My coupon list: ${_mycouponsList.length}");
+    print("Mycoupon list: ${_mycouponsList.length}");
     setState(() {});
   }
 
@@ -221,16 +239,12 @@ class _CheckoutState extends State<Checkout> {
       return;
     }
     if (couponApplyResponse.result == true) {
-      _disprice;
-      print("Coupon price: $_disprice");
-      setState(() {
-       // _grandTotalValue = _grandTotalValue! - _disprice!;
-      });
-      print("Coupon price grand total: $_grandTotalValue");
+      ToastComponent.showDialog(couponApplyResponse.message,
+          gravity: Toast.center, duration: Toast.lengthLong);
     }
 
     reset_summary();
-    fetchSummary();
+    fetchStoreDeliveryInfo();
   }
 
   onCouponRemove() async {
@@ -244,16 +258,12 @@ class _CheckoutState extends State<Checkout> {
     }
 
     if (couponRemoveResponse.result == true) {
-      print(_grandTotalValue!.toDouble());
-      setState(() {
-      //  _grandTotalValue = _grandTotalValue! + _disprice!;
-      });
-
-      print(_grandTotalValue);
+      ToastComponent.showDialog(couponRemoveResponse.message,
+          gravity: Toast.center, duration: Toast.lengthLong);
     }
 
     reset_summary();
-    fetchSummary();
+    fetchStoreDeliveryInfo();
   }
 
   List<DropDownValueModel> dropDownList = [];
@@ -560,11 +570,12 @@ class _CheckoutState extends State<Checkout> {
                         ),
                         Spacer(),
                         Text(
-                          SystemConfig.systemCurrency != null
-                              ? _subTotalString!.replaceAll(
-                              SystemConfig.systemCurrency!.code!,
-                              SystemConfig.systemCurrency!.symbol!)
-                              : _subTotalString!,
+                          // SystemConfig.systemCurrency != null
+                          //     ? _subTotalString!.replaceAll(
+                          //     SystemConfig.systemCurrency!.code!,
+                          //     SystemConfig.systemCurrency!.symbol!)
+                          //     :
+                          '$_subTotalString ${SystemConfig.systemCurrency!.symbol}',
                           style: TextStyle(
                               color: MyTheme.font_grey,
                               fontSize: 14,
@@ -619,11 +630,12 @@ class _CheckoutState extends State<Checkout> {
                         ),
                         Spacer(),
                         Text(
-                          SystemConfig.systemCurrency != null
-                              ? _shippingCostString!.replaceAll(
-                              SystemConfig.systemCurrency!.code!,
-                              SystemConfig.systemCurrency!.symbol!)
-                              : _shippingCostString!,
+                          // SystemConfig.systemCurrency != null
+                          //     ? _shippingCostString!.replaceAll(
+                          //     SystemConfig.systemCurrency!.code!,
+                          //     SystemConfig.systemCurrency!.symbol!)
+                          //     :
+                          '$_shippingCostString ${SystemConfig.systemCurrency!.symbol}',
                           style: TextStyle(
                               color: MyTheme.font_grey,
                               fontSize: 14,
@@ -648,11 +660,12 @@ class _CheckoutState extends State<Checkout> {
                         ),
                         Spacer(),
                         Text(
-                          SystemConfig.systemCurrency != null
-                              ? _discountString!.replaceAll(
-                              SystemConfig.systemCurrency!.code!,
-                              SystemConfig.systemCurrency!.symbol!)
-                              : _discountString!,
+                          // SystemConfig.systemCurrency != null
+                          //     ? _discountString!.replaceAll(
+                          //     SystemConfig.systemCurrency!.code!,
+                          //     SystemConfig.systemCurrency!.symbol!)
+                          //     :
+                          '$_discountString ${SystemConfig.systemCurrency!.symbol}',
                           style: TextStyle(
                               color: MyTheme.font_grey,
                               fontSize: 14,
@@ -679,11 +692,12 @@ class _CheckoutState extends State<Checkout> {
                         ),
                         Spacer(),
                         Text(
-                          SystemConfig.systemCurrency != null
-                              ? _grandTotalValue!.toString().replaceAll(
-                              SystemConfig.systemCurrency!.code!,
-                              SystemConfig.systemCurrency!.symbol!)
-                              : _totalString!,
+                          // SystemConfig.systemCurrency != null
+                          //     ? _grandTotalValue!.toString().replaceAll(
+                          //     SystemConfig.systemCurrency!.code!,
+                          //     SystemConfig.systemCurrency!.symbol!)
+                          //     :
+                          '$_grandTotalValue ${SystemConfig.systemCurrency!.symbol}'!,
                           style: TextStyle(
                               color: MyTheme.accent_color,
                               fontSize: 14,
@@ -787,6 +801,8 @@ class _CheckoutState extends State<Checkout> {
   }
 
   Row buildApplyCouponRow(BuildContext context) {
+    dropDownList.clear();
+    print("Mycoupon dropdown: ${_mycouponsList.length}");
     for (int i = 0; i < _mycouponsList.length; i++) {
       String name = _mycouponsList[i].code;
       int value = _mycouponsList[i].discount;
@@ -1100,24 +1116,24 @@ class _CheckoutState extends State<Checkout> {
                 padding: const EdgeInsets.only(left: 8.0),
                 child: InkWell(
                   onTap: () {
-                    int? balance=0;
-                    print("Grandtotal: $_grandTotalValue");
-
-                    if(_balanceDetails!=null && _balanceDetails.balance!=0){
-                      balance= int.parse(_balanceDetails.balance.replaceAll(RegExp(r'[^0-9]'),''));
-                    }
-                    if(balance.toDouble() > _grandTotalValue!.toDouble()){
-                    //  _grandTotalValue=balance.toInt() - _grandTotalValue!;
-                      pay_by_wallet(_grandTotalValue);
-                      _grandTotalValue=0;
-                    }else{
-                      _grandTotalValue=_grandTotalValue! - balance!;
-                      pay_by_wallet(balance);
-                    }
-                    print("Grandtotal balance: $_grandTotalValue");
-                    setState(() {
-
-                    });
+                    // int? balance=0;
+                    // print("Grandtotal: $_grandTotalValue");
+                    //
+                    // if(_balanceDetails!=null && _balanceDetails.balance!=0){
+                    //   balance= int.parse(_balanceDetails.balance.replaceAll(RegExp(r'[^0-9]'),''));
+                    // }
+                    // if(balance.toDouble() > _grandTotalValue!.toDouble()){
+                    // //  _grandTotalValue=balance.toInt() - _grandTotalValue!;
+                    //   pay_by_wallet(_grandTotalValue);
+                    //   _grandTotalValue=0;
+                    // }else{
+                    //   _grandTotalValue=_grandTotalValue! - balance!;
+                    //   pay_by_wallet(balance);
+                    // }
+                    // print("Grandtotal balance: $_grandTotalValue");
+                    // setState(() {
+                    //
+                    // });
                     onPressDetails();
                   },
                   child: Text(
@@ -1132,15 +1148,15 @@ class _CheckoutState extends State<Checkout> {
               ),
             ),
             Spacer(),
-            // Padding(
-            //   padding: const EdgeInsets.only(right: 16.0),
-            //   child: Text(
-            //       '${detailprice.toString()} ${SystemConfig.systemCurrency!.code!}',
-            //       style: TextStyle(
-            //           color: MyTheme.accent_color,
-            //           fontSize: 14,
-            //           fontWeight: FontWeight.w600)),
-            // ),
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: deliveryResponse==null?Container():Text(
+                  '${deliveryResponse!.grand_total??0} ${SystemConfig.systemCurrency!.symbol}',
+                  style: TextStyle(
+                      color: MyTheme.accent_color,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600)),
+            ),
           ],
         ),
       ),

@@ -13,6 +13,7 @@ import 'package:active_ecommerce_flutter/data_model/delivefytype_response.dart';
 import 'package:active_ecommerce_flutter/data_model/delivefytype_response.dart';
 import 'package:active_ecommerce_flutter/data_model/delivefytype_response.dart';
 import 'package:active_ecommerce_flutter/data_model/delivery_info_response.dart';
+import 'package:active_ecommerce_flutter/data_model/delivery_response.dart';
 import 'package:active_ecommerce_flutter/data_model/delivery_type_data.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
@@ -214,9 +215,6 @@ class _ShippingInfoState extends State<ShippingInfo> {
   onPressProceed(context) async {
     var shippingCostResponse;
     print('DeliveryId:$_deliveryid');
-
-        await ShippingRepository().postDeliveryInfo(_deliveryid.toString());
-    // print(jsonEncode(_sellerWiseShipping));
 
     var _sellerWiseShippingOptionValidation =
         _sellerWiseShippingOption.where((element) {
