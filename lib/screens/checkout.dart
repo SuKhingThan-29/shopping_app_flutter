@@ -243,9 +243,7 @@ class _CheckoutState extends State<Checkout> {
 
     if (couponRemoveResponse.result == true) {
       print(_grandTotalValue!.toDouble());
-      setState(() {
-        detailprice = _grandTotalValue!.toDouble() + _disprice.toDouble();
-      });
+      setState(() {});
 
       print(detailprice);
     }
