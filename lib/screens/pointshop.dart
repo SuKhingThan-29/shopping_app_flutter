@@ -357,6 +357,7 @@ class _PointShopState extends State<PointShop> {
                   .where((item) => item.canBuy == true)
                   .elementAt(index)
                   .id);
+              print(response);
               ToastComponent.showDialog(response.message);
               if (response.message == true) {
                 _orderList.clear();
