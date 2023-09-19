@@ -277,11 +277,11 @@ class _CheckoutState extends State<Checkout> {
           duration: Toast.lengthLong);
       return;
     }
-    if (_grandTotalValue == 0.00) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.nothing_to_pay,
-          gravity: Toast.center, duration: Toast.lengthLong);
-      return;
-    }
+    // if (_grandTotalValue == 0.00) {
+    //   ToastComponent.showDialog(AppLocalizations.of(context)!.nothing_to_pay,
+    //       gravity: Toast.center, duration: Toast.lengthLong);
+    //   return;
+    // }
     if (_selected_payment_method == "cash_payment") {
       pay_by_cod();
     } else if (_selected_payment_method == "ed_payment") {
@@ -471,6 +471,10 @@ class _CheckoutState extends State<Checkout> {
         orderCreateEDResponse.url != null) {
       print("Invoice ID: ${orderCreateEDResponse.combined_order_id}");
       _launchUrl(orderCreateEDResponse.url);
+    }else if(orderCreateEDResponse.result == true && orderCreateEDResponse.url ==null){
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return OrderList(from_checkout: true);
+      }));
     }
   }
 

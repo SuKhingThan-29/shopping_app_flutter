@@ -31,6 +31,8 @@ class ShippingRepository {
   }
 
   Future<Deliverytype> getCarrierList(int? selectedAddressId) async {
+    print('GetDeliveryType address: $selectedAddressId');
+
     String url = ("${AppConfig.BASE_URL}/getdeliverytype/$selectedAddressId");
     print(url.toString());
     final response = await ApiRequest.get(
