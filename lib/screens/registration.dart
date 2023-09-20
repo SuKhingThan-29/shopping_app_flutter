@@ -53,6 +53,8 @@ class _RegistrationState extends State<Registration> {
   TextEditingController _phoneNumberController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _passwordConfirmController = TextEditingController();
+  bool _obscureText = true;
+  bool _obscureTextC = true;
 
   @override
   void initState() {
@@ -73,6 +75,8 @@ class _RegistrationState extends State<Registration> {
     //before going to other screen show statusbar
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    _passwordController.dispose();
+    _passwordConfirmController.dispose();
     super.dispose();
   }
 
@@ -132,7 +136,7 @@ class _RegistrationState extends State<Registration> {
     if (signupResponse.result == false) {
       var message = "";
       signupResponse.message.forEach((value) {
-          message += value + "\n";
+        message += value + "\n";
       });
 
       ToastComponent.showDialog(message, gravity: Toast.center, duration: 3);
@@ -166,11 +170,10 @@ class _RegistrationState extends State<Registration> {
         }
       }
 
-
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
-            return Main();
-          }), (newRoute) => false);
+        return Main();
+      }), (newRoute) => false);
       // if ((mail_verification_status.$ && _register_by == "email") ||
       //     _register_by == "phone") {
       //   Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -347,11 +350,26 @@ class _RegistrationState extends State<Registration> {
                       child: TextField(
                         controller: _passwordController,
                         autofocus: false,
-                        obscureText: true,
+                        obscureText: _obscureText,
                         enableSuggestions: false,
                         autocorrect: false,
-                        decoration: InputDecorations.buildInputDecoration_1(
-                            hint_text: "• • • • • • • •"),
+                        decoration: InputDecoration(
+                          hintText: "• • • • • • • •",
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              print(_obscureText);
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                          ),
+                        ),
                       ),
                     ),
                     Text(
@@ -379,11 +397,26 @@ class _RegistrationState extends State<Registration> {
                   child: TextField(
                     controller: _passwordConfirmController,
                     autofocus: false,
-                    obscureText: true,
+                    obscureText: _obscureTextC,
                     enableSuggestions: false,
                     autocorrect: false,
-                    decoration: InputDecorations.buildInputDecoration_1(
-                        hint_text: "• • • • • • • •"),
+                    decoration: InputDecoration(
+                      hintText: "• • • • • • • •",
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          print(_obscureTextC);
+                          setState(() {
+                            _obscureTextC = !_obscureTextC;
+                          });
+                        },
+                      ),
+                    ),
                   ),
                 ),
               ),

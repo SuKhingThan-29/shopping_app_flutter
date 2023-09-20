@@ -49,12 +49,12 @@ class _MainState extends State<Main> {
       return;
     }
 
-    if (i == 4) {
-      app_language_rtl.$!
-          ? AIZRoute.slideLeft(context, Profile())
-          : AIZRoute.slideRight(context, Profile());
-      return;
-    }
+    // if (i == 4) {
+    //   app_language_rtl.$!
+    //       ? AIZRoute.slideLeft(context, Profile())
+    //       : AIZRoute.slideRight(context, Profile());
+    //   return;
+    // }
 
     setState(() {
       _currentIndex = i;

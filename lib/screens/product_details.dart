@@ -2670,9 +2670,9 @@ class _ProductDetailsState extends State<ProductDetails>
                       int itemIndex = index;
                       return GestureDetector(
                         onTap: () {
-                          _currentImage = itemIndex;
-                          print(_currentImage);
-                          setState(() {});
+                          // _currentImage = itemIndex;
+                          // print(_currentImage);
+                          // setState(() {});
                         },
                         child: Container(
                           width: 50,
