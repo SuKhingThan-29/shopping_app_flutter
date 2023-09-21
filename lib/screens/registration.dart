@@ -139,6 +139,7 @@ class _RegistrationState extends State<Registration> {
       //   message += value + "\n";
       // });
 
+
       ToastComponent.showDialog(message, gravity: Toast.center, duration: 3);
     } else {
       ToastComponent.showDialog(signupResponse.message.toString(),
