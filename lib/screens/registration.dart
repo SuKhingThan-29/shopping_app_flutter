@@ -134,14 +134,14 @@ class _RegistrationState extends State<Registration> {
         googleRecaptchaKey);
 
     if (signupResponse.result == false) {
-      var message = "";
-      signupResponse.message.forEach((value) {
-        message += value + "\n";
-      });
+      var message = signupResponse.message.toString();
+      // signupResponse.message.forEach((value) {
+      //   message += value + "\n";
+      // });
 
       ToastComponent.showDialog(message, gravity: Toast.center, duration: 3);
     } else {
-      ToastComponent.showDialog(signupResponse.message,
+      ToastComponent.showDialog(signupResponse.message.toString(),
           gravity: Toast.center, duration: Toast.lengthLong);
       AuthHelper().setUserData(signupResponse);
       // push notification starts

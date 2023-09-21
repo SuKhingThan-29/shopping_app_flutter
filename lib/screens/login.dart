@@ -98,10 +98,10 @@ class _LoginState extends State<Login> {
     var loginResponse = await AuthRepository()
         .getLoginResponse(_login_by == 'email' ? email : _phone, password);
     if (loginResponse.result == false) {
-      ToastComponent.showDialog(loginResponse.message!,
+      ToastComponent.showDialog(loginResponse.message.toString()!,
           gravity: Toast.center, duration: Toast.lengthLong);
     } else {
-      ToastComponent.showDialog(loginResponse.message!,
+      ToastComponent.showDialog(loginResponse.message.toString()!,
           gravity: Toast.center, duration: Toast.lengthLong);
       AuthHelper().setUserData(loginResponse);
       // push notification starts
