@@ -80,8 +80,14 @@ class _LoginState extends State<Login> {
     var password = _passwordController.text.toString();
 
     if (_login_by == 'email' && email == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_email,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.enter_email),
+          duration: Duration(seconds: 3), // Set the duration as needed
+          behavior: SnackBarBehavior
+              .floating, // Use SnackBarBehavior.floating to center the snackbar
+        ),
+      );
       return;
     } else if (_login_by == 'phone' && _phone == "") {
       ToastComponent.showDialog(
@@ -197,11 +203,23 @@ class _LoginState extends State<Login> {
           access_token: accessToken);
 
       if (loginResponse.result == false) {
-        ToastComponent.showDialog(loginResponse.message!,
-            gravity: Toast.center, duration: Toast.lengthLong);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(loginResponse.message!),
+            duration: Duration(seconds: 3), // Set the duration as needed
+            behavior: SnackBarBehavior
+                .floating, // Use SnackBarBehavior.floating to center the snackbar
+          ),
+        );
       } else {
-        ToastComponent.showDialog(loginResponse.message!,
-            gravity: Toast.center, duration: Toast.lengthLong);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(loginResponse.message!),
+            duration: Duration(seconds: 3), // Set the duration as needed
+            behavior: SnackBarBehavior
+                .floating, // Use SnackBarBehavior.floating to center the snackbar
+          ),
+        );
         AuthHelper().setUserData(loginResponse);
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Main();
