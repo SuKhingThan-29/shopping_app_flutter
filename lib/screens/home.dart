@@ -78,7 +78,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           child: Scaffold(
               //key: homeData.scaffoldKey,
               appBar: PreferredSize(
-                preferredSize: Size.fromHeight(50),
+                preferredSize: Size.fromHeight(100),
                 child: buildAppBar(statusBarHeight, context),
               ),
               //drawer: MainDrawer(),
@@ -946,51 +946,60 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   AppBar buildAppBar(double statusBarHeight, BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: false,
       // Don't show the leading button
       backgroundColor: Colors.white,
       centerTitle: false,
       elevation: 0,
-      flexibleSpace: Padding(
-        // padding:
-        //     const EdgeInsets.only(top: 40.0, bottom: 22, left: 18, right: 18),
-        padding:
-            const EdgeInsets.only(top: 10.0, bottom: 10, left: 18, right: 18),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Filter();
-            }));
-          },
-          child: buildHomeSearchBox(context),
-        ),
+      flexibleSpace: GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Filter();
+          }));
+        },
+        child: buildHomeSearchBox(context),
       ),
     );
   }
 
   buildHomeSearchBox(BuildContext context) {
-    return Container(
-      height: 36,
-      decoration: BoxDecorations.buildBoxDecoration_1(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.search_anything,
-              style: TextStyle(fontSize: 13.0, color: MyTheme.textfield_grey),
-            ),
-            Image.asset(
-              'assets/search.png',
-              height: 16,
-              //color: MyTheme.dark_grey,
-              color: MyTheme.dark_grey,
-            )
-          ],
+    return Column(
+      children: [
+        Container(
+          height: 50,
+          width: 50,
+          child: Image.asset(
+            "assets/app_logo.png",
+          ),
         ),
-      ),
+        Container(
+          height: 36,
+          decoration: BoxDecorations.buildBoxDecoration_1(),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.search_anything,
+                      style: TextStyle(
+                          fontSize: 13.0, color: MyTheme.textfield_grey),
+                    ),
+                    Image.asset(
+                      'assets/search.png',
+                      height: 16,
+                      //color: MyTheme.dark_grey,
+                      color: MyTheme.dark_grey,
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 

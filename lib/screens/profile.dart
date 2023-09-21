@@ -1363,7 +1363,29 @@ class _ProfileState extends State<Profile> {
               ),
               onPressed: () {
                 if (is_logged_in.$)
-                  onTapLogout(context);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Logout'),
+                        content: Text('Are you sure to logout'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                            child: Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              onTapLogout(context);
+                            },
+                            child: Text('Logout'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 else
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Login()));
