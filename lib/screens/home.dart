@@ -972,30 +972,25 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           ),
         ),
         Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           height: 36,
           decoration: BoxDecorations.buildBoxDecoration_1(),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.search_anything,
-                      style: TextStyle(
-                          fontSize: 13.0, color: MyTheme.textfield_grey),
-                    ),
-                    Image.asset(
-                      'assets/search.png',
-                      height: 16,
-                      //color: MyTheme.dark_grey,
-                      color: MyTheme.dark_grey,
-                    )
-                  ],
-                ),
+              Text(
+                AppLocalizations.of(context)!.search_anything,
+                style: TextStyle(
+                    fontSize: 13.0, color: MyTheme.textfield_grey),
               ),
+              Spacer(),
+              Image.asset(
+                'assets/search.png',
+                height: 16,
+                //color: MyTheme.dark_grey,
+                color: MyTheme.dark_grey,
+              )
             ],
           ),
         ),

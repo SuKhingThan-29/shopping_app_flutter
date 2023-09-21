@@ -78,7 +78,7 @@ class _SplashState extends State<Splash> {
           color: Colors.white,
         ),
       ),
-      image: Image.asset("assets/splash_screen_logo.png"),
+      image: Image.asset("assets/app_logo.png"),
       backgroundImage:
           Image.asset("assets/splash_login_registration_background_image.png"),
       backgroundColor: MyTheme.splash_screen_color,

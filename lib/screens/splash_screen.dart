@@ -74,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 tag: "backgroundImageInSplash",
                 child: Container(
                   child: Image.asset(
-                      "assets/splash_login_registration_background_image.png"),
+                      "assets/app_logo.png"),
                 ),
               ),
               radius: 140.0,
@@ -96,7 +96,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           borderRadius: BorderRadius.circular(8)
                         ),
                         child: Image.asset(
-                            "assets/splash_screen_logo.png",
+                            "assets/app_logo.png",
                           filterQuality: FilterQuality.low,
                         ),
                       ),
