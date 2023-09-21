@@ -97,20 +97,18 @@ class _ProfileState extends State<Profile> {
     fetchCounters();
     getUserInfo();
   }
+
   getUserInfo() async {
-
     var userInfoRes = await ProfileRepository().getUserInfoResponse();
-    if(userInfoRes.data.isNotEmpty) {
+    if (userInfoRes.data.isNotEmpty) {
       _userInfo = userInfoRes.data.first;
-      _member_level=_userInfo!.member_level;
+      _member_level = _userInfo!.member_level;
       print("member level: $_member_level");
-
-
     }
-
 
     setState(() {});
   }
+
   fetchCounters() async {
     var profileCountersResponse =
         await ProfileRepository().getProfileCountersResponse();
@@ -281,15 +279,15 @@ class _ProfileState extends State<Profile> {
                 child: Container(
                   margin: EdgeInsets.only(right: 18),
                   height: 30,
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.close,
-                        color: MyTheme.white,
-                        size: 20,
-                      )),
+                  // child: InkWell(
+                  //     onTap: () {
+                  //       Navigator.pop(context);
+                  //     },
+                  //     child: Icon(
+                  //       Icons.close,
+                  //       color: MyTheme.white,
+                  //       size: 20,
+                  //     )),
                 ),
               ),
 
@@ -1390,19 +1388,24 @@ class _ProfileState extends State<Profile> {
                     color: MyTheme.white,
                     fontWeight: FontWeight.w600),
               ),
-              (_member_level==null || _member_level=="")?Container():Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration:BoxDecoration(border: Border.all(color: MyTheme.grey_153,width: 2),borderRadius: BorderRadius.all(Radius.circular(12))),
-                    child: Text(
-                      _member_level??"",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  )
-              ),
+              (_member_level == null || _member_level == "")
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: MyTheme.grey_153, width: 2),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
+                        child: Text(
+                          _member_level ?? "",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      )),
             ],
           )
         : Text(

@@ -22,9 +22,9 @@ class AppConfig {
   static const String PROTOCOL = HTTPS ? "https://" : "http://";
   static const String RAW_BASE_URL = "${PROTOCOL}${DOMAIN_PATH}";
   static const String BASE_URL = "${RAW_BASE_URL}/${API_ENDPATH}";
-  static const String ED_URL="https://payment-backend.ethicaldigit.com";
-  static const String deliver_info='/delivery-info';
-  static const String shipping_address='/user/shipping/address';
+  static const String ED_URL = "https://payment-backend.ethicaldigit.com";
+  static const String deliver_info = '/delivery-info';
+  static const String shipping_address = '/user/shipping/address';
 
   @override
   String toString() {

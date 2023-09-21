@@ -50,6 +50,7 @@ class _LoginState extends State<Login> {
   TextEditingController _phoneNumberController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  bool _obscureText = true;
 
   @override
   void initState() {
@@ -70,6 +71,7 @@ class _LoginState extends State<Login> {
     //before going to other screen show statusbar
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -137,8 +139,8 @@ class _LoginState extends State<Login> {
 
   onPressedFacebookLogin() async {
     try {
-      final facebookLogin =
-          await FacebookAuth.instance.login(loginBehavior: LoginBehavior.webOnly);
+      final facebookLogin = await FacebookAuth.instance
+          .login(loginBehavior: LoginBehavior.webOnly);
 
       if (facebookLogin.status == LoginStatus.success) {
         // get the user data
@@ -459,11 +461,26 @@ class _LoginState extends State<Login> {
                       child: TextField(
                         controller: _passwordController,
                         autofocus: false,
-                        obscureText: true,
+                        obscureText: _obscureText,
                         enableSuggestions: false,
                         autocorrect: false,
-                        decoration: InputDecorations.buildInputDecoration_1(
-                            hint_text: "• • • • • • • •"),
+                        decoration: InputDecoration(
+                          hintText: "• • • • • • • •",
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              print(_obscureText);
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                          ),
+                        ),
                       ),
                     ),
                     GestureDetector(
