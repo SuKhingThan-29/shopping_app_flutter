@@ -85,8 +85,6 @@ dependencies:
   path_provider: ^2.0.11
   google_maps_flutter: ^2.0.11
   coupon_uikit: ^0.2.0
-  dart_jsonwebtoken: ^2.11.0
-  jwt_decode: ^0.3.1
   dropdown_textfield: ^1.0.8
   firebase_dynamic_links: ^5.3.5
   flutter_web_browser: "^0.17.1"

@@ -40,8 +40,7 @@ class OrderRepository {
     return orderMiniResponseFromJson(response.body);
   }
 
-  Future<dynamic> getCoupon(
-      {page = 1, payment_status = "", delivery_status = ""}) async {
+  Future<dynamic> getCoupon() async {
     String url = ("${AppConfig.BASE_URL}/point-shop/coupons");
     print("url:" + url.toString());
     print("token:" + access_token.$!);

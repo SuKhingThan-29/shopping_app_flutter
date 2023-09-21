@@ -9,30 +9,30 @@ BuyCoupon buyCouponFromJson(String str) => BuyCoupon.fromJson(json.decode(str));
 String buyCouponToJson(BuyCoupon data) => json.encode(data.toJson());
 
 class BuyCoupon {
-  List<Datum> data;
+  List<CouponData> data;
   Links links;
-  Meta meta;
+  //Meta meta;
 
   BuyCoupon({
     required this.data,
     required this.links,
-    required this.meta,
+   // required this.meta,
   });
 
   factory BuyCoupon.fromJson(Map<String, dynamic> json) => BuyCoupon(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<CouponData>.from(json["data"].map((x) => CouponData.fromJson(x))),
         links: Links.fromJson(json["links"]),
-        meta: Meta.fromJson(json["meta"]),
+        //meta: Meta.fromJson(json["meta"]),
       );
 
   Map<String, dynamic> toJson() => {
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
         "links": links.toJson(),
-        "meta": meta.toJson(),
+       // "meta": meta.toJson(),
       };
 }
 
-class Datum {
+class CouponData {
   int id;
   String code;
   String type;
@@ -47,7 +47,7 @@ class Datum {
   bool isOwned;
   bool canBuy;
 
-  Datum({
+  CouponData({
     required this.id,
     required this.code,
     required this.type,
@@ -63,7 +63,7 @@ class Datum {
     required this.canBuy,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory CouponData.fromJson(Map<String, dynamic> json) => CouponData(
         id: json["id"],
         code: json["code"],
         type: json["type"],

@@ -47,6 +47,8 @@ class _PointShopState extends State<PointShop> {
   bool _isInitial = true;
   int? _totalData = 0;
   bool _showLoadingContainer = false;
+  List<dynamic> _orderResponseList=[];
+
 
   @override
   void initState() {
@@ -87,20 +89,26 @@ class _PointShopState extends State<PointShop> {
   Future<void> _onRefresh() async {
     reset();
     resetFilterKeys();
-    setState(() {});
     fetchData();
   }
 
   fetchData() async {
+    _orderResponseList.clear();
     var orderResponse = await OrderRepository().getCoupon();
-    _orderList.addAll(orderResponse.data);
+    _orderResponseList.addAll(orderResponse.data);
     _isInitial = false;
-    _totalData = orderResponse.meta.total;
+  //  _totalData = orderResponse.meta.total;
     _showLoadingContainer = false;
-    List filteredList =
-        _orderList.where((item) => item.canBuy == true).toList();
-    print(_orderList.where((item) => item.canBuy == true).toList().length);
-    print(_orderList.length);
+    _orderList.clear();
+    _orderList =
+        _orderResponseList.where((item) => item.canBuy == true).toList();
+    print("CouponData: ${_orderResponseList.length}");
+
+    for(var i in _orderList){
+      print("CouponData response code: ${i.code}");
+      print("CouponData response: ${i.canBuy}");
+
+    }
     setState(() {});
   }
 
@@ -360,7 +368,6 @@ class _PointShopState extends State<PointShop> {
               print(response);
               ToastComponent.showDialog(response.message);
               if (response.message == true) {
-                _orderList.clear();
                 _onRefresh();
                 print(_orderList);
                 Navigator.of(context, rootNavigator: true).pop();
