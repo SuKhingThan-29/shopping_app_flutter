@@ -65,6 +65,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'gmp-dev-19352.appspot.com',
     androidClientId: '1004636433134-7ajlch14g5utlr8lt6koe245pci21lec.apps.googleusercontent.com',
     iosClientId: '1004636433134-95okedktcu0bvr36q181ot81fkmb9u96.apps.googleusercontent.com',
-    iosBundleId: 'com.ethicaldigit.gmp',
+    iosBundleId: 'gmp.ethicaldigit.com',
   );
 }

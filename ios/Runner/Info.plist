@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Active Ecommerce Flutter App</string>
+	<string>Ga Mone Pwint Online</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.1004636433134-95okedktcu0bvr36q181ot81fkmb9u96</string>
+				<string>com.googleusercontent.apps.1004636433134-fs6dgkjfhk7bqistn8ujq459p8ljpih9</string>
 				<string>fb1257764744931699</string>
 			</array>
 		</dict>
@@ -39,11 +39,11 @@
 	<key>FDMaximumConcurrentTasks</key>
 	<integer>5</integer>
 	<key>FacebookAppID</key>
-    <string>1257764744931699</string>
-    <key>FacebookClientToken</key>
-    <string>cf5583eb2acd23a5af95379716476041</string>
-    <key>FacebookDisplayName</key>
-    <string>GMP</string>
+	<string>1257764744931699</string>
+	<key>FacebookClientToken</key>
+	<string>cf5583eb2acd23a5af95379716476041</string>
+	<key>FacebookDisplayName</key>
+	<string>GMP</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -83,6 +83,8 @@
 	<string>User can upload and change her profile picture from PhotoLibrary</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>User can send message or search data by voice</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -109,7 +111,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
 </dict>
 </plist>

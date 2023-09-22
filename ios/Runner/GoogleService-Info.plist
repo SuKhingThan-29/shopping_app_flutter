@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1004636433134-95okedktcu0bvr36q181ot81fkmb9u96.apps.googleusercontent.com</string>
+	<string>1004636433134-fs6dgkjfhk7bqistn8ujq459p8ljpih9.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1004636433134-95okedktcu0bvr36q181ot81fkmb9u96</string>
+	<string>com.googleusercontent.apps.1004636433134-fs6dgkjfhk7bqistn8ujq459p8ljpih9</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>1004636433134-7ajlch14g5utlr8lt6koe245pci21lec.apps.googleusercontent.com</string>
+	<string>1004636433134-3q0s4t8aj0ugob9hj23ehdnjhrdpm5uh.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBS0fpkb1XTlGVA3RCIpCtaOMIP_us9lf8</string>
 	<key>GCM_SENDER_ID</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.ethicaldigit.gmp</string>
+	<string>gmp.ethicaldigit.com</string>
 	<key>PROJECT_ID</key>
 	<string>gmp-dev-19352</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1004636433134:ios:fccc428cfe97d7645ce1ff</string>
+	<string>1:1004636433134:ios:d8dacd047d91e3de5ce1ff</string>
 </dict>
 </plist>
