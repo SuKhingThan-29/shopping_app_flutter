@@ -58,7 +58,6 @@ import 'screens/seller_products.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // iOS requires you run in release mode to test dynamic links ("flutter run --release").
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -105,8 +104,8 @@ class _MainScreenState extends State<MyApp> {
           child: Consumer<DeepLinkProvider>(
               builder: (context, provider, snapshot) {
             print("Deeplink route provider: ${provider.deepLinkRoute}");
-            if(provider.deepLinkRoute=="/purchase-history"){
-            // if(provider.deepLinkRoute=="/success"){
+            if (provider.deepLinkRoute == "/purchase-history") {
+              // if(provider.deepLinkRoute=="/success"){
               navigatorKey.currentState?.push(MaterialPageRoute(
                 builder: (context) {
                   return OrderList(from_checkout: true);
@@ -118,45 +117,61 @@ class _MainScreenState extends State<MyApp> {
               initialRoute: provider.deepLinkRoute ?? '/',
               routes: {
                 '/': (BuildContext context) => SplashScreen(),
-                "/purchase-history":(BuildContext context) =>OrderList(),
+                "/purchase-history": (BuildContext context) => OrderList(),
 
                 // "/purchase-history":(BuildContext context) =>OrderList(),
-                "/classified_ads":(context)=>ClassifiedAds(),
-                "/classified_ads_details":(context)=>ClassifiedAdsDetails(id:0),
-                "/my_classified_ads":(context)=>MyClassifiedAds(),
-                "/digital_product_details":(context)=>DigitalProductDetails(id: 0,),
-                "/digital_products":(context)=>DigitalProducts(),
-                "/purchased_digital_products":(context)=>PurchasedDigitalProducts(),
-                "/update_package":(context)=>UpdatePackage(),
-                "/address":(context)=>Address(),
-                "/auction_products":(context)=>AuctionProducts(),
-                "/auction_products_details":(context)=>AuctionProductsDetails(id: 0),
-                "/brand_products":(context)=>BrandProducts(id: 0,brand_name: ""),
-                "/cart":(context)=>Cart(),
-                "/category_list":(context)=>CategoryList(parent_category_id: 0,is_base_category: true,parent_category_name: "",is_top_category: false),
-                "/category_products":(context)=>CategoryProducts(category_id: 0,category_name: ""),
-                "/chat":(context)=>Chat(),
-                "/checkout":(context)=>Checkout(),
-                "/clubpoint":(context)=>Clubpoint(),
-                "/flash_deal_list":(context)=>FlashDealList(),
-                "/flash_deal_products":(context)=>FlashDealProducts(),
-                "/home":(context)=>Home(),
-                "/login":(context)=>Login(),
-                "/main":(context)=>Main(),
-                "/map_location":(context)=>MapLocation(),
-                "/messenger_list":(context)=>MessengerList(),
-                "/order_details":(context)=>OrderDetails(),
-                "/order_list":(context)=>OrderList(),
-                "/product_details":(context)=>ProductDetails(id: 0,),
-                "/product_reviews":(context)=>ProductReviews(id: 0,),
-                "/profile":(context)=>Profile(),
-                "/refund_request":(context)=>RefundRequest(),
-                "/seller_details":(context)=>SellerDetails(id: 0,),
-                "/seller_products":(context)=>SellerProducts(),
-                "/todays_deal_products":(context)=>TodaysDealProducts(),
-                "/top_selling_products":(context)=>TopSellingProducts(),
-                "/wallet":(context)=>Wallet(),
-
+                "/classified_ads": (context) => ClassifiedAds(),
+                "/classified_ads_details": (context) =>
+                    ClassifiedAdsDetails(id: 0),
+                "/my_classified_ads": (context) => MyClassifiedAds(),
+                "/digital_product_details": (context) => DigitalProductDetails(
+                      id: 0,
+                    ),
+                "/digital_products": (context) => DigitalProducts(),
+                "/purchased_digital_products": (context) =>
+                    PurchasedDigitalProducts(),
+                "/update_package": (context) => UpdatePackage(),
+                "/address": (context) => Address(),
+                "/auction_products": (context) => AuctionProducts(),
+                "/auction_products_details": (context) =>
+                    AuctionProductsDetails(id: 0),
+                "/brand_products": (context) =>
+                    BrandProducts(id: 0, brand_name: ""),
+                "/cart": (context) => Cart(),
+                "/category_list": (context) => CategoryList(
+                    parent_category_id: 0,
+                    is_base_category: true,
+                    parent_category_name: "",
+                    is_top_category: false),
+                "/category_products": (context) =>
+                    CategoryProducts(category_id: 0, category_name: ""),
+                "/chat": (context) => Chat(),
+                "/checkout": (context) => Checkout(),
+                "/clubpoint": (context) => Clubpoint(),
+                "/flash_deal_list": (context) => FlashDealList(),
+                "/flash_deal_products": (context) => FlashDealProducts(),
+                "/home": (context) => Home(),
+                "/login": (context) => Login(),
+                "/main": (context) => Main(),
+                "/map_location": (context) => MapLocation(),
+                "/messenger_list": (context) => MessengerList(),
+                "/order_details": (context) => OrderDetails(),
+                "/order_list": (context) => OrderList(),
+                "/product_details": (context) => ProductDetails(
+                      id: 0,
+                    ),
+                "/product_reviews": (context) => ProductReviews(
+                      id: 0,
+                    ),
+                "/profile": (context) => Profile(),
+                "/refund_request": (context) => RefundRequest(),
+                "/seller_details": (context) => SellerDetails(
+                      id: 0,
+                    ),
+                "/seller_products": (context) => SellerProducts(),
+                "/todays_deal_products": (context) => TodaysDealProducts(),
+                "/top_selling_products": (context) => TopSellingProducts(),
+                "/wallet": (context) => Wallet(),
               },
               builder: OneContext().builder,
               // navigatorKey: OneContext().navigator.key,
@@ -173,10 +188,10 @@ class _MainScreenState extends State<MyApp> {
                 //
                 // the below code is getting fonts from http
                 textTheme: GoogleFonts.publicSansTextTheme(textTheme).copyWith(
-                  bodyText1:
-                      GoogleFonts.publicSans(textStyle: textTheme.bodyText1),
-                  bodyText2: GoogleFonts.publicSans(
-                      textStyle: textTheme.bodyText2, fontSize: 12),
+                  bodyLarge:
+                      GoogleFonts.publicSans(textStyle: textTheme.bodyLarge),
+                  bodyMedium: GoogleFonts.publicSans(
+                      textStyle: textTheme.bodyMedium, fontSize: 12),
                 ),
               ),
               localizationsDelegates: [

@@ -8,17 +8,17 @@ import 'package:active_ecommerce_flutter/presenter/home_presenter.dart';
 import 'package:active_ecommerce_flutter/screens/category_products.dart';
 import 'package:active_ecommerce_flutter/screens/filter.dart';
 import 'package:active_ecommerce_flutter/screens/flash_deal_list.dart';
+import 'package:active_ecommerce_flutter/screens/flash_deal_products.dart';
 import 'package:active_ecommerce_flutter/screens/todays_deal_products.dart';
 import 'package:active_ecommerce_flutter/screens/top_selling_products.dart';
 import 'package:active_ecommerce_flutter/ui_elements/mini_product_card.dart';
 import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_countdown_timer/index.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   Home({
@@ -38,6 +38,12 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
   HomePresenter homeData = HomePresenter();
+  ScrollController? _scrollController;
+
+  List<CountdownTimerController> _timerControllerList = [];
+
+  List productTabs = ['Recommended', 'News', 'Brand Shops'];
+  String selectProductTab = "Recommended";
 
   @override
   void initState() {
@@ -62,6 +68,35 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  DateTime convertTimeStampToDateTime(int timeStamp) {
+    var dateToTimeStamp = DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000);
+    return dateToTimeStamp;
+  }
+
+  String timeText(String txt, {default_length = 3}) {
+    var blankZeros = default_length == 3 ? "000" : "00";
+    var leadingZeros = "";
+    if (default_length == 3 && txt.length == 1) {
+      leadingZeros = "00";
+    } else if (default_length == 3 && txt.length == 2) {
+      leadingZeros = "0";
+    } else if (default_length == 2 && txt.length == 1) {
+      leadingZeros = "0";
+    }
+
+    var newtxt = (txt == "" || txt == null.toString()) ? blankZeros : txt;
+
+    // print(txt + " " + default_length.toString());
+    // print(newtxt);
+
+    if (default_length > txt.length) {
+      newtxt = leadingZeros + newtxt;
+    }
+    //print(newtxt);
+
+    return newtxt;
+  }
+
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -78,7 +113,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           child: Scaffold(
               //key: homeData.scaffoldKey,
               appBar: PreferredSize(
-                preferredSize: Size.fromHeight(100),
+                preferredSize: Size.fromHeight(80),
                 child: buildAppBar(statusBarHeight, context),
               ),
               //drawer: MainDrawer(),
@@ -149,27 +184,66 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                         )
                                       : Container(),
                                   buildHomeCarouselSlider(context, homeData),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                      18.0,
-                                      0.0,
-                                      18.0,
-                                      0.0,
-                                    ),
-                                    child: buildHomeMenuRow1(context, homeData),
-                                  ),
-                                  buildHomeBannerOne(context, homeData),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                      18.0,
-                                      0.0,
-                                      18.0,
-                                      0.0,
-                                    ),
-                                    child: buildHomeMenuRow2(context),
-                                  ),
+
+                                  // Padding(
+                                  //   padding: const EdgeInsets.fromLTRB(
+                                  //     18.0,
+                                  //     0.0,
+                                  //     18.0,
+                                  //     0.0,
+                                  //   ),
+                                  //   child: buildHomeMenuRow1(context, homeData),
+                                  // ),
+                                  // SizedBox(
+                                  //   height: 20,
+                                  // ),
+                                  // // buildHomeBannerOne(context, homeData),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.fromLTRB(
+                                  //     18.0,
+                                  //     0.0,
+                                  //     18.0,
+                                  //     0.0,
+                                  //   ),
+                                  //   child: buildHomeMenuRow2(context),
+                                  // ),
                                 ]),
                               ),
+
+                              if (homeData.isTodayDeal) ...[
+                                SliverList(
+                                  delegate: SliverChildListDelegate([
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                        18.0,
+                                        0.0,
+                                        18.0,
+                                        0.0,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Today Deals",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ]),
+                                ),
+                                SliverToBoxAdapter(
+                                  child: SizedBox(
+                                    height: 250,
+                                    child:
+                                        buildHomeTodayDeal(context, homeData),
+                                  ),
+                                ),
+                              ],
+
                               SliverList(
                                 delegate: SliverChildListDelegate([
                                   Padding(
@@ -185,7 +259,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                       children: [
                                         Text(
                                           AppLocalizations.of(context)!
-                                              .featured_categories_ucf,
+                                              .categories_ucf,
                                           style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.w700),
@@ -195,6 +269,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   ),
                                 ]),
                               ),
+
                               SliverToBoxAdapter(
                                 child: SizedBox(
                                   height: 154,
@@ -202,6 +277,15 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                       context, homeData),
                                 ),
                               ),
+
+                              if (homeData.isFlashDeal)
+                                SliverToBoxAdapter(
+                                  child: SizedBox(
+                                    height: 220,
+                                    child: buildFlashDeal(context, homeData),
+                                  ),
+                                ),
+
                               SliverList(
                                 delegate: SliverChildListDelegate([
                                   Container(
@@ -248,36 +332,95 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   ),
                                 ]),
                               ),
-                              SliverList(
-                                delegate: SliverChildListDelegate(
-                                  [
-                                    buildHomeBannerTwo(context, homeData),
-                                  ],
-                                ),
-                              ),
+                              // SliverList(
+                              //   delegate: SliverChildListDelegate(
+                              //     [
+                              //       buildHomeBannerTwo(context, homeData),
+                              //     ],
+                              //   ),
+                              // ),
+
                               SliverList(
                                 delegate: SliverChildListDelegate([
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                      18.0,
-                                      18.0,
-                                      20.0,
-                                      0.0,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          AppLocalizations.of(context)!
-                                              .all_products_ucf,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ],
-                                    ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.fromLTRB(
+                                  //     18.0,
+                                  //     18.0,
+                                  //     20.0,
+                                  //     0.0,
+                                  //   ),
+                                  //   child: Column(
+                                  //     crossAxisAlignment:
+                                  //         CrossAxisAlignment.start,
+                                  //     children: [
+                                  //       Text(
+                                  //         AppLocalizations.of(context)!
+                                  //             .all_products_ucf,
+                                  //         style: TextStyle(
+                                  //             fontSize: 18,
+                                  //             fontWeight: FontWeight.w700),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                  SizedBox(
+                                    height: 10,
                                   ),
+                                  Container(
+                                      height: 38,
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: 5,
+                                      ),
+                                      width: double.infinity,
+                                      child: ListView.builder(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 20,
+                                          ),
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: productTabs.length,
+                                          itemBuilder: (_, i) =>
+                                              GestureDetector(
+                                                onTap: () {
+                                                  selectProductTab =
+                                                      productTabs[i];
+                                                  setState(() {});
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      right: 15),
+                                                  decoration: BoxDecoration(
+                                                    border: selectProductTab ==
+                                                            productTabs[i]
+                                                        ? Border(
+                                                            bottom: BorderSide(
+                                                                width: 1.5,
+                                                                color: Colors
+                                                                    .black),
+                                                          )
+                                                        : null,
+                                                  ),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        productTabs[i],
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ))),
                                   SingleChildScrollView(
                                     child: Column(
                                       children: [
@@ -301,6 +444,93 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     );
                   })),
         ),
+      ),
+    );
+  }
+
+  Widget timerContainer(Widget child) {
+    return Container(
+      constraints: BoxConstraints(minWidth: 30, minHeight: 24),
+      child: child,
+      alignment: Alignment.center,
+      padding: EdgeInsets.all(6),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        color: MyTheme.accent_color,
+      ),
+    );
+  }
+
+  Widget buildTimerRowRow(CurrentRemainingTime time) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text("Flash Sales",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+          Spacer(),
+          Icon(
+            Icons.watch_later_outlined,
+            color: MyTheme.grey_153,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          timerContainer(
+            Text(
+              timeText(time.days.toString(), default_length: 3),
+              style: TextStyle(
+                  color: MyTheme.white,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+          SizedBox(
+            width: 4,
+          ),
+          timerContainer(
+            Text(
+              timeText(time.hours.toString(), default_length: 2),
+              style: TextStyle(
+                  color: MyTheme.white,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+          SizedBox(
+            width: 4,
+          ),
+          timerContainer(
+            Text(
+              timeText(time.min.toString(), default_length: 2),
+              style: TextStyle(
+                  color: MyTheme.white,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+          SizedBox(
+            width: 4,
+          ),
+          timerContainer(
+            Text(
+              timeText(time.sec.toString(), default_length: 2),
+              style: TextStyle(
+                  color: MyTheme.white,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Image.asset(
+            "assets/flash_deal.png",
+            height: 20,
+            color: MyTheme.golden,
+          ),
+        ],
       ),
     );
   }
@@ -378,6 +608,270 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           child: Text(AppLocalizations.of(context)!.no_product_is_available));
     } else {
       return Container(); // should never be happening
+    }
+  }
+
+  Widget buildHomeTodayDeal(context, HomePresenter homeData) {
+    if (homeData.isTodayDetailInitial &&
+        homeData.todaysDealProducts.length == 0) {
+      return ShimmerHelper().buildHorizontalGridShimmerWithAxisCount(
+          crossAxisSpacing: 14.0,
+          mainAxisSpacing: 14.0,
+          item_count: 10,
+          mainAxisExtent: 170.0,
+          controller: homeData.featuredCategoryScrollController);
+    } else if (homeData.todaysDealProducts.length > 0) {
+      //snapshot.hasData
+      return SingleChildScrollView(
+        child: SizedBox(
+          height: 248,
+          child: NotificationListener<ScrollNotification>(
+            onNotification: (ScrollNotification scrollInfo) {
+              if (scrollInfo.metrics.pixels ==
+                  scrollInfo.metrics.maxScrollExtent) {
+                homeData.fetchTodayDealData();
+              }
+              return true;
+            },
+            child: ListView.separated(
+              padding: const EdgeInsets.all(18.0),
+              separatorBuilder: (context, index) => SizedBox(
+                width: 14,
+              ),
+              itemCount: homeData.todaysDealProducts.length,
+              scrollDirection: Axis.horizontal,
+              //itemExtent: 135,
+
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              itemBuilder: (context, index) {
+                return (index == homeData.todaysDealProducts.length)
+                    ? SpinKitFadingFour(
+                        itemBuilder: (BuildContext context, int index) {
+                          return DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                          );
+                        },
+                      )
+                    : MiniProductCard(
+                        id: homeData.todaysDealProducts[index].id,
+                        image:
+                            homeData.todaysDealProducts[index].thumbnail_image,
+                        name: homeData.todaysDealProducts[index].name,
+                        main_price:
+                            homeData.todaysDealProducts[index].main_price,
+                        stroked_price:
+                            homeData.todaysDealProducts[index].stroked_price,
+                        has_discount:
+                            homeData.todaysDealProducts[index].has_discount,
+                        is_wholesale:
+                            homeData.todaysDealProducts[index].isWholesale,
+                        discount: homeData.todaysDealProducts[index].discount,
+                      );
+              },
+            ),
+          ),
+        ),
+      );
+    } else if (!homeData.isTodayDetailInitial &&
+        homeData.todaysDealProducts.length == 0) {
+      return Container(
+          height: 100,
+          child: Center(
+              child: Text(
+            "No Today Deal",
+            style: TextStyle(color: MyTheme.font_grey),
+          )));
+    } else {
+      // should not be happening
+      return Container(
+        height: 100,
+      );
+    }
+  }
+
+  Widget buildFlashDeal(context, HomePresenter homeData) {
+    if (homeData.isFlashDealInitial && homeData.flashDealProducts.length == 0) {
+      return ShimmerHelper().buildHorizontalGridShimmerWithAxisCount(
+          crossAxisSpacing: 14.0,
+          mainAxisSpacing: 14.0,
+          item_count: 10,
+          mainAxisExtent: 170.0,
+          controller: homeData.featuredCategoryScrollController);
+    } else if (homeData.flashDealProducts.length > 0) {
+      //snapshot.hasData
+
+      DateTime end = convertTimeStampToDateTime(
+          homeData.flashDealProducts[0].date!); // YYYY-mm-dd
+      DateTime now = DateTime.now();
+      int diff = end.difference(now).inMilliseconds;
+      int endTime = diff + now.millisecondsSinceEpoch;
+
+      void onEnd() {}
+
+      CountdownTimerController timeController =
+          CountdownTimerController(endTime: endTime, onEnd: onEnd);
+      _timerControllerList.add(timeController);
+
+      return CountdownTimer(
+        controller: _timerControllerList[0],
+        widgetBuilder: (_, CurrentRemainingTime? time) {
+          return Column(
+            children: [
+              Container(
+                child: Center(
+                    child: time == null
+                        ? Text(
+                            AppLocalizations.of(context)!.ended_ucf,
+                            style: TextStyle(
+                                color: MyTheme.accent_color,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600),
+                          )
+                        : buildTimerRowRow(time)),
+              ),
+              SingleChildScrollView(
+                child: SizedBox(
+                  height: 160,
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification scrollInfo) {
+                      if (scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent) {
+                        homeData.fetchFlashDealData();
+                      }
+                      return true;
+                    },
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return FlashDealProducts(
+                            flash_deal_id: homeData.flashDealProducts[0].id,
+                            flash_deal_name:
+                                homeData.flashDealProducts[0].title,
+                            bannerUrl: homeData.flashDealProducts[0].banner,
+                            countdownTimerController: _timerControllerList[0],
+                          );
+                        }));
+                      },
+                      child: ListView.separated(
+                        padding: const EdgeInsets.all(18.0),
+                        separatorBuilder: (context, index) => SizedBox(
+                          width: 14,
+                        ),
+                        itemCount: homeData
+                            .flashDealProducts[0].products!.products!.length,
+                        scrollDirection: Axis.horizontal,
+                        //itemExtent: 135,
+
+                        physics: const BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics()),
+                        itemBuilder: (context, productIndex) {
+                          return (productIndex ==
+                                  homeData.flashDealProducts[0].products!
+                                      .products!.length)
+                              ? SpinKitFadingFour(
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                )
+                              : Card(
+                                  margin: EdgeInsets.only(right: 5),
+                                  child: Container(
+                                    height: 50,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(6.0),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        ClipRRect(
+                                          clipBehavior: Clip.none,
+                                          child: FadeInImage(
+                                            placeholder: AssetImage(
+                                                "assets/placeholder.png"),
+                                            width: 100,
+                                            image: NetworkImage(homeData
+                                                .flashDealProducts[0]
+                                                .products
+                                                .products[productIndex]
+                                                .image),
+                                          ),
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(6),
+                                            bottomLeft: Radius.circular(6),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10.0),
+                                          child: Text(
+                                            homeData
+                                                .flashDealProducts[0]
+                                                .products
+                                                .products[productIndex]
+                                                .price,
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                color: MyTheme.accent_color,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                          // : MiniProductCard(
+                          //     id: homeData.flashDealProducts[index].id,
+                          //     image:
+                          //         homeData.flashDealProducts[index].thumbnail_image,
+                          //     name: homeData.flashDealProducts[index].name,
+                          //     main_price:
+                          //         homeData.flashDealProducts[index].main_price,
+                          //     stroked_price:
+                          //         homeData.flashDealProducts[index].stroked_price,
+                          //     has_discount:
+                          //         homeData.flashDealProducts[index].has_discount,
+                          //     is_wholesale:
+                          //         homeData.flashDealProducts[index].isWholesale,
+                          //     discount: homeData.flashDealProducts[index].discount,
+                          //   );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    } else if (!homeData.isFlashDealInitial &&
+        homeData.flashDealProducts.length == 0) {
+      return Container(
+          height: 100,
+          child: Center(
+              child: Text(
+            "No Flash Deal",
+            style: TextStyle(color: MyTheme.font_grey),
+          )));
+    } else {
+      // should not be happening
+      return Container(
+        height: 100,
+      );
     }
   }
 
@@ -964,36 +1458,58 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   buildHomeSearchBox(BuildContext context) {
     return Column(
       children: [
-        Container(
-          height: 50,
-          width: 50,
-          child: Image.asset(
-            "assets/app_logo.png",
-          ),
+        SizedBox(
+          height: 15,
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          height: 36,
-          decoration: BoxDecorations.buildBoxDecoration_1(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                AppLocalizations.of(context)!.search_anything,
-                style: TextStyle(
-                    fontSize: 13.0, color: MyTheme.textfield_grey),
+              Container(
+                height: 50,
+                width: 50,
+                child: Image.asset(
+                  "assets/app_logo.png",
+                ),
               ),
-              Spacer(),
-              Image.asset(
-                'assets/search.png',
-                height: 16,
-                //color: MyTheme.dark_grey,
-                color: MyTheme.dark_grey,
-              )
+              SizedBox(
+                width: 15,
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  height: 36,
+                  decoration: BoxDecorations.buildBoxDecoration_1(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.search_anything,
+                        style: TextStyle(
+                            fontSize: 13.0, color: MyTheme.textfield_grey),
+                      ),
+                      Spacer(),
+                      Image.asset(
+                        'assets/search.png',
+                        height: 16,
+                        //color: MyTheme.dark_grey,
+                        color: MyTheme.dark_grey,
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
+        // Container(
+        //   height: 50,
+        //   width: 50,
+        //   child: Image.asset(
+        //     "assets/app_logo.png",
+        //   ),
+        // ),
       ],
     );
   }

@@ -22,12 +22,16 @@ class HomePresenter extends ChangeNotifier {
   var bannerOneImageList = [];
   var bannerTwoImageList = [];
   var featuredCategoryList = [];
+  var todaysDealProducts = [];
+  var flashDealProducts = [];
 
   bool isCategoryInitial = true;
 
   bool isCarouselInitial = true;
   bool isBannerOneInitial = true;
   bool isBannerTwoInitial = true;
+  bool isTodayDetailInitial = true;
+  bool isFlashDealInitial = true;
 
   var featuredProductList = [];
   bool isFeaturedProductInitial = true;
@@ -60,7 +64,9 @@ class HomePresenter extends ChangeNotifier {
     var deal = await ProductRepository().getTodaysDealProducts();
     print(deal.products!.length);
     if (deal.success! && deal.products!.isNotEmpty) {
+      todaysDealProducts.addAll(deal.products!);
       isTodayDeal = true;
+      isTodayDetailInitial = false;
       notifyListeners();
     }
   }
@@ -69,7 +75,9 @@ class HomePresenter extends ChangeNotifier {
     var deal = await FlashDealRepository().getFlashDeals();
 
     if (deal.success! && deal.flashDeals!.isNotEmpty) {
+      flashDealProducts.addAll(deal.flashDeals!);
       isFlashDeal = true;
+      isFlashDealInitial = false;
       notifyListeners();
     }
   }
@@ -102,7 +110,7 @@ class HomePresenter extends ChangeNotifier {
   }
 
   fetchFeaturedCategories() async {
-    var categoryResponse = await CategoryRepository().getFeturedCategories();
+    var categoryResponse = await CategoryRepository().getCategories();
     featuredCategoryList.addAll(categoryResponse.categories!);
     isCategoryInitial = false;
     notifyListeners();
