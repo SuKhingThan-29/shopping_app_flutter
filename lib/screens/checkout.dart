@@ -1,5 +1,6 @@
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/btn.dart';
+import 'package:active_ecommerce_flutter/custom/confirm_dialog.dart';
 import 'package:active_ecommerce_flutter/custom/enum_classes.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/data_model/delivery_response.dart';
@@ -269,6 +270,7 @@ class _CheckoutState extends State<Checkout> {
   List<DropDownValueModel> dropDownList = [];
 
   onPressPlaceOrderOrProceed() {
+
     print(_selected_payment_method);
     if (_selected_payment_method == "") {
       ToastComponent.showDialog(
@@ -276,182 +278,25 @@ class _CheckoutState extends State<Checkout> {
           gravity: Toast.center,
           duration: Toast.lengthLong);
       return;
-    }
-    // if (_grandTotalValue == 0.00) {
-    //   ToastComponent.showDialog(AppLocalizations.of(context)!.nothing_to_pay,
-    //       gravity: Toast.center, duration: Toast.lengthLong);
-    //   return;
-    // }
-    if (_selected_payment_method == "cash_payment") {
-      pay_by_cod();
-    } else if (_selected_payment_method == "ed_payment") {
-      pay_by_edpayment();
+    }else{
+      ConfirmDialog.show(
+        context,
+        title: "Your order has been placed",
+        message: "Confirm or Not Yet?",
+        yesText: "Yes",
+        noText: "Not Yet",
+        pressYes: () {
+          if (_selected_payment_method == "cash_payment") {
+            pay_by_cod();
+          } else if (_selected_payment_method == "ed_payment") {
+            pay_by_edpayment();
+          }
+        },
+      );
     }
 
-//     if (_selected_payment_method == "stripe_payment") {
-//       Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         return StripeScreen(
-//           amount: _grandTotalValue,
-//           payment_type: payment_type,
-//           payment_method_key: _selected_payment_method_key,
-//           package_id: widget.packageId.toString(),
-//         );
-//       })).then((value) {
-//         onPopped(value);
-//       });
-//     } else if (_selected_payment_method == "paypal_payment") {
-//       Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         return PaypalScreen(
-//           amount: _grandTotalValue,
-//           payment_type: payment_type,
-//           payment_method_key: _selected_payment_method_key,
-//           package_id: widget.packageId.toString(),
-//         );
-//       })).then((value) {
-//         onPopped(value);
-//       });
-//     } else if (_selected_payment_method == "razorpay") {
-//       Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         return RazorpayScreen(
-//           amount: _grandTotalValue,
-//           payment_type: payment_type,
-//           payment_method_key: _selected_payment_method_key,
-//           package_id: widget.packageId.toString(),
-//         );
-//       })).then((value) {
-//         onPopped(value);
-//       });
-//     } else if (_selected_payment_method == "paystack") {
-//       Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         return PaystackScreen(
-//           amount: _grandTotalValue,
-//           payment_type: payment_type,
-//           payment_method_key: _selected_payment_method_key,
-//           package_id: widget.packageId.toString(),
-//         );
-//       })).then((value) {
-//         onPopped(value);
-//       });
-//     } else if (_selected_payment_method == "iyzico") {
-//       Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         return IyzicoScreen(
-//           amount: _grandTotalValue,
-//           payment_type: payment_type,
-//           payment_method_key: _selected_payment_method_key,
-//           package_id: widget.packageId.toString(),
-//         );
-//       })).then((value) {
-//         onPopped(value);
-//       });
-//     } else if (_selected_payment_method == "bkash") {
-//       Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         return BkashScreen(
-//           amount: _grandTotalValue,
-//           payment_type: payment_type,
-//           payment_method_key: _selected_payment_method_key,
-//           package_id: widget.packageId.toString(),
-//         );
-//       })).then((value) {
-//         onPopped(value);
-//       });
-//     } else if (_selected_payment_method == "nagad") {
-//       Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         return NagadScreen(
-//           amount: _grandTotalValue,
-//           payment_type: payment_type,
-//           payment_method_key: _selected_payment_method_key,
-//           package_id: widget.packageId.toString(),
-//         );
-//       })).then((value) {
-//         onPopped(value);
-//       });
-//     } else if (_selected_payment_method == "sslcommerz_payment") {
-//       Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         return SslCommerzScreen(
-//           amount: _grandTotalValue,
-//           payment_type: payment_type,
-//           payment_method_key: _selected_payment_method_key,
-//           package_id: widget.packageId.toString(),
-//         );
-//       })).then((value) {
-//         onPopped(value);
-//       });
-//     } else if (_selected_payment_method == "flutterwave") {
-//       Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         return FlutterwaveScreen(
-//           amount: _grandTotalValue,
-//           payment_type: payment_type,
-//           payment_method_key: _selected_payment_method_key,
-//           package_id: widget.packageId.toString(),
-//         );
-//       })).then((value) {
-//         onPopped(value);
-//       });
-//     } else if (_selected_payment_method == "paytm") {
-//       Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         return PaytmScreen(
-//           amount: _grandTotalValue,
-//           payment_type: payment_type,
-//           payment_method_key: _selected_payment_method_key,
-//           package_id: widget.packageId.toString(),
-//         );
-//       })).then((value) {
-//         onPopped(value);
-//       });
-//     } else if (_selected_payment_method == "khalti") {
-//       Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         return KhaltiScreen(
-//           amount: _grandTotalValue,
-//           payment_type: payment_type,
-//           payment_method_key: _selected_payment_method_key,
-//           package_id: widget.packageId.toString(),
-//         );
-//       })).then((value) {
-//         onPopped(value);
-//       });
-//     } else if (_selected_payment_method == "instamojo_payment") {
-//       Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         return OnlinePay(
-//           title: AppLocalizations.of(context)!.pay_with_instamojo,
-//           amount: _grandTotalValue,
-//           payment_type: payment_type,
-//           payment_method_key: _selected_payment_method_key,
-//           package_id: widget.packageId.toString(),
-//         );
-//       })).then((value) {
-//         onPopped(value);
-//       });
-//     } else if (_selected_payment_method == "wallet_system") {
-//       pay_by_wallet();
-//     } else if (_selected_payment_method == "cash_payment") {
-//       pay_by_cod();
-//     } else if (_selected_payment_method == "ed_payment") {
-//       pay_by_edpayment();
-//     }
-//     else if (_selected_payment_method == "manual_payment" &&
-//         widget.paymentFor == PaymentFor.Order) {
-//       pay_by_manual_payment();
-//     } else if (_selected_payment_method == "manual_payment" &&
-//(widget.paymentFor == PaymentFor.ManualPayment ||
-//             widget.paymentFor == PaymentFor.WalletRecharge ||
-//             widget.paymentFor == PaymentFor.PackagePay)) {
-//       Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         return OfflineScreen(
-//           order_id: widget.order_id,
-//           paymentInstruction:
-//           _paymentTypeList[_selected_payment_method_index].details,
-//           offline_payment_id: _paymentTypeList[_selected_payment_method_index]
-//               .offline_payment_id,
-//           rechargeAmount: widget.rechargeAmount,
-//           offLinePaymentFor: widget.paymentFor,
-//           paymentMethod: _paymentTypeList[_selected_payment_method_index].name,
-//           packageId: widget.packageId,
-// //          offLinePaymentFor: widget.offLinePaymentFor,
-//         );
-//       })).then((value) {
-//         onPopped(value);
-//       });
-//     }
+
+
   }
 
   pay_by_edpayment() async {

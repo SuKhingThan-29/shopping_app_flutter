@@ -280,10 +280,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
                               if (homeData.isFlashDeal)
                                 SliverToBoxAdapter(
-                                  child: SizedBox(
-                                    height: 220,
-                                    child: buildFlashDeal(context, homeData),
-                                  ),
+                                  child:buildFlashDeal(context, homeData)
                                 ),
 
                               SliverList(
@@ -702,7 +699,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           controller: homeData.featuredCategoryScrollController);
     } else if (homeData.flashDealProducts.length > 0) {
       //snapshot.hasData
-
       DateTime end = convertTimeStampToDateTime(
           homeData.flashDealProducts[0].date!); // YYYY-mm-dd
       DateTime now = DateTime.now();
@@ -734,7 +730,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               ),
               SingleChildScrollView(
                 child: SizedBox(
-                  height: 160,
+                  height: 180,
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollInfo) {
                       if (scrollInfo.metrics.pixels ==
@@ -757,7 +753,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         }));
                       },
                       child: ListView.separated(
-                        padding: const EdgeInsets.all(18.0),
+                        padding: const EdgeInsets.all(8.0),
                         separatorBuilder: (context, index) => SizedBox(
                           width: 14,
                         ),
@@ -785,7 +781,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               : Card(
                                   margin: EdgeInsets.only(right: 5),
                                   child: Container(
-                                    height: 50,
                                     width: 100,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
@@ -814,9 +809,26 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                             bottomLeft: Radius.circular(6),
                                           ),
                                         ),
+                                    Container(
+                                      height: 30,
+                                      padding:
+                                      const EdgeInsets.only(left: 0.0),
+                                      child: Text(
+                                        homeData
+                                            .flashDealProducts[0]
+                                            .products
+                                            .products[productIndex]
+                                            .name,
+                                          maxLines:2,
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            color: MyTheme.grey_153,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
                                         Padding(
                                           padding:
-                                              const EdgeInsets.only(left: 10.0),
+                                              const EdgeInsets.only(left: 0.0,top: 8),
                                           child: Text(
                                             homeData
                                                 .flashDealProducts[0]

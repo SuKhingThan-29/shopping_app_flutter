@@ -891,18 +891,18 @@ class _ProfileState extends State<Profile> {
                         // }));
                       }
                     : () => null),
-          if (classified_product_status.$)
-            buildSettingAndAddonsHorizontalMenuItem(
-                "assets/classified_product.png",
-                AppLocalizations.of(context)!.classified_products,
-                is_logged_in.$
-                    ? () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return MyClassifiedAds();
-                        }));
-                      }
-                    : () => null),
+          // if (classified_product_status.$)
+          //   buildSettingAndAddonsHorizontalMenuItem(
+          //       "assets/classified_product.png",
+          //       AppLocalizations.of(context)!.classified_products,
+          //       is_logged_in.$
+          //           ? () {
+          //               Navigator.push(context,
+          //                   MaterialPageRoute(builder: (context) {
+          //                 return MyClassifiedAds();
+          //               }));
+          //             }
+          //           : () => null),
 
           buildSettingAndAddonsHorizontalMenuItem(
               "assets/download.png",
@@ -915,6 +915,7 @@ class _ProfileState extends State<Profile> {
                       }));
                     }
                   : () => null),
+
           buildSettingAndAddonsHorizontalMenuItem(
               "assets/orders.png",
               AppLocalizations.of(context)!.coupon_ucf,
@@ -926,6 +927,7 @@ class _ProfileState extends State<Profile> {
                       }));
                     }
                   : () => null),
+
         ],
       ),
     );
@@ -1422,7 +1424,7 @@ class _ProfileState extends State<Profile> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(12))),
                         child: Text(
-                          _member_level ?? "",
+                          "$_member_level Member" ?? "",
                           style: TextStyle(
                             color: Colors.white,
                           ),

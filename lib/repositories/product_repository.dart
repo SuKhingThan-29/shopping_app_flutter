@@ -113,7 +113,7 @@ class ProductRepository {
     String url = ("${AppConfig.BASE_URL}/products/search" +
         "?page=${page}&name=${name}&sort_key=${sort_key}&brands=${brands}&categories=${categories}&min=${min}&max=${max}");
 
-    print(url.toString());
+    print('Home page: ${url.toString()}');
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
       "Currency-Code": SystemConfig.systemCurrency!.code!,

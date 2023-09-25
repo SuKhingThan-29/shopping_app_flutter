@@ -454,43 +454,43 @@ class _WalletState extends State<Wallet> {
             ],
           ),
         ),
-        Container(
-          width: DeviceInfo(context).width! / 2.3,
-          height: 90,
-          decoration: BoxDecorations.buildBoxDecoration_1().copyWith(
-            border: Border.all(color: Colors.amber.shade700, width: 1),
-          ),
-          child: Btn.basic(
-            minWidth: MediaQuery.of(context).size.width,
-            color: MyTheme.amber,
-            shape: RoundedRectangleBorder(
-                borderRadius: const BorderRadius.all(Radius.circular(5.0))),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "${AppLocalizations.of(context)!.recharge_wallet_ucf}",
-                  style: TextStyle(
-                      color: MyTheme.font_grey,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: 14,
-                ),
-                Image.asset(
-                  "assets/add.png",
-                  height: 20,
-                  width: 20,
-                ),
-              ],
-            ),
-            onPressed: () {
-              buildShowAddFormDialog(context);
-            },
-          ),
-        ),
+        // Container(
+        //   width: DeviceInfo(context).width! / 2.3,
+        //   height: 90,
+        //   decoration: BoxDecorations.buildBoxDecoration_1().copyWith(
+        //     border: Border.all(color: Colors.amber.shade700, width: 1),
+        //   ),
+        //   child: Btn.basic(
+        //     minWidth: MediaQuery.of(context).size.width,
+        //     color: MyTheme.amber,
+        //     shape: RoundedRectangleBorder(
+        //         borderRadius: const BorderRadius.all(Radius.circular(5.0))),
+        //     child: Column(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         Text(
+        //           "${AppLocalizations.of(context)!.recharge_wallet_ucf}",
+        //           style: TextStyle(
+        //               color: MyTheme.font_grey,
+        //               fontSize: 12,
+        //               fontWeight: FontWeight.bold),
+        //           textAlign: TextAlign.center,
+        //         ),
+        //         SizedBox(
+        //           height: 14,
+        //         ),
+        //         Image.asset(
+        //           "assets/add.png",
+        //           height: 20,
+        //           width: 20,
+        //         ),
+        //       ],
+        //     ),
+        //     onPressed: () {
+        //       buildShowAddFormDialog(context);
+        //     },
+        //   ),
+        // ),
       ],
     );
   }

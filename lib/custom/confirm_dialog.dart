@@ -12,7 +12,7 @@ class ConfirmDialog{
       context: context,
       builder: (BuildContext context) {
         return  AlertDialog(
-          title: Text("Please ensure us."),
+          title: Text(title!),
           content: Row(
             children: [
               SizedBox(
