@@ -935,13 +935,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             //       homeData.featuredCategoryList[index].banner,
                             //   fit: BoxFit.cover,
                             // )
-                          child: CachedNetworkImage(
-                            imageUrl:  homeData.featuredCategoryList[index].banner,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => Center(
-                              child: CircularProgressIndicator(),),
-                            errorWidget: (context, url, error) => Icon(Icons.error),
-                          ),
+                          child: AIZImage.basicImage(homeData.featuredCategoryList[index].banner),
                         )),
                     Flexible(
                       child: Padding(

@@ -2,6 +2,7 @@ import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/digital_product/digital_product_details.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/screens/product_details.dart';
 import 'package:active_ecommerce_flutter/app_config.dart';
@@ -46,11 +47,19 @@ class _DigitalProductCardState extends State<DigitalProductCard> {
                           clipBehavior: Clip.hardEdge,
                             borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(6), bottom: Radius.zero),
-                            child: FadeInImage.assetNetwork(
-                              placeholder: 'assets/placeholder.png',
-                              image:  widget.image!,
-                              fit: BoxFit.cover,
-                            ))),
+                            // child: FadeInImage.assetNetwork(
+                            //   placeholder: 'assets/placeholder.png',
+                            //   image:  widget.image!,
+                            //   fit: BoxFit.cover,
+                            // )
+                          child:CachedNetworkImage(
+                            imageUrl: widget.image!,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(),),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
+                          ),
+                        )),
                   ),
                   Container(
                     width: double.infinity,

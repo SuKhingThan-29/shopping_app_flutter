@@ -1,3 +1,4 @@
+import 'package:active_ecommerce_flutter/custom/aiz_image.dart';
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
@@ -62,13 +63,14 @@ class _MiniProductCardState extends State<MiniProductCard> {
                           //   image: widget.image!,
                           //   fit: BoxFit.cover,
                           // )
-                        child: CachedNetworkImage(
-                          imageUrl: widget.image!,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => Center(
-                          child: CircularProgressIndicator(),),
-                          errorWidget: (context, url, error) => Icon(Icons.error),
-                        ),
+                        // child: CachedNetworkImage(
+                        //   imageUrl: widget.image!,
+                        //   fit: BoxFit.cover,
+                        //   placeholder: (context, url) => Center(
+                        //   child: CircularProgressIndicator(),),
+                        //   errorWidget: (context, url, error) => Icon(Icons.error),
+                        // ),
+                        child: AIZImage.basicImage(widget.image!),
                       )),
                 ),
                 Container(

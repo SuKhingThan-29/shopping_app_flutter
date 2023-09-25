@@ -1,3 +1,4 @@
+import 'package:active_ecommerce_flutter/custom/aiz_image.dart';
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/device_info.dart';
 import 'package:active_ecommerce_flutter/custom/lang_text.dart';
@@ -110,7 +111,7 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: buildAppBar(context),
-        body: buildProductList(context),
+       body: buildProductList(context),
       ),
     );
   }
@@ -152,8 +153,7 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
           autofocus: true,
           decoration: InputDecoration(
               hintText:
-                  "${AppLocalizations.of(context)!.search_products_from} : " +
-                      widget.flash_deal_name!,
+                  "Search Product for flash deal  ",
               hintStyle:
                   TextStyle(fontSize: 14.0, color: MyTheme.textfield_grey),
               enabledBorder: OutlineInputBorder(
@@ -184,9 +184,6 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
         future: _future,
         builder: (context,AsyncSnapshot<ProductMiniResponse> snapshot) {
           if (snapshot.hasError) {
-            //snapshot.hasError
-            //print("product error");
-            //print(snapshot.error.toString());
             return Container();
           } else if (snapshot.hasData) {
             var productResponse = snapshot.data;
@@ -194,9 +191,6 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
               _fullList.addAll(productResponse!.products!);
               _searchList.addAll(productResponse!.products!);
             }
-
-            //print('called');
-
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -313,13 +307,9 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
 
   Container buildFlashDealBanner() {
     return Container(
-      child: FadeInImage.assetNetwork(
-        placeholder: 'assets/placeholder_rectangle.png',
-        image: widget.bannerUrl!,
-        fit: BoxFit.cover,
-        width: DeviceInfo(context).width,
-        height: 180,
-      ),
+      width: DeviceInfo(context).width,
+      height: 180,
+      child: AIZImage.basicImage( widget.bannerUrl!),
     );
   }
 

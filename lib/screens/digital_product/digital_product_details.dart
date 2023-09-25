@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:active_ecommerce_flutter/app_config.dart';
+import 'package:active_ecommerce_flutter/custom/aiz_image.dart';
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/device_info.dart';
@@ -811,7 +812,8 @@ class _DigitalProductDetailsState extends State<DigitalProductDetails>
                                     color: MyTheme.dark_font_grey,
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold),
-                              ))),
+                              ))
+                      ),
                       Spacer(),
                       InkWell(
                         onTap: () {
@@ -1316,11 +1318,8 @@ class _DigitalProductDetailsState extends State<DigitalProductDetails>
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(6.0),
-                        child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/placeholder.png',
-                          image: _productDetails.shop_logo,
-                          fit: BoxFit.cover,
-                        ),
+
+                        child: AIZImage.basicImage(_productDetails.shop_logo),
                       ),
                     ),
                   ),

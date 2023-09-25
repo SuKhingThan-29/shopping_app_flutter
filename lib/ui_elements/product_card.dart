@@ -5,6 +5,7 @@ import 'package:active_ecommerce_flutter/screens/product_details.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../custom/aiz_image.dart';
 import '../helpers/shared_value_helper.dart';
 import '../screens/auction_products_details.dart';
 
@@ -63,27 +64,16 @@ class _ProductCardState extends State<ProductCard> {
                         clipBehavior: Clip.hardEdge,
                         borderRadius: BorderRadius.vertical(
                             top: Radius.circular(6), bottom: Radius.zero),
-                        // child: FadeInImage.assetNetwork(
-                        //   placeholder: 'assets/placeholder.png',
-                        //   image: widget.image!,
-                        //   fit: BoxFit.cover,
-                        // )
-                      child:CachedNetworkImage(
-                        imageUrl: widget.image!,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => Center(
-                          child: CircularProgressIndicator(),),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      ),
+                      child:AIZImage.basicImage(widget.image!),
                     )),
               ),
               Container(
+                height: 65,
                 width: double.infinity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 50,
                       padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
                       child: Text(
                         widget.name!,
@@ -116,29 +106,30 @@ class _ProductCardState extends State<ProductCard> {
                             ),
                           )
                         : Container(
-                            height: 8.0,
+                            height: 10.0,
                           ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
-                      child: Text(
-                        SystemConfig.systemCurrency!.code != null
-                            ? widget.main_price!.replaceAll(
-                                SystemConfig.systemCurrency!.code!,
-                                SystemConfig.systemCurrency!.symbol!)
-                            : widget.main_price!,
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                            color: MyTheme.accent_color,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ),
                   ],
                 ),
               ),
-            ]),
+              Padding(
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                child: Text(
+                  SystemConfig.systemCurrency!.code != null
+                      ? widget.main_price!.replaceAll(
+                      SystemConfig.systemCurrency!.code!,
+                      SystemConfig.systemCurrency!.symbol!)
+                      : widget.main_price!,
+                  textAlign: TextAlign.left,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(
+                      color: MyTheme.accent_color,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+            ]
+            ),
 
             // discount and wholesale
             Positioned.fill(

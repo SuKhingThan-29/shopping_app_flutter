@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:active_ecommerce_flutter/custom/aiz_image.dart';
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/device_info.dart';
@@ -19,6 +20,7 @@ import 'package:active_ecommerce_flutter/screens/common_webview_screen.dart';
 import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/screens/seller_details.dart';
 import 'package:active_ecommerce_flutter/screens/video_description_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
@@ -1166,10 +1168,17 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(6.0),
-                        child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/placeholder.png',
-                          image: _auctionproductDetails.shopLogo,
+                        // child: FadeInImage.assetNetwork(
+                        //   placeholder: 'assets/placeholder.png',
+                        //   image: _auctionproductDetails.shopLogo,
+                        //   fit: BoxFit.cover,
+                        // ),
+                        child: CachedNetworkImage(
+                          imageUrl: _auctionproductDetails.shopLogo!,
                           fit: BoxFit.cover,
+                          placeholder: (context, url) => Center(
+                            child: CircularProgressIndicator(),),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
                         ),
                       ),
                     ),
@@ -2047,13 +2056,10 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child:
-                                  /*Image.asset(
-                                        singleProduct.product_images[index])*/
-                                  FadeInImage.assetNetwork(
-                                placeholder: 'assets/placeholder.png',
-                                image: _productImageList[index],
-                                fit: BoxFit.contain,
-                              )),
+                            AIZImage.basicImage(_productImageList[index])
+                          )
+
+
                         ),
                       );
                     }),

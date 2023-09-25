@@ -7,15 +7,17 @@ class AIZImage{
 
       fit: fit,
       imageUrl: url,
-      progressIndicatorBuilder: (context,string, progress){
-        return Image.asset("assets/placeholder_rectangle.png",fit: BoxFit.cover,);
-      },
+        placeholder: (context, url) => Center(
+          child: CircularProgressIndicator(),),
+        errorWidget: (context, url, error) => Image.asset("assets/placeholder.png",fit: BoxFit.cover,)
+
+      // progressIndicatorBuilder: (context,string, progress){
+      //   return Image.asset("assets/placeholder_rectangle.png",fit: BoxFit.cover,);
+      // },
       // placeholder:(BuildContext context,error){
-      //   return Image.asset('assets/images/342x632.jpg',fit: BoxFit.cover,);
+      //   return Image.asset('assets/placeholder_rectangle.png',fit: BoxFit.cover,);
       // } ,
-      // progressIndicatorBuilder: (context, url, downloadProgress) =>
-      //     CircularProgressIndicator(value: downloadProgress.progress),
-      errorWidget: (context, url, error) => Image.asset("assets/placeholder_rectangle.png",fit: BoxFit.cover,),
+      // errorWidget: (context, url, error) => Image.asset("assets/placeholder_rectangle.png",fit: BoxFit.cover,),
     );
   }
 
