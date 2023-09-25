@@ -64,13 +64,15 @@ class _MiniProductCardState extends State<MiniProductCard> {
                           // )
                         child: CachedNetworkImage(
                           imageUrl: widget.image!,
-                          placeholder: (context, url) => Container(width: 50,height: 50,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Center(
                           child: CircularProgressIndicator(),),
                           errorWidget: (context, url, error) => Icon(Icons.error),
                         ),
                       )),
                 ),
-                Padding(
+                Container(
+                  height: 50,
                   padding: EdgeInsets.fromLTRB(8, 4, 8, 6),
                   child: Text(
                     widget.name!,

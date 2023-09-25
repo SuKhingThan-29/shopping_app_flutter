@@ -70,7 +70,8 @@ class _ProductCardState extends State<ProductCard> {
                         // )
                       child:CachedNetworkImage(
                         imageUrl: widget.image!,
-                        placeholder: (context, url) => Container(width: 50,height: 50,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Center(
                           child: CircularProgressIndicator(),),
                         errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
@@ -81,7 +82,8 @@ class _ProductCardState extends State<ProductCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
+                    Container(
+                      height: 50,
                       padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
                       child: Text(
                         widget.name!,

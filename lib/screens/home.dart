@@ -13,6 +13,7 @@ import 'package:active_ecommerce_flutter/screens/todays_deal_products.dart';
 import 'package:active_ecommerce_flutter/screens/top_selling_products.dart';
 import 'package:active_ecommerce_flutter/ui_elements/mini_product_card.dart';
 import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/index.dart';
@@ -928,12 +929,20 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         child: ClipRRect(
                             borderRadius: BorderRadius.horizontal(
                                 left: Radius.circular(6), right: Radius.zero),
-                            child: FadeInImage.assetNetwork(
-                              placeholder: 'assets/placeholder.png',
-                              image:
-                                  homeData.featuredCategoryList[index].banner,
-                              fit: BoxFit.cover,
-                            ))),
+                            // child: FadeInImage.assetNetwork(
+                            //   placeholder: 'assets/placeholder.png',
+                            //   image:
+                            //       homeData.featuredCategoryList[index].banner,
+                            //   fit: BoxFit.cover,
+                            // )
+                          child: CachedNetworkImage(
+                            imageUrl:  homeData.featuredCategoryList[index].banner,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(),),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
+                          ),
+                        )),
                     Flexible(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
