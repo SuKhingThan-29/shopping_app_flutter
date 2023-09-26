@@ -123,15 +123,14 @@ class HomePresenter extends ChangeNotifier {
     featuredProductPage++;
     featuredProductList.addAll(productResponse.products!);
     isFeaturedProductInitial = false;
-   // totalFeaturedProductData = productResponse.meta!.total;
+    totalFeaturedProductData = productResponse.meta!.total;
     showFeaturedLoadingContainer = false;
     notifyListeners();
   }
 
-  fetchAllProducts({name='recommend'}) async {
+  fetchAllProducts() async {
     var productResponse =
-        await ProductRepository().getProductTab(name:name,page: allProductPage);
-    print("Product recommend: ${productResponse.products!.length.toString()}");
+    await ProductRepository().getFilteredProducts(page: allProductPage);
     if (productResponse.products!.isEmpty) {
       ToastComponent.showDialog("No more products!", gravity: Toast.center);
       return;
@@ -139,7 +138,7 @@ class HomePresenter extends ChangeNotifier {
 
     allProductList.addAll(productResponse.products!);
     isAllProductInitial = false;
-   // totalAllProductData = productResponse.meta!.total;
+    totalAllProductData = productResponse.meta!.total;
     showAllLoadingContainer = false;
     notifyListeners();
   }
@@ -183,19 +182,18 @@ class HomePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
-  mainScrollListener(String selectedProductTab) {
+  mainScrollListener() {
     mainScrollController.addListener(() {
-      print("position: ");
+      //print("position: " + xcrollController.position.pixels.toString());
       //print("max: " + xcrollController.position.maxScrollExtent.toString());
 
       if (mainScrollController.position.pixels ==
           mainScrollController.position.maxScrollExtent) {
         allProductPage++;
-        //fetchAllProducts(name: selectedProductTab);
-
         ToastComponent.showDialog("More Products Loading...",
             gravity: Toast.center);
         showAllLoadingContainer = true;
+        fetchAllProducts();
       }
     });
   }

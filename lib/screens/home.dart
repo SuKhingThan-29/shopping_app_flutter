@@ -13,16 +13,12 @@ import 'package:active_ecommerce_flutter/screens/todays_deal_products.dart';
 import 'package:active_ecommerce_flutter/screens/top_selling_products.dart';
 import 'package:active_ecommerce_flutter/ui_elements/mini_product_card.dart';
 import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/index.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:provider/provider.dart';
-
-import '../presenter/product_tab_presenter.dart';
 
 class Home extends StatefulWidget {
   Home({
@@ -46,8 +42,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   List<CountdownTimerController> _timerControllerList = [];
 
-  List productTabs = ['recommend', 'newest'];
-  String selectProductTab = "recommend";
+  //List productTabs = ['Recommended', 'News', 'Brand Shops'];
+  List productTabs = ['News'];
+  String selectProductTab = "News";
 
   @override
   void initState() {
@@ -61,7 +58,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   change() {
     homeData.onRefresh();
-    homeData.mainScrollListener(selectProductTab);
+    homeData.mainScrollListener();
     homeData.initPiratedAnimation(this);
   }
 
@@ -112,10 +109,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       },
       child: Directionality(
         textDirection:
-            app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+        app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
         child: SafeArea(
           child: Scaffold(
-              //key: homeData.scaffoldKey,
+            //key: homeData.scaffoldKey,
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(80),
                 child: buildAppBar(statusBarHeight, context),
@@ -140,52 +137,52 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                 delegate: SliverChildListDelegate([
                                   AppConfig.purchase_code == ""
                                       ? Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                            9.0,
-                                            16.0,
-                                            9.0,
-                                            0.0,
-                                          ),
-                                          child: Container(
-                                            height: 140,
-                                            color: Colors.black,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                    left: 20,
-                                                    top: 0,
-                                                    child: AnimatedBuilder(
-                                                        animation: homeData
-                                                            .pirated_logo_animation,
-                                                        builder:
-                                                            (context, child) {
-                                                          return Image.asset(
-                                                            "assets/pirated_square.png",
-                                                            height: homeData
-                                                                .pirated_logo_animation
-                                                                .value,
-                                                            color: Colors.white,
-                                                          );
-                                                        })),
-                                                Center(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 24.0,
-                                                            left: 24,
-                                                            right: 24),
-                                                    child: Text(
-                                                      "This is a pirated app. Do not use this. It may have security issues.",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 18),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                    padding: const EdgeInsets.fromLTRB(
+                                      9.0,
+                                      16.0,
+                                      9.0,
+                                      0.0,
+                                    ),
+                                    child: Container(
+                                      height: 140,
+                                      color: Colors.black,
+                                      child: Stack(
+                                        children: [
+                                          Positioned(
+                                              left: 20,
+                                              top: 0,
+                                              child: AnimatedBuilder(
+                                                  animation: homeData
+                                                      .pirated_logo_animation,
+                                                  builder:
+                                                      (context, child) {
+                                                    return Image.asset(
+                                                      "assets/pirated_square.png",
+                                                      height: homeData
+                                                          .pirated_logo_animation
+                                                          .value,
+                                                      color: Colors.white,
+                                                    );
+                                                  })),
+                                          Center(
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.only(
+                                                  top: 24.0,
+                                                  left: 24,
+                                                  right: 24),
+                                              child: Text(
+                                                "This is a pirated app. Do not use this. It may have security issues.",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 18),
+                                              ),
                                             ),
                                           ),
-                                        )
+                                        ],
+                                      ),
+                                    ),
+                                  )
                                       : Container(),
                                   buildHomeCarouselSlider(context, homeData),
 
@@ -226,7 +223,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                       ),
                                       child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             "Today Deals",
@@ -243,7 +240,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   child: SizedBox(
                                     height: 250,
                                     child:
-                                        buildHomeTodayDeal(context, homeData),
+                                    buildHomeTodayDeal(context, homeData),
                                   ),
                                 ),
                               ],
@@ -259,7 +256,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     ),
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           AppLocalizations.of(context)!
@@ -284,7 +281,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
                               if (homeData.isFlashDeal)
                                 SliverToBoxAdapter(
-                                  child:buildFlashDeal(context, homeData)
+                                  child: SizedBox(
+                                    height: 220,
+                                    child: buildFlashDeal(context, homeData),
+                                  ),
                                 ),
 
                               SliverList(
@@ -298,7 +298,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                           width: double.infinity,
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.end,
+                                            MainAxisAlignment.end,
                                             children: [
                                               Image.asset(
                                                   "assets/background_1.png")
@@ -307,7 +307,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                         ),
                                         Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
@@ -321,7 +321,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                                     color: Colors.white,
                                                     fontSize: 18,
                                                     fontWeight:
-                                                        FontWeight.w700),
+                                                    FontWeight.w700),
                                               ),
                                             ),
                                             buildHomeFeatureProductHorizontalList(
@@ -383,9 +383,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                               GestureDetector(
                                                 onTap: () {
                                                   selectProductTab =
-                                                      productTabs[i];
-                                                  homeData.allProductList.clear();
-                                                  homeData.fetchAllProducts(name: selectProductTab);
+                                                  productTabs[i];
                                                   setState(() {});
                                                 },
                                                 child: Container(
@@ -393,22 +391,22 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                                       right: 15),
                                                   decoration: BoxDecoration(
                                                     border: selectProductTab ==
-                                                            productTabs[i]
+                                                        productTabs[i]
                                                         ? Border(
-                                                            bottom: BorderSide(
-                                                                width: 1.5,
-                                                                color: Colors
-                                                                    .black),
-                                                          )
+                                                      bottom: BorderSide(
+                                                          width: 1.5,
+                                                          color: Colors
+                                                              .black),
+                                                    )
                                                         : null,
                                                   ),
                                                   child: Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
+                                                    CrossAxisAlignment
+                                                        .center,
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
+                                                    MainAxisAlignment
+                                                        .center,
                                                     children: [
                                                       Text(
                                                         productTabs[i],
@@ -417,8 +415,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                                         style: TextStyle(
                                                             fontSize: 16,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .w700),
+                                                            FontWeight
+                                                                .w700),
                                                       ),
                                                     ],
                                                   ),
@@ -581,8 +579,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Widget buildHomeAllProducts2(context, HomePresenter homeData) {
-  // homeData.fetchAllProducts(name: selectProductTab);
-
     if (homeData.isAllProductInitial && homeData.allProductList.length == 0) {
       return SingleChildScrollView(
           child: ShimmerHelper().buildProductGridShimmer(
@@ -614,43 +610,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     } else {
       return Container(); // should never be happening
     }
-   //  Provider.of<ProductTabProvider>(context, listen: false).getProductTab(name);
-   // return Consumer<ProductTabProvider>(
-   //    builder: (context,provider,snapshot){
-   //      if (homeData.isAllProductInitial && homeData.allProductList.length == 0) {
-   //        return SingleChildScrollView(
-   //            child: ShimmerHelper().buildProductGridShimmer(
-   //                scontroller: homeData.allProductScrollController));
-   //      } else if (homeData.allProductList.length > 0) {
-   //        return MasonryGridView.count(
-   //            crossAxisCount: 2,
-   //            mainAxisSpacing: 14,
-   //            crossAxisSpacing: 14,
-   //            itemCount: homeData.allProductList.length,
-   //            shrinkWrap: true,
-   //            padding: EdgeInsets.only(top: 20.0, bottom: 10, left: 18, right: 18),
-   //            physics: NeverScrollableScrollPhysics(),
-   //            itemBuilder: (context, index) {
-   //              return ProductCard(
-   //                id: homeData.allProductList[index].id,
-   //                image: homeData.allProductList[index].thumbnail_image,
-   //                name: homeData.allProductList[index].name,
-   //                main_price: homeData.allProductList[index].main_price,
-   //                stroked_price: homeData.allProductList[index].stroked_price,
-   //                has_discount: homeData.allProductList[index].has_discount,
-   //                discount: homeData.allProductList[index].discount,
-   //                is_wholesale: homeData.allProductList[index].isWholesale,
-   //              );
-   //            });
-   //      } else if (homeData.totalAllProductData == 0) {
-   //        return Center(
-   //            child: Text(AppLocalizations.of(context)!.no_product_is_available));
-   //      } else {
-   //        return Container(); // should never be happening
-   //      }
-   //    }
-   //  );
-
   }
 
   Widget buildHomeTodayDeal(context, HomePresenter homeData) {
@@ -689,29 +648,29 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               itemBuilder: (context, index) {
                 return (index == homeData.todaysDealProducts.length)
                     ? SpinKitFadingFour(
-                        itemBuilder: (BuildContext context, int index) {
-                          return DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                            ),
-                          );
-                        },
-                      )
+                  itemBuilder: (BuildContext context, int index) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
+                    );
+                  },
+                )
                     : MiniProductCard(
-                        id: homeData.todaysDealProducts[index].id,
-                        image:
-                            homeData.todaysDealProducts[index].thumbnail_image,
-                        name: homeData.todaysDealProducts[index].name,
-                        main_price:
-                            homeData.todaysDealProducts[index].main_price,
-                        stroked_price:
-                            homeData.todaysDealProducts[index].stroked_price,
-                        has_discount:
-                            homeData.todaysDealProducts[index].has_discount,
-                        is_wholesale:
-                            homeData.todaysDealProducts[index].isWholesale,
-                        discount: homeData.todaysDealProducts[index].discount,
-                      );
+                  id: homeData.todaysDealProducts[index].id,
+                  image:
+                  homeData.todaysDealProducts[index].thumbnail_image,
+                  name: homeData.todaysDealProducts[index].name,
+                  main_price:
+                  homeData.todaysDealProducts[index].main_price,
+                  stroked_price:
+                  homeData.todaysDealProducts[index].stroked_price,
+                  has_discount:
+                  homeData.todaysDealProducts[index].has_discount,
+                  is_wholesale:
+                  homeData.todaysDealProducts[index].isWholesale,
+                  discount: homeData.todaysDealProducts[index].discount,
+                );
               },
             ),
           ),
@@ -723,9 +682,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           height: 100,
           child: Center(
               child: Text(
-            "No Today Deal",
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+                "No Today Deal",
+                style: TextStyle(color: MyTheme.font_grey),
+              )));
     } else {
       // should not be happening
       return Container(
@@ -744,6 +703,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           controller: homeData.featuredCategoryScrollController);
     } else if (homeData.flashDealProducts.length > 0) {
       //snapshot.hasData
+
       DateTime end = convertTimeStampToDateTime(
           homeData.flashDealProducts[0].date!); // YYYY-mm-dd
       DateTime now = DateTime.now();
@@ -753,7 +713,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       void onEnd() {}
 
       CountdownTimerController timeController =
-          CountdownTimerController(endTime: endTime, onEnd: onEnd);
+      CountdownTimerController(endTime: endTime, onEnd: onEnd);
       _timerControllerList.add(timeController);
 
       return CountdownTimer(
@@ -765,17 +725,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 child: Center(
                     child: time == null
                         ? Text(
-                            AppLocalizations.of(context)!.ended_ucf,
-                            style: TextStyle(
-                                color: MyTheme.accent_color,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w600),
-                          )
+                      AppLocalizations.of(context)!.ended_ucf,
+                      style: TextStyle(
+                          color: MyTheme.accent_color,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600),
+                    )
                         : buildTimerRowRow(time)),
               ),
               SingleChildScrollView(
                 child: SizedBox(
-                  height: 180,
+                  height: 160,
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollInfo) {
                       if (scrollInfo.metrics.pixels ==
@@ -788,17 +748,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return FlashDealProducts(
-                            flash_deal_id: homeData.flashDealProducts[0].id,
-                            flash_deal_name:
+                              return FlashDealProducts(
+                                flash_deal_id: homeData.flashDealProducts[0].id,
+                                flash_deal_name:
                                 homeData.flashDealProducts[0].title,
-                            bannerUrl: homeData.flashDealProducts[0].banner,
-                            countdownTimerController: _timerControllerList[0],
-                          );
-                        }));
+                                bannerUrl: homeData.flashDealProducts[0].banner,
+                                countdownTimerController: _timerControllerList[0],
+                              );
+                            }));
                       },
                       child: ListView.separated(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(18.0),
                         separatorBuilder: (context, index) => SizedBox(
                           width: 14,
                         ),
@@ -811,85 +771,69 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             parent: AlwaysScrollableScrollPhysics()),
                         itemBuilder: (context, productIndex) {
                           return (productIndex ==
-                                  homeData.flashDealProducts[0].products!
-                                      .products!.length)
+                              homeData.flashDealProducts[0].products!
+                                  .products!.length)
                               ? SpinKitFadingFour(
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return DecoratedBox(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                      ),
-                                    );
-                                  },
-                                )
+                            itemBuilder:
+                                (BuildContext context, int index) {
+                              return DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                ),
+                              );
+                            },
+                          )
                               : Card(
-                                  margin: EdgeInsets.only(right: 5),
-                                  child: Container(
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(6.0),
+                            margin: EdgeInsets.only(right: 5),
+                            child: Container(
+                              height: 50,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(6.0),
+                              ),
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                MainAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    clipBehavior: Clip.none,
+                                    child: FadeInImage(
+                                      placeholder: AssetImage(
+                                          "assets/placeholder.png"),
+                                      width: 100,
+                                      image: NetworkImage(homeData
+                                          .flashDealProducts[0]
+                                          .products
+                                          .products[productIndex]
+                                          .image),
                                     ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        ClipRRect(
-                                          clipBehavior: Clip.none,
-                                          child: FadeInImage(
-                                            placeholder: AssetImage(
-                                                "assets/placeholder.png"),
-                                            width: 100,
-                                            image: NetworkImage(homeData
-                                                .flashDealProducts[0]
-                                                .products
-                                                .products[productIndex]
-                                                .image),
-                                          ),
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(6),
-                                            bottomLeft: Radius.circular(6),
-                                          ),
-                                        ),
-                                    Container(
-                                      height: 30,
-                                      padding:
-                                      const EdgeInsets.only(left: 0.0),
-                                      child: Text(
-                                        homeData
-                                            .flashDealProducts[0]
-                                            .products
-                                            .products[productIndex]
-                                            .name,
-                                          maxLines:2,
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            color: MyTheme.grey_153,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 0.0,top: 8),
-                                          child: Text(
-                                            homeData
-                                                .flashDealProducts[0]
-                                                .products
-                                                .products[productIndex]
-                                                .price,
-                                            style: TextStyle(
-                                                fontSize: 13,
-                                                color: MyTheme.accent_color,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        )
-                                      ],
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(6),
+                                      bottomLeft: Radius.circular(6),
                                     ),
                                   ),
-                                );
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets.only(left: 10.0),
+                                    child: Text(
+                                      homeData
+                                          .flashDealProducts[0]
+                                          .products
+                                          .products[productIndex]
+                                          .price,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          color: MyTheme.accent_color,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
                           // : MiniProductCard(
                           //     id: homeData.flashDealProducts[index].id,
                           //     image:
@@ -921,9 +865,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           height: 100,
           child: Center(
               child: Text(
-            "No Flash Deal",
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+                "No Flash Deal",
+                style: TextStyle(color: MyTheme.font_grey),
+              )));
     } else {
       // should not be happening
       return Container(
@@ -945,7 +889,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       //snapshot.hasData
       return GridView.builder(
           padding:
-              const EdgeInsets.only(left: 18, right: 18, top: 13, bottom: 20),
+          const EdgeInsets.only(left: 18, right: 18, top: 13, bottom: 20),
           scrollDirection: Axis.horizontal,
           controller: homeData.featuredCategoryScrollController,
           itemCount: homeData.featuredCategoryList.length,
@@ -973,14 +917,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         child: ClipRRect(
                             borderRadius: BorderRadius.horizontal(
                                 left: Radius.circular(6), right: Radius.zero),
-                            // child: FadeInImage.assetNetwork(
-                            //   placeholder: 'assets/placeholder.png',
-                            //   image:
-                            //       homeData.featuredCategoryList[index].banner,
-                            //   fit: BoxFit.cover,
-                            // )
-                          child: AIZImage.basicImage(homeData.featuredCategoryList[index].banner),
-                        )),
+                            child: FadeInImage.assetNetwork(
+                              placeholder: 'assets/placeholder.png',
+                              image:
+                              homeData.featuredCategoryList[index].banner,
+                              fit: BoxFit.cover,
+                            ))),
                     Flexible(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -991,7 +933,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                           maxLines: 3,
                           softWrap: true,
                           style:
-                              TextStyle(fontSize: 12, color: MyTheme.font_grey),
+                          TextStyle(fontSize: 12, color: MyTheme.font_grey),
                         ),
                       ),
                     ),
@@ -1006,9 +948,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           height: 100,
           child: Center(
               child: Text(
-            AppLocalizations.of(context)!.no_category_found,
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+                AppLocalizations.of(context)!.no_category_found,
+                style: TextStyle(color: MyTheme.font_grey),
+              )));
     } else {
       // should not be happening
       return Container(
@@ -1057,7 +999,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 width: 14,
               ),
               itemCount: homeData.totalFeaturedProductData! >
-                      homeData.featuredProductList.length
+                  homeData.featuredProductList.length
                   ? homeData.featuredProductList.length + 1
                   : homeData.featuredProductList.length,
               scrollDirection: Axis.horizontal,
@@ -1068,29 +1010,29 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               itemBuilder: (context, index) {
                 return (index == homeData.featuredProductList.length)
                     ? SpinKitFadingFour(
-                        itemBuilder: (BuildContext context, int index) {
-                          return DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                            ),
-                          );
-                        },
-                      )
+                  itemBuilder: (BuildContext context, int index) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
+                    );
+                  },
+                )
                     : MiniProductCard(
-                        id: homeData.featuredProductList[index].id,
-                        image:
-                            homeData.featuredProductList[index].thumbnail_image,
-                        name: homeData.featuredProductList[index].name,
-                        main_price:
-                            homeData.featuredProductList[index].main_price,
-                        stroked_price:
-                            homeData.featuredProductList[index].stroked_price,
-                        has_discount:
-                            homeData.featuredProductList[index].has_discount,
-                        is_wholesale:
-                            homeData.featuredProductList[index].isWholesale,
-                        discount: homeData.featuredProductList[index].discount,
-                      );
+                  id: homeData.featuredProductList[index].id,
+                  image:
+                  homeData.featuredProductList[index].thumbnail_image,
+                  name: homeData.featuredProductList[index].name,
+                  main_price:
+                  homeData.featuredProductList[index].main_price,
+                  stroked_price:
+                  homeData.featuredProductList[index].stroked_price,
+                  has_discount:
+                  homeData.featuredProductList[index].has_discount,
+                  is_wholesale:
+                  homeData.featuredProductList[index].isWholesale,
+                  discount: homeData.featuredProductList[index].discount,
+                );
               },
             ),
           ),
@@ -1101,9 +1043,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           height: 100,
           child: Center(
               child: Text(
-            AppLocalizations.of(context)!.no_related_product,
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+                AppLocalizations.of(context)!.no_related_product,
+                style: TextStyle(color: MyTheme.font_grey),
+              )));
     }
   }
 
@@ -1298,7 +1240,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     if (homeData.isCarouselInitial && homeData.carouselImageList.length == 0) {
       return Padding(
           padding:
-              const EdgeInsets.only(left: 18, right: 18, top: 0, bottom: 20),
+          const EdgeInsets.only(left: 18, right: 18, top: 0, bottom: 20),
           child: ShimmerHelper().buildBasicShimmer(height: 120));
     } else if (homeData.carouselImageList.length > 0) {
       return CarouselSlider(
@@ -1326,7 +1268,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 child: Stack(
                   children: <Widget>[
                     Container(
-                        //color: Colors.amber,
+                      //color: Colors.amber,
                         width: double.infinity,
                         height: 140,
                         //decoration: BoxDecorations.buildBoxDecoration_1(),
@@ -1365,9 +1307,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           height: 100,
           child: Center(
               child: Text(
-            AppLocalizations.of(context)!.no_carousel_image_found,
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+                AppLocalizations.of(context)!.no_carousel_image_found,
+                style: TextStyle(color: MyTheme.font_grey),
+              )));
     } else {
       // should not be happening
       return Container(
@@ -1381,7 +1323,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         homeData.bannerOneImageList.length == 0) {
       return Padding(
           padding:
-              const EdgeInsets.only(left: 18.0, right: 18, top: 10, bottom: 20),
+          const EdgeInsets.only(left: 18.0, right: 18, top: 10, bottom: 20),
           child: ShimmerHelper().buildBasicShimmer(height: 120));
     } else if (homeData.bannerOneImageList.length > 0) {
       return Padding(
@@ -1425,9 +1367,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           height: 100,
           child: Center(
               child: Text(
-            AppLocalizations.of(context)!.no_carousel_image_found,
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+                AppLocalizations.of(context)!.no_carousel_image_found,
+                style: TextStyle(color: MyTheme.font_grey),
+              )));
     } else {
       // should not be happening
       return Container(
@@ -1441,7 +1383,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         homeData.bannerTwoImageList.length == 0) {
       return Padding(
           padding:
-              const EdgeInsets.only(left: 18.0, right: 18, top: 10, bottom: 10),
+          const EdgeInsets.only(left: 18.0, right: 18, top: 10, bottom: 10),
           child: ShimmerHelper().buildBasicShimmer(height: 120));
     } else if (homeData.bannerTwoImageList.length > 0) {
       return Padding(
@@ -1486,9 +1428,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           height: 100,
           child: Center(
               child: Text(
-            AppLocalizations.of(context)!.no_carousel_image_found,
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+                AppLocalizations.of(context)!.no_carousel_image_found,
+                style: TextStyle(color: MyTheme.font_grey),
+              )));
     } else {
       // should not be happening
       return Container(
