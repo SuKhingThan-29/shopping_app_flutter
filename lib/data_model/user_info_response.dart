@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-UserInfoResponse userInfoResponseFromJson(String str) => UserInfoResponse.fromJson(json.decode(str));
+UserInfoResponse userInfoResponseFromJson(String str) =>
+    UserInfoResponse.fromJson(json.decode(str));
 
-String userInfoResponseToJson(UserInfoResponse data) => json.encode(data.toJson());
+String userInfoResponseToJson(UserInfoResponse data) =>
+    json.encode(data.toJson());
 
 class UserInfoResponse {
   UserInfoResponse({
@@ -19,17 +21,19 @@ class UserInfoResponse {
   bool? success;
   int? status;
 
-  factory UserInfoResponse.fromJson(Map<String, dynamic> json) => UserInfoResponse(
-    data: List<UserInformation>.from(json["data"].map((x) => UserInformation.fromJson(x))),
-    success: json["success"],
-    status: json["status"],
-  );
+  factory UserInfoResponse.fromJson(Map<String, dynamic> json) =>
+      UserInfoResponse(
+        data: List<UserInformation>.from(
+            json["data"].map((x) => UserInformation.fromJson(x))),
+        success: json["success"],
+        status: json["status"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
-    "success": success,
-    "status": status,
-  };
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+        "success": success,
+        "status": status,
+      };
 }
 
 class UserInformation {
@@ -49,6 +53,7 @@ class UserInformation {
     this.packageName,
     this.member_level_id,
     this.member_level,
+    this.total_points,
   });
 
   String? name;
@@ -66,41 +71,43 @@ class UserInformation {
   var remainingUploads;
   var packageId;
   String? packageName;
+  String? total_points;
 
-  factory UserInformation.fromJson(Map<String, dynamic> json) => UserInformation(
-    name: json["name"],
-    email: json["email"],
-    avatar: json["avatar"],
-    address: json["address"],
-    country: json["country"],
-    state: json["state"],
-    city: json["city"],
-    postalCode: json["postal_code"],
-    phone: json["phone"],
-    balance: json["balance"],
-    remainingUploads: json["remaining_uploads"],
-    packageId: json["package_id"],
-    packageName: json["package_name"],
-    member_level_id: json["member_level_id"]??0,
-    member_level: json["member_level"]??""
-
-  );
+  factory UserInformation.fromJson(Map<String, dynamic> json) =>
+      UserInformation(
+          name: json["name"],
+          email: json["email"],
+          avatar: json["avatar"],
+          address: json["address"],
+          country: json["country"],
+          state: json["state"],
+          city: json["city"],
+          postalCode: json["postal_code"],
+          phone: json["phone"],
+          balance: json["balance"],
+          remainingUploads: json["remaining_uploads"],
+          packageId: json["package_id"],
+          packageName: json["package_name"],
+          member_level_id: json["member_level_id"] ?? 0,
+          member_level: json["member_level"] ?? "",
+          total_points: json["total_points"] ?? "0");
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "email": email,
-    "avatar": avatar,
-    "address": address,
-    "country": country,
-    "state": state,
-    "city": city,
-    "postal_code": postalCode,
-    "phone": phone,
-    "balance": balance,
-    "remaining_uploads": remainingUploads,
-    "package_id": packageId,
-    "package_name": packageName,
-    "member_level_id":member_level_id,
-    "member_level":member_level,
-  };
+        "name": name,
+        "email": email,
+        "avatar": avatar,
+        "address": address,
+        "country": country,
+        "state": state,
+        "city": city,
+        "postal_code": postalCode,
+        "phone": phone,
+        "balance": balance,
+        "remaining_uploads": remainingUploads,
+        "package_id": packageId,
+        "package_name": packageName,
+        "member_level_id": member_level_id,
+        "member_level": member_level,
+        "total_points": total_points
+      };
 }
