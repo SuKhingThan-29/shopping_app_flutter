@@ -283,104 +283,95 @@ class _CouponState extends State<Coupon> {
   }
 
   buildOrderListItemCard(int index) {
-    return CouponCard(
-      height: 250,
-      curvePosition: 150,
-      curveRadius: 30,
-      borderRadius: 10,
+    return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.purple,
-            Colors.purple.shade700,
+        color: Color.fromARGB(255, 245, 239, 192),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      margin: EdgeInsets.only(bottom: 10),
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${_orderList[index].discount} MMK',
+                  style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  '${_orderList[index].startDate} to ${_orderList[index].endDate}',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: const Color.fromARGB(255, 40, 40, 40),
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                Container(
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(
+                      _orderList[index].code,
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
+                InkWell(
+                    onTap: () async {
+                      var response = await OrderRepository()
+                          .buyCoupon(_orderList[index].id);
+                      print(response);
+                      ToastComponent.showDialog(response.message);
+                      if (response.message == true) {
+                        _onRefresh();
+                        print(_orderList);
+                        Navigator.of(context, rootNavigator: true).pop();
+                      }
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(
+                            20.0), // Adjust the radius as needed
+                        border: Border.all(
+                          color: Colors.black, // Set the border color to black
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 15, right: 15, top: 3, bottom: 3),
+                        child: const Text(
+                          'Buy',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    )),
+              ],
+            )
           ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
         ),
       ),
-      firstChild: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            _orderList[index].code,
-            style: TextStyle(
-              color: Colors.white54,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 10),
-          Text(
-            '${_orderList[index].startDate}to${_orderList[index].endDate}',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            'OFF ${_orderList[index].discount}',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-      secondChild: Container(
-        width: double.maxFinite,
-        decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(color: Colors.white),
-          ),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 42),
-        // child: ElevatedButton(
-        //   style: ButtonStyle(
-        //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-        //       RoundedRectangleBorder(
-        //         borderRadius: BorderRadius.circular(60),
-        //       ),
-        //     ),
-        //     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-        //       const EdgeInsets.symmetric(horizontal: 80),
-        //     ),
-        //     backgroundColor: MaterialStateProperty.all<Color>(
-        //       Colors.white,
-        //     ),
-        //   ),
-        //   onPressed: () async {
-        //     var response =
-        //         await OrderRepository().buyCoupon(_orderList[index].id);
-        //     ToastComponent.showDialog(response.message);
-        //     if (response.message == true) {
-        //       Navigator.of(context, rootNavigator: true).pop();
-        //     }
-        //   },
-        //   child: const Text(
-        //     'Buy',
-        //     style: TextStyle(
-        //       fontSize: 16,
-        //       fontWeight: FontWeight.bold,
-        //       color: Colors.purple,
-        //     ),
-        //   ),
-        // ),
-      ),
-
-      // Container(
-      //   padding: EdgeInsets.all(10),
-      //   decoration: BoxDecorations.buildCircularButtonDecoration_1(),
-      //   child: InkWell(
-      //       onTap: () async {
-      //         var response =
-      //             await OrderRepository().buyCoupon(_orderList[index].id);
-      //         ToastComponent.showDialog(response.message);
-      //       },
-      //       child: Image.asset('assets/cart.png',
-      //           height: 16, width: 16, color: MyTheme.dark_grey)),
-      // ),
     );
   }
 

@@ -48,14 +48,14 @@ class Checkout extends StatefulWidget {
 
   Checkout(
       {Key? key,
-        this.delivery_id,
-        this.order_id = 0,
-        this.paymentFor,
-        this.list = "both",
-        //this.offLinePaymentFor,
-        this.rechargeAmount = 0.0,
-        this.title,
-        this.packageId = 0})
+      this.delivery_id,
+      this.order_id = 0,
+      this.paymentFor,
+      this.list = "both",
+      //this.offLinePaymentFor,
+      this.rechargeAmount = 0.0,
+      this.title,
+      this.packageId = 0})
       : super(key: key);
 
   @override
@@ -69,7 +69,7 @@ class _CheckoutState extends State<Checkout> {
 
   ScrollController _mainScrollController = ScrollController();
   SingleValueDropDownController _couponControllerValue =
-  SingleValueDropDownController();
+      SingleValueDropDownController();
   String? _couponController;
   int? _disprice;
   var _paymentTypeList = [];
@@ -88,7 +88,6 @@ class _CheckoutState extends State<Checkout> {
   String? _title;
   dynamic _balanceDetails = null;
   DeliveryResponse? deliveryResponse;
-
 
   @override
   void initState() {
@@ -110,18 +109,20 @@ class _CheckoutState extends State<Checkout> {
     _mainScrollController.dispose();
     _mycouponsList.clear();
   }
- fetchStoreDeliveryInfo()async{
+
+  fetchStoreDeliveryInfo() async {
     print("checkout deliveryId: ${widget.delivery_id}");
-    deliveryResponse= await ShippingRepository().postDeliveryInfo(widget.delivery_id);
+    deliveryResponse =
+        await ShippingRepository().postDeliveryInfo(widget.delivery_id);
     print("checkout grandtotal: ${deliveryResponse!.grand_total}");
-    if(deliveryResponse !=null){
-      _subTotalString=deliveryResponse!.subtotal.toString();
-      _shippingCostString=deliveryResponse!.delivery_price.toString();
+    if (deliveryResponse != null) {
+      _subTotalString = deliveryResponse!.subtotal.toString();
+      _shippingCostString = deliveryResponse!.delivery_price.toString();
       _discountString = deliveryResponse!.discount.toString();
       _grandTotalValue = deliveryResponse!.grand_total;
     }
+  }
 
- }
   fetchAll() {
     fetchList();
     fetchMyCoupons();
@@ -135,18 +136,17 @@ class _CheckoutState extends State<Checkout> {
       //   fetchSummary();
       // }
       fetchStoreDeliveryInfo();
-
     }
   }
 
   fetchList() async {
     var paymentTypeResponseList = await PaymentRepository()
         .getPaymentResponseList(
-        list: widget.list,
-        mode: widget.paymentFor != PaymentFor.Order &&
-            widget.paymentFor != PaymentFor.ManualPayment
-            ? "wallet"
-            : "order");
+            list: widget.list,
+            mode: widget.paymentFor != PaymentFor.Order &&
+                    widget.paymentFor != PaymentFor.ManualPayment
+                ? "wallet"
+                : "order");
     _paymentTypeList.addAll(paymentTypeResponseList);
     if (_paymentTypeList.length > 0) {
       _selected_payment_method = _paymentTypeList[0].payment_type;
@@ -180,6 +180,7 @@ class _CheckoutState extends State<Checkout> {
 
     setState(() {});
   }
+
   fetchMyCoupons() async {
     _mycouponsList.clear();
     var orderResponse = await OrderRepository().getMyCoupon();
@@ -233,7 +234,7 @@ class _CheckoutState extends State<Checkout> {
     }
 
     var couponApplyResponse =
-    await CouponRepository().getCouponApplyResponse(coupon_code);
+        await CouponRepository().getCouponApplyResponse(coupon_code);
     if (couponApplyResponse.result == false) {
       ToastComponent.showDialog(couponApplyResponse.message,
           gravity: Toast.center, duration: Toast.lengthLong);
@@ -250,7 +251,7 @@ class _CheckoutState extends State<Checkout> {
 
   onCouponRemove() async {
     var couponRemoveResponse =
-    await CouponRepository().getCouponRemoveResponse();
+        await CouponRepository().getCouponRemoveResponse();
 
     if (couponRemoveResponse.result == false) {
       ToastComponent.showDialog(couponRemoveResponse.message,
@@ -270,7 +271,6 @@ class _CheckoutState extends State<Checkout> {
   List<DropDownValueModel> dropDownList = [];
 
   onPressPlaceOrderOrProceed() {
-
     print(_selected_payment_method);
     if (_selected_payment_method == "") {
       ToastComponent.showDialog(
@@ -278,7 +278,7 @@ class _CheckoutState extends State<Checkout> {
           gravity: Toast.center,
           duration: Toast.lengthLong);
       return;
-    }else{
+    } else {
       ConfirmDialog.show(
         context,
         title: "Your order has been placed",
@@ -294,16 +294,13 @@ class _CheckoutState extends State<Checkout> {
         },
       );
     }
-
-
-
   }
 
   pay_by_edpayment() async {
     loading();
     var orderCreateEDResponse = await PaymentRepository()
         .getOrderCreateResponseFrom_Ed_Payment(
-        _selected_payment_method_key, widget.delivery_id);
+            _selected_payment_method_key, widget.delivery_id);
     Navigator.of(loadingcontext).pop();
     print("order create ed response: ${orderCreateEDResponse.url}");
     if (orderCreateEDResponse.result == false) {
@@ -316,7 +313,8 @@ class _CheckoutState extends State<Checkout> {
         orderCreateEDResponse.url != null) {
       print("Invoice ID: ${orderCreateEDResponse.combined_order_id}");
       _launchUrl(orderCreateEDResponse.url);
-    }else if(orderCreateEDResponse.result == true && orderCreateEDResponse.url ==null){
+    } else if (orderCreateEDResponse.result == true &&
+        orderCreateEDResponse.url == null) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return OrderList(from_checkout: true);
       }));
@@ -330,22 +328,20 @@ class _CheckoutState extends State<Checkout> {
   pay_by_wallet(price) async {
     var orderCreateResponse = await PaymentRepository()
         .getOrderCreateResponseFromWallet(
-        _selected_payment_method_key, price!.toDouble());
+            _selected_payment_method_key, price!.toDouble());
 
     if (orderCreateResponse.result == false) {
       ToastComponent.showDialog(orderCreateResponse.message,
           gravity: Toast.center, duration: Toast.lengthLong);
       return;
     }
-
-
   }
 
   pay_by_cod() async {
     loading();
     var orderCreateResponse = await PaymentRepository()
         .getOrderCreateResponseFromCod(
-        _selected_payment_method_key, widget.delivery_id);
+            _selected_payment_method_key, widget.delivery_id);
     Navigator.of(loadingcontext).pop();
     if (orderCreateResponse.result == false) {
       ToastComponent.showDialog(orderCreateResponse.message,
@@ -395,7 +391,7 @@ class _CheckoutState extends State<Checkout> {
       context: context,
       builder: (_) => AlertDialog(
         contentPadding:
-        EdgeInsets.only(top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
+            EdgeInsets.only(top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
         content: Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 16.0),
           child: Container(
@@ -577,7 +573,7 @@ class _CheckoutState extends State<Checkout> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection:
-      app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
           backgroundColor: Colors.white,
           appBar: buildAppBar(context),
@@ -613,36 +609,155 @@ class _CheckoutState extends State<Checkout> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: widget.paymentFor == PaymentFor.WalletRecharge ||
-                    widget.paymentFor == PaymentFor.PackagePay
+                        widget.paymentFor == PaymentFor.PackagePay
                     ? Container()
                     : Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
 
-                    /*border: Border(
+                          /*border: Border(
                       top: BorderSide(color: MyTheme.light_grey,width: 1.0),
                     )*/
-                  ),
-                  height: widget.paymentFor == PaymentFor.ManualPayment
-                      ? 80
-                      : 140,
-                  //color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        widget.paymentFor == PaymentFor.Order
-                            ? Padding(
-                          padding:
-                          const EdgeInsets.only(bottom: 16.0),
-                          child: buildApplyCouponRow(context),
-                        )
-                            : Container(),
-                        grandTotalSection(),
-                      ],
-                    ),
-                  ),
-                ),
+                        ),
+                        height: widget.paymentFor == PaymentFor.ManualPayment
+                            ? 80
+                            : 400,
+                        //color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              widget.paymentFor == PaymentFor.Order
+                                  ? Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 16.0),
+                                      child: buildApplyCouponRow(context),
+                                    )
+                                  : Container(),
+                              Divider(),
+                              Container(
+                                margin: EdgeInsets.only(top: 10),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .subtotal_all_capital,
+                                          textAlign: TextAlign.end,
+                                          style: TextStyle(
+                                              color: MyTheme.font_grey,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          '$_subTotalString ${SystemConfig.systemCurrency!.symbol}',
+                                          style: TextStyle(
+                                              color: MyTheme.font_grey,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .shipping_cost_all_capital,
+                                          textAlign: TextAlign.end,
+                                          style: TextStyle(
+                                              color: MyTheme.font_grey,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          // SystemConfig.systemCurrency != null
+                                          //     ? _shippingCostString!.replaceAll(
+                                          //     SystemConfig.systemCurrency!.code!,
+                                          //     SystemConfig.systemCurrency!.symbol!)
+                                          //     :
+                                          '$_shippingCostString ${SystemConfig.systemCurrency!.symbol}',
+                                          style: TextStyle(
+                                              color: MyTheme.font_grey,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .coupon_ucf,
+                                          textAlign: TextAlign.end,
+                                          style: TextStyle(
+                                              color: MyTheme.font_grey,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          // SystemConfig.systemCurrency != null
+                                          //     ? _discountString!.replaceAll(
+                                          //     SystemConfig.systemCurrency!.code!,
+                                          //     SystemConfig.systemCurrency!.symbol!)
+                                          //     :
+                                          '$_discountString ${SystemConfig.systemCurrency!.symbol}',
+                                          style: TextStyle(
+                                              color: MyTheme.font_grey,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Divider(),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .grand_total_all_capital,
+                                          textAlign: TextAlign.end,
+                                          style: TextStyle(
+                                              color: MyTheme.font_grey,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          // SystemConfig.systemCurrency != null
+                                          //     ? _grandTotalValue!.toString().replaceAll(
+                                          //     SystemConfig.systemCurrency!.code!,
+                                          //     SystemConfig.systemCurrency!.symbol!)
+                                          //     :
+                                          '$_grandTotalValue ${SystemConfig.systemCurrency!.symbol}'!,
+                                          style: TextStyle(
+                                              color: MyTheme.accent_color,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
               )
             ],
           )),
@@ -691,51 +806,51 @@ class _CheckoutState extends State<Checkout> {
         ),
         !_coupon_applied!
             ? Container(
-          width: (MediaQuery.of(context).size.width - 32) * (1 / 3),
-          height: 42,
-          child: Btn.basic(
-            minWidth: MediaQuery.of(context).size.width,
-            color: MyTheme.accent_color,
-            shape: RoundedRectangleBorder(
-                borderRadius: const BorderRadius.only(
-                  topRight: const Radius.circular(8.0),
-                  bottomRight: const Radius.circular(8.0),
-                )),
-            child: Text(
-              AppLocalizations.of(context)!.apply_coupon_all_capital,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
-            ),
-            onPressed: () {
-              onCouponApply();
-            },
-          ),
-        )
+                width: (MediaQuery.of(context).size.width - 32) * (1 / 3),
+                height: 42,
+                child: Btn.basic(
+                  minWidth: MediaQuery.of(context).size.width,
+                  color: MyTheme.accent_color,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: const BorderRadius.only(
+                    topRight: const Radius.circular(8.0),
+                    bottomRight: const Radius.circular(8.0),
+                  )),
+                  child: Text(
+                    AppLocalizations.of(context)!.apply_coupon_all_capital,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  onPressed: () {
+                    onCouponApply();
+                  },
+                ),
+              )
             : Container(
-          width: (MediaQuery.of(context).size.width - 32) * (1 / 3),
-          height: 42,
-          child: Btn.basic(
-            minWidth: MediaQuery.of(context).size.width,
-            color: MyTheme.accent_color,
-            shape: RoundedRectangleBorder(
-                borderRadius: const BorderRadius.only(
-                  topRight: const Radius.circular(8.0),
-                  bottomRight: const Radius.circular(8.0),
-                )),
-            child: Text(
-              AppLocalizations.of(context)!.remove_ucf,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
-            ),
-            onPressed: () {
-              onCouponRemove();
-            },
-          ),
-        )
+                width: (MediaQuery.of(context).size.width - 32) * (1 / 3),
+                height: 42,
+                child: Btn.basic(
+                  minWidth: MediaQuery.of(context).size.width,
+                  color: MyTheme.accent_color,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: const BorderRadius.only(
+                    topRight: const Radius.circular(8.0),
+                    bottomRight: const Radius.circular(8.0),
+                  )),
+                  child: Text(
+                    AppLocalizations.of(context)!.remove_ucf,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  onPressed: () {
+                    onCouponRemove();
+                  },
+                ),
+              )
       ],
     );
   }
@@ -789,9 +904,9 @@ class _CheckoutState extends State<Checkout> {
           height: 100,
           child: Center(
               child: Text(
-                AppLocalizations.of(context)!.no_payment_method_is_added,
-                style: TextStyle(color: MyTheme.font_grey),
-              )));
+            AppLocalizations.of(context)!.no_payment_method_is_added,
+            style: TextStyle(color: MyTheme.font_grey),
+          )));
     }
   }
 
@@ -807,11 +922,11 @@ class _CheckoutState extends State<Checkout> {
             decoration: BoxDecorations.buildBoxDecoration_1().copyWith(
                 border: Border.all(
                     color: _selected_payment_method_key ==
-                        _paymentTypeList[index].payment_type_key
+                            _paymentTypeList[index].payment_type_key
                         ? MyTheme.accent_color
                         : MyTheme.light_grey,
                     width: _selected_payment_method_key ==
-                        _paymentTypeList[index].payment_type_key
+                            _paymentTypeList[index].payment_type_key
                         ? 2.0
                         : 0.0)),
             child: Row(
@@ -823,14 +938,14 @@ class _CheckoutState extends State<Checkout> {
                       child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child:
-                          /*Image.asset(
+                              /*Image.asset(
                           _paymentTypeList[index].image,
                           fit: BoxFit.fitWidth,
                         ),*/
-                          FadeInImage.assetNetwork(
+                              FadeInImage.assetNetwork(
                             placeholder: 'assets/placeholder.png',
                             image: _paymentTypeList[index].payment_type ==
-                                "manual_payment"
+                                    "manual_payment"
                                 ? _paymentTypeList[index].image
                                 : _paymentTypeList[index].image,
                             fit: BoxFit.fitWidth,
@@ -920,11 +1035,11 @@ class _CheckoutState extends State<Checkout> {
                 widget.paymentFor == PaymentFor.WalletRecharge
                     ? AppLocalizations.of(context)!.recharge_wallet_ucf
                     : widget.paymentFor == PaymentFor.ManualPayment
-                    ? AppLocalizations.of(context)!.proceed_all_caps
-                    : widget.paymentFor == PaymentFor.PackagePay
-                    ? AppLocalizations.of(context)!.buy_package_ucf
-                    : AppLocalizations.of(context)!
-                    .place_my_order_all_capital,
+                        ? AppLocalizations.of(context)!.proceed_all_caps
+                        : widget.paymentFor == PaymentFor.PackagePay
+                            ? AppLocalizations.of(context)!.buy_package_ucf
+                            : AppLocalizations.of(context)!
+                                .place_my_order_all_capital,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -998,12 +1113,14 @@ class _CheckoutState extends State<Checkout> {
             Spacer(),
             Padding(
               padding: const EdgeInsets.only(right: 16.0),
-              child: deliveryResponse==null?Container():Text(
-                  '${deliveryResponse!.grand_total??0} ${SystemConfig.systemCurrency!.symbol}',
-                  style: TextStyle(
-                      color: MyTheme.accent_color,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600)),
+              child: deliveryResponse == null
+                  ? Container()
+                  : Text(
+                      '${deliveryResponse!.grand_total ?? 0} ${SystemConfig.systemCurrency!.symbol}',
+                      style: TextStyle(
+                          color: MyTheme.accent_color,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600)),
             ),
           ],
         ),
@@ -1018,14 +1135,14 @@ class _CheckoutState extends State<Checkout> {
           loadingcontext = context;
           return AlertDialog(
               content: Row(
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text("${AppLocalizations.of(context)!.please_wait_ucf}"),
-                ],
-              ));
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(
+                width: 10,
+              ),
+              Text("${AppLocalizations.of(context)!.please_wait_ucf}"),
+            ],
+          ));
         });
   }
 }
