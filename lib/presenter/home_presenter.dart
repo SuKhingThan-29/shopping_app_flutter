@@ -185,7 +185,7 @@ class HomePresenter extends ChangeNotifier {
 
   mainScrollListener(String selectedProductTab) {
     mainScrollController.addListener(() {
-      //print("position: " + xcrollController.position.pixels.toString());
+      print("position: ");
       //print("max: " + xcrollController.position.maxScrollExtent.toString());
 
       if (mainScrollController.position.pixels ==
