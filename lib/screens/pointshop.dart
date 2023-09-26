@@ -283,9 +283,9 @@ class _PointShopState extends State<PointShop> {
           color: Color.fromARGB(255, 245, 239, 192),
           borderRadius: BorderRadius.circular(10.0),
         ),
-        margin: EdgeInsets.only(bottom: 10),
+        margin: EdgeInsets.only(bottom: 2),
         child: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(2.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -300,7 +300,7 @@ class _PointShopState extends State<PointShop> {
                       height: 50,
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 10),
+                      margin: EdgeInsets.only(left: 2),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

@@ -569,6 +569,7 @@ class _CheckoutState extends State<Checkout> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Directionality(

@@ -86,7 +86,6 @@ class _WalletState extends State<Wallet> {
     _rechargeListInit = false;
     _showRechageLoadingContainer = false;
 
-    setState(() {});
   }
 
   reset() {

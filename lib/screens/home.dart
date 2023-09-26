@@ -800,21 +800,23 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                 children: [
                                   ClipRRect(
                                     clipBehavior: Clip.none,
-                                    child: FadeInImage(
-                                      placeholder: AssetImage(
-                                          "assets/placeholder.png"),
-                                      width: 100,
-                                      image: NetworkImage(homeData
-                                          .flashDealProducts[0]
-                                          .products
-                                          .products[productIndex]
-                                          .image),
-                                    ),
+                                    // child: FadeInImage(
+                                    //   placeholder: AssetImage(
+                                    //       "assets/placeholder.png"),
+                                    //   width: 100,
+                                    //   image: NetworkImage(homeData
+                                    //       .flashDealProducts[0]
+                                    //       .products
+                                    //       .products[productIndex]
+                                    //       .image),
+                                    // ),
+                                    child: AIZImage.basicImage(homeData.flashDealProducts[0].products.products[productIndex].image),
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(6),
                                       bottomLeft: Radius.circular(6),
                                     ),
                                   ),
+                                  SizedBox(height: 5,),
                                   Padding(
                                     padding:
                                     const EdgeInsets.only(left: 10.0),

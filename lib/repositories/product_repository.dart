@@ -19,8 +19,8 @@ class ProductRepository {
     String url = ("${AppConfig.BASE_URL}/products/featured?page=${page}");
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
-      "Currency-Code": SystemConfig.systemCurrency!.code!,
-      "Currency-Exchange-Rate": SystemConfig.systemCurrency!.exchangeRate!,
+      // "Currency-Code": SystemConfig.systemCurrency!.code!,
+      // "Currency-Exchange-Rate": SystemConfig.systemCurrency!.exchangeRate!,
     });
     return productMiniResponseFromJson(response.body);
   }
@@ -40,9 +40,9 @@ class ProductRepository {
     String url = ("${AppConfig.BASE_URL}/products/todays-deal");
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
-      "Currency-Code": SystemConfig.systemCurrency!.code!,
-      "Currency-Exchange-Rate":
-          SystemConfig.systemCurrency!.exchangeRate.toString(),
+      // "Currency-Code": SystemConfig.systemCurrency!.code!,
+      // "Currency-Exchange-Rate":
+      //     SystemConfig.systemCurrency!.exchangeRate.toString(),
     });
 
     return productMiniResponseFromJson(response.body);
