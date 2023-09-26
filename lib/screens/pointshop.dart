@@ -293,43 +293,80 @@ class _PointShopState extends State<PointShop> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${_orderList.where((item) => item.canBuy == true).elementAt(index).discount} MMK',
-                    style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    '${_orderList.where((item) => item.canBuy == true).elementAt(index).startDate} to ${_orderList.where((item) => item.canBuy == true).elementAt(index).endDate}',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: const Color.fromARGB(255, 40, 40, 40),
-                      fontWeight: FontWeight.normal,
+                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Image.asset(
+                      "assets/per.png",
+                      width: 50,
+                      height: 50,
                     ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${_orderList.where((item) => item.canBuy == true).elementAt(index).discount} MMK',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            'Valid: ${_orderList.where((item) => item.canBuy == true).elementAt(index).startDate} to ${_orderList.where((item) => item.canBuy == true).elementAt(index).endDate}',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: const Color.fromARGB(255, 40, 40, 40),
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]),
+
+                  // Container(
+                  //   color: Colors.white,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(5.0),
+                  //     child: Text(
+                  //       _orderList
+                  //           .where((item) => item.canBuy == true)
+                  //           .elementAt(index)
+                  //           .code,
+                  //       style: TextStyle(
+                  //         fontSize: 18,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Image.asset(
+                        "assets/point.png",
+                        width: 20,
+                        height: 20,
+                      ),
+                      Text(
+                        'Point: ${_orderList.where((item) => item.canBuy == true).elementAt(index).pointAmount} Point',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 84, 83, 83),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
               Column(
                 children: [
-                  Container(
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Text(
-                        _orderList
-                            .where((item) => item.canBuy == true)
-                            .elementAt(index)
-                            .code,
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
+                  SizedBox(height: 55),
                   InkWell(
                       onTap: () async {
                         var response = await OrderRepository().buyCoupon(

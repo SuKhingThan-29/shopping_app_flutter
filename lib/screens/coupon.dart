@@ -1,6 +1,8 @@
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/data_model/user_info_response.dart';
+import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/order_details.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:coupon_uikit/coupon_uikit.dart';
@@ -45,6 +47,8 @@ class _CouponState extends State<Coupon> {
   bool _isInitial = true;
   int? _totalData = 0;
   bool _showLoadingContainer = false;
+  UserInformation? _userInfo;
+  String? _member_level;
 
   @override
   void initState() {
@@ -89,7 +93,19 @@ class _CouponState extends State<Coupon> {
     fetchData();
   }
 
+  getUserInfo() async {
+    var userInfoRes = await ProfileRepository().getUserInfoResponse();
+    if (userInfoRes.data.isNotEmpty) {
+      _userInfo = userInfoRes.data.first;
+      _member_level = _userInfo!.total_points;
+      print("member level: $_member_level");
+    }
+
+    setState(() {});
+  }
+
   fetchData() async {
+    getUserInfo();
     var orderResponse = await OrderRepository().getMyCoupon();
     _orderList.addAll(orderResponse.data);
     _isInitial = false;
@@ -121,8 +137,45 @@ class _CouponState extends State<Coupon> {
               body: Stack(
                 children: [
                   Container(
-                      margin: EdgeInsets.only(bottom: 100),
-                      child: buildOrderListList()),
+                      child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Container(
+                          alignment: Alignment.topCenter,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: Colors.transparent,
+                            image: DecorationImage(
+                              image: AssetImage('assets/pointbg.jpg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          padding: EdgeInsets.all(20),
+                          height: 150,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/point.png",
+                                width: 20,
+                                height: 20,
+                              ),
+                              Text(
+                                '$_member_level Point',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color.fromARGB(255, 84, 83, 83),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      buildOrderListList()
+                    ],
+                  )),
                   Align(
                       alignment: Alignment.bottomCenter,
                       child: buildLoadingContainer())
@@ -298,77 +351,117 @@ class _CouponState extends State<Coupon> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '${_orderList[index].discount} MMK',
-                  style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  '${_orderList[index].startDate} to ${_orderList[index].endDate}',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: const Color.fromARGB(255, 40, 40, 40),
-                    fontWeight: FontWeight.normal,
+                Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Image.asset(
+                    "assets/per.png",
+                    width: 50,
+                    height: 50,
                   ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${_orderList[index].discount} MMK',
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          'Valid: ${_orderList[index].startDate} to ${_orderList[index].endDate}',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: const Color.fromARGB(255, 40, 40, 40),
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ]),
+
+                // Container(
+                //   color: Colors.white,
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(5.0),
+                //     child: Text(
+                //       _orderList
+                //           .where((item) => item.canBuy == true)
+                //           .elementAt(index)
+                //           .code,
+                //       style: TextStyle(
+                //         fontSize: 18,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Image.asset(
+                      "assets/point.png",
+                      width: 20,
+                      height: 20,
+                    ),
+                    Text(
+                      'Point: ${_orderList[index].pointAmount} Point',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Color.fromARGB(255, 84, 83, 83),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-            Column(
-              children: [
-                Container(
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text(
-                      _orderList[index].code,
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ),
-                InkWell(
-                    onTap: () async {
-                      var response = await OrderRepository()
-                          .buyCoupon(_orderList[index].id);
-                      print(response);
-                      ToastComponent.showDialog(response.message);
-                      if (response.message == true) {
-                        _onRefresh();
-                        print(_orderList);
-                        Navigator.of(context, rootNavigator: true).pop();
-                      }
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(
-                            20.0), // Adjust the radius as needed
-                        border: Border.all(
-                          color: Colors.black, // Set the border color to black
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, right: 15, top: 3, bottom: 3),
-                        child: const Text(
-                          'Buy',
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    )),
-              ],
-            )
+            // Column(
+            //   children: [
+            //     SizedBox(height: 55),
+            //     InkWell(
+            //         onTap: () async {
+            //           var response = await OrderRepository()
+            //               .buyCoupon(_orderList[index].id);
+            //           print(response);
+            //           ToastComponent.showDialog(response.message);
+            //           if (response.message == true) {
+            //             _onRefresh();
+            //             print(_orderList);
+            //             Navigator.of(context, rootNavigator: true).pop();
+            //           }
+            //         },
+            //         child: Container(
+            //           margin: EdgeInsets.only(top: 10),
+            //           decoration: BoxDecoration(
+            //             color: Colors.white,
+            //             borderRadius: BorderRadius.circular(
+            //                 20.0), // Adjust the radius as needed
+            //             border: Border.all(
+            //               color: Colors.black, // Set the border color to black
+            //             ),
+            //           ),
+            //           child: Padding(
+            //             padding: const EdgeInsets.only(
+            //                 left: 15, right: 15, top: 3, bottom: 3),
+            //             child: const Text(
+            //               'Buy',
+            //               style: TextStyle(
+            //                 fontSize: 17,
+            //                 fontWeight: FontWeight.normal,
+            //                 color: Colors.black,
+            //               ),
+            //             ),
+            //           ),
+            //         )),
+            //   ],
+            // )
           ],
         ),
       ),

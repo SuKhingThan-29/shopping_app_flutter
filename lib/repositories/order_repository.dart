@@ -6,6 +6,7 @@ import 'package:active_ecommerce_flutter/data_model/common_response.dart';
 import 'package:active_ecommerce_flutter/data_model/coupon_response.dart';
 import 'package:active_ecommerce_flutter/data_model/coupon.dart';
 import 'package:active_ecommerce_flutter/data_model/purchased_ditital_product_response.dart';
+import 'package:active_ecommerce_flutter/data_model/user_info_response.dart';
 import 'package:active_ecommerce_flutter/data_model/wishlist_delete_response.dart';
 import 'package:active_ecommerce_flutter/helpers/response_check.dart';
 import 'package:active_ecommerce_flutter/middlewares/banned_user.dart';
@@ -68,6 +69,19 @@ class OrderRepository {
         middleware: BannedUser());
     print(response.body);
     return couponFromJson(response.body);
+  }
+
+  Future<dynamic> getTotalPoint() async {
+    String url = ("${AppConfig.BASE_URL}/auth/user");
+    final response = await ApiRequest.get(
+        url: url,
+        headers: {
+          "App-Language": app_language.$!,
+          "Authorization": "Bearer ${access_token.$}",
+        },
+        middleware: BannedUser());
+    print(response.body);
+    return userInfoResponseFromJson(response.body);
   }
 
   Future<dynamic> buyCoupon(id) async {
