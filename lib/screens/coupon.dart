@@ -1,20 +1,14 @@
-import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
-import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
 import 'package:active_ecommerce_flutter/data_model/user_info_response.dart';
 import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
-import 'package:active_ecommerce_flutter/screens/order_details.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
-import 'package:coupon_uikit/coupon_uikit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 
 import 'package:active_ecommerce_flutter/repositories/order_repository.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:one_context/one_context.dart';
+import 'package:shimmer/shimmer.dart';
 
 class PaymentStatus {
   String option_key;
@@ -136,46 +130,47 @@ class _CouponState extends State<Coupon> {
               appBar: buildAppBar(context),
               body: Stack(
                 children: [
-                  Container(
-                      child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Container(
-                          alignment: Alignment.topCenter,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.transparent,
-                            image: DecorationImage(
-                              image: AssetImage('assets/pointbg.jpg'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          padding: EdgeInsets.all(20),
-                          height: 150,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                "assets/point.png",
-                                width: 20,
-                                height: 20,
-                              ),
-                              Text(
-                                '$_member_level Point',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 84, 83, 83),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      buildOrderListList()
-                    ],
-                  )),
+                  buildOrderListList(),
+                  // Container(
+                  //     child: Column(
+                  //   children: [
+                  //     // Padding(
+                  //     //   padding: const EdgeInsets.all(15),
+                  //     //   child: Container(
+                  //     //     alignment: Alignment.topCenter,
+                  //     //     decoration: BoxDecoration(
+                  //     //       borderRadius: BorderRadius.circular(20.0),
+                  //     //       color: Colors.transparent,
+                  //     //       image: DecorationImage(
+                  //     //         image: AssetImage('assets/pointbg.jpg'),
+                  //     //         fit: BoxFit.cover,
+                  //     //       ),
+                  //     //     ),
+                  //     //     padding: EdgeInsets.all(20),
+                  //     //     height: 150,
+                  //     //     child: Row(
+                  //     //       crossAxisAlignment: CrossAxisAlignment.center,
+                  //     //       children: [
+                  //     //         Image.asset(
+                  //     //           "assets/point.png",
+                  //     //           width: 20,
+                  //     //           height: 20,
+                  //     //         ),
+                  //     //         Text(
+                  //     //           '$_member_level Point',
+                  //     //           style: TextStyle(
+                  //     //             fontSize: 20,
+                  //     //             color: Color.fromARGB(255, 84, 83, 83),
+                  //     //             fontWeight: FontWeight.bold,
+                  //     //           ),
+                  //     //         ),
+                  //     //       ],
+                  //     //     ),
+                  //     //   ),
+                  //     // ),
+                  //     buildOrderListList()
+                  //   ],
+                  // )),
                   Align(
                       alignment: Alignment.bottomCenter,
                       child: buildLoadingContainer())
@@ -256,7 +251,7 @@ class _CouponState extends State<Coupon> {
             ),
           ),
           Text(
-            AppLocalizations.of(context)!.coupon_ucf,
+            "My Coupon",
             style: TextStyle(
                 fontSize: 16,
                 color: MyTheme.dark_font_grey,
@@ -269,8 +264,7 @@ class _CouponState extends State<Coupon> {
 
   buildOrderListList() {
     if (_isInitial && _orderList.length == 0) {
-      return SingleChildScrollView(
-          child: ListView.builder(
+      return ListView.builder(
         controller: _scrollController,
         itemCount: 10,
         scrollDirection: Axis.vertical,
@@ -284,14 +278,14 @@ class _CouponState extends State<Coupon> {
               baseColor: MyTheme.shimmer_base,
               highlightColor: MyTheme.shimmer_highlighted,
               child: Container(
-                height: 75,
+                height: 55,
                 width: double.infinity,
                 color: Colors.white,
               ),
             ),
           );
         },
-      ));
+      );
     } else if (_orderList.length > 0) {
       return RefreshIndicator(
         color: MyTheme.accent_color,
@@ -328,8 +322,35 @@ class _CouponState extends State<Coupon> {
         ),
       );
     } else if (_totalData == 0) {
-      return Center(
-          child: Text(AppLocalizations.of(context)!.no_data_is_available));
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.7,
+        width: MediaQuery.of(context).size.width,
+        child: Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/orders.png",
+                width: 60,
+                height: 60,
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              Text(
+                "No Coupon, yet",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Text("There are currently no coupon"),
+            ],
+          ),
+        ),
+      );
+      // return Center(
+      //     child: Text(AppLocalizations.of(context)!.no_data_is_available));
     } else {
       return Container(); // should never be happening
     }
@@ -468,16 +489,16 @@ class _CouponState extends State<Coupon> {
     );
   }
 
-  Container buildPaymentStatusCheckContainer(String payment_status) {
+  Container buildPaymentStatusCheckContainer(String paymentStatus) {
     return Container(
       height: 16,
       width: 16,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),
-          color: payment_status == "paid" ? Colors.green : Colors.red),
+          color: paymentStatus == "paid" ? Colors.green : Colors.red),
       child: Padding(
         padding: const EdgeInsets.all(3),
-        child: Icon(payment_status == "paid" ? Icons.check : Icons.check,
+        child: Icon(paymentStatus == "paid" ? Icons.check : Icons.check,
             color: Colors.white, size: 10),
       ),
     );

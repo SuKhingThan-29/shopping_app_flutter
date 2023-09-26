@@ -57,12 +57,12 @@ class _WishlistState extends State<Wishlist> {
   }
 
   Future<void> _onPressRemove(index) async {
-    var wishlist_id = _wishlistItems[index].id;
+    var wishlistId = _wishlistItems[index].id;
     _wishlistItems.removeAt(index);
     setState(() {});
 
     var wishlistDeleteResponse =
-        await WishListRepository().delete(wishlist_id: wishlist_id);
+        await WishListRepository().delete(wishlist_id: wishlistId);
 
     if (wishlistDeleteResponse.result == true) {
       ToastComponent.showDialog(wishlistDeleteResponse.message,
@@ -73,7 +73,8 @@ class _WishlistState extends State<Wishlist> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+      textDirection:
+          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
           backgroundColor: Colors.white,
           appBar: buildAppBar(context),
@@ -172,10 +173,36 @@ class _WishlistState extends State<Wishlist> {
       );
     } else {
       return Container(
-          height: 100,
-          child: Center(
-              child: Text(AppLocalizations.of(context)!.no_item_is_available,
-                  style: TextStyle(color: MyTheme.font_grey))));
+        height: MediaQuery.of(context).size.height * 0.85,
+        child: Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/orders.png",
+                width: 60,
+                height: 60,
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              Text(
+                "Your Wishlist is Empty",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Text("Explore more and shortlist some items"),
+            ],
+          ),
+        ),
+      );
+      // return Container(
+      //     height: 100,
+      //     child: Center(
+      //         child: Text(AppLocalizations.of(context)!.no_item_is_available,
+      //             style: TextStyle(color: MyTheme.font_grey))));
     }
   }
 

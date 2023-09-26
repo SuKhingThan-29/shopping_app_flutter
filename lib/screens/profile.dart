@@ -7,15 +7,12 @@ import 'package:active_ecommerce_flutter/custom/device_info.dart';
 import 'package:active_ecommerce_flutter/custom/lang_text.dart';
 import 'package:active_ecommerce_flutter/data_model/user_info_response.dart';
 import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
-import 'package:active_ecommerce_flutter/presenter/home_presenter.dart';
 import 'package:active_ecommerce_flutter/screens/auction_products.dart';
 import 'package:active_ecommerce_flutter/screens/change_language.dart';
 import 'package:active_ecommerce_flutter/screens/classified_ads/classified_ads.dart';
-import 'package:active_ecommerce_flutter/screens/classified_ads/my_classified_ads.dart';
 import 'package:active_ecommerce_flutter/screens/coupon.dart';
 import 'package:active_ecommerce_flutter/screens/currency_change.dart';
 import 'package:active_ecommerce_flutter/screens/digital_product/digital_products.dart';
-import 'package:active_ecommerce_flutter/screens/digital_product/purchased_digital_produts.dart';
 import 'package:active_ecommerce_flutter/screens/filter.dart';
 import 'package:active_ecommerce_flutter/screens/followed_sellers.dart';
 import 'package:active_ecommerce_flutter/screens/login.dart';
@@ -23,22 +20,16 @@ import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/messenger_list.dart';
 import 'package:active_ecommerce_flutter/screens/whole_sale_products.dart';
 import 'package:active_ecommerce_flutter/screens/wishlist.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
-import 'package:active_ecommerce_flutter/ui_sections/drawer.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
-import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/screens/wallet.dart';
 import 'package:active_ecommerce_flutter/screens/profile_edit.dart';
 import 'package:active_ecommerce_flutter/screens/address.dart';
 import 'package:active_ecommerce_flutter/screens/order_list.dart';
 import 'package:active_ecommerce_flutter/screens/club_point.dart';
-import 'package:active_ecommerce_flutter/screens/refund_request.dart';
 import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
-import 'package:provider/provider.dart';
 import 'package:route_transitions/route_transitions.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -67,6 +58,8 @@ class _ProfileState extends State<Profile> {
   late BuildContext loadingcontext;
   String? _member_level;
   UserInformation? _userInfo;
+
+  String userLeverl = "Normal";
 
   @override
   void initState() {
@@ -106,6 +99,10 @@ class _ProfileState extends State<Profile> {
       print("member level: $_member_level");
     }
 
+    // var res = await ProfileRepository().getMemberLevel();
+    // print(res);
+    // print(res['customer_level'].toString());
+
     setState(() {});
   }
 
@@ -131,7 +128,7 @@ class _ProfileState extends State<Profile> {
     loading();
     var response = await AuthRepository().getAccountDeleteResponse();
 
-    if (response.result!) {
+    if (response.result) {
       AuthHelper().clearUserData();
       Navigator.pop(loadingcontext);
       Navigator.pushAndRemoveUntil(context,
@@ -139,31 +136,27 @@ class _ProfileState extends State<Profile> {
         return Main();
       }), (route) => false);
     }
-    ToastComponent.showDialog(response.message!);
+    ToastComponent.showDialog(response.message);
   }
 
   String counterText(String txt, {default_length = 3}) {
-    var blank_zeros = default_length == 3 ? "000" : "00";
-    var leading_zeros = "";
-    if (txt != null) {
-      if (default_length == 3 && txt.length == 1) {
-        leading_zeros = "00";
-      } else if (default_length == 3 && txt.length == 2) {
-        leading_zeros = "0";
-      } else if (default_length == 2 && txt.length == 1) {
-        leading_zeros = "0";
-      }
+    var blankZeros = default_length == 3 ? "000" : "00";
+    var leadingZeros = "";
+    if (default_length == 3 && txt.length == 1) {
+      leadingZeros = "00";
+    } else if (default_length == 3 && txt.length == 2) {
+      leadingZeros = "0";
+    } else if (default_length == 2 && txt.length == 1) {
+      leadingZeros = "0";
     }
 
-    var newtxt = (txt == null || txt == "" || txt == null.toString())
-        ? blank_zeros
-        : txt;
+    var newtxt = (txt == "" || txt == null.toString()) ? blankZeros : txt;
 
     // print(txt + " " + default_length.toString());
     // print(newtxt);
 
     if (default_length > txt.length) {
-      newtxt = leading_zeros + newtxt;
+      newtxt = leadingZeros + newtxt;
     }
     //print(newtxt);
 
@@ -204,7 +197,7 @@ class _ProfileState extends State<Profile> {
       child: Stack(
         children: [
           Container(
-              height: DeviceInfo(context).height! / 1.6,
+              height: DeviceInfo(context).height! / 1.7,
               width: DeviceInfo(context).width,
               color: MyTheme.accent_color,
               alignment: Alignment.topRight,
@@ -256,10 +249,10 @@ class _ProfileState extends State<Profile> {
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
               child: buildSettingAndAddonsHorizontalMenu(),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18.0),
-              child: buildBottomVerticalCardList(),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            //   child: buildBottomVerticalCardList(),
+            // ),
           ]),
         )
       ],
@@ -317,14 +310,14 @@ class _ProfileState extends State<Profile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 buildBottomVerticalCardListItem(
-                    "assets/coupon.png", LangText(context).local!.coupons_ucf,
+                    "assets/coupon.png", LangText(context).local.coupons_ucf,
                     onPressed: () {}),
                 Divider(
                   thickness: 1,
                   color: MyTheme.light_grey,
                 ),
                 buildBottomVerticalCardListItem("assets/favoriteseller.png",
-                    LangText(context).local!.favorite_seller_ucf,
+                    LangText(context).local.favorite_seller_ucf,
                     onPressed: () {}),
                 Divider(
                   thickness: 1,
@@ -334,7 +327,7 @@ class _ProfileState extends State<Profile> {
             ),
 
           buildBottomVerticalCardListItem("assets/download.png",
-              LangText(context).local!.all_digital_products_ucf, onPressed: () {
+              LangText(context).local.all_digital_products_ucf, onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return DigitalProducts();
             }));
@@ -349,7 +342,7 @@ class _ProfileState extends State<Profile> {
             Column(
               children: [
                 buildBottomVerticalCardListItem("assets/auction.png",
-                    LangText(context).local!.on_auction_products_ucf,
+                    LangText(context).local.on_auction_products_ucf,
                     onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return AuctionProducts();
@@ -365,7 +358,7 @@ class _ProfileState extends State<Profile> {
             Column(
               children: [
                 buildBottomVerticalCardListItem("assets/classified_product.png",
-                    LangText(context).local!.classified_ads_ucf, onPressed: () {
+                    LangText(context).local.classified_ads_ucf, onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return ClassifiedAds();
                   }));
@@ -382,7 +375,7 @@ class _ProfileState extends State<Profile> {
             Column(
               children: [
                 buildBottomVerticalCardListItem("assets/auction.png",
-                    LangText(context).local!.on_auction_products_ucf,
+                    LangText(context).local.on_auction_products_ucf,
                     onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return AuctionProducts();
@@ -398,7 +391,7 @@ class _ProfileState extends State<Profile> {
             Column(
               children: [
                 buildBottomVerticalCardListItem("assets/auction.png",
-                    LangText(context).local!.on_auction_products_ucf,
+                    LangText(context).local.on_auction_products_ucf,
                     onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return AuctionProducts();
@@ -416,7 +409,7 @@ class _ProfileState extends State<Profile> {
             Column(
               children: [
                 buildBottomVerticalCardListItem("assets/wholesale.png",
-                    LangText(context).local!.wholesale_products_ucf,
+                    LangText(context).local.wholesale_products_ucf,
                     onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return WholeSaleProducts();
@@ -433,7 +426,7 @@ class _ProfileState extends State<Profile> {
             Column(
               children: [
                 buildBottomVerticalCardListItem("assets/shop.png",
-                    LangText(context).local!.browse_all_sellers_ucf,
+                    LangText(context).local.browse_all_sellers_ucf,
                     onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return Filter(
@@ -452,7 +445,7 @@ class _ProfileState extends State<Profile> {
             Column(
               children: [
                 buildBottomVerticalCardListItem("assets/shop.png",
-                    LangText(context).local!.followed_sellers_ucf,
+                    LangText(context).local.followed_sellers_ucf,
                     onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return FollowedSellers();
@@ -469,7 +462,7 @@ class _ProfileState extends State<Profile> {
             Column(
               children: [
                 buildBottomVerticalCardListItem("assets/delete.png",
-                    LangText(context).local!.delete_my_account, onPressed: () {
+                    LangText(context).local.delete_my_account, onPressed: () {
                   deleteWarningDialog();
 
                   // Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -489,7 +482,7 @@ class _ProfileState extends State<Profile> {
 
           if (false)
             buildBottomVerticalCardListItem(
-                "assets/blog.png", LangText(context).local!.blogs_ucf,
+                "assets/blog.png", LangText(context).local.blogs_ucf,
                 onPressed: () {}),
         ],
       ),
@@ -653,11 +646,11 @@ class _ProfileState extends State<Profile> {
         context: context,
         builder: (context) => AlertDialog(
               title: Text(
-                LangText(context).local!.delete_account_warning_title,
+                LangText(context).local.delete_account_warning_title,
                 style: TextStyle(fontSize: 15, color: MyTheme.dark_font_grey),
               ),
               content: Text(
-                LangText(context).local!.delete_account_warning_description,
+                LangText(context).local.delete_account_warning_description,
                 style: TextStyle(fontSize: 13, color: MyTheme.dark_font_grey),
               ),
               actions: [
@@ -665,13 +658,13 @@ class _ProfileState extends State<Profile> {
                     onPressed: () {
                       pop(context);
                     },
-                    child: Text(LangText(context).local!.no_ucf)),
+                    child: Text(LangText(context).local.no_ucf)),
                 TextButton(
                     onPressed: () {
                       pop(context);
                       deleteAccountReq();
                     },
-                    child: Text(LangText(context).local!.yes_ucf))
+                    child: Text(LangText(context).local.yes_ucf))
               ],
             ));
   }
@@ -792,6 +785,7 @@ class _ProfileState extends State<Profile> {
 
   Widget buildSettingAndAddonsHorizontalMenu() {
     return Container(
+      height: 180,
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
       margin: EdgeInsets.only(top: 14),
       width: DeviceInfo(context).width,
@@ -854,18 +848,18 @@ class _ProfileState extends State<Profile> {
                         }));
                       }
                     : () => null),
-          if (refund_addon_installed.$)
-            buildSettingAndAddonsHorizontalMenuItem(
-                "assets/refund.png",
-                AppLocalizations.of(context)!.refund_requests_ucf,
-                is_logged_in.$
-                    ? () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return RefundRequest();
-                        }));
-                      }
-                    : () => null),
+          // if (refund_addon_installed.$)
+          //   buildSettingAndAddonsHorizontalMenuItem(
+          //       "assets/refund.png",
+          //       AppLocalizations.of(context)!.refund_requests_ucf,
+          //       is_logged_in.$
+          //           ? () {
+          //               Navigator.push(context,
+          //                   MaterialPageRoute(builder: (context) {
+          //                 return RefundRequest();
+          //               }));
+          //             }
+          //           : () => null),
           if (conversation_system_status.$)
             buildSettingAndAddonsHorizontalMenuItem(
                 "assets/messages.png",
@@ -904,17 +898,17 @@ class _ProfileState extends State<Profile> {
           //             }
           //           : () => null),
 
-          buildSettingAndAddonsHorizontalMenuItem(
-              "assets/download.png",
-              AppLocalizations.of(context)!.downloads_ucf,
-              is_logged_in.$
-                  ? () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return PurchasedDigitalProducts();
-                      }));
-                    }
-                  : () => null),
+          // buildSettingAndAddonsHorizontalMenuItem(
+          //     "assets/download.png",
+          //     AppLocalizations.of(context)!.downloads_ucf,
+          //     is_logged_in.$
+          //         ? () {
+          //             Navigator.push(context,
+          //                 MaterialPageRoute(builder: (context) {
+          //               return PurchasedDigitalProducts();
+          //             }));
+          //           }
+          //         : () => null),
 
           buildSettingAndAddonsHorizontalMenuItem(
               "assets/orders.png",
@@ -927,7 +921,6 @@ class _ProfileState extends State<Profile> {
                       }));
                     }
                   : () => null),
-
         ],
       ),
     );
@@ -1357,7 +1350,7 @@ class _ProfileState extends State<Profile> {
               child: Text(
                 is_logged_in.$
                     ? AppLocalizations.of(context)!.logout_ucf
-                    : LangText(context).local!.login_ucf,
+                    : LangText(context).local.login_ucf,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 10,

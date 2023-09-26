@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/device_info.dart';
@@ -20,7 +19,6 @@ import 'package:active_ecommerce_flutter/repositories/wishlist_repository.dart';
 import 'package:active_ecommerce_flutter/screens/brand_products.dart';
 import 'package:active_ecommerce_flutter/screens/cart.dart';
 import 'package:active_ecommerce_flutter/screens/chat.dart';
-import 'package:active_ecommerce_flutter/screens/common_webview_screen.dart';
 import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/screens/product_reviews.dart';
 import 'package:active_ecommerce_flutter/screens/seller_details.dart';
@@ -207,8 +205,8 @@ class _ProductDetailsState extends State<ProductDetails>
         _productImageList.add(photo.path);
       });
 
-      _productDetails!.choice_options!.forEach((choice_opiton) {
-        _selectedChoices.add(choice_opiton.options![0]);
+      _productDetails!.choice_options!.forEach((choiceOpiton) {
+        _selectedChoices.add(choiceOpiton.options![0]);
       });
       _productDetails!.colors!.forEach((color) {
         _colorList.add(color);
@@ -283,7 +281,7 @@ class _ProductDetailsState extends State<ProductDetails>
   }
 
   fetchAndSetVariantWiseInfo({bool change_appbar_string = true}) async {
-    var color_string = _colorList.length > 0
+    var colorString = _colorList.length > 0
         ? _colorList[_selectedColorIndex].toString().replaceAll("#", "")
         : "";
 
@@ -292,7 +290,7 @@ class _ProductDetailsState extends State<ProductDetails>
 
     var variantResponse = await ProductRepository().getVariantWiseInfo(
         id: widget.id,
-        color: color_string,
+        color: colorString,
         variants: _choiceString,
         qty: _quantity);
     print("single price ${variantResponse.variantData!.price}");
@@ -388,7 +386,7 @@ class _ProductDetailsState extends State<ProductDetails>
     addToCart(mode: "buy_now", context: context);
   }
 
-  addToCart({mode, context = null, snackbar = null}) async {
+  addToCart({mode, context, snackbar}) async {
     if (is_logged_in.$ == false) {
       // ToastComponent.showDialog(AppLocalizations.of(context).common_login_warning, context,
       //     gravity: Toast.center, duration: Toast.lengthLong);
@@ -782,7 +780,6 @@ class _ProductDetailsState extends State<ProductDetails>
         messenger_title: conversationCreateResponse.title,
         messenger_image: conversationCreateResponse.shop_logo,
       );
-      ;
     })).then((value) {
       onPopped(value);
     });
@@ -1234,138 +1231,138 @@ class _ProductDetailsState extends State<ProductDetails>
                             ),
                           ),
                         ),
-                        divider(),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return CommonWebviewScreen(
-                                url:
-                                    "${AppConfig.RAW_BASE_URL}/mobile-page/seller-policy",
-                                page_name: AppLocalizations.of(context)!
-                                    .seller_policy_ucf,
-                              );
-                            }));
-                          },
-                          child: Container(
-                            color: MyTheme.white,
-                            height: 48,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                18.0,
-                                14.0,
-                                18.0,
-                                14.0,
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .seller_policy_ucf,
-                                    style: TextStyle(
-                                        color: MyTheme.dark_font_grey,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  Spacer(),
-                                  Image.asset(
-                                    "assets/arrow.png",
-                                    height: 11,
-                                    width: 20,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        divider(),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return CommonWebviewScreen(
-                                url:
-                                    "${AppConfig.RAW_BASE_URL}/mobile-page/return-policy",
-                                page_name: AppLocalizations.of(context)!
-                                    .return_policy_ucf,
-                              );
-                            }));
-                          },
-                          child: Container(
-                            color: MyTheme.white,
-                            height: 48,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                18.0,
-                                14.0,
-                                18.0,
-                                14.0,
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .return_policy_ucf,
-                                    style: TextStyle(
-                                        color: MyTheme.dark_font_grey,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  Spacer(),
-                                  Image.asset(
-                                    "assets/arrow.png",
-                                    height: 11,
-                                    width: 20,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        divider(),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return CommonWebviewScreen(
-                                url:
-                                    "${AppConfig.RAW_BASE_URL}/mobile-page/support-policy",
-                                page_name: AppLocalizations.of(context)!
-                                    .support_policy_ucf,
-                              );
-                            }));
-                          },
-                          child: Container(
-                            color: MyTheme.white,
-                            height: 48,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                18.0,
-                                14.0,
-                                18.0,
-                                14.0,
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .support_policy_ucf,
-                                    style: TextStyle(
-                                        color: MyTheme.dark_font_grey,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  Spacer(),
-                                  Image.asset(
-                                    "assets/arrow.png",
-                                    height: 11,
-                                    width: 20,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        // divider(),
+                        // InkWell(
+                        //   onTap: () {
+                        //     Navigator.push(context,
+                        //         MaterialPageRoute(builder: (context) {
+                        //       return CommonWebviewScreen(
+                        //         url:
+                        //             "${AppConfig.RAW_BASE_URL}/mobile-page/seller-policy",
+                        //         page_name: AppLocalizations.of(context)!
+                        //             .seller_policy_ucf,
+                        //       );
+                        //     }));
+                        //   },
+                        //   child: Container(
+                        //     color: MyTheme.white,
+                        //     height: 48,
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.fromLTRB(
+                        //         18.0,
+                        //         14.0,
+                        //         18.0,
+                        //         14.0,
+                        //       ),
+                        //       child: Row(
+                        //         children: [
+                        //           Text(
+                        //             AppLocalizations.of(context)!
+                        //                 .seller_policy_ucf,
+                        //             style: TextStyle(
+                        //                 color: MyTheme.dark_font_grey,
+                        //                 fontSize: 13,
+                        //                 fontWeight: FontWeight.w600),
+                        //           ),
+                        //           Spacer(),
+                        //           Image.asset(
+                        //             "assets/arrow.png",
+                        //             height: 11,
+                        //             width: 20,
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        // divider(),
+                        // InkWell(
+                        //   onTap: () {
+                        //     Navigator.push(context,
+                        //         MaterialPageRoute(builder: (context) {
+                        //       return CommonWebviewScreen(
+                        //         url:
+                        //             "${AppConfig.RAW_BASE_URL}/mobile-page/return-policy",
+                        //         page_name: AppLocalizations.of(context)!
+                        //             .return_policy_ucf,
+                        //       );
+                        //     }));
+                        //   },
+                        //   child: Container(
+                        //     color: MyTheme.white,
+                        //     height: 48,
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.fromLTRB(
+                        //         18.0,
+                        //         14.0,
+                        //         18.0,
+                        //         14.0,
+                        //       ),
+                        //       child: Row(
+                        //         children: [
+                        //           Text(
+                        //             AppLocalizations.of(context)!
+                        //                 .return_policy_ucf,
+                        //             style: TextStyle(
+                        //                 color: MyTheme.dark_font_grey,
+                        //                 fontSize: 13,
+                        //                 fontWeight: FontWeight.w600),
+                        //           ),
+                        //           Spacer(),
+                        //           Image.asset(
+                        //             "assets/arrow.png",
+                        //             height: 11,
+                        //             width: 20,
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        // divider(),
+                        // InkWell(
+                        //   onTap: () {
+                        //     Navigator.push(context,
+                        //         MaterialPageRoute(builder: (context) {
+                        //       return CommonWebviewScreen(
+                        //         url:
+                        //             "${AppConfig.RAW_BASE_URL}/mobile-page/support-policy",
+                        //         page_name: AppLocalizations.of(context)!
+                        //             .support_policy_ucf,
+                        //       );
+                        //     }));
+                        //   },
+                        //   child: Container(
+                        //     color: MyTheme.white,
+                        //     height: 48,
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.fromLTRB(
+                        //         18.0,
+                        //         14.0,
+                        //         18.0,
+                        //         14.0,
+                        //       ),
+                        //       child: Row(
+                        //         children: [
+                        //           Text(
+                        //             AppLocalizations.of(context)!
+                        //                 .support_policy_ucf,
+                        //             style: TextStyle(
+                        //                 color: MyTheme.dark_font_grey,
+                        //                 fontSize: 13,
+                        //                 fontWeight: FontWeight.w600),
+                        //           ),
+                        //           Spacer(),
+                        //           Image.asset(
+                        //             "assets/arrow.png",
+                        //             height: 11,
+                        //             width: 20,
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         divider(),
                       ]),
                 ),
@@ -1603,7 +1600,7 @@ class _ProductDetailsState extends State<ProductDetails>
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
-            "(${_stock_txt})",
+            "($_stock_txt)",
             style: TextStyle(
                 color: Color.fromRGBO(152, 152, 153, 1), fontSize: 14),
           ),
@@ -1713,7 +1710,7 @@ class _ProductDetailsState extends State<ProductDetails>
     );
   }
 
-  buildChoiceOpiton(choice_options, choice_options_index) {
+  buildChoiceOpiton(choiceOptions, choiceOptionsIndex) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         0.0,
@@ -1731,7 +1728,7 @@ class _ProductDetailsState extends State<ProductDetails>
             child: Container(
               width: 75,
               child: Text(
-                choice_options[choice_options_index].title,
+                choiceOptions[choiceOptionsIndex].title,
                 style: TextStyle(color: Color.fromRGBO(153, 153, 153, 1)),
               ),
             ),
@@ -1743,16 +1740,15 @@ class _ProductDetailsState extends State<ProductDetails>
               thumbVisibility: false,
               child: Wrap(
                 children: List.generate(
-                    choice_options[choice_options_index].options.length,
+                    choiceOptions[choiceOptionsIndex].options.length,
                     (index) => Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Container(
                           width: 75,
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: buildChoiceItem(
-                              choice_options[choice_options_index]
-                                  .options[index],
-                              choice_options_index,
+                              choiceOptions[choiceOptionsIndex].options[index],
+                              choiceOptionsIndex,
                               index),
                         ))),
               ),
@@ -1772,19 +1768,19 @@ class _ProductDetailsState extends State<ProductDetails>
     );
   }
 
-  buildChoiceItem(option, choice_options_index, index) {
+  buildChoiceItem(option, choiceOptionsIndex, index) {
     return Padding(
       padding: app_language_rtl.$!
           ? EdgeInsets.only(left: 8.0)
           : EdgeInsets.only(right: 8.0),
       child: InkWell(
         onTap: () {
-          _onVariantChange(choice_options_index, option);
+          _onVariantChange(choiceOptionsIndex, option);
         },
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-                color: _selectedChoices[choice_options_index] == option
+                color: _selectedChoices[choiceOptionsIndex] == option
                     ? MyTheme.accent_color
                     : MyTheme.noColor,
                 width: 1.5),
@@ -1806,7 +1802,7 @@ class _ProductDetailsState extends State<ProductDetails>
               child: Text(
                 option,
                 style: TextStyle(
-                    color: _selectedChoices[choice_options_index] == option
+                    color: _selectedChoices[choiceOptionsIndex] == option
                         ? MyTheme.accent_color
                         : Color.fromRGBO(224, 224, 225, 1),
                     fontSize: 12.0,
@@ -2046,9 +2042,14 @@ class _ProductDetailsState extends State<ProductDetails>
       children: [
         Text(
           SystemConfig.systemCurrency != null
-              ? _singlePriceString.replaceAll(SystemConfig.systemCurrency!.code,
-                  SystemConfig.systemCurrency!.symbol)
-              : _singlePriceString,
+              ? _totalPrice.toString().replaceAll(
+                  SystemConfig.systemCurrency!.code!,
+                  SystemConfig.systemCurrency!.symbol!)
+              : SystemConfig.systemCurrency!.symbol! + _totalPrice.toString(),
+          // SystemConfig.systemCurrency != null
+          //     ? _singlePriceString.replaceAll(SystemConfig.systemCurrency!.code,
+          //         SystemConfig.systemCurrency!.symbol)
+          //     : _singlePriceString,
           // _singlePriceString,
           style: TextStyle(
               color: MyTheme.accent_color,
@@ -2756,8 +2757,8 @@ class _ProductDetailsState extends State<ProductDetails>
                   children: <Widget>[
                     InkWell(
                       onTap: () {
-                        openPhotoDialog(
-                            context, _productImageList[_currentImage]);
+                        // openPhotoDialog(
+                        //     context, _productImageList[_currentImage]);
                       },
                       child: Container(
                           height: double.infinity,

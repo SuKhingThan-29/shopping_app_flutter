@@ -7,7 +7,6 @@ import 'package:active_ecommerce_flutter/custom/google_recaptcha.dart';
 import 'package:active_ecommerce_flutter/custom/input_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/intl_phone_input.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
-import 'package:active_ecommerce_flutter/data_model/login_response.dart';
 import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
@@ -17,13 +16,14 @@ import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/common_webview_screen.dart';
 import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
-import 'package:active_ecommerce_flutter/screens/otp.dart';
 import 'package:active_ecommerce_flutter/ui_elements/auth_ui.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:toast/toast.dart';
 import 'package:validators/validators.dart';
@@ -47,6 +47,19 @@ class _RegistrationState extends State<Registration> {
   bool _isCaptchaShowing = false;
   String googleRecaptchaKey = "";
 
+  List genders = ["Male", "Female", "Other"];
+  String selectedGender = "Male";
+
+  var countries = [];
+  var states = [];
+  var cities = [];
+
+  bool countryDataLoad = false;
+  String selectedCountryId = "";
+  String selectedStateId = "";
+  String selectedCityId = "";
+  String postalCode = "";
+
   //controllers
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -66,8 +79,46 @@ class _RegistrationState extends State<Registration> {
   }
 
   fetch_country() async {
-    var data = await AddressRepository().getCountryList();
-    data.countries.forEach((c) => countries_code.add(c.code));
+    countryDataLoad = true;
+    var res = await AddressRepository().getCountryList();
+    res.countries.forEach((c) {
+      countries.add(c);
+      countries_code.add(c.code);
+    });
+    selectedCountryId = res.countries[0].id.toString();
+    fetch_state(res.countries[0].id.toString());
+
+    setState(() {});
+  }
+
+  fetch_state(String countryId) async {
+    var res =
+        await AddressRepository().getStateListByCountry(country_id: countryId);
+    states.clear();
+
+    res.states.forEach((s) {
+      states.add(s);
+    });
+    selectedStateId = res.states[0].id.toString();
+    fetch_city(res.states[0].id.toString());
+    setState(() {});
+  }
+
+  fetch_city(String stateId) async {
+    var res = await AddressRepository().getCityListByState(state_id: stateId);
+    cities.clear();
+    res.cities.forEach((c) {
+      cities.add(c);
+    });
+    selectedCityId = res.cities[0].id.toString();
+    countryDataLoad = false;
+    setState(() {});
+  }
+
+  fetch_postalCode(String cityId) async {
+    var res = await AddressRepository().getPostalCodeByCidty(cityId);
+    postalCode = res.data.toString();
+    setState(() {});
   }
 
   @override
@@ -80,11 +131,100 @@ class _RegistrationState extends State<Registration> {
     super.dispose();
   }
 
+  onPressedFacebookLogin() async {
+    try {
+      final facebookLogin = await FacebookAuth.instance
+          .login(loginBehavior: LoginBehavior.webOnly);
+
+      if (facebookLogin.status == LoginStatus.success) {
+        // get the user data
+        // by default we get the userId, email,name and picture
+        final userData = await FacebookAuth.instance.getUserData();
+        var loginResponse = await AuthRepository().getSocialLoginResponse(
+            "facebook",
+            userData['name'].toString(),
+            userData['email'].toString(),
+            userData['id'].toString(),
+            access_token: facebookLogin.accessToken!.token);
+        print("..........................${loginResponse.toString()}");
+        if (loginResponse.result == false) {
+          ToastComponent.showDialog(loginResponse.message!,
+              gravity: Toast.center, duration: Toast.lengthLong);
+        } else {
+          ToastComponent.showDialog(loginResponse.message!,
+              gravity: Toast.center, duration: Toast.lengthLong);
+
+          AuthHelper().setUserData(loginResponse);
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Main();
+          }));
+          FacebookAuth.instance.logOut();
+        }
+        // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
+      } else {
+        print("....Facebook auth Failed.........");
+        print(facebookLogin.status);
+        print(facebookLogin.message);
+      }
+    } on Exception catch (e) {
+      print(e);
+      // TODO
+    }
+  }
+
+  onPressedGoogleLogin() async {
+    try {
+      final GoogleSignInAccount googleUser = (await GoogleSignIn().signIn())!;
+
+      print(googleUser.toString());
+
+      GoogleSignInAuthentication googleSignInAuthentication =
+          await googleUser.authentication;
+      String? accessToken = googleSignInAuthentication.accessToken;
+
+      print("Google displayName ${googleUser.displayName}");
+      print("Google email ${googleUser.email}");
+      print("Google googleUser.id ${googleUser.id}");
+
+      var loginResponse = await AuthRepository().getSocialLoginResponse(
+          "google", googleUser.displayName, googleUser.email, googleUser.id,
+          access_token: accessToken);
+
+      if (loginResponse.result == false) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(loginResponse.message!),
+            duration: Duration(seconds: 3), // Set the duration as needed
+            behavior: SnackBarBehavior
+                .floating, // Use SnackBarBehavior.floating to center the snackbar
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(loginResponse.message!),
+            duration: Duration(seconds: 3), // Set the duration as needed
+            behavior: SnackBarBehavior
+                .floating, // Use SnackBarBehavior.floating to center the snackbar
+          ),
+        );
+        AuthHelper().setUserData(loginResponse);
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return Main();
+        }));
+      }
+      GoogleSignIn().disconnect();
+    } on Exception catch (e) {
+      print("Google error is ....... $e");
+      // TODO
+    }
+  }
+
   onPressSignUp() async {
     var name = _nameController.text.toString();
     var email = _emailController.text.toString();
     var password = _passwordController.text.toString();
-    var password_confirm = _passwordConfirmController.text.toString();
+    var passwordConfirm = _passwordConfirmController.text.toString();
 
     if (name == "") {
       ToastComponent.showDialog(AppLocalizations.of(context)!.enter_your_name,
@@ -100,11 +240,15 @@ class _RegistrationState extends State<Registration> {
           gravity: Toast.center,
           duration: Toast.lengthLong);
       return;
+    } else if (postalCode == "") {
+      ToastComponent.showDialog("Please fill postal code",
+          gravity: Toast.center, duration: Toast.lengthLong);
+      return;
     } else if (password == "") {
       ToastComponent.showDialog(AppLocalizations.of(context)!.enter_password,
           gravity: Toast.center, duration: Toast.lengthLong);
       return;
-    } else if (password_confirm == "") {
+    } else if (passwordConfirm == "") {
       ToastComponent.showDialog(
           AppLocalizations.of(context)!.confirm_your_password,
           gravity: Toast.center,
@@ -117,7 +261,7 @@ class _RegistrationState extends State<Registration> {
           gravity: Toast.center,
           duration: Toast.lengthLong);
       return;
-    } else if (password != password_confirm) {
+    } else if (password != passwordConfirm) {
       ToastComponent.showDialog(
           AppLocalizations.of(context)!.passwords_do_not_match,
           gravity: Toast.center,
@@ -129,8 +273,13 @@ class _RegistrationState extends State<Registration> {
         name,
         _register_by == 'email' ? email : _phone,
         password,
-        password_confirm,
+        passwordConfirm,
         _register_by,
+        selectedGender,
+        int.parse(selectedCountryId),
+        int.parse(selectedStateId),
+        int.parse(selectedCityId),
+        int.parse(postalCode),
         googleRecaptchaKey);
 
     if (signupResponse.result == false) {
@@ -138,7 +287,6 @@ class _RegistrationState extends State<Registration> {
       // signupResponse.message.forEach((value) {
       //   message += value + "\n";
       // });
-
 
       ToastComponent.showDialog(message, gravity: Toast.center, duration: 3);
     } else {
@@ -333,6 +481,166 @@ class _RegistrationState extends State<Registration> {
                     ],
                   ),
                 ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4.0),
+                child: Text(
+                  "Gender",
+                  style: TextStyle(
+                      color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                ),
+              ),
+              Row(children: [
+                for (var gen in genders)
+                  Row(
+                    children: [
+                      Radio(
+                          value: gen,
+                          groupValue: selectedGender,
+                          onChanged: (_) {
+                            selectedGender = gen;
+                            setState(() {});
+                          }),
+                      InkWell(
+                          onTap: () {
+                            selectedGender = gen;
+                            setState(() {});
+                          },
+                          child: Text(gen))
+                    ],
+                  )
+              ]),
+              SizedBox(
+                height: 8,
+              ),
+              if (!countryDataLoad) ...[
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 2.0),
+                  child: Text(
+                    "Country",
+                    style: TextStyle(
+                        color: MyTheme.accent_color,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButton<String>(
+                        value: selectedCountryId,
+                        onChanged: (id) {
+                          setState(() {
+                            selectedCountryId = id!;
+                            fetch_state(id);
+                          });
+                        },
+                        items: countries.map<DropdownMenuItem<String>>((value) {
+                          return DropdownMenuItem<String>(
+                            value: value.id.toString(),
+                            child: Text(value.name),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 2.0),
+                  child: Text(
+                    "State",
+                    style: TextStyle(
+                        color: MyTheme.accent_color,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButton<String>(
+                        value: selectedStateId,
+                        onChanged: (id) {
+                          setState(() {
+                            postalCode = "";
+                            selectedStateId = id!;
+                            fetch_city(id);
+                          });
+                        },
+                        items: states.map<DropdownMenuItem<String>>((value) {
+                          return DropdownMenuItem<String>(
+                            value: value.id.toString(),
+                            child: Text(value.name),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 2.0),
+                  child: Text(
+                    "City",
+                    style: TextStyle(
+                        color: MyTheme.accent_color,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButton<String>(
+                        value: selectedCityId,
+                        onChanged: (id) {
+                          setState(() {
+                            selectedCityId = id!;
+                            fetch_postalCode(id);
+                          });
+                        },
+                        items: cities.map<DropdownMenuItem<String>>((value) {
+                          return DropdownMenuItem<String>(
+                            value: value.id.toString(),
+                            child: Text(value.name),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+              ] else ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: CircularProgressIndicator(),
+                )
+              ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4.0),
+                child: Text(
+                  "Postal Code",
+                  style: TextStyle(
+                      color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  height: 36,
+                  child: TextFormField(
+                      controller: TextEditingController(text: postalCode),
+                      autofocus: false,
+                      decoration: InputDecoration(
+                          enabled: false, hintText: "Select city")),
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 4.0),
                 child: Text(
@@ -537,6 +845,56 @@ class _RegistrationState extends State<Registration> {
                             onPressSignUp();
                           }
                         : null,
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: allow_google_login.$ || allow_facebook_login.$,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Center(
+                      child: Text(
+                    "or join with",
+                    style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                  )),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Center(
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Visibility(
+                          visible: allow_google_login.$,
+                          child: InkWell(
+                            onTap: () {
+                              onPressedGoogleLogin();
+                            },
+                            child: Container(
+                              width: 28,
+                              child: Image.asset("assets/google_logo.png"),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0),
+                          child: Visibility(
+                            visible: allow_facebook_login.$,
+                            child: InkWell(
+                              onTap: () {
+                                onPressedFacebookLogin();
+                              },
+                              child: Container(
+                                width: 28,
+                                child: Image.asset("assets/facebook_logo.png"),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

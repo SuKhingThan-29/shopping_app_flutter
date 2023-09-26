@@ -111,6 +111,7 @@ class _ProductCardState extends State<ProductCard> {
                   ],
                 ),
               ),
+            
               Padding(
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                 child: Text(

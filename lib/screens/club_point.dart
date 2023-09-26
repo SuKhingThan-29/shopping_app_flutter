@@ -74,9 +74,9 @@ class _ClubpointState extends State<Clubpoint> {
     fetchData();
   }
 
-  onPressConvert(item_id, _convertedSnackbar) async {
+  onPressConvert(itemId, _convertedSnackbar) async {
     var clubpointToWalletResponse =
-        await ClubpointRepository().getClubpointToWalletResponse(item_id);
+        await ClubpointRepository().getClubpointToWalletResponse(itemId);
 
     if (clubpointToWalletResponse.result == false) {
       ToastComponent.showDialog(clubpointToWalletResponse.message,
@@ -86,7 +86,7 @@ class _ClubpointState extends State<Clubpoint> {
       // Scaffold.of(context).showSnackBar(_convertedSnackbar);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: _convertedSnackbar));
-      _converted_ids.add(item_id);
+      _converted_ids.add(itemId);
       setState(() {});
     }
   }
@@ -120,7 +120,8 @@ class _ClubpointState extends State<Clubpoint> {
     );
 
     return Directionality(
-      textDirection: app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+      textDirection:
+          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: buildAppBar(context),
@@ -215,8 +216,27 @@ class _ClubpointState extends State<Clubpoint> {
         ),
       );
     } else if (_totalData == 0) {
-      return Center(
-          child: Text(AppLocalizations.of(context)!.no_data_is_available));
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.85,
+        child: Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/orders.png",
+                width: 60,
+                height: 60,
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Text("There are currently no items in your wishlist"),
+            ],
+          ),
+        ),
+      );
+      // return Center(
+      //     child: Text(AppLocalizations.of(context)!.no_data_is_available));
     } else {
       return Container(); // should never be happening
     }

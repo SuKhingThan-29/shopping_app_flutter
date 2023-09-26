@@ -104,10 +104,10 @@ class _LoginState extends State<Login> {
     var loginResponse = await AuthRepository()
         .getLoginResponse(_login_by == 'email' ? email : _phone, password);
     if (loginResponse.result == false) {
-      ToastComponent.showDialog(loginResponse.message.toString()!,
+      ToastComponent.showDialog(loginResponse.message.toString(),
           gravity: Toast.center, duration: Toast.lengthLong);
     } else {
-      ToastComponent.showDialog(loginResponse.message.toString()!,
+      ToastComponent.showDialog(loginResponse.message.toString(),
           gravity: Toast.center, duration: Toast.lengthLong);
       AuthHelper().setUserData(loginResponse);
       // push notification starts
@@ -583,14 +583,14 @@ class _LoginState extends State<Login> {
                 ),
               ),
               //if (Platform.isIOS)
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: SignInWithAppleButton(
-                    onPressed: () async {
-                      signInWithApple();
-                    },
-                  ),
-                ),
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 20.0),
+              //   child: SignInWithAppleButton(
+              //     onPressed: () async {
+              //       signInWithApple();
+              //     },
+              //   ),
+              // ),
               Visibility(
                 visible: allow_google_login.$ || allow_facebook_login.$,
                 child: Padding(

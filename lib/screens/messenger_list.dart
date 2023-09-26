@@ -1,14 +1,11 @@
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/chat.dart';
 import 'package:active_ecommerce_flutter/repositories/chat_repository.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
-import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 
 class MessengerList extends StatefulWidget {
   @override
@@ -47,7 +44,8 @@ class _MessengerListState extends State<MessengerList> {
   }
 
   fetchData() async {
-    var conversatonResponse = await ChatRepository().getConversationResponse(page: _page);
+    var conversatonResponse =
+        await ChatRepository().getConversationResponse(page: _page);
     _list.addAll(conversatonResponse.conversation_item_list);
     _isInitial = false;
     _totalData = conversatonResponse.meta.total;
@@ -72,7 +70,8 @@ class _MessengerListState extends State<MessengerList> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+      textDirection:
+          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: buildAppBar(context),
@@ -100,7 +99,8 @@ class _MessengerListState extends State<MessengerList> {
               ),
             ),
             Align(
-                alignment: Alignment.bottomCenter, child: buildLoadingContainer())
+                alignment: Alignment.bottomCenter,
+                child: buildLoadingContainer())
           ],
         ),
       ),
@@ -122,7 +122,7 @@ class _MessengerListState extends State<MessengerList> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-backgroundColor: Colors.white,
+      backgroundColor: Colors.white,
       centerTitle: false,
       leading: Builder(
         builder: (context) => IconButton(
@@ -132,7 +132,10 @@ backgroundColor: Colors.white,
       ),
       title: Text(
         AppLocalizations.of(context)!.messages_ucf,
-        style: TextStyle(fontSize: 16, color: MyTheme.dark_font_grey,fontWeight: FontWeight.bold),
+        style: TextStyle(
+            fontSize: 16,
+            color: MyTheme.dark_font_grey,
+            fontWeight: FontWeight.bold),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -162,7 +165,32 @@ backgroundColor: Colors.white,
         ),
       );
     } else if (_totalData == 0) {
-      return Center(child: Text("No data is available"));
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.85,
+        child: Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/messages.png",
+                width: 60,
+                height: 60,
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              Text(
+                "No Message, yet",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Text("No messages in your inbox"),
+            ],
+          ),
+        ),
+      );
     } else {
       return Container(); // should never be happening
     }
@@ -197,7 +225,7 @@ backgroundColor: Colors.white,
                 borderRadius: BorderRadius.circular(35),
                 child: FadeInImage.assetNetwork(
                   placeholder: 'assets/placeholder.png',
-                  image:  _list[index].shop_logo,
+                  image: _list[index].shop_logo,
                   fit: BoxFit.contain,
                 )),
           ),

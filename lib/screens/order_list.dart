@@ -2,7 +2,6 @@ import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
 import 'package:active_ecommerce_flutter/screens/order_details.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 
@@ -11,7 +10,6 @@ import 'package:shimmer/shimmer.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:one_context/one_context.dart';
-
 
 class PaymentStatus {
   String option_key;
@@ -22,8 +20,10 @@ class PaymentStatus {
   static List<PaymentStatus> getPaymentStatusList() {
     return <PaymentStatus>[
       PaymentStatus('', AppLocalizations.of(OneContext().context!)!.all_ucf),
-      PaymentStatus('paid', AppLocalizations.of(OneContext().context!)!.paid_ucf),
-      PaymentStatus('unpaid', AppLocalizations.of(OneContext().context!)!.unpaid_ucf),
+      PaymentStatus(
+          'paid', AppLocalizations.of(OneContext().context!)!.paid_ucf),
+      PaymentStatus(
+          'unpaid', AppLocalizations.of(OneContext().context!)!.unpaid_ucf),
     ];
   }
 }
@@ -37,9 +37,12 @@ class DeliveryStatus {
   static List<DeliveryStatus> getDeliveryStatusList() {
     return <DeliveryStatus>[
       DeliveryStatus('', AppLocalizations.of(OneContext().context!)!.all_ucf),
-      DeliveryStatus('confirmed', AppLocalizations.of(OneContext().context!)!.confirmed_ucf),
-      DeliveryStatus('on_delivery', AppLocalizations.of(OneContext().context!)!.on_delivery_ucf),
-      DeliveryStatus('delivered', AppLocalizations.of(OneContext().context!)!.delivered_ucf),
+      DeliveryStatus('confirmed',
+          AppLocalizations.of(OneContext().context!)!.confirmed_ucf),
+      DeliveryStatus('on_delivery',
+          AppLocalizations.of(OneContext().context!)!.on_delivery_ucf),
+      DeliveryStatus('delivered',
+          AppLocalizations.of(OneContext().context!)!.delivered_ucf),
     ];
   }
 }
@@ -177,7 +180,7 @@ class _OrderListState extends State<OrderList> {
 
   List<DropdownMenuItem<PaymentStatus>> buildDropdownPaymentStatusItems(
       List _paymentStatusList) {
-    List<DropdownMenuItem<PaymentStatus>> items =[];
+    List<DropdownMenuItem<PaymentStatus>> items = [];
     for (PaymentStatus item in _paymentStatusList as Iterable<PaymentStatus>) {
       items.add(
         DropdownMenuItem(
@@ -191,8 +194,9 @@ class _OrderListState extends State<OrderList> {
 
   List<DropdownMenuItem<DeliveryStatus>> buildDropdownDeliveryStatusItems(
       List _deliveryStatusList) {
-    List<DropdownMenuItem<DeliveryStatus>> items =[];
-    for (DeliveryStatus item in _deliveryStatusList as Iterable<DeliveryStatus>) {
+    List<DropdownMenuItem<DeliveryStatus>> items = [];
+    for (DeliveryStatus item
+        in _deliveryStatusList as Iterable<DeliveryStatus>) {
       items.add(
         DropdownMenuItem(
           value: item,
@@ -208,14 +212,14 @@ class _OrderListState extends State<OrderList> {
     return WillPopScope(
         onWillPop: () {
           if (widget.from_checkout) {
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (context) {
               return Main();
-            }),(reute)=>false);
+            }), (reute) => false);
             return Future<bool>.value(false);
-          }else{
+          } else {
             return Future<bool>.value(true);
           }
-
         },
         child: Directionality(
           textDirection:
@@ -283,7 +287,6 @@ class _OrderListState extends State<OrderList> {
               },
             ),
           ),
-
           Container(
             decoration: BoxDecorations.buildBoxDecoration_1(),
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -370,7 +373,10 @@ class _OrderListState extends State<OrderList> {
           ),
           Text(
             AppLocalizations.of(context)!.purchase_history_ucf,
-            style: TextStyle(fontSize: 16, color: MyTheme.dark_font_grey,fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 16,
+                color: MyTheme.dark_font_grey,
+                fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -416,7 +422,8 @@ class _OrderListState extends State<OrderList> {
             separatorBuilder: (context, index) => SizedBox(
               height: 14,
             ),
-            padding: const EdgeInsets.only(left: 18,right:18,top:0,bottom: 0),
+            padding:
+                const EdgeInsets.only(left: 18, right: 18, top: 0, bottom: 0),
             itemCount: _orderList.length,
             scrollDirection: Axis.vertical,
             physics: NeverScrollableScrollPhysics(),
@@ -424,8 +431,7 @@ class _OrderListState extends State<OrderList> {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return OrderDetails(
                       id: _orderList[index].id,
                     );
@@ -438,13 +444,27 @@ class _OrderListState extends State<OrderList> {
         ),
       );
     } else if (_totalData == 0) {
-      return Center(child: Text(AppLocalizations.of(context)!.no_data_is_available));
+      return Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            "assets/orders.png",
+            width: 60,
+            height: 60,
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Text(AppLocalizations.of(context)!.no_data_is_available),
+        ],
+      ));
     } else {
       return Container(); // should never be happening
     }
   }
 
-   buildOrderListItemCard(int index) {
+  buildOrderListItemCard(int index) {
     return Container(
       decoration: BoxDecorations.buildBoxDecoration_1(),
       child: Padding(
@@ -466,9 +486,9 @@ class _OrderListState extends State<OrderList> {
               padding: const EdgeInsets.only(bottom: 4.0),
               child: Row(
                 children: [
-
                   Text(_orderList[index].date,
-                      style: TextStyle(color: MyTheme.dark_font_grey, fontSize: 12)),
+                      style: TextStyle(
+                          color: MyTheme.dark_font_grey, fontSize: 12)),
                   Spacer(),
                   Text(
                     _orderList[index].grand_total,
@@ -484,14 +504,19 @@ class _OrderListState extends State<OrderList> {
               padding: const EdgeInsets.only(bottom: 4.0),
               child: Row(
                 children: [
-
                   Text(
                     "${AppLocalizations.of(context)!.payment_status_ucf} - ",
-                    style: TextStyle(color: MyTheme.dark_font_grey, fontSize: 12),
+                    style:
+                        TextStyle(color: MyTheme.dark_font_grey, fontSize: 12),
                   ),
                   Text(
                     _orderList[index].payment_status_string,
-                    style: TextStyle(color:_orderList[index].payment_status=="paid"? Colors.green:Colors.red, fontSize: 12,fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        color: _orderList[index].payment_status == "paid"
+                            ? Colors.green
+                            : Colors.red,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
@@ -504,7 +529,10 @@ class _OrderListState extends State<OrderList> {
                 ),
                 Text(
                   _orderList[index].delivery_status_string,
-                  style: TextStyle(color: MyTheme.dark_font_grey, fontSize: 12,fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      color: MyTheme.dark_font_grey,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500),
                 ),
               ],
             )
@@ -514,19 +542,17 @@ class _OrderListState extends State<OrderList> {
     );
   }
 
-  Container buildPaymentStatusCheckContainer(String payment_status) {
+  Container buildPaymentStatusCheckContainer(String paymentStatus) {
     return Container(
       height: 16,
       width: 16,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),
-          color: payment_status == "paid" ? Colors.green : Colors.red),
+          color: paymentStatus == "paid" ? Colors.green : Colors.red),
       child: Padding(
         padding: const EdgeInsets.all(3),
-        child: Icon(
-            payment_status == "paid" ? Icons.check : Icons.check,
-            color: Colors.white,
-            size: 10),
+        child: Icon(paymentStatus == "paid" ? Icons.check : Icons.check,
+            color: Colors.white, size: 10),
       ),
     );
   }

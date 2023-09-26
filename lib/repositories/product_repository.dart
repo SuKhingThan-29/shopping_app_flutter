@@ -11,12 +11,11 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/repositories/api-request.dart';
 
-import '../data_model/product_tab_response.dart';
 import '../data_model/variant_price_response.dart';
 
 class ProductRepository {
   Future<ProductMiniResponse> getFeaturedProducts({page = 1}) async {
-    String url = ("${AppConfig.BASE_URL}/products/featured?page=${page}");
+    String url = ("${AppConfig.BASE_URL}/products/featured?page=$page");
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
       // "Currency-Code": SystemConfig.systemCurrency!.code!,
@@ -63,7 +62,7 @@ class ProductRepository {
       {int? id = 0, name = "", page = 1}) async {
     String url = ("${AppConfig.BASE_URL}/products/category/" +
         id.toString() +
-        "?page=${page}&name=${name}");
+        "?page=$page&name=$name");
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
       "Currency-Code": SystemConfig.systemCurrency!.code!,
@@ -77,7 +76,7 @@ class ProductRepository {
       {int? id = 0, name = "", page = 1}) async {
     String url = ("${AppConfig.BASE_URL}/products/seller/" +
         id.toString() +
-        "?page=${page}&name=${name}");
+        "?page=$page&name=$name");
 
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
@@ -92,7 +91,7 @@ class ProductRepository {
       {int? id = 0, name = "", page = 1}) async {
     String url = ("${AppConfig.BASE_URL}/products/brand/" +
         id.toString() +
-        "?page=${page}&name=${name}");
+        "?page=$page&name=$name");
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
       "Currency-Code": SystemConfig.systemCurrency!.code!,
@@ -102,26 +101,64 @@ class ProductRepository {
     print(url.toString());
     return productMiniResponseFromJson(response.body);
   }
+
+  Future<ProductMiniResponse> getBrancedProducts({page = 1}) async {
+    String url = ("${AppConfig.BASE_URL}/branched" + "?page=$page");
+    final response = await ApiRequest.get(url: url, headers: {
+      "App-Language": app_language.$!,
+      "Currency-Code": SystemConfig.systemCurrency!.code!,
+      "Currency-Exchange-Rate":
+          SystemConfig.systemCurrency!.exchangeRate.toString(),
+    });
+    print(url.toString());
+    return productMiniResponseFromJson(response.body);
+  }
+
+  Future<ProductMiniResponse> getRecommendProducts({page = 1}) async {
+    String url = ("${AppConfig.BASE_URL}/products/recommend/" + "?page=$page");
+    final response = await ApiRequest.get(url: url, headers: {
+      "App-Language": app_language.$!,
+      "Currency-Code": SystemConfig.systemCurrency!.code!,
+      "Currency-Exchange-Rate":
+          SystemConfig.systemCurrency!.exchangeRate.toString(),
+    });
+    print(url.toString());
+    return productMiniResponseFromJson(response.body);
+  }
+
+  Future<ProductMiniResponse> getNewProducts({page = 1}) async {
+    String url = ("${AppConfig.BASE_URL}/products/newest/" + "?page=$page");
+    final response = await ApiRequest.get(url: url, headers: {
+      "App-Language": app_language.$!,
+      "Currency-Code": SystemConfig.systemCurrency!.code!,
+      "Currency-Exchange-Rate":
+          SystemConfig.systemCurrency!.exchangeRate.toString(),
+    });
+    print(url.toString());
+    return productMiniResponseFromJson(response.body);
+  }
+
   Future<ProductMiniResponse> getProductsTab(
       {name = "",
-        sort_key = "",
-        page = 1,
-        brands = "",
-        categories = "",
-        min = "",
-        max = ""}) async {
+      sort_key = "",
+      page = 1,
+      brands = "",
+      categories = "",
+      min = "",
+      max = ""}) async {
     String url = ("${AppConfig.BASE_URL}/products/search" +
-        "?page=${page}&name=${name}&sort_key=${sort_key}&brands=${brands}&categories=${categories}&min=${min}&max=${max}");
+        "?page=$page&name=$name&sort_key=$sort_key&brands=$brands&categories=$categories&min=$min&max=$max");
 
     print('Home page: ${url.toString()}');
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
       "Currency-Code": SystemConfig.systemCurrency!.code!,
       "Currency-Exchange-Rate":
-      SystemConfig.systemCurrency!.exchangeRate.toString(),
+          SystemConfig.systemCurrency!.exchangeRate.toString(),
     });
     return productMiniResponseFromJson(response.body);
   }
+
   Future<ProductMiniResponse> getFilteredProducts(
       {name = "",
       sort_key = "",
@@ -131,7 +168,7 @@ class ProductRepository {
       min = "",
       max = ""}) async {
     String url = ("${AppConfig.BASE_URL}/products/search" +
-        "?page=${page}&name=${name}&sort_key=${sort_key}&brands=${brands}&categories=${categories}&min=${min}&max=${max}");
+        "?page=$page&name=$name&sort_key=$sort_key&brands=$brands&categories=$categories&min=$min&max=$max");
 
     print('Home page: ${url.toString()}');
     final response = await ApiRequest.get(url: url, headers: {
@@ -142,38 +179,35 @@ class ProductRepository {
     });
     return productMiniResponseFromJson(response.body);
   }
+
   Future<ProductMiniResponse> getProductTab(
-      {name = "recommend",
-        page=1
-        }) async {
-    String url = ("${AppConfig.BASE_URL}/products/recommend" +
-        "?page=${1}");
+      {name = "recommend", page = 1}) async {
+    String url = ("${AppConfig.BASE_URL}/products/recommend" + "?page=${1}");
 
     print('Home page: ${url.toString()}');
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
-     // "Currency-Code": SystemConfig.systemCurrency!.code!,
-     // "Currency-Exchange-Rate":
-    //  SystemConfig.systemCurrency!.exchangeRate.toString(),
+      // "Currency-Code": SystemConfig.systemCurrency!.code!,
+      // "Currency-Exchange-Rate":
+      //  SystemConfig.systemCurrency!.exchangeRate.toString(),
     });
     return productMiniResponseFromJson(response.body);
   }
+
   Future<ProductMiniResponse> getProductTabNewest(
-      {name = "newest",
-        page=1
-      }) async {
-    String url = ("${AppConfig.BASE_URL}/products/newest" +
-        "?page=${1}");
+      {name = "newest", page = 1}) async {
+    String url = ("${AppConfig.BASE_URL}/products/newest" + "?page=${1}");
 
     print('Home page newest: ${url.toString()}');
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
-    //  "Currency-Code": SystemConfig.systemCurrency!.code!,
-    //  "Currency-Exchange-Rate":
-     // SystemConfig.systemCurrency!.exchangeRate.toString(),
+      //  "Currency-Code": SystemConfig.systemCurrency!.code!,
+      //  "Currency-Exchange-Rate":
+      // SystemConfig.systemCurrency!.exchangeRate.toString(),
     });
     return productMiniResponseFromJson(response.body);
   }
+
   Future<ProductMiniResponse> getDigitalProducts({
     page = 1,
   }) async {
@@ -269,7 +303,7 @@ class ProductRepository {
       id, status) async {
     String url = ("${AppConfig.BASE_URL}/classified/change-status/$id");
 
-    var post_body = jsonEncode({"status": status});
+    var postBody = jsonEncode({"status": status});
     final response = await ApiRequest.post(
       url: url,
       headers: {
@@ -277,7 +311,7 @@ class ProductRepository {
         "Content-Type": "application/json",
         "Authorization": "Bearer ${access_token.$}",
       },
-      body: post_body,
+      body: postBody,
     );
 
     return commonResponseFromJson(response.body);
@@ -368,9 +402,9 @@ class ProductRepository {
   Future<VariantPriceResponse> getVariantPrice({id, quantity}) async {
     String url = ("${AppConfig.BASE_URL}/varient-price");
 
-    var post_body = jsonEncode({"id": id, "quantity": quantity});
+    var postBody = jsonEncode({"id": id, "quantity": quantity});
     print(url.toString());
-    print(post_body.toString());
+    print(postBody.toString());
     final response = await ApiRequest.post(
         url: url,
         headers: {
@@ -380,7 +414,7 @@ class ProductRepository {
           "Currency-Exchange-Rate":
               SystemConfig.systemCurrency!.exchangeRate.toString(),
         },
-        body: post_body);
+        body: postBody);
 
     return variantPriceResponseFromJson(response.body);
   }

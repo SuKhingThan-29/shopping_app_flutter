@@ -6,18 +6,11 @@ import 'package:active_ecommerce_flutter/custom/device_info.dart';
 import 'package:active_ecommerce_flutter/custom/enum_classes.dart';
 import 'package:active_ecommerce_flutter/custom/fade_network_image.dart';
 import 'package:active_ecommerce_flutter/custom/lang_text.dart';
-import 'package:active_ecommerce_flutter/custom/scroll_to_hide_widget.dart';
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
-import 'package:active_ecommerce_flutter/data_model/carriers_response.dart';
-import 'package:active_ecommerce_flutter/data_model/delivefytype_response.dart';
-import 'package:active_ecommerce_flutter/data_model/delivefytype_response.dart';
 import 'package:active_ecommerce_flutter/data_model/delivefytype_response.dart';
 import 'package:active_ecommerce_flutter/data_model/delivery_info_response.dart';
-import 'package:active_ecommerce_flutter/data_model/delivery_response.dart';
 import 'package:active_ecommerce_flutter/data_model/delivery_type_data.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
-import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
-import 'package:active_ecommerce_flutter/repositories/pickup_points_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/shipping_repository.dart';
 import 'package:active_ecommerce_flutter/screens/checkout.dart';
 import 'package:flutter/cupertino.dart';
@@ -61,7 +54,6 @@ class _ShippingInfoState extends State<ShippingInfo> {
   //double variables
   double mWidth = 0;
   double mHeight = 0;
-
 
   fetchAll() {
     getDeliveryInfo();
@@ -125,7 +117,8 @@ class _ShippingInfoState extends State<ShippingInfo> {
   _getCarriers() async {
     _delivery.clear();
     print("AddressID: ${widget.seleted_shipping_address}");
-    Deliverytype carriers = await ShippingRepository().getCarrierList(widget.seleted_shipping_address);
+    Deliverytype carriers = await ShippingRepository()
+        .getCarrierList(widget.seleted_shipping_address);
     List<DeliveryTypeData> mDeliveryTypeData = carriers.deliveryTypeData;
     _delivery.addAll(carriers.deliveryTypeData);
     print(
@@ -135,9 +128,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
     }
     print(mDeliveryTypeData);
     _fetchCarrier = true;
-    if(_delivery.isNotEmpty){
-      _deliveryid=_delivery[0].id;
-      _shipping_cost_string=_delivery[0].price.toString();
+    if (_delivery.isNotEmpty) {
+      _deliveryid = _delivery[0].id;
+      _shipping_cost_string = _delivery[0].price.toString();
     }
     setState(() {});
   }
@@ -230,7 +223,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
     if (_sellerWiseShippingOptionValidation.isNotEmpty &&
         carrier_base_shipping.$) {
       ToastComponent.showDialog(
-          LangText(context).local!.please_choose_valid_info,
+          LangText(context).local.please_choose_valid_info,
           gravity: Toast.center,
           duration: Toast.lengthLong);
       return;
@@ -240,7 +233,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
         .getShippingCostResponse(shipping_type: _sellerWiseShippingOption);
 
     if (shippingCostResponse.result == false) {
-      ToastComponent.showDialog(LangText(context).local!.network_error,
+      ToastComponent.showDialog(LangText(context).local.network_error,
           gravity: Toast.center, duration: Toast.lengthLong);
       return;
     }
@@ -331,7 +324,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: MyTheme.golden,
       centerTitle: true,
       leading: Builder(
         builder: (context) => IconButton(
@@ -340,7 +333,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
         ),
       ),
       title: Text(
-        "${AppLocalizations.of(context)!.shipping_cost_ucf} ${_shipping_cost_string}",
+        "${AppLocalizations.of(context)!.shipping_cost_ucf} $_shipping_cost_string",
         style: TextStyle(fontSize: 16, color: MyTheme.accent_color),
       ),
       elevation: 0.0,
@@ -399,7 +392,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
         height: 100,
         child: Center(
             child: Text(
-          LangText(context).local!.you_need_to_log_in,
+          LangText(context).local.you_need_to_log_in,
           style: TextStyle(color: MyTheme.font_grey),
         )));
   }
@@ -651,7 +644,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
                   .id;
         }
         setState(() {});
-       // getSetShippingCost();
+        // getSetShippingCost();
       },
       child: Container(
         decoration: BoxDecorations.buildBoxDecoration_1(radius: 8).copyWith(
@@ -807,7 +800,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
                   .data![carrierIndex]
                   .id;
           setState(() {});
-         // getSetShippingCost();
+          // getSetShippingCost();
         }
       },
       child: Container(
@@ -870,7 +863,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
                                 .transitTime
                                 .toString() +
                             " " +
-                            LangText(context).local!.day_ucf,
+                            LangText(context).local.day_ucf,
                         maxLines: 2,
                         style: TextStyle(
                             fontSize: 13,
@@ -966,7 +959,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
   Widget customAppBar(BuildContext context) {
     return AppBar(
       elevation: 0,
-      backgroundColor: MyTheme.white,
+      backgroundColor: MyTheme.golden,
       automaticallyImplyLeading: false,
       title: buildAppbarTitle(context),
       leading: UsefulElements.backButton(context),
@@ -1244,7 +1237,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
         Padding(
           padding: const EdgeInsets.only(top: 18.0),
           child: Text(
-            LangText(context).local!.choose_delivery_ucf,
+            LangText(context).local.choose_delivery_ucf,
             style: TextStyle(
                 color: MyTheme.dark_font_grey,
                 fontWeight: FontWeight.w700,
@@ -1267,10 +1260,10 @@ class _ShippingInfoState extends State<ShippingInfo> {
     );
   }
 
-  selectedValue(int? value){
+  selectedValue(int? value) {
     _selectedValue = value!;
     _deliveryid = _delivery[_selectedValue].id;
-    _shipping_cost_string=_delivery[_selectedValue].price.toString();
+    _shipping_cost_string = _delivery[_selectedValue].price.toString();
   }
 
   buildDeliveryList() {
@@ -1281,7 +1274,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return GestureDetector(
-          onTap: (){
+          onTap: () {
             setState(() {
               selectedValue(index);
             });
@@ -1293,7 +1286,8 @@ class _ShippingInfoState extends State<ShippingInfo> {
                   _delivery[index].deliveryName,
                   style: TextStyle(
                     fontSize: 15,
-                    color: _selectedValue == index ? Colors.white : Colors.black,
+                    color:
+                        _selectedValue == index ? Colors.white : Colors.black,
                   ),
                 ),
                 Text(
@@ -1305,8 +1299,8 @@ class _ShippingInfoState extends State<ShippingInfo> {
                 ),
               ],
             ),
-            selected:
-            _selectedValue == index, // Check if the current item is selected
+            selected: _selectedValue ==
+                index, // Check if the current item is selected
             selectedTileColor: MyTheme.accent_color,
             trailing: Radio(
               value: index, // Use the index as the value for the radio button
@@ -1324,18 +1318,18 @@ class _ShippingInfoState extends State<ShippingInfo> {
     );
   }
 
-  SingleChildScrollView buildCartSellerItemList(seller_index) {
+  SingleChildScrollView buildCartSellerItemList(sellerIndex) {
     return SingleChildScrollView(
       child: ListView.separated(
         separatorBuilder: (context, index) => SizedBox(
           height: 14,
         ),
-        itemCount: _deliveryInfoList[seller_index].cartItems!.length,
+        itemCount: _deliveryInfoList[sellerIndex].cartItems!.length,
         scrollDirection: Axis.vertical,
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          return buildCartSellerItemCard(index, seller_index);
+          return buildCartSellerItemCard(index, sellerIndex);
         },
       ),
     );
@@ -1382,31 +1376,31 @@ class _ShippingInfoState extends State<ShippingInfo> {
                       fontSize: 12,
                       fontWeight: FontWeight.w400),
                 ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(top: 23.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          SystemConfig.systemCurrency!.symbol!+" "+
-                              (_deliveryInfoList[sellerIndex]
-                                  .cartItems![itemIndex]
-                                  .price! *
-                                  _deliveryInfoList[sellerIndex]
-                                      .cartItems![itemIndex]
-                                      .quantity!)
-                                  .toStringAsFixed(2),
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: TextStyle(
-                              color: MyTheme.accent_color,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 23.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        SystemConfig.systemCurrency!.symbol! +
+                            " " +
+                            (_deliveryInfoList[sellerIndex]
+                                        .cartItems![itemIndex]
+                                        .price! *
+                                    _deliveryInfoList[sellerIndex]
+                                        .cartItems![itemIndex]
+                                        .quantity!)
+                                .toStringAsFixed(2),
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: TextStyle(
+                            color: MyTheme.accent_color,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ],
                   ),
+                ),
               ],
             ),
           ),

@@ -60,6 +60,16 @@ class HomePresenter extends ChangeNotifier {
     fetchFlashDealData();
   }
 
+  handleSelectProductTab({String tab = ""}) {
+    allProductList.clear();
+    isAllProductInitial = true;
+    totalAllProductData = 0;
+    allProductPage = 1;
+    showAllLoadingContainer = false;
+    fetchAllProducts(tab: tab);
+    notifyListeners();
+  }
+
   fetchTodayDealData() async {
     var deal = await ProductRepository().getTodaysDealProducts();
     print(deal.products!.length);
@@ -128,11 +138,27 @@ class HomePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
-  fetchAllProducts() async {
-    var productResponse =
-    await ProductRepository().getFilteredProducts(page: allProductPage);
+  fetchAllProducts({String tab = ""}) async {
+    // var productResponse =
+    //     await ProductRepository().getFilteredProducts(page: allProductPage);
+
+    var productResponse;
+
+    if (tab == "News") {
+      productResponse =
+          await ProductRepository().getNewProducts(page: allProductPage);
+    } else if (tab == "Brands") {
+      productResponse =
+          await ProductRepository().getBrancedProducts(page: allProductPage);
+    } else {
+      productResponse =
+          await ProductRepository().getRecommendProducts(page: allProductPage);
+    }
+
     if (productResponse.products!.isEmpty) {
       ToastComponent.showDialog("No more products!", gravity: Toast.center);
+      isAllProductInitial = false;
+      showAllLoadingContainer = false;
       return;
     }
 
