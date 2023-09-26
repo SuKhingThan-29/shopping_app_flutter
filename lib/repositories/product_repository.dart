@@ -11,6 +11,7 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/repositories/api-request.dart';
 
+import '../data_model/product_tab_response.dart';
 import '../data_model/variant_price_response.dart';
 
 class ProductRepository {
@@ -101,7 +102,26 @@ class ProductRepository {
     print(url.toString());
     return productMiniResponseFromJson(response.body);
   }
+  Future<ProductMiniResponse> getProductsTab(
+      {name = "",
+        sort_key = "",
+        page = 1,
+        brands = "",
+        categories = "",
+        min = "",
+        max = ""}) async {
+    String url = ("${AppConfig.BASE_URL}/products/search" +
+        "?page=${page}&name=${name}&sort_key=${sort_key}&brands=${brands}&categories=${categories}&min=${min}&max=${max}");
 
+    print('Home page: ${url.toString()}');
+    final response = await ApiRequest.get(url: url, headers: {
+      "App-Language": app_language.$!,
+      "Currency-Code": SystemConfig.systemCurrency!.code!,
+      "Currency-Exchange-Rate":
+      SystemConfig.systemCurrency!.exchangeRate.toString(),
+    });
+    return productMiniResponseFromJson(response.body);
+  }
   Future<ProductMiniResponse> getFilteredProducts(
       {name = "",
       sort_key = "",
@@ -122,7 +142,22 @@ class ProductRepository {
     });
     return productMiniResponseFromJson(response.body);
   }
+  Future<ProductTabResponse> getProductTab(
+      {name = "recommend",
+        page=1
+        }) async {
+    String url = ("${AppConfig.BASE_URL}/products/$name" +
+        "?page=${page}");
 
+    print('Home page: ${url.toString()}');
+    final response = await ApiRequest.get(url: url, headers: {
+      "App-Language": app_language.$!,
+      "Currency-Code": SystemConfig.systemCurrency!.code!,
+      "Currency-Exchange-Rate":
+      SystemConfig.systemCurrency!.exchangeRate.toString(),
+    });
+    return productTabResponseFromJson(response.body);
+  }
   Future<ProductMiniResponse> getDigitalProducts({
     page = 1,
   }) async {

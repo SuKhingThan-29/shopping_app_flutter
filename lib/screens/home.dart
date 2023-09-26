@@ -20,6 +20,9 @@ import 'package:flutter_countdown_timer/index.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
+
+import '../presenter/product_tab_presenter.dart';
 
 class Home extends StatefulWidget {
   Home({
@@ -43,8 +46,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   List<CountdownTimerController> _timerControllerList = [];
 
-  List productTabs = ['Recommended', 'News', 'Brand Shops'];
-  String selectProductTab = "Recommended";
+  List productTabs = ['recommend', 'newest'];
+  String selectProductTab = "recommend";
 
   @override
   void initState() {
@@ -58,7 +61,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   change() {
     homeData.onRefresh();
-    homeData.mainScrollListener();
+    homeData.mainScrollListener(selectProductTab);
     homeData.initPiratedAnimation(this);
   }
 
@@ -381,6 +384,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                                 onTap: () {
                                                   selectProductTab =
                                                       productTabs[i];
+                                                  homeData.allProductList.clear();
+                                                  homeData.fetchAllProducts(name: selectProductTab);
                                                   setState(() {});
                                                 },
                                                 child: Container(
@@ -576,6 +581,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Widget buildHomeAllProducts2(context, HomePresenter homeData) {
+  // homeData.fetchAllProducts(name: selectProductTab);
+
     if (homeData.isAllProductInitial && homeData.allProductList.length == 0) {
       return SingleChildScrollView(
           child: ShimmerHelper().buildProductGridShimmer(
@@ -607,6 +614,43 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     } else {
       return Container(); // should never be happening
     }
+   //  Provider.of<ProductTabProvider>(context, listen: false).getProductTab(name);
+   // return Consumer<ProductTabProvider>(
+   //    builder: (context,provider,snapshot){
+   //      if (homeData.isAllProductInitial && homeData.allProductList.length == 0) {
+   //        return SingleChildScrollView(
+   //            child: ShimmerHelper().buildProductGridShimmer(
+   //                scontroller: homeData.allProductScrollController));
+   //      } else if (homeData.allProductList.length > 0) {
+   //        return MasonryGridView.count(
+   //            crossAxisCount: 2,
+   //            mainAxisSpacing: 14,
+   //            crossAxisSpacing: 14,
+   //            itemCount: homeData.allProductList.length,
+   //            shrinkWrap: true,
+   //            padding: EdgeInsets.only(top: 20.0, bottom: 10, left: 18, right: 18),
+   //            physics: NeverScrollableScrollPhysics(),
+   //            itemBuilder: (context, index) {
+   //              return ProductCard(
+   //                id: homeData.allProductList[index].id,
+   //                image: homeData.allProductList[index].thumbnail_image,
+   //                name: homeData.allProductList[index].name,
+   //                main_price: homeData.allProductList[index].main_price,
+   //                stroked_price: homeData.allProductList[index].stroked_price,
+   //                has_discount: homeData.allProductList[index].has_discount,
+   //                discount: homeData.allProductList[index].discount,
+   //                is_wholesale: homeData.allProductList[index].isWholesale,
+   //              );
+   //            });
+   //      } else if (homeData.totalAllProductData == 0) {
+   //        return Center(
+   //            child: Text(AppLocalizations.of(context)!.no_product_is_available));
+   //      } else {
+   //        return Container(); // should never be happening
+   //      }
+   //    }
+   //  );
+
   }
 
   Widget buildHomeTodayDeal(context, HomePresenter homeData) {

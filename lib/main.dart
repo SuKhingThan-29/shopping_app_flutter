@@ -1,6 +1,7 @@
 import 'package:active_ecommerce_flutter/firebase_options.dart';
 import 'package:active_ecommerce_flutter/presenter/cart_counter.dart';
 import 'package:active_ecommerce_flutter/presenter/currency_presenter.dart';
+import 'package:active_ecommerce_flutter/presenter/product_tab_presenter.dart';
 import 'package:active_ecommerce_flutter/profile_test.dart';
 import 'package:active_ecommerce_flutter/providers/deep_link_provider.dart';
 import 'package:active_ecommerce_flutter/screens/address.dart';
