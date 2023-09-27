@@ -13,6 +13,7 @@ import 'package:active_ecommerce_flutter/screens/todays_deal_products.dart';
 import 'package:active_ecommerce_flutter/screens/top_selling_products.dart';
 import 'package:active_ecommerce_flutter/ui_elements/mini_product_card.dart';
 import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/index.dart';
@@ -42,7 +43,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   List<CountdownTimerController> _timerControllerList = [];
 
-  List productTabs = ['Recommended', 'News', 'Brands'];
+  List productTabs = ['Recommended', 'News', 'Brand Shops'];
   String selectProductTab = "Recommended";
 
   @override
@@ -112,10 +113,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         child: SafeArea(
           child: Scaffold(
               //key: homeData.scaffoldKey,
-              // appBar: PreferredSize(
-              //   preferredSize: Size.fromHeight(80),
-              //   child: buildAppBar(statusBarHeight, context),
-              // ),
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(80),
+                child: buildAppBar(statusBarHeight, context),
+              ),
               //drawer: MainDrawer(),
               body: ListenableBuilder(
                   listenable: homeData,
@@ -132,87 +133,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             physics: const BouncingScrollPhysics(
                                 parent: AlwaysScrollableScrollPhysics()),
                             slivers: <Widget>[
-                              SliverAppBar(
-                                pinned: true,
-                                backgroundColor: Colors.white,
-                                expandedHeight: 210.0,
-                                leading: Container(),
-                                flexibleSpace: FlexibleSpaceBar(
-                                  titlePadding: EdgeInsets.only(bottom: 5),
-                                  expandedTitleScale: 1,
-                                  title: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return Filter();
-                                      }));
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 15, left: 15, top: 5),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            height: 50,
-                                            width: 50,
-                                            child: Image.asset(
-                                              "assets/app_logo.png",
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 16.0),
-                                              height: 36,
-                                              decoration: BoxDecorations
-                                                  .buildBoxDecoration_1(),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    AppLocalizations.of(
-                                                            context)!
-                                                        .search_anything,
-                                                    style: TextStyle(
-                                                        fontSize: 13.0,
-                                                        color: MyTheme
-                                                            .textfield_grey),
-                                                  ),
-                                                  Spacer(),
-                                                  Image.asset(
-                                                    'assets/search.png',
-                                                    height: 16,
-                                                    //color: MyTheme.dark_grey,
-                                                    color: MyTheme.dark_grey,
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  background: Stack(
-                                    fit: StackFit.expand,
-                                    children: <Widget>[
-                                      // Background image
-                                      Image.asset(
-                                        'assets/appbar_bg.jpg',
-                                        fit: BoxFit.cover,
-                                      ),
-                                      // Add any other widgets you want to overlay here
-                                    ],
-                                  ),
-                                ),
-                              ),
                               SliverList(
                                 delegate: SliverChildListDelegate([
                                   AppConfig.purchase_code == ""
@@ -264,11 +184,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                           ),
                                         )
                                       : Container(),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 20),
-                                    child: buildHomeCarouselSlider(
-                                        context, homeData),
-                                  ),
+                                  buildHomeCarouselSlider(context, homeData),
 
                                   // Padding(
                                   //   padding: const EdgeInsets.fromLTRB(
@@ -365,10 +281,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
                               if (homeData.isFlashDeal)
                                 SliverToBoxAdapter(
-                                  child: SizedBox(
-                                    height: 300,
-                                    child: buildFlashDeal(context, homeData),
-                                  ),
+                                  child:buildFlashDeal(context, homeData)
                                 ),
 
                               SliverList(
@@ -468,9 +381,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                                 onTap: () {
                                                   selectProductTab =
                                                       productTabs[i];
-                                                  homeData
-                                                      .handleSelectProductTab(
-                                                          tab: productTabs[i]);
                                                   setState(() {});
                                                 },
                                                 child: Container(
@@ -509,7 +419,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                                   ),
                                                 ),
                                               ))),
-
                                   SingleChildScrollView(
                                     child: Column(
                                       children: [
@@ -713,7 +622,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       //snapshot.hasData
       return SingleChildScrollView(
         child: SizedBox(
-          height: 258,
+          height: 248,
           child: NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification scrollInfo) {
               if (scrollInfo.metrics.pixels ==
@@ -791,7 +700,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           controller: homeData.featuredCategoryScrollController);
     } else if (homeData.flashDealProducts.length > 0) {
       //snapshot.hasData
-
       DateTime end = convertTimeStampToDateTime(
           homeData.flashDealProducts[0].date!); // YYYY-mm-dd
       DateTime now = DateTime.now();
@@ -823,7 +731,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               ),
               SingleChildScrollView(
                 child: SizedBox(
-                  height: 250,
+                  height: 180,
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollInfo) {
                       if (scrollInfo.metrics.pixels ==
@@ -846,7 +754,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         }));
                       },
                       child: ListView.separated(
-                        padding: const EdgeInsets.all(18.0),
+                        padding: const EdgeInsets.all(8.0),
                         separatorBuilder: (context, index) => SizedBox(
                           width: 14,
                         ),
@@ -874,15 +782,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               : Card(
                                   margin: EdgeInsets.only(right: 5),
                                   child: Container(
-                                    height: 350,
-                                    width: 130,
+                                    width: 100,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(6.0),
                                     ),
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          CrossAxisAlignment.center,
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
@@ -933,7 +840,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                         ),
                                         Padding(
                                           padding:
-                                              EdgeInsets.fromLTRB(10, 0, 16, 4),
+                                              const EdgeInsets.only(left: 0.0,top: 8),
                                           child: Text(
                                             homeData
                                                 .flashDealProducts[0]
@@ -1036,12 +943,20 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         child: ClipRRect(
                             borderRadius: BorderRadius.horizontal(
                                 left: Radius.circular(6), right: Radius.zero),
-                            child: FadeInImage.assetNetwork(
-                              placeholder: 'assets/placeholder.png',
-                              image:
-                                  homeData.featuredCategoryList[index].banner,
-                              fit: BoxFit.cover,
-                            ))),
+                            // child: FadeInImage.assetNetwork(
+                            //   placeholder: 'assets/placeholder.png',
+                            //   image:
+                            //       homeData.featuredCategoryList[index].banner,
+                            //   fit: BoxFit.cover,
+                            // )
+                          child: CachedNetworkImage(
+                            imageUrl:  homeData.featuredCategoryList[index].banner,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(),),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
+                          ),
+                        )),
                     Flexible(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -1103,7 +1018,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     } else if (homeData.featuredProductList.length > 0) {
       return SingleChildScrollView(
         child: SizedBox(
-          height: 258,
+          height: 248,
           child: NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification scrollInfo) {
               if (scrollInfo.metrics.pixels ==
@@ -1636,8 +1551,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   Container buildProductLoadingContainer(HomePresenter homeData) {
     return Container(
-      // height: homeData.showAllLoadingContainer ? 36 : 0,
-      height: 0,
+      height: homeData.showAllLoadingContainer ? 36 : 0,
       width: double.infinity,
       color: Colors.white,
       child: Center(
