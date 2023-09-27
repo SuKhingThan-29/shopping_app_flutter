@@ -48,7 +48,7 @@ class _CouponState extends State<Coupon> {
   int? _totalData = 0;
   bool _showLoadingContainer = false;
   UserInformation? _userInfo;
-  String? _member_level;
+  int? _member_level;
 
   @override
   void initState() {

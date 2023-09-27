@@ -145,15 +145,15 @@ class HomePresenter extends ChangeNotifier {
     var productResponse;
 
     if (tab == "News") {
-      allProductList.clear();
+      reset();
       productResponse =
           await ProductRepository().getNewProducts(page: allProductPage);
     } else if (tab == "Brands") {
-      allProductList.clear();
+      reset();
       productResponse =
           await ProductRepository().getBrancedProducts(page: allProductPage);
     } else {
-      allProductList.clear();
+      reset();
       productResponse =
           await ProductRepository().getRecommendProducts(page: allProductPage);
     }
@@ -219,8 +219,8 @@ class HomePresenter extends ChangeNotifier {
       if (mainScrollController.position.pixels ==
           mainScrollController.position.maxScrollExtent) {
         allProductPage++;
-        ToastComponent.showDialog("More Products Loading...",
-            gravity: Toast.center);
+        // ToastComponent.showDialog("More Products Loading...",
+        //     gravity: Toast.center);
         showAllLoadingContainer = true;
         fetchAllProducts();
       }

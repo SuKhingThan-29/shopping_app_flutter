@@ -97,7 +97,6 @@ class _PointShopState extends State<PointShop> {
   }
 
   fetchData() async {
-    getUserInfo();
     _orderResponseList.clear();
     var orderResponse = await OrderRepository().getCoupon();
     _orderResponseList.addAll(orderResponse.data);
