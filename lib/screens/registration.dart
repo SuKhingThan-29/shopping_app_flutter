@@ -16,6 +16,7 @@ import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/common_webview_screen.dart';
 import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
+import 'package:active_ecommerce_flutter/screens/otp.dart';
 import 'package:active_ecommerce_flutter/ui_elements/auth_ui.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
@@ -79,11 +80,13 @@ class _RegistrationState extends State<Registration> {
   }
 
   fetch_country() async {
+    var data = await AddressRepository().getCountryList();
+    data.countries.forEach((c) => countries_code.add(c.code));
+
     countryDataLoad = true;
     var res = await AddressRepository().getCountryList();
     res.countries.forEach((c) {
       countries.add(c);
-      countries_code.add(c.code);
     });
     selectedCountryId = res.countries[0].id.toString();
     fetch_state(res.countries[0].id.toString());
@@ -230,17 +233,15 @@ class _RegistrationState extends State<Registration> {
       ToastComponent.showDialog(AppLocalizations.of(context)!.enter_your_name,
           gravity: Toast.center, duration: Toast.lengthLong);
       return;
-    } else if (_register_by == 'email' && (email == "" || !isEmail(email))) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_email,
-          gravity: Toast.center, duration: Toast.lengthLong);
-      return;
-    } else if (_register_by == 'phone' && _phone == "") {
+    }
+   else if (_phoneNumberController.text.isEmpty) {
       ToastComponent.showDialog(
           AppLocalizations.of(context)!.enter_phone_number,
           gravity: Toast.center,
           duration: Toast.lengthLong);
       return;
-    } else if (postalCode == "") {
+    }
+    else if (postalCode == "") {
       ToastComponent.showDialog("Please fill postal code",
           gravity: Toast.center, duration: Toast.lengthLong);
       return;
@@ -271,7 +272,8 @@ class _RegistrationState extends State<Registration> {
 
     var signupResponse = await AuthRepository().getSignupResponse(
         name,
-        _register_by == 'email' ? email : _phone,
+         email,
+        _phone,
         password,
         passwordConfirm,
         _register_by,
@@ -321,7 +323,7 @@ class _RegistrationState extends State<Registration> {
 
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
-        return Main();
+        return Otp();
       }), (newRoute) => false);
       // if ((mail_verification_status.$ && _register_by == "email") ||
       //     _register_by == "phone") {
@@ -388,7 +390,7 @@ class _RegistrationState extends State<Registration> {
                       color: MyTheme.accent_color, fontWeight: FontWeight.w600),
                 ),
               ),
-              if (_register_by == "email")
+
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Column(
@@ -403,27 +405,26 @@ class _RegistrationState extends State<Registration> {
                               hint_text: "johndoe@example.com"),
                         ),
                       ),
-                      otp_addon_installed.$
-                          ? GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _register_by = "phone";
-                                });
-                              },
-                              child: Text(
-                                AppLocalizations.of(context)!
-                                    .or_register_with_a_phone,
-                                style: TextStyle(
-                                    color: MyTheme.accent_color,
-                                    fontStyle: FontStyle.italic,
-                                    decoration: TextDecoration.underline),
-                              ),
-                            )
-                          : Container()
+                      // GestureDetector(
+                      //         onTap: () {
+                      //           setState(() {
+                      //             _register_by = "phone";
+                      //           });
+                      //         },
+                      //         child: Text(
+                      //           AppLocalizations.of(context)!
+                      //               .or_register_with_a_phone,
+                      //           style: TextStyle(
+                      //               color: MyTheme.accent_color,
+                      //               fontStyle: FontStyle.italic,
+                      //               decoration: TextDecoration.underline),
+                      //         ),
+                      //       )
+
                     ],
                   ),
-                )
-              else
+                ),
+
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Column(
@@ -463,21 +464,21 @@ class _RegistrationState extends State<Registration> {
                           },
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _register_by = "email";
-                          });
-                        },
-                        child: Text(
-                          AppLocalizations.of(context)!
-                              .or_register_with_an_email,
-                          style: TextStyle(
-                              color: MyTheme.accent_color,
-                              fontStyle: FontStyle.italic,
-                              decoration: TextDecoration.underline),
-                        ),
-                      )
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     setState(() {
+                      //       _register_by = "email";
+                      //     });
+                      //   },
+                      //   child: Text(
+                      //     AppLocalizations.of(context)!
+                      //         .or_register_with_an_email,
+                      //     style: TextStyle(
+                      //         color: MyTheme.accent_color,
+                      //         fontStyle: FontStyle.italic,
+                      //         decoration: TextDecoration.underline),
+                      //   ),
+                      // )
                     ],
                   ),
                 ),

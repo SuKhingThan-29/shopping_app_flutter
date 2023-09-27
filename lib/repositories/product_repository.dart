@@ -103,7 +103,7 @@ class ProductRepository {
   }
 
   Future<ProductMiniResponse> getBrancedProducts({page = 1}) async {
-    String url = ("${AppConfig.BASE_URL}/branched" + "?page=$page");
+    String url = ("${AppConfig.BASE_URL}/branched");
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
       "Currency-Code": SystemConfig.systemCurrency!.code!,

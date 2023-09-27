@@ -383,8 +383,7 @@ class _LoginState extends State<Login> {
                               hint_text: "johndoe@example.com"),
                         ),
                       ),
-                      otp_addon_installed.$
-                          ? GestureDetector(
+                     GestureDetector(
                               onTap: () {
                                 setState(() {
                                   _login_by = "phone";
@@ -399,7 +398,7 @@ class _LoginState extends State<Login> {
                                     decoration: TextDecoration.underline),
                               ),
                             )
-                          : Container()
+
                     ],
                   ),
                 )

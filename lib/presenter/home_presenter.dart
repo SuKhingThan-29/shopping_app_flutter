@@ -145,12 +145,15 @@ class HomePresenter extends ChangeNotifier {
     var productResponse;
 
     if (tab == "News") {
+      allProductList.clear();
       productResponse =
           await ProductRepository().getNewProducts(page: allProductPage);
     } else if (tab == "Brands") {
+      allProductList.clear();
       productResponse =
           await ProductRepository().getBrancedProducts(page: allProductPage);
     } else {
+      allProductList.clear();
       productResponse =
           await ProductRepository().getRecommendProducts(page: allProductPage);
     }

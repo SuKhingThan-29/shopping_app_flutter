@@ -20,6 +20,8 @@ class AuthRepository {
     });
 
     String url = ("${AppConfig.BASE_URL}/auth/login");
+    print("Login url: $url");
+    print("Login request: ${postBody}");
     final response = await ApiRequest.post(
         url: url,
         headers: {
@@ -99,7 +101,8 @@ class AuthRepository {
 
   Future<LoginResponse> getSignupResponse(
     String name,
-    String? emailOrPhone,
+    String? email,
+    String? phone,
     String password,
     String passowrdConfirmation,
     String registerBy,
@@ -112,7 +115,8 @@ class AuthRepository {
   ) async {
     var postBody = jsonEncode({
       "name": "$name",
-      "email_or_phone": "$emailOrPhone",
+      "email": "$email",
+      "phone":"$phone",
       "password": "$password",
       "password_confirmation": "$passowrdConfirmation",
       "register_by": "$registerBy",

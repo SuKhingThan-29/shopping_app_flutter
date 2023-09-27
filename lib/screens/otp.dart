@@ -11,6 +11,8 @@ import 'package:toast/toast.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'login.dart';
+
 class Otp extends StatefulWidget {
   String? title;
   Otp({Key? key, this.title}) : super(key: key);
@@ -265,7 +267,7 @@ class _OtpState extends State<Otp> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20),
+                    padding: const EdgeInsets.only(top: 20,bottom: 20),
                     child: InkWell(
                       onTap: () {
                         onTapResend();
@@ -277,6 +279,21 @@ class _OtpState extends State<Otp> {
                               // decoration: TextDecoration.underline,
                               fontSize: 14)),
                     ),
+                  ),
+                  InkWell(
+                    child: Text(
+                      AppLocalizations.of(context)!.log_in,
+                      style: TextStyle(
+                          color: MyTheme.accent_color,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return Login();
+                          }));
+                    },
                   ),
                 ],
               )),
