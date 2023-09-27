@@ -52,7 +52,7 @@ class _PointShopState extends State<PointShop> {
   bool _showLoadingContainer = false;
   List<dynamic> _orderResponseList = [];
   UserInformation? _userInfo;
-  String? _member_level;
+  int? _total_point;
 
   @override
   void initState() {
@@ -100,8 +100,8 @@ class _PointShopState extends State<PointShop> {
     var userInfoRes = await ProfileRepository().getUserInfoResponse();
     if (userInfoRes.data.isNotEmpty) {
       _userInfo = userInfoRes.data.first;
-      _member_level = _userInfo!.total_points;
-      print("member level: $_member_level");
+      _total_point = _userInfo!.total_points;
+      print("member level: $_total_point");
     }
 
     setState(() {});
@@ -190,7 +190,7 @@ class _PointShopState extends State<PointShop> {
                                 ),
                                 SizedBox(width: 5),
                                 Text(
-                                  '$_member_level Point',
+                                  '${_total_point??0} Point',
                                   style: TextStyle(
                                     fontSize: 25,
                                     color: Color.fromARGB(255, 253, 252, 252),
@@ -499,7 +499,8 @@ class _PointShopState extends State<PointShop> {
                               print(response);
                               ToastComponent.showDialog(response.message);
                               if (response.message == true) {
-                                _onRefresh();
+                                _orderList.clear();
+                                fetchData();
                                 print(_orderList);
                                 Navigator.of(context, rootNavigator: true)
                                     .pop();

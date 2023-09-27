@@ -97,6 +97,8 @@ class _ProfileState extends State<Profile> {
       _userInfo = userInfoRes.data.first;
       _member_level = _userInfo!.member_level;
       print("member level: $_member_level");
+      print("member point: ${_userInfo!.total_points}");
+
     }
 
     // var res = await ProfileRepository().getMemberLevel();

@@ -48,7 +48,7 @@ class _CouponState extends State<Coupon> {
   int? _totalData = 0;
   bool _showLoadingContainer = false;
   UserInformation? _userInfo;
-  String? _member_level;
+  int? _member_level;
 
   @override
   void initState() {
@@ -175,7 +175,7 @@ class _CouponState extends State<Coupon> {
                               ),
                               SizedBox(width: 5),
                               Text(
-                                '$_member_level Point',
+                                '${_member_level??0} Point',
                                 style: TextStyle(
                                   fontSize: 25,
                                   color: Color.fromARGB(255, 253, 252, 252),

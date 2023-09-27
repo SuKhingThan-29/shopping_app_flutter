@@ -71,7 +71,7 @@ class UserInformation {
   var remainingUploads;
   var packageId;
   String? packageName;
-  String? total_points;
+  int? total_points;
 
   factory UserInformation.fromJson(Map<String, dynamic> json) =>
       UserInformation(
@@ -90,7 +90,7 @@ class UserInformation {
           packageName: json["package_name"],
           member_level_id: json["member_level_id"] ?? 0,
           member_level: json["member_level"] ?? "",
-          total_points: json["total_points"] ?? "0");
+          total_points: json["total_points"] ?? 0);
 
   Map<String, dynamic> toJson() => {
         "name": name,

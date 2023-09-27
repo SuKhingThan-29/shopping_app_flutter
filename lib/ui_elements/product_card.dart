@@ -91,10 +91,10 @@ class _ProductCardState extends State<ProductCard> {
                             padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
                             child: Text(
                               SystemConfig.systemCurrency!.code != null
-                                  ? widget.stroked_price!.replaceAll(
+                                  ? widget.main_price!.replaceAll(
                                       SystemConfig.systemCurrency!.code!,
                                       SystemConfig.systemCurrency!.symbol!)
-                                  : widget.stroked_price!,
+                                  : widget.main_price!,
                               textAlign: TextAlign.left,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
