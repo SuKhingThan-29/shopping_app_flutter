@@ -1,14 +1,20 @@
+import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
 import 'package:active_ecommerce_flutter/data_model/user_info_response.dart';
 import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
+import 'package:active_ecommerce_flutter/screens/order_details.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
+import 'package:coupon_uikit/coupon_uikit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 
 import 'package:active_ecommerce_flutter/repositories/order_repository.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:one_context/one_context.dart';
 
 class PaymentStatus {
   String option_key;
@@ -115,8 +121,8 @@ class _CouponState extends State<Coupon> {
           if (widget.from_checkout) {
             Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
-              return Main();
-            }), (reute) => false);
+                  return Main();
+                }), (reute) => false);
             return Future<bool>.value(false);
           } else {
             return Future<bool>.value(true);
@@ -124,56 +130,73 @@ class _CouponState extends State<Coupon> {
         },
         child: Directionality(
           textDirection:
-              app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
           child: Scaffold(
               backgroundColor: Colors.white,
               appBar: buildAppBar(context),
               body: Stack(
                 children: [
-                  buildOrderListList(),
-                  // Container(
-                  //     child: Column(
-                  //   children: [
-                  //     // Padding(
-                  //     //   padding: const EdgeInsets.all(15),
-                  //     //   child: Container(
-                  //     //     alignment: Alignment.topCenter,
-                  //     //     decoration: BoxDecoration(
-                  //     //       borderRadius: BorderRadius.circular(20.0),
-                  //     //       color: Colors.transparent,
-                  //     //       image: DecorationImage(
-                  //     //         image: AssetImage('assets/pointbg.jpg'),
-                  //     //         fit: BoxFit.cover,
-                  //     //       ),
-                  //     //     ),
-                  //     //     padding: EdgeInsets.all(20),
-                  //     //     height: 150,
-                  //     //     child: Row(
-                  //     //       crossAxisAlignment: CrossAxisAlignment.center,
-                  //     //       children: [
-                  //     //         Image.asset(
-                  //     //           "assets/point.png",
-                  //     //           width: 20,
-                  //     //           height: 20,
-                  //     //         ),
-                  //     //         Text(
-                  //     //           '$_member_level Point',
-                  //     //           style: TextStyle(
-                  //     //             fontSize: 20,
-                  //     //             color: Color.fromARGB(255, 84, 83, 83),
-                  //     //             fontWeight: FontWeight.bold,
-                  //     //           ),
-                  //     //         ),
-                  //     //       ],
-                  //     //     ),
-                  //     //   ),
-                  //     // ),
-                  //     buildOrderListList()
-                  //   ],
-                  // )),
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
+                        color: Colors.transparent,
+                        image: DecorationImage(
+                          image: AssetImage('assets/pointbg.jpg'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      padding: EdgeInsets.all(20),
+                      height: 150,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Point Balance',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Color.fromARGB(255, 255, 255, 255),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.center, // Center the Row
+                            children: [
+                              Image.asset(
+                                "assets/point.png",
+                                width: 30,
+                                height: 30,
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                '$_member_level Point',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Color.fromARGB(255, 253, 252, 252),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(bottom: 10, top: 200),
+                      child: buildOrderListList()),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Align(
                       alignment: Alignment.bottomCenter,
-                      child: buildLoadingContainer())
+                      child: buildLoadingContainer()),
                 ],
               )),
         ));
@@ -220,7 +243,7 @@ class _CouponState extends State<Coupon> {
               children: [
                 Padding(
                   padding: MediaQuery.of(context).viewPadding.top >
-                          30 //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
+                      30 //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
                       ? const EdgeInsets.only(top: 36.0)
                       : const EdgeInsets.only(top: 14.0),
                   child: buildTopAppBarContainer(),
@@ -251,7 +274,7 @@ class _CouponState extends State<Coupon> {
             ),
           ),
           Text(
-            "My Coupon",
+            AppLocalizations.of(context)!.coupon_ucf,
             style: TextStyle(
                 fontSize: 16,
                 color: MyTheme.dark_font_grey,
@@ -264,28 +287,29 @@ class _CouponState extends State<Coupon> {
 
   buildOrderListList() {
     if (_isInitial && _orderList.length == 0) {
-      return ListView.builder(
-        controller: _scrollController,
-        itemCount: 10,
-        scrollDirection: Axis.vertical,
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding:
+      return SingleChildScrollView(
+          child: ListView.builder(
+            controller: _scrollController,
+            itemCount: 10,
+            scrollDirection: Axis.vertical,
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding:
                 const EdgeInsets.symmetric(horizontal: 18.0, vertical: 14.0),
-            child: Shimmer.fromColors(
-              baseColor: MyTheme.shimmer_base,
-              highlightColor: MyTheme.shimmer_highlighted,
-              child: Container(
-                height: 55,
-                width: double.infinity,
-                color: Colors.white,
-              ),
-            ),
-          );
-        },
-      );
+                child: Shimmer.fromColors(
+                  baseColor: MyTheme.shimmer_base,
+                  highlightColor: MyTheme.shimmer_highlighted,
+                  child: Container(
+                    height: 75,
+                    width: double.infinity,
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            },
+          ));
     } else if (_orderList.length > 0) {
       return RefreshIndicator(
         color: MyTheme.accent_color,
@@ -301,7 +325,7 @@ class _CouponState extends State<Coupon> {
               height: 14,
             ),
             padding:
-                const EdgeInsets.only(left: 18, right: 18, top: 0, bottom: 0),
+            const EdgeInsets.only(left: 18, right: 18, top: 0, bottom: 0),
             itemCount: _orderList.length,
             scrollDirection: Axis.vertical,
             physics: NeverScrollableScrollPhysics(),
@@ -322,35 +346,8 @@ class _CouponState extends State<Coupon> {
         ),
       );
     } else if (_totalData == 0) {
-      return Container(
-        height: MediaQuery.of(context).size.height * 0.7,
-        width: MediaQuery.of(context).size.width,
-        child: Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/orders.png",
-                width: 60,
-                height: 60,
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Text(
-                "No Coupon, yet",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text("There are currently no coupon"),
-            ],
-          ),
-        ),
-      );
-      // return Center(
-      //     child: Text(AppLocalizations.of(context)!.no_data_is_available));
+      return Center(
+          child: Text(AppLocalizations.of(context)!.no_data_is_available));
     } else {
       return Container(); // should never be happening
     }
@@ -359,12 +356,16 @@ class _CouponState extends State<Coupon> {
   buildOrderListItemCard(int index) {
     return Container(
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 245, 239, 192),
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(
+          color: Colors.black, // Border color
+          width: 2.0, // Border width
+        ),
       ),
       margin: EdgeInsets.only(bottom: 10),
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(10.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -489,16 +490,16 @@ class _CouponState extends State<Coupon> {
     );
   }
 
-  Container buildPaymentStatusCheckContainer(String paymentStatus) {
+  Container buildPaymentStatusCheckContainer(String payment_status) {
     return Container(
       height: 16,
       width: 16,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),
-          color: paymentStatus == "paid" ? Colors.green : Colors.red),
+          color: payment_status == "paid" ? Colors.green : Colors.red),
       child: Padding(
         padding: const EdgeInsets.all(3),
-        child: Icon(paymentStatus == "paid" ? Icons.check : Icons.check,
+        child: Icon(payment_status == "paid" ? Icons.check : Icons.check,
             color: Colors.white, size: 10),
       ),
     );

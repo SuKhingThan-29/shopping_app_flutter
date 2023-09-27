@@ -1,6 +1,9 @@
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/data_model/user_info_response.dart';
+import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
+import 'package:active_ecommerce_flutter/screens/filter.dart';
 import 'package:active_ecommerce_flutter/screens/order_details.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:coupon_uikit/coupon_uikit.dart';
@@ -48,6 +51,8 @@ class _PointShopState extends State<PointShop> {
   int? _totalData = 0;
   bool _showLoadingContainer = false;
   List<dynamic> _orderResponseList = [];
+  UserInformation? _userInfo;
+  String? _member_level;
 
   @override
   void initState() {
@@ -91,7 +96,19 @@ class _PointShopState extends State<PointShop> {
     fetchData();
   }
 
+  getUserInfo() async {
+    var userInfoRes = await ProfileRepository().getUserInfoResponse();
+    if (userInfoRes.data.isNotEmpty) {
+      _userInfo = userInfoRes.data.first;
+      _member_level = _userInfo!.total_points;
+      print("member level: $_member_level");
+    }
+
+    setState(() {});
+  }
+
   fetchData() async {
+    getUserInfo();
     _orderResponseList.clear();
     var orderResponse = await OrderRepository().getCoupon();
     _orderResponseList.addAll(orderResponse.data);
@@ -112,13 +129,14 @@ class _PointShopState extends State<PointShop> {
 
   @override
   Widget build(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return WillPopScope(
         onWillPop: () {
           if (widget.from_checkout) {
             Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
-              return Main();
-            }), (reute) => false);
+                  return Main();
+                }), (reute) => false);
             return Future<bool>.value(false);
           } else {
             return Future<bool>.value(true);
@@ -126,23 +144,77 @@ class _PointShopState extends State<PointShop> {
         },
         child: Directionality(
           textDirection:
-              app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
-          child: Scaffold(
-              backgroundColor: Colors.white,
-              appBar: buildAppBar(context),
-              body: Stack(
-                children: [
-                  Container(
-                      margin: EdgeInsets.only(bottom: 100),
-                      child: buildOrderListList()),
-                  SizedBox(
-                    height: 100,
-                  ),
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: buildLoadingContainer()),
-                ],
-              )),
+          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+          child: SafeArea(
+            child: Scaffold(
+                backgroundColor: Colors.white,
+                appBar: buildAppBar(statusBarHeight, context),
+                body: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: Container(
+                        alignment: Alignment.topCenter,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: Colors.transparent,
+                          image: DecorationImage(
+                            image: AssetImage('assets/pointbg.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        padding: EdgeInsets.all(10),
+                        height: 140,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Point Balance',
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.center, // Center the Row
+                              children: [
+                                Image.asset(
+                                  "assets/point.png",
+                                  width: 30,
+                                  height: 30,
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  '$_member_level Point',
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Color.fromARGB(255, 253, 252, 252),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(top: 200),
+                        child: buildOrderListList()),
+                    SizedBox(
+                      height: 100,
+                    ),
+                    Align(
+                        alignment: Alignment.bottomCenter,
+                        child: buildLoadingContainer()),
+                  ],
+                )),
+          ),
         ));
   }
 
@@ -160,32 +232,79 @@ class _PointShopState extends State<PointShop> {
     );
   }
 
-  buildAppBar(BuildContext context) {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(70.0),
-      child: AppBar(
-          centerTitle: false,
-          backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
-          actions: [
-            new Container(),
-          ],
-          elevation: 0.0,
-          titleSpacing: 0,
-          flexibleSpace: Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 0.0),
-            child: Column(
-              children: [
-                Padding(
-                  padding: MediaQuery.of(context).viewPadding.top >
-                          30 //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
-                      ? const EdgeInsets.only(top: 36.0)
-                      : const EdgeInsets.only(top: 14.0),
-                  child: buildTopAppBarContainer(),
+  AppBar buildAppBar(double statusBarHeight, BuildContext context) {
+    return AppBar(
+      // Don't show the leading button
+      backgroundColor: Colors.white,
+      centerTitle: false,
+      elevation: 0,
+      flexibleSpace: GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Filter();
+          }));
+        },
+        child: buildHomeSearchBox(context),
+      ),
+    );
+  }
+
+  buildHomeSearchBox(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 15,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Row(
+            children: [
+              Container(
+                height: 40,
+                width: 50,
+                child: Image.asset(
+                  "assets/app_logo.png",
                 ),
-              ],
-            ),
-          )),
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  height: 36,
+                  decoration: BoxDecorations.buildBoxDecoration_1(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.search_anything,
+                        style: TextStyle(
+                            fontSize: 13.0, color: MyTheme.textfield_grey),
+                      ),
+                      Spacer(),
+                      Image.asset(
+                        'assets/search.png',
+                        height: 16,
+                        //color: MyTheme.dark_grey,
+                        color: MyTheme.dark_grey,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        // Container(
+        //   height: 50,
+        //   width: 50,
+        //   child: Image.asset(
+        //     "assets/app_logo.png",
+        //   ),
+        // ),
+      ],
     );
   }
 
@@ -212,27 +331,27 @@ class _PointShopState extends State<PointShop> {
         _orderList.where((item) => item.canBuy == true).length == 0) {
       return SingleChildScrollView(
           child: ListView.builder(
-        controller: _scrollController,
-        itemCount: 10,
-        scrollDirection: Axis.vertical,
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding:
+            controller: _scrollController,
+            itemCount: 10,
+            scrollDirection: Axis.vertical,
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding:
                 const EdgeInsets.symmetric(horizontal: 18.0, vertical: 14.0),
-            child: Shimmer.fromColors(
-              baseColor: MyTheme.shimmer_base,
-              highlightColor: MyTheme.shimmer_highlighted,
-              child: Container(
-                height: 75,
-                width: double.infinity,
-                color: Colors.white,
-              ),
-            ),
-          );
-        },
-      ));
+                child: Shimmer.fromColors(
+                  baseColor: MyTheme.shimmer_base,
+                  highlightColor: MyTheme.shimmer_highlighted,
+                  child: Container(
+                    height: 75,
+                    width: double.infinity,
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            },
+          ));
     } else if (_orderList.where((item) => item.canBuy == true).length > 0) {
       return RefreshIndicator(
         color: MyTheme.accent_color,
@@ -248,7 +367,7 @@ class _PointShopState extends State<PointShop> {
               height: 14,
             ),
             padding:
-                const EdgeInsets.only(left: 18, right: 18, top: 0, bottom: 0),
+            const EdgeInsets.only(left: 18, right: 18, top: 0, bottom: 0),
             itemCount: _orderList.where((item) => item.canBuy == true).length,
             scrollDirection: Axis.vertical,
             physics: NeverScrollableScrollPhysics(),
@@ -280,18 +399,20 @@ class _PointShopState extends State<PointShop> {
     if (_orderList.any((item) => item.canBuy) == true) {
       return Container(
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 245, 239, 192),
+          color: Colors.transparent,
           borderRadius: BorderRadius.circular(10.0),
+          border: Border.all(
+            color: Colors.black, // Border color
+            width: 1.0, // Border width
+          ),
         ),
-        margin: EdgeInsets.only(bottom: 2),
+        margin: EdgeInsets.only(bottom: 10),
         child: Padding(
-          padding: const EdgeInsets.all(2.0),
+          padding: const EdgeInsets.all(10.0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Image.asset(
@@ -300,7 +421,7 @@ class _PointShopState extends State<PointShop> {
                       height: 50,
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 2),
+                      margin: EdgeInsets.only(left: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -345,69 +466,73 @@ class _PointShopState extends State<PointShop> {
                   SizedBox(
                     height: 10,
                   ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        "assets/point.png",
-                        width: 20,
-                        height: 20,
-                      ),
-                      Text(
-                        'Point: ${_orderList.where((item) => item.canBuy == true).elementAt(index).pointAmount} Point',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Color.fromARGB(255, 84, 83, 83),
-                          fontWeight: FontWeight.bold,
+                  Container(
+                    child: Row(
+                      children: [
+                        Row(
+                          children: [
+                            Image.asset(
+                              "assets/point.png",
+                              width: 20,
+                              height: 20,
+                            ),
+                            Text(
+                              'Point: ${_orderList.where((item) => item.canBuy == true).elementAt(index).pointAmount} Point',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 84, 83, 83),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 80,
+                        ),
+                        InkWell(
+                            onTap: () async {
+                              var response = await OrderRepository().buyCoupon(
+                                  _orderList
+                                      .where((item) => item.canBuy == true)
+                                      .elementAt(index)
+                                      .id);
+                              print(response);
+                              ToastComponent.showDialog(response.message);
+                              if (response.message == true) {
+                                _onRefresh();
+                                print(_orderList);
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
+                              }
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(
+                                    20.0), // Adjust the radius as needed
+                                border: Border.all(
+                                  color: Colors
+                                      .black, // Set the border color to black
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 15, right: 15, top: 3, bottom: 3),
+                                child: const Text(
+                                  'Buy',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            )),
+                      ],
+                    ),
                   ),
                 ],
               ),
-              Column(
-                children: [
-                  SizedBox(height: 55),
-                  InkWell(
-                      onTap: () async {
-                        var response = await OrderRepository().buyCoupon(
-                            _orderList
-                                .where((item) => item.canBuy == true)
-                                .elementAt(index)
-                                .id);
-                        print(response);
-                        ToastComponent.showDialog(response.message);
-                        if (response.message == true) {
-                          _onRefresh();
-                          print(_orderList);
-                          Navigator.of(context, rootNavigator: true).pop();
-                        }
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(top: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(
-                              20.0), // Adjust the radius as needed
-                          border: Border.all(
-                            color:
-                                Colors.black, // Set the border color to black
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15, right: 15, top: 3, bottom: 3),
-                          child: const Text(
-                            'Buy',
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      )),
-                ],
-              )
             ],
           ),
         ),

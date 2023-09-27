@@ -49,6 +49,8 @@ class OrderRepository {
         url: url,
         headers: {
           "App-Language": app_language.$!,
+          "Authorization": "Bearer ${access_token.$}",
+
         },
         middleware: BannedUser());
     print(response.body);
