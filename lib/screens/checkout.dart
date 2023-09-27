@@ -8,7 +8,6 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
-import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/coupon_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/order_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/payment_repository.dart';
@@ -16,19 +15,6 @@ import 'package:active_ecommerce_flutter/repositories/shipping_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/wallet_repository.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/order_list.dart';
-import 'package:active_ecommerce_flutter/screens/payment_method_screen/bkash_screen.dart';
-import 'package:active_ecommerce_flutter/screens/payment_method_screen/flutterwave_screen.dart';
-import 'package:active_ecommerce_flutter/screens/payment_method_screen/iyzico_screen.dart';
-import 'package:active_ecommerce_flutter/screens/payment_method_screen/khalti_screen.dart';
-import 'package:active_ecommerce_flutter/screens/payment_method_screen/nagad_screen.dart';
-import 'package:active_ecommerce_flutter/screens/payment_method_screen/offline_screen.dart';
-import 'package:active_ecommerce_flutter/screens/payment_method_screen/online_pay.dart';
-import 'package:active_ecommerce_flutter/screens/payment_method_screen/paypal_screen.dart';
-import 'package:active_ecommerce_flutter/screens/payment_method_screen/paystack_screen.dart';
-import 'package:active_ecommerce_flutter/screens/payment_method_screen/paytm_screen.dart';
-import 'package:active_ecommerce_flutter/screens/payment_method_screen/razorpay_screen.dart';
-import 'package:active_ecommerce_flutter/screens/payment_method_screen/sslcommerz_screen.dart';
-import 'package:active_ecommerce_flutter/screens/payment_method_screen/stripe_screen.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -77,6 +63,7 @@ class _CheckoutState extends State<Checkout> {
   bool _isInitial = true;
   String? _totalString = ". . .";
   int? _grandTotalValue = 0;
+  int? _wallet = 0;
   String? _subTotalString = ". . .";
   String? _taxString = ". . .";
   String _shippingCostString = ". . .";
@@ -86,7 +73,7 @@ class _CheckoutState extends State<Checkout> {
   late BuildContext loadingcontext;
   String payment_type = "cart_payment";
   String? _title;
-  dynamic _balanceDetails = null;
+  dynamic _balanceDetails;
   DeliveryResponse? deliveryResponse;
 
   @override
@@ -120,6 +107,7 @@ class _CheckoutState extends State<Checkout> {
       _shippingCostString = deliveryResponse!.delivery_price.toString();
       _discountString = deliveryResponse!.discount.toString();
       _grandTotalValue = deliveryResponse!.grand_total;
+      _wallet = deliveryResponse!.wallet;
     }
   }
 
@@ -207,9 +195,10 @@ class _CheckoutState extends State<Checkout> {
     _subTotalString = ". . .";
     _taxString = ". . .";
     _shippingCostString = ". . .";
+    _wallet = 0;
     _discountString = ". . .";
     _used_coupon_code = "";
-    _couponController = _used_coupon_code!;
+    _couponController = _used_coupon_code;
     _coupon_applied = false;
 
     setState(() {});
@@ -226,15 +215,15 @@ class _CheckoutState extends State<Checkout> {
   }
 
   onCouponApply() async {
-    var coupon_code = _couponController.toString();
-    if (coupon_code == "") {
+    var couponCode = _couponController.toString();
+    if (couponCode == "") {
       ToastComponent.showDialog(AppLocalizations.of(context)!.enter_coupon_code,
           gravity: Toast.center, duration: Toast.lengthLong);
       return;
     }
 
     var couponApplyResponse =
-        await CouponRepository().getCouponApplyResponse(coupon_code);
+        await CouponRepository().getCouponApplyResponse(couponCode);
     if (couponApplyResponse.result == false) {
       ToastComponent.showDialog(couponApplyResponse.message,
           gravity: Toast.center, duration: Toast.lengthLong);
@@ -281,10 +270,10 @@ class _CheckoutState extends State<Checkout> {
     } else {
       ConfirmDialog.show(
         context,
-        title: "Your order has been placed",
-        message: "Confirm or Not Yet?",
+        title: "Confirm Order",
+        message: "Do you want to confirm this order?",
         yesText: "Yes",
-        noText: "Not Yet",
+        noText: "Not",
         pressYes: () {
           if (_selected_payment_method == "cash_payment") {
             pay_by_cod();
@@ -518,6 +507,36 @@ class _CheckoutState extends State<Checkout> {
                         ),
                       ],
                     )),
+                Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 120,
+                          child: Text(
+                            "Wallet",
+                            textAlign: TextAlign.end,
+                            style: TextStyle(
+                                color: MyTheme.font_grey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          // SystemConfig.systemCurrency != null
+                          //     ? _discountString!.replaceAll(
+                          //     SystemConfig.systemCurrency!.code!,
+                          //     SystemConfig.systemCurrency!.symbol!)
+                          //     :
+                          '$_wallet ${SystemConfig.systemCurrency!.symbol}',
+                          style: TextStyle(
+                              color: MyTheme.font_grey,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    )),
                 Divider(),
                 Padding(
                     padding: const EdgeInsets.only(bottom: 8),
@@ -542,7 +561,7 @@ class _CheckoutState extends State<Checkout> {
                           //     SystemConfig.systemCurrency!.code!,
                           //     SystemConfig.systemCurrency!.symbol!)
                           //     :
-                          '$_grandTotalValue ${SystemConfig.systemCurrency!.symbol}'!,
+                          '$_grandTotalValue ${SystemConfig.systemCurrency!.symbol}',
                           style: TextStyle(
                               color: MyTheme.accent_color,
                               fontSize: 14,
@@ -568,7 +587,6 @@ class _CheckoutState extends State<Checkout> {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -722,6 +740,34 @@ class _CheckoutState extends State<Checkout> {
                                     SizedBox(
                                       height: 15,
                                     ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Wallet",
+                                          textAlign: TextAlign.end,
+                                          style: TextStyle(
+                                              color: MyTheme.font_grey,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          // SystemConfig.systemCurrency != null
+                                          //     ? _discountString!.replaceAll(
+                                          //     SystemConfig.systemCurrency!.code!,
+                                          //     SystemConfig.systemCurrency!.symbol!)
+                                          //     :
+                                          '- $_wallet ${SystemConfig.systemCurrency!.symbol}',
+                                          style: TextStyle(
+                                              color: MyTheme.font_grey,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
                                     Divider(),
                                     SizedBox(
                                       height: 10,
@@ -744,7 +790,7 @@ class _CheckoutState extends State<Checkout> {
                                           //     SystemConfig.systemCurrency!.code!,
                                           //     SystemConfig.systemCurrency!.symbol!)
                                           //     :
-                                          '$_grandTotalValue ${SystemConfig.systemCurrency!.symbol}'!,
+                                          '$_grandTotalValue ${SystemConfig.systemCurrency!.symbol}',
                                           style: TextStyle(
                                               color: MyTheme.accent_color,
                                               fontSize: 14,

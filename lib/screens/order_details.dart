@@ -179,7 +179,7 @@ class _OrderDetailsState extends State<OrderDetails> {
     });
   }
 
-  onTapAskRefund(item_id, item_name, order_code) {
+  onTapAskRefund(itemId, itemName, orderCode) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -206,7 +206,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               width: 225,
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(item_name,
+                                child: Text(itemName,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                     style: TextStyle(
@@ -226,7 +226,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     color: MyTheme.font_grey, fontSize: 12)),
                             Padding(
                               padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(order_code,
+                              child: Text(orderCode,
                                   style: TextStyle(
                                       color: MyTheme.font_grey, fontSize: 13)),
                             ),
@@ -343,7 +343,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               fontWeight: FontWeight.w600),
                         ),
                         onPressed: () {
-                          onPressSubmitRefund(item_id, setState);
+                          onPressSubmitRefund(itemId, setState);
                         },
                       ),
                     )
@@ -366,7 +366,7 @@ class _OrderDetailsState extends State<OrderDetails> {
     });
   }
 
-  onPressSubmitRefund(item_id, setState) async {
+  onPressSubmitRefund(itemId, setState) async {
     var reason = _refundReasonController.text.toString();
 
     if (reason == "") {
@@ -375,7 +375,7 @@ class _OrderDetailsState extends State<OrderDetails> {
     }
 
     var refundRequestSendResponse = await RefundRequestRepository()
-        .getRefundRequestSendResponse(id: item_id, reason: reason);
+        .getRefundRequestSendResponse(id: itemId, reason: reason);
 
     if (refundRequestSendResponse.result == false) {
       ToastComponent.showDialog(refundRequestSendResponse.message,
@@ -616,6 +616,31 @@ class _OrderDetailsState extends State<OrderDetails> {
                         Spacer(),
                         Text(
                           _orderDetails!.coupon_discount!,
+                          style: TextStyle(
+                              color: MyTheme.font_grey,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    )),
+                Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 120,
+                          child: Text(
+                            "Wallet",
+                            textAlign: TextAlign.end,
+                            style: TextStyle(
+                                color: MyTheme.font_grey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          "${_orderDetails!.wallet!} MMK",
                           style: TextStyle(
                               color: MyTheme.font_grey,
                               fontSize: 14,
@@ -1459,16 +1484,16 @@ class _OrderDetailsState extends State<OrderDetails> {
     );
   }
 
-  Container buildPaymentStatusCheckContainer(String? payment_status) {
+  Container buildPaymentStatusCheckContainer(String? paymentStatus) {
     return Container(
       height: 16,
       width: 16,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),
-          color: payment_status == "paid" ? Colors.green : Colors.red),
+          color: paymentStatus == "paid" ? Colors.green : Colors.red),
       child: Padding(
         padding: const EdgeInsets.all(3),
-        child: Icon(payment_status == "paid" ? Icons.check : Icons.check,
+        child: Icon(paymentStatus == "paid" ? Icons.check : Icons.check,
             color: Colors.white, size: 10),
       ),
     );
