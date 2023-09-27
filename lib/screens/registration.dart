@@ -82,6 +82,8 @@ class _RegistrationState extends State<Registration> {
   fetch_country() async {
     var data = await AddressRepository().getCountryList();
     data.countries.forEach((c) => countries_code.add(c.code));
+    print("Country code: $countries_code");
+
 
     countryDataLoad = true;
     var res = await AddressRepository().getCountryList();
@@ -424,7 +426,14 @@ class _RegistrationState extends State<Registration> {
                     ],
                   ),
                 ),
-
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4.0),
+                child: Text(
+                  AppLocalizations.of(context)!.phone_ucf,
+                  style: TextStyle(
+                      color: MyTheme.accent_color, fontWeight: FontWeight.w600),
+                ),
+              ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Column(
@@ -450,8 +459,8 @@ class _RegistrationState extends State<Registration> {
                           autoValidateMode: AutovalidateMode.disabled,
                           selectorTextStyle:
                               TextStyle(color: MyTheme.font_grey),
-                          // initialValue: PhoneNumber(
-                          //     isoCode: countries_code[0].toString()),
+                          initialValue: PhoneNumber(
+                              isoCode: "MM"),
                           textFieldController: _phoneNumberController,
                           formatInput: true,
                           keyboardType: TextInputType.numberWithOptions(

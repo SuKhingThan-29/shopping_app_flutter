@@ -125,6 +125,7 @@ class AuthRepository {
       "state_id": stateId,
       "city_id": cityId,
       "postal_code": postalCode,
+      "country_code":"95"
       // "g-recaptcha-response": "$capchaKey",
     });
 
