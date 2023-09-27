@@ -139,7 +139,6 @@ class _RegistrationState extends State<Registration> {
       //   message += value + "\n";
       // });
 
-
       ToastComponent.showDialog(message, gravity: Toast.center, duration: 3);
     } else {
       ToastComponent.showDialog(signupResponse.message.toString(),
@@ -173,7 +172,7 @@ class _RegistrationState extends State<Registration> {
 
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
-        return Main();
+        return Otp();
       }), (newRoute) => false);
       // if ((mail_verification_status.$ && _register_by == "email") ||
       //     _register_by == "phone") {

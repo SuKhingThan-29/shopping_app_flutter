@@ -136,49 +136,67 @@ class _CouponState extends State<Coupon> {
               appBar: buildAppBar(context),
               body: Stack(
                 children: [
-                  Container(
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
+                        color: Colors.transparent,
+                        image: DecorationImage(
+                          image: AssetImage('assets/pointbg.jpg'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      padding: EdgeInsets.all(20),
+                      height: 150,
                       child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Container(
-                          alignment: Alignment.topCenter,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.transparent,
-                            image: DecorationImage(
-                              image: AssetImage('assets/pointbg.jpg'),
-                              fit: BoxFit.cover,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Point Balance',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Color.fromARGB(255, 255, 255, 255),
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          padding: EdgeInsets.all(20),
-                          height: 150,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.center, // Center the Row
                             children: [
                               Image.asset(
                                 "assets/point.png",
-                                width: 20,
-                                height: 20,
+                                width: 30,
+                                height: 30,
                               ),
+                              SizedBox(width: 5),
                               Text(
                                 '$_member_level Point',
                                 style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 84, 83, 83),
+                                  fontSize: 25,
+                                  color: Color.fromARGB(255, 253, 252, 252),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
                           ),
-                        ),
+                        ],
                       ),
-                      buildOrderListList()
-                    ],
-                  )),
+                    ),
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(bottom: 10, top: 200),
+                      child: buildOrderListList()),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Align(
                       alignment: Alignment.bottomCenter,
-                      child: buildLoadingContainer())
+                      child: buildLoadingContainer()),
                 ],
               )),
         ));
@@ -338,12 +356,16 @@ class _CouponState extends State<Coupon> {
   buildOrderListItemCard(int index) {
     return Container(
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 245, 239, 192),
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(
+          color: Colors.black, // Border color
+          width: 2.0, // Border width
+        ),
       ),
       margin: EdgeInsets.only(bottom: 10),
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(10.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
