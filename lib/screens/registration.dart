@@ -38,7 +38,7 @@ class Registration extends StatefulWidget {
 
 class _RegistrationState extends State<Registration> {
   String _register_by = "email"; //phone or email
-  String initialCountry = 'US';
+  String initialCountry = 'MM';
 
   // PhoneNumber phoneCode = PhoneNumber(isoCode: 'US', dialCode: "+1");
   var countries_code = <String?>[];
@@ -446,7 +446,9 @@ class _RegistrationState extends State<Registration> {
                           onInputChanged: (PhoneNumber number) {
                             print(number.phoneNumber);
                             setState(() {
-                              _phone = number.phoneNumber;
+                              _phone = number.phoneNumber?.replaceFirst("+95", "");
+
+                              print("phone : $_phone");
                             });
                           },
                           onInputValidated: (bool value) {
