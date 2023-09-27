@@ -27,7 +27,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:toast/toast.dart';
-import 'package:validators/validators.dart';
 
 import '../repositories/address_repository.dart';
 
@@ -83,7 +82,6 @@ class _RegistrationState extends State<Registration> {
     var data = await AddressRepository().getCountryList();
     data.countries.forEach((c) => countries_code.add(c.code));
     print("Country code: $countries_code");
-
 
     countryDataLoad = true;
     var res = await AddressRepository().getCountryList();
@@ -235,15 +233,13 @@ class _RegistrationState extends State<Registration> {
       ToastComponent.showDialog(AppLocalizations.of(context)!.enter_your_name,
           gravity: Toast.center, duration: Toast.lengthLong);
       return;
-    }
-   else if (_phoneNumberController.text.isEmpty) {
+    } else if (_phoneNumberController.text.isEmpty) {
       ToastComponent.showDialog(
           AppLocalizations.of(context)!.enter_phone_number,
           gravity: Toast.center,
           duration: Toast.lengthLong);
       return;
-    }
-    else if (postalCode == "") {
+    } else if (postalCode == "") {
       ToastComponent.showDialog("Please fill postal code",
           gravity: Toast.center, duration: Toast.lengthLong);
       return;
@@ -274,7 +270,7 @@ class _RegistrationState extends State<Registration> {
 
     var signupResponse = await AuthRepository().getSignupResponse(
         name,
-         email,
+        email,
         _phone,
         password,
         passwordConfirm,
@@ -392,109 +388,106 @@ class _RegistrationState extends State<Registration> {
                       color: MyTheme.accent_color, fontWeight: FontWeight.w600),
                 ),
               ),
-
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        height: 36,
-                        child: TextField(
-                          controller: _emailController,
-                          autofocus: false,
-                          decoration: InputDecorations.buildInputDecoration_1(
-                              hint_text: "johndoe@example.com"),
-                        ),
-                      ),
-                      // GestureDetector(
-                      //         onTap: () {
-                      //           setState(() {
-                      //             _register_by = "phone";
-                      //           });
-                      //         },
-                      //         child: Text(
-                      //           AppLocalizations.of(context)!
-                      //               .or_register_with_a_phone,
-                      //           style: TextStyle(
-                      //               color: MyTheme.accent_color,
-                      //               fontStyle: FontStyle.italic,
-                      //               decoration: TextDecoration.underline),
-                      //         ),
-                      //       )
-
-                    ],
-                  ),
-                ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 4.0),
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      height: 36,
+                      child: TextField(
+                        controller: _emailController,
+                        autofocus: false,
+                        decoration: InputDecorations.buildInputDecoration_1(
+                            hint_text: "johndoe@example.com"),
+                      ),
+                    ),
+                    // GestureDetector(
+                    //         onTap: () {
+                    //           setState(() {
+                    //             _register_by = "phone";
+                    //           });
+                    //         },
+                    //         child: Text(
+                    //           AppLocalizations.of(context)!
+                    //               .or_register_with_a_phone,
+                    //           style: TextStyle(
+                    //               color: MyTheme.accent_color,
+                    //               fontStyle: FontStyle.italic,
+                    //               decoration: TextDecoration.underline),
+                    //         ),
+                    //       )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 6.0, top: 10),
                 child: Text(
                   AppLocalizations.of(context)!.phone_ucf,
                   style: TextStyle(
                       color: MyTheme.accent_color, fontWeight: FontWeight.w600),
                 ),
               ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        height: 36,
-                        child: CustomInternationalPhoneNumberInput(
-                          countries: countries_code,
-                          onInputChanged: (PhoneNumber number) {
-                            print(number.phoneNumber);
-                            setState(() {
-                              _phone = number.phoneNumber?.replaceFirst("+95", "");
-
-                              print("phone : $_phone");
-                            });
-                          },
-                          onInputValidated: (bool value) {
-                            print(value);
-                          },
-                          selectorConfig: SelectorConfig(
-                            selectorType: PhoneInputSelectorType.DIALOG,
-                          ),
-                          ignoreBlank: false,
-                          autoValidateMode: AutovalidateMode.disabled,
-                          selectorTextStyle:
-                              TextStyle(color: MyTheme.font_grey),
-                          initialValue: PhoneNumber(
-                              isoCode: "MM"),
-                          textFieldController: _phoneNumberController,
-                          formatInput: true,
-                          keyboardType: TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
-                          inputDecoration:
-                              InputDecorations.buildInputDecoration_phone(
-                                  hint_text: "01XXX XXX XXX"),
-                          onSaved: (PhoneNumber number) {
-                            //print('On Saved: $number');
-                          },
-                        ),
-                      ),
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     setState(() {
-                      //       _register_by = "email";
-                      //     });
-                      //   },
-                      //   child: Text(
-                      //     AppLocalizations.of(context)!
-                      //         .or_register_with_an_email,
-                      //     style: TextStyle(
-                      //         color: MyTheme.accent_color,
-                      //         fontStyle: FontStyle.italic,
-                      //         decoration: TextDecoration.underline),
-                      //   ),
-                      // )
-                    ],
-                  ),
-                ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 4.0),
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      height: 36,
+                      child: CustomInternationalPhoneNumberInput(
+                        countries: countries_code,
+                        onInputChanged: (PhoneNumber number) {
+                          print(number.phoneNumber);
+                          setState(() {
+                            _phone =
+                                number.phoneNumber?.replaceFirst("+95", "");
+
+                            print("phone : $_phone");
+                          });
+                        },
+                        onInputValidated: (bool value) {
+                          print(value);
+                        },
+                        selectorConfig: SelectorConfig(
+                          selectorType: PhoneInputSelectorType.DIALOG,
+                        ),
+                        ignoreBlank: false,
+                        autoValidateMode: AutovalidateMode.disabled,
+                        selectorTextStyle: TextStyle(color: MyTheme.font_grey),
+                        initialValue: PhoneNumber(isoCode: "MM"),
+                        textFieldController: _phoneNumberController,
+                        formatInput: true,
+                        keyboardType: TextInputType.numberWithOptions(
+                            signed: true, decimal: true),
+                        inputDecoration:
+                            InputDecorations.buildInputDecoration_phone(
+                                hint_text: "01XXX XXX XXX"),
+                        onSaved: (PhoneNumber number) {
+                          //print('On Saved: $number');
+                        },
+                      ),
+                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     setState(() {
+                    //       _register_by = "email";
+                    //     });
+                    //   },
+                    //   child: Text(
+                    //     AppLocalizations.of(context)!
+                    //         .or_register_with_an_email,
+                    //     style: TextStyle(
+                    //         color: MyTheme.accent_color,
+                    //         fontStyle: FontStyle.italic,
+                    //         decoration: TextDecoration.underline),
+                    //   ),
+                    // )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4.0, top: 10),
                 child: Text(
                   "Gender",
                   style: TextStyle(

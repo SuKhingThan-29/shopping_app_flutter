@@ -148,7 +148,7 @@ class HomePresenter extends ChangeNotifier {
       reset();
       productResponse =
           await ProductRepository().getNewProducts(page: allProductPage);
-    } else if (tab == "Brands") {
+    } else if (tab == "Brand Shops") {
       reset();
       productResponse =
           await ProductRepository().getBrancedProducts(page: allProductPage);

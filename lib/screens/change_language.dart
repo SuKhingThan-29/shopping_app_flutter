@@ -1,10 +1,7 @@
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
-import 'package:active_ecommerce_flutter/presenter/home_presenter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
-
 
 import 'package:active_ecommerce_flutter/repositories/language_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/coupon_repository.dart';
@@ -92,7 +89,6 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
   }
 
   onLanguageItemTap(index) {
-
     if (index != _selected_index) {
       setState(() {
         _selected_index = index;
@@ -111,20 +107,21 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
       // local_provider.setLocale(_list[_selected_index].code);
       Provider.of<LocaleProvider>(context, listen: false)
           .setLocale(_list[_selected_index].mobile_app_code);
-      
 
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) {
         return Main(
           go_back: false,
         );
-      }),(route)=>false);
+      }), (route) => false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+      textDirection:
+          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
           backgroundColor: Colors.white,
           appBar: buildAppBar(context),
@@ -169,7 +166,10 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
       ),
       title: Text(
         "${AppLocalizations.of(context)!.change_language_ucf} (${app_language.$}) - (${app_mobile_language.$})",
-        style: TextStyle(fontSize: 16, color: MyTheme.dark_font_grey,fontWeight: FontWeight.bold),
+        style: TextStyle(
+            fontSize: 16,
+            color: MyTheme.dark_font_grey,
+            fontWeight: FontWeight.bold),
       ),
       elevation: 0.0,
       titleSpacing: 0,
@@ -250,7 +250,8 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
                         Padding(
                           padding: EdgeInsets.only(left: 8.0),
                           child: Text(
-                            "${_list[index].name} - ${_list[index].code} - ${_list[index].mobile_app_code}",
+                            // "${_list[index].name} - ${_list[index].code} - ${_list[index].mobile_app_code}",
+                            "${_list[index].name} (${_list[index].code.toUpperCase()})",
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
