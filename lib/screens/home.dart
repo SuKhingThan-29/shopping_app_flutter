@@ -184,7 +184,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                           ),
                                         )
                                       : Container(),
-                                  buildHomeCarouselSlider(context, homeData),
 
                                   // Padding(
                                   //   padding: const EdgeInsets.fromLTRB(
@@ -281,8 +280,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
                               if (homeData.isFlashDeal)
                                 SliverToBoxAdapter(
-                                  child:buildFlashDeal(context, homeData)
-                                ),
+                                    child: buildFlashDeal(context, homeData)),
 
                               SliverList(
                                 delegate: SliverChildListDelegate([
@@ -810,26 +808,26 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                             bottomLeft: Radius.circular(6),
                                           ),
                                         ),
-                                    Container(
-                                      height: 30,
-                                      padding:
-                                      const EdgeInsets.only(left: 0.0),
-                                      child: Text(
-                                        homeData
-                                            .flashDealProducts[0]
-                                            .products
-                                            .products[productIndex]
-                                            .name,
-                                          maxLines:2,
-                                        style: TextStyle(
-                                            fontSize: 13,
-                                            color: MyTheme.grey_153,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                        Padding(
+                                        Container(
+                                          height: 30,
                                           padding:
-                                              const EdgeInsets.only(left: 0.0,top: 8),
+                                              const EdgeInsets.only(left: 0.0),
+                                          child: Text(
+                                            homeData
+                                                .flashDealProducts[0]
+                                                .products
+                                                .products[productIndex]
+                                                .name,
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                color: MyTheme.grey_153,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 0.0, top: 8),
                                           child: Text(
                                             homeData
                                                 .flashDealProducts[0]
@@ -927,22 +925,23 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   children: <Widget>[
                     Container(
                         child: ClipRRect(
-                            borderRadius: BorderRadius.horizontal(
-                                left: Radius.circular(6), right: Radius.zero),
-                            // child: FadeInImage.assetNetwork(
-                            //   placeholder: 'assets/placeholder.png',
-                            //   image:
-                            //       homeData.featuredCategoryList[index].banner,
-                            //   fit: BoxFit.cover,
-                            // )
-                          child: CachedNetworkImage(
-                            imageUrl:  homeData.featuredCategoryList[index].banner,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => Center(
-                              child: CircularProgressIndicator(),),
-                            errorWidget: (context, url, error) => Icon(Icons.error),
-                          ),
-                        )),
+                      borderRadius: BorderRadius.horizontal(
+                          left: Radius.circular(6), right: Radius.zero),
+                      // child: FadeInImage.assetNetwork(
+                      //   placeholder: 'assets/placeholder.png',
+                      //   image:
+                      //       homeData.featuredCategoryList[index].banner,
+                      //   fit: BoxFit.cover,
+                      // )
+                      child: CachedNetworkImage(
+                        imageUrl: homeData.featuredCategoryList[index].banner,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
+                    )),
                     Flexible(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
