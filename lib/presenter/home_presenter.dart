@@ -8,6 +8,8 @@ import 'package:active_ecommerce_flutter/repositories/sliders_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
+import '../repositories/brand_repository.dart';
+
 class HomePresenter extends ChangeNotifier {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   int current_slider = 0;
@@ -48,6 +50,7 @@ class HomePresenter extends ChangeNotifier {
   int allProductPage = 1;
   bool showAllLoadingContainer = false;
   int cartCount = 0;
+
 
   fetchAll() {
     fetchCarouselImages();
@@ -144,8 +147,9 @@ class HomePresenter extends ChangeNotifier {
       productResponse =
           await ProductRepository().getNewProducts(page: allProductPage);
     } else if (tab == "Brand Shops") {
-      productResponse =
-          await ProductRepository().getBrancedProducts(page: allProductPage);
+
+      // productResponse =
+      //     await ProductRepository().getBrancedProducts(page: allProductPage);
     } else {
       productResponse =
           await ProductRepository().getRecommendProducts(page: allProductPage);

@@ -399,7 +399,8 @@ class _CheckoutState extends State<Checkout> {
                             style: TextStyle(
                                 color: MyTheme.font_grey,
                                 fontSize: 14,
-                                fontWeight: FontWeight.w600),
+                                height: 1.6,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                         Spacer(),
@@ -413,7 +414,8 @@ class _CheckoutState extends State<Checkout> {
                           style: TextStyle(
                               color: MyTheme.font_grey,
                               fontSize: 14,
-                              fontWeight: FontWeight.w600),
+                              height: 1.6,
+                              fontWeight: FontWeight.w400),
                         ),
                       ],
                     )),
@@ -459,7 +461,8 @@ class _CheckoutState extends State<Checkout> {
                             style: TextStyle(
                                 color: MyTheme.font_grey,
                                 fontSize: 14,
-                                fontWeight: FontWeight.w600),
+                                height: 1.6,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                         Spacer(),
@@ -473,7 +476,8 @@ class _CheckoutState extends State<Checkout> {
                           style: TextStyle(
                               color: MyTheme.font_grey,
                               fontSize: 14,
-                              fontWeight: FontWeight.w600),
+                              height: 1.6,
+                              fontWeight: FontWeight.w400),
                         ),
                       ],
                     )),
@@ -489,7 +493,8 @@ class _CheckoutState extends State<Checkout> {
                             style: TextStyle(
                                 color: MyTheme.font_grey,
                                 fontSize: 14,
-                                fontWeight: FontWeight.w600),
+                                height: 1.6,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                         Spacer(),
@@ -503,7 +508,8 @@ class _CheckoutState extends State<Checkout> {
                           style: TextStyle(
                               color: MyTheme.font_grey,
                               fontSize: 14,
-                              fontWeight: FontWeight.w600),
+                              height: 1.6,
+                              fontWeight: FontWeight.w400),
                         ),
                       ],
                     )),
@@ -519,7 +525,8 @@ class _CheckoutState extends State<Checkout> {
                             style: TextStyle(
                                 color: MyTheme.font_grey,
                                 fontSize: 14,
-                                fontWeight: FontWeight.w600),
+                                height: 1.6,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                         Spacer(),
@@ -533,7 +540,8 @@ class _CheckoutState extends State<Checkout> {
                           style: TextStyle(
                               color: MyTheme.font_grey,
                               fontSize: 14,
-                              fontWeight: FontWeight.w600),
+                              height: 1.6,
+                              fontWeight: FontWeight.w400),
                         ),
                       ],
                     )),
@@ -551,7 +559,8 @@ class _CheckoutState extends State<Checkout> {
                             style: TextStyle(
                                 color: MyTheme.font_grey,
                                 fontSize: 14,
-                                fontWeight: FontWeight.w600),
+                                height: 1.6,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                         Spacer(),
@@ -563,9 +572,10 @@ class _CheckoutState extends State<Checkout> {
                           //     :
                           '$_grandTotalValue ${SystemConfig.systemCurrency!.symbol}',
                           style: TextStyle(
-                              color: MyTheme.accent_color,
+                              color: MyTheme.font_grey,
                               fontSize: 14,
-                              fontWeight: FontWeight.w600),
+                              height: 1.6,
+                              fontWeight: FontWeight.w400),
                         ),
                       ],
                     )),

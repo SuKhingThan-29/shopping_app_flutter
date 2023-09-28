@@ -14,9 +14,10 @@ class BrandRepository {
     return brandResponseFromJson(response.body);
   }
 
-  Future<BrandResponse> getBrands({name = "", page = 1}) async {
+  Future<BrandResponse> getBrands({name = "", page = ""}) async {
     String url=("${AppConfig.BASE_URL}/brands"+
         "?page=${page}&name=${name}");
+print("brand: $url");
     final response =
     await ApiRequest.get(url: url,headers: {
       "App-Language": app_language.$!,

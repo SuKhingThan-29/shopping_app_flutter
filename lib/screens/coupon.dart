@@ -274,7 +274,7 @@ class _CouponState extends State<Coupon> {
             ),
           ),
           Text(
-            AppLocalizations.of(context)!.coupon_ucf,
+            'My Coupon',
             style: TextStyle(
                 fontSize: 16,
                 color: MyTheme.dark_font_grey,
