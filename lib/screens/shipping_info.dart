@@ -959,7 +959,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
   Widget customAppBar(BuildContext context) {
     return AppBar(
       elevation: 0,
-      backgroundColor: MyTheme.golden,
+      backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
       title: buildAppbarTitle(context),
       leading: UsefulElements.backButton(context),

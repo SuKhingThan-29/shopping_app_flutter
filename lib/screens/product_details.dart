@@ -85,6 +85,7 @@ class _ProductDetailsState extends State<ProductDetails>
   String? _totalPrice = "...";
   var _singlePrice;
   var _singlePriceString;
+  String? _price="";
   int? _quantity = 1;
   int? _stock = 0;
   var _stock_txt;
@@ -293,6 +294,7 @@ class _ProductDetailsState extends State<ProductDetails>
         color: colorString,
         variants: _choiceString,
         qty: _quantity);
+    _price=variantResponse.variantData!.price;
     print("single price ${variantResponse.variantData!.price}");
     /*print("vr"+variantResponse.toJson().toString());
     return;*/
@@ -962,7 +964,7 @@ class _ProductDetailsState extends State<ProductDetails>
                   child: Container(
                     //padding: EdgeInsets.symmetric(horizontal: 14),
                     decoration: BoxDecorations.buildBoxDecoration_1(),
-                    margin: EdgeInsets.symmetric(horizontal: 18),
+                    margin: EdgeInsets.symmetric(horizontal: 6),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -1003,7 +1005,7 @@ class _ProductDetailsState extends State<ProductDetails>
 
                         Padding(
                           padding:
-                              EdgeInsets.only(top: 14, left: 14, right: 14),
+                              EdgeInsets.only(top: 14, left: 14, right: 2),
                           child: _productDetails != null
                               ? buildMainPriceRow()
                               : ShimmerHelper().buildBasicShimmer(
@@ -2042,10 +2044,10 @@ class _ProductDetailsState extends State<ProductDetails>
       children: [
         Text(
           SystemConfig.systemCurrency != null
-              ? _totalPrice.toString().replaceAll(
+              ? _productDetails!.discount_price.toString().replaceAll(
                   SystemConfig.systemCurrency!.code!,
                   SystemConfig.systemCurrency!.symbol!)
-              : SystemConfig.systemCurrency!.symbol! + _totalPrice.toString(),
+              : SystemConfig.systemCurrency!.symbol! + _productDetails!.discount_price.toString(),
           // SystemConfig.systemCurrency != null
           //     ? _singlePriceString.replaceAll(SystemConfig.systemCurrency!.code,
           //         SystemConfig.systemCurrency!.symbol)

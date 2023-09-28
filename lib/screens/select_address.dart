@@ -549,7 +549,7 @@ class _SelectAddressState extends State<SelectAddress> {
         appBar: AppBar(
           elevation: 0,
           leading: UsefulElements.backButton(context),
-          backgroundColor: MyTheme.golden,
+          backgroundColor: Colors.white,
           title: buildAppbarTitle(context),
         ),
         backgroundColor: Colors.white,
@@ -605,7 +605,7 @@ class _SelectAddressState extends State<SelectAddress> {
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(3)),
-                        color: MyTheme.golden),
+                        color: MyTheme.accent_color),
                     child: Row(
                       children: [
                         Icon(
@@ -784,7 +784,7 @@ class _SelectAddressState extends State<SelectAddress> {
             ),
           ),
           Container(
-            width: 200,
+            width: 180,
             child: Text(
               _shippingAddressList[index].phone,
               maxLines: 2,
@@ -923,7 +923,7 @@ class _SelectAddressState extends State<SelectAddress> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 75,
+            width: 55,
             child: Text(
               LangText(context).local.address_ucf,
               style: TextStyle(

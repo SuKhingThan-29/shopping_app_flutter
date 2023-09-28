@@ -78,6 +78,7 @@ class CartRepository {
         {"cart_ids": "${cart_ids}", "cart_quantities": "$cart_quantities"});
 
     String url=("${AppConfig.BASE_URL}/carts/process");
+    print("cart process: ${post_body}");
     final response = await ApiRequest.post(url:url,
         headers: {
           "Content-Type": "application/json",

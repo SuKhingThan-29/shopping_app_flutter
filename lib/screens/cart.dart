@@ -7,6 +7,7 @@ import 'package:active_ecommerce_flutter/custom/text_styles.dart';
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/presenter/cart_counter.dart';
+import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
 import 'package:active_ecommerce_flutter/screens/select_address.dart';
 import 'package:active_ecommerce_flutter/screens/shipping_info.dart';
 import 'package:flutter/cupertino.dart';
@@ -84,12 +85,13 @@ class _CartState extends State<Cart> {
     setState(() {});
   }
 
-  getSetCartTotal() {
+  getSetCartTotal()async {
     _cartTotal = 0.00;
     if (_shopList.length > 0) {
       _shopList.forEach((shop) {
         if (shop.cart_items.length > 0) {
           shop.cart_items.forEach((cart_item) {
+            print("Card id: ${cart_item.id}");
             _cartTotal += double.parse(
                 ((cart_item.price + cart_item.tax) * cart_item.quantity)
                     .toStringAsFixed(2));
@@ -99,7 +101,13 @@ class _CartState extends State<Cart> {
         }
       });
     }
-
+    // var variantResponse = await ProductRepository().getVariantWiseInfo(
+    //     id: widget.id,
+    //     color: "",
+    //     variants: "",
+    //     qty: _quantity);
+    // _price=variantResponse.variantData!.price;
+    // print("single price ${variantResponse.variantData!.price}");
   }
 
   partialTotalString(index) {
