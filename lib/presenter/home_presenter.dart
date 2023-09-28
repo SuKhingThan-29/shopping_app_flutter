@@ -61,11 +61,7 @@ class HomePresenter extends ChangeNotifier {
   }
 
   handleSelectProductTab({String tab = ""}) {
-    allProductList.clear();
-    isAllProductInitial = true;
-    totalAllProductData = 0;
-    allProductPage = 1;
-    showAllLoadingContainer = false;
+    resetAllProductList();
     fetchAllProducts(tab: tab);
     notifyListeners();
   }
@@ -145,15 +141,12 @@ class HomePresenter extends ChangeNotifier {
     var productResponse;
 
     if (tab == "News") {
-      reset();
       productResponse =
           await ProductRepository().getNewProducts(page: allProductPage);
     } else if (tab == "Brand Shops") {
-      reset();
       productResponse =
           await ProductRepository().getBrancedProducts(page: allProductPage);
     } else {
-      reset();
       productResponse =
           await ProductRepository().getRecommendProducts(page: allProductPage);
     }
