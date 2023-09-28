@@ -91,12 +91,10 @@ class _CartState extends State<Cart> {
       _shopList.forEach((shop) {
         if (shop.cart_items.length > 0) {
           shop.cart_items.forEach((cart_item) {
-            print("Card id: ${cart_item.id}");
-            _cartTotal += double.parse(
-                ((cart_item.price + cart_item.tax) * cart_item.quantity)
-                    .toStringAsFixed(2));
+            print("Card id: ${cart_item.total_price}");
+            _cartTotal += cart_item.total_price;
             _cartTotalString =
-                "${SystemConfig.systemCurrency!.symbol}${_cartTotal.toStringAsFixed(2)}";
+                "${SystemConfig.systemCurrency!.symbol}${_cartTotal.toString()}";
           });
         }
       });
@@ -115,9 +113,9 @@ class _CartState extends State<Cart> {
     var partialTotalString = "";
     if (_shopList[index].cart_items.length > 0) {
       _shopList[index].cart_items.forEach((cart_item) {
-        partialTotal += (cart_item.price + cart_item.tax) * cart_item.quantity;
+        partialTotal += cart_item.total_price;
         partialTotalString =
-            "${SystemConfig.systemCurrency!.symbol}${partialTotal.toStringAsFixed(2)}";
+            "${SystemConfig.systemCurrency!.symbol}${partialTotal.toString()}";
       });
     }
 
@@ -637,11 +635,8 @@ class _CartState extends State<Cart> {
                             SystemConfig.systemCurrency!.symbol!+
                                 (_shopList[seller_index]
                                             .cart_items[item_index]
-                                            .price *
-                                        _shopList[seller_index]
-                                            .cart_items[item_index]
-                                            .quantity)
-                                    .toStringAsFixed(2),
+                                            .total_price)
+                                    .toString(),
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
