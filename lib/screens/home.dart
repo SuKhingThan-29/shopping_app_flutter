@@ -281,8 +281,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
                               if (homeData.isFlashDeal)
                                 SliverToBoxAdapter(
-                                  child:buildFlashDeal(context, homeData)
-                                ),
+                                    child: buildFlashDeal(context, homeData)),
 
                               SliverList(
                                 delegate: SliverChildListDelegate([
@@ -381,6 +380,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                                 onTap: () {
                                                   selectProductTab =
                                                       productTabs[i];
+                                                  homeData
+                                                      .handleSelectProductTab(
+                                                          tab: productTabs[i]);
                                                   setState(() {});
                                                 },
                                                 child: Container(
@@ -839,8 +841,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                           height: 15,
                                         ),
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 0.0,top: 8),
+                                          padding: const EdgeInsets.only(
+                                              left: 0.0, top: 8),
                                           child: Text(
                                             homeData
                                                 .flashDealProducts[0]
@@ -941,22 +943,23 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   children: <Widget>[
                     Container(
                         child: ClipRRect(
-                            borderRadius: BorderRadius.horizontal(
-                                left: Radius.circular(6), right: Radius.zero),
-                            // child: FadeInImage.assetNetwork(
-                            //   placeholder: 'assets/placeholder.png',
-                            //   image:
-                            //       homeData.featuredCategoryList[index].banner,
-                            //   fit: BoxFit.cover,
-                            // )
-                          child: CachedNetworkImage(
-                            imageUrl:  homeData.featuredCategoryList[index].banner,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => Center(
-                              child: CircularProgressIndicator(),),
-                            errorWidget: (context, url, error) => Icon(Icons.error),
-                          ),
-                        )),
+                      borderRadius: BorderRadius.horizontal(
+                          left: Radius.circular(6), right: Radius.zero),
+                      // child: FadeInImage.assetNetwork(
+                      //   placeholder: 'assets/placeholder.png',
+                      //   image:
+                      //       homeData.featuredCategoryList[index].banner,
+                      //   fit: BoxFit.cover,
+                      // )
+                      child: CachedNetworkImage(
+                        imageUrl: homeData.featuredCategoryList[index].banner,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
+                    )),
                     Flexible(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
