@@ -140,7 +140,7 @@ class HomePresenter extends ChangeNotifier {
 
     var productResponse;
 
-    if (tab == "News") {
+    if (tab == "New") {
       productResponse =
           await ProductRepository().getNewProducts(page: allProductPage);
     } else if (tab == "Brand Shops") {

@@ -43,7 +43,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   List<CountdownTimerController> _timerControllerList = [];
 
-  List productTabs = ['Recommended', 'News', 'Brand Shops'];
+  List productTabs = ['Recommended', 'New'];
   String selectProductTab = "Recommended";
 
   @override
