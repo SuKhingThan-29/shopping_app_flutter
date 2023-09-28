@@ -11,6 +11,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../custom/toast_component.dart';
+
 class PaymentStatus {
   String option_key;
   String name;
@@ -499,13 +501,16 @@ class _PointShopState extends State<PointShop> {
                         // ToastComponent.showDialog(response.message);
 
                         if (response.message == true) {
+                          ToastComponent.showDialog(response.message);
+
                           _onRefresh();
                           print(_orderList);
                           Navigator.of(context, rootNavigator: true).pop();
                         } else {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Login()));
-                          return;
+                          ToastComponent.showDialog(response.message);
+                          // Navigator.push(context,
+                          //     MaterialPageRoute(builder: (context) => Login()));
+                          // return;
                         }
                       },
                       child: Container(
