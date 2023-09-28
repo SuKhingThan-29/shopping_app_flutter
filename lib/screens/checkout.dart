@@ -109,6 +109,7 @@ class _CheckoutState extends State<Checkout> {
       _grandTotalValue = deliveryResponse!.grand_total;
       _wallet = deliveryResponse!.wallet;
     }
+    setState(() {});
   }
 
   fetchAll() {
