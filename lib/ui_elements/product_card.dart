@@ -2,7 +2,6 @@ import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/product_details.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../custom/aiz_image.dart';
@@ -27,7 +26,7 @@ class ProductCard extends StatefulWidget {
     this.image,
     this.name,
     this.main_price,
-    this.is_wholesale=false,
+    this.is_wholesale = false,
     this.stroked_price,
     this.has_discount,
     this.discount,
@@ -61,10 +60,10 @@ class _ProductCardState extends State<ProductCard> {
                 child: Container(
                     width: double.infinity,
                     child: ClipRRect(
-                        clipBehavior: Clip.hardEdge,
-                        borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(6), bottom: Radius.zero),
-                      child:AIZImage.basicImage(widget.image!),
+                      clipBehavior: Clip.hardEdge,
+                      borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(6), bottom: Radius.zero),
+                      child: AIZImage.basicImage(widget.image!),
                     )),
               ),
               Container(
@@ -86,12 +85,13 @@ class _ProductCardState extends State<ProductCard> {
                             fontWeight: FontWeight.w400),
                       ),
                     ),
-                    widget.has_discount!
+                    // widget.has_discount!
+                    widget.main_price != widget.stroked_price
                         ? Padding(
                             padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
                             child: Text(
                               SystemConfig.systemCurrency!.code != null
-                                  ? widget.main_price!.replaceAll(
+                                  ? widget.stroked_price!.replaceAll(
                                       SystemConfig.systemCurrency!.code!,
                                       SystemConfig.systemCurrency!.symbol!)
                                   : widget.main_price!,
@@ -111,14 +111,13 @@ class _ProductCardState extends State<ProductCard> {
                   ],
                 ),
               ),
-            
               Padding(
                 padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                 child: Text(
                   SystemConfig.systemCurrency!.code != null
                       ? widget.main_price!.replaceAll(
-                      SystemConfig.systemCurrency!.code!,
-                      SystemConfig.systemCurrency!.symbol!)
+                          SystemConfig.systemCurrency!.code!,
+                          SystemConfig.systemCurrency!.symbol!)
                       : widget.main_price!,
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
@@ -129,8 +128,7 @@ class _ProductCardState extends State<ProductCard> {
                       fontWeight: FontWeight.w700),
                 ),
               ),
-            ]
-            ),
+            ]),
 
             // discount and wholesale
             Positioned.fill(
@@ -173,7 +171,7 @@ class _ProductCardState extends State<ProductCard> {
                       ),
                     Visibility(
                       visible: whole_sale_addon_installed.$,
-                      child: widget.is_wholesale !=null && widget.is_wholesale!
+                      child: widget.is_wholesale != null && widget.is_wholesale!
                           ? Container(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 4),

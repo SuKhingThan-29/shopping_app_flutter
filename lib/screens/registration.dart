@@ -668,7 +668,10 @@ class _RegistrationState extends State<Registration> {
                         enableSuggestions: false,
                         autocorrect: false,
                         decoration: InputDecoration(
-                          hintText: "• • • • • • • •",
+                          hintText: "Enter Password",
+                          hintStyle: TextStyle(
+                            color: Colors.grey.shade400,
+                          ),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureText
@@ -715,7 +718,10 @@ class _RegistrationState extends State<Registration> {
                     enableSuggestions: false,
                     autocorrect: false,
                     decoration: InputDecoration(
-                      hintText: "• • • • • • • •",
+                      hintText: "Enter Retype Password",
+                      hintStyle: TextStyle(
+                        color: Colors.grey.shade400,
+                      ),
                       suffixIcon: IconButton(
                         icon: Icon(
                           _obscureText

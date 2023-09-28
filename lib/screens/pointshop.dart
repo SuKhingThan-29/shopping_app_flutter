@@ -1,23 +1,15 @@
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
-import 'package:active_ecommerce_flutter/custom/toast_component.dart';
-import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
 import 'package:active_ecommerce_flutter/data_model/user_info_response.dart';
-import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/filter.dart';
-import 'package:active_ecommerce_flutter/screens/order_details.dart';
+import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
-import 'package:coupon_uikit/coupon_uikit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
-import 'package:active_ecommerce_flutter/data_model/coupon.dart';
 
 import 'package:active_ecommerce_flutter/repositories/order_repository.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:one_context/one_context.dart';
-import 'package:validators/validators.dart';
 
 class PaymentStatus {
   String option_key;
@@ -140,7 +132,7 @@ class _PointShopState extends State<PointShop> {
                 body: Stack(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(15),
                       child: Container(
                         alignment: Alignment.topCenter,
                         decoration: BoxDecoration(
@@ -153,46 +145,49 @@ class _PointShopState extends State<PointShop> {
                         ),
                         padding: EdgeInsets.all(10),
                         height: 140,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Point Balance',
-                              style: TextStyle(
-                                fontSize: 25,
-                                color: Color.fromARGB(255, 255, 255, 255),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.center, // Center the Row
-                              children: [
-                                Image.asset(
-                                  "assets/point.png",
-                                  width: 30,
-                                  height: 30,
-                                ),
-                                SizedBox(width: 5),
-                                Text(
-                                  '$_member_level Point',
-                                  style: TextStyle(
-                                    fontSize: 25,
-                                    color: Color.fromARGB(255, 253, 252, 252),
-                                    fontWeight: FontWeight.bold,
+                        child: _member_level == null
+                            ? Container()
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Point Balance',
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      color: Color.fromARGB(255, 255, 255, 255),
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .center, // Center the Row
+                                    children: [
+                                      Image.asset(
+                                        "assets/point.png",
+                                        width: 30,
+                                        height: 30,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        '$_member_level Point',
+                                        style: TextStyle(
+                                          fontSize: 25,
+                                          color: Color.fromARGB(
+                                              255, 253, 252, 252),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                       ),
                     ),
                     Container(
-                        margin: EdgeInsets.only(top: 200),
+                        margin: EdgeInsets.only(top: 180),
                         child: buildOrderListList()),
                     SizedBox(
                       height: 100,
@@ -355,7 +350,7 @@ class _PointShopState extends State<PointShop> {
               height: 14,
             ),
             padding:
-                const EdgeInsets.only(left: 18, right: 18, top: 0, bottom: 0),
+                const EdgeInsets.only(left: 18, right: 18, top: 0, bottom: 15),
             itemCount: _orderList.where((item) => item.canBuy == true).length,
             scrollDirection: Axis.vertical,
             physics: NeverScrollableScrollPhysics(),
@@ -387,138 +382,157 @@ class _PointShopState extends State<PointShop> {
     if (_orderList.any((item) => item.canBuy) == true) {
       return Container(
         decoration: BoxDecoration(
-          color: Colors.transparent,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(10.0),
           border: Border.all(
-            color: Colors.black, // Border color
+            color: Colors.grey.shade300, // Border color
             width: 1.0, // Border width
           ),
         ),
         margin: EdgeInsets.only(bottom: 10),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Row(
                 children: [
-                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Image.asset(
-                      "assets/per.png",
-                      width: 50,
-                      height: 50,
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${_orderList.where((item) => item.canBuy == true).elementAt(index).discount} MMK',
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            'Valid: ${_orderList.where((item) => item.canBuy == true).elementAt(index).startDate} to ${_orderList.where((item) => item.canBuy == true).elementAt(index).endDate}',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: const Color.fromARGB(255, 40, 40, 40),
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]),
-
-                  // Container(
-                  //   color: Colors.white,
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.all(5.0),
-                  //     child: Text(
-                  //       _orderList
-                  //           .where((item) => item.canBuy == true)
-                  //           .elementAt(index)
-                  //           .code,
-                  //       style: TextStyle(
-                  //         fontSize: 18,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    child: Row(
-                      children: [
-                        Row(
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Image.asset(
-                              "assets/point.png",
-                              width: 20,
-                              height: 20,
+                              "assets/per.png",
+                              width: 50,
+                              height: 50,
                             ),
-                            Text(
-                              'Point: ${_orderList.where((item) => item.canBuy == true).elementAt(index).pointAmount} Point',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Color.fromARGB(255, 84, 83, 83),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 80,
-                        ),
-                        InkWell(
-                            onTap: () async {
-                              var response = await OrderRepository().buyCoupon(
-                                  _orderList
-                                      .where((item) => item.canBuy == true)
-                                      .elementAt(index)
-                                      .id);
-                              print(response);
-                              ToastComponent.showDialog(response.message);
-                              if (response.message == true) {
-                                _onRefresh();
-                                print(_orderList);
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop();
-                              }
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(
-                                    20.0), // Adjust the radius as needed
-                                border: Border.all(
-                                  color: Colors
-                                      .black, // Set the border color to black
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 15, right: 15, top: 3, bottom: 3),
-                                child: const Text(
-                                  'Buy',
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black,
+                            Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${_orderList.where((item) => item.canBuy == true).elementAt(index).discount} MMK',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text(
+                                    'Valid: ${_orderList.where((item) => item.canBuy == true).elementAt(index).startDate} to ${_orderList.where((item) => item.canBuy == true).elementAt(index).endDate}',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.grey.shade500,
+                                      // color:
+                                      //     const Color.fromARGB(255, 40, 40, 40),
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            )),
-                      ],
-                    ),
+                            ),
+                          ]),
+
+                      // Container(
+                      //   color: Colors.white,
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.all(5.0),
+                      //     child: Text(
+                      //       _orderList
+                      //           .where((item) => item.canBuy == true)
+                      //           .elementAt(index)
+                      //           .code,
+                      //       style: TextStyle(
+                      //         fontSize: 18,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   ),
+                ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        "assets/point.png",
+                        width: 20,
+                        height: 20,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Point: ${_orderList.where((item) => item.canBuy == true).elementAt(index).pointAmount}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color.fromARGB(255, 84, 83, 83),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 80,
+                  ),
+                  InkWell(
+                      onTap: () async {
+                        var response = await OrderRepository().buyCoupon(
+                            _orderList
+                                .where((item) => item.canBuy == true)
+                                .elementAt(index)
+                                .id);
+                        print(response);
+
+                        // ToastComponent.showDialog(response.message);
+
+                        if (response.message == true) {
+                          _onRefresh();
+                          print(_orderList);
+                          Navigator.of(context, rootNavigator: true).pop();
+                        } else {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Login()));
+                          return;
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: MyTheme.golden,
+                          borderRadius: BorderRadius.circular(
+                              20.0), // Adjust the radius as needed
+                          // border: Border.all(
+                          //   color:
+                          //       Colors.black, // Set the border color to black
+                          // ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 18,
+                            vertical: 8,
+                          ),
+                          child: const Text(
+                            'Buy',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      )),
                 ],
               ),
             ],
@@ -528,16 +542,16 @@ class _PointShopState extends State<PointShop> {
     }
   }
 
-  Container buildPaymentStatusCheckContainer(String payment_status) {
+  Container buildPaymentStatusCheckContainer(String paymentStatus) {
     return Container(
       height: 16,
       width: 16,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),
-          color: payment_status == "paid" ? Colors.green : Colors.red),
+          color: paymentStatus == "paid" ? Colors.green : Colors.red),
       child: Padding(
         padding: const EdgeInsets.all(3),
-        child: Icon(payment_status == "paid" ? Icons.check : Icons.check,
+        child: Icon(paymentStatus == "paid" ? Icons.check : Icons.check,
             color: Colors.white, size: 10),
       ),
     );

@@ -50,14 +50,13 @@ class _ListProductCardState extends State<ListProductCard> {
                   child: FadeInImage.assetNetwork(
                     placeholder: 'assets/placeholder.png',
                     image: widget.image!,
-
                     fit: BoxFit.cover,
                   ))),
           Container(
-            padding: EdgeInsets.only(top: 10, left: 12,right: 12,bottom: 14),
+            padding: EdgeInsets.only(top: 10, left: 12, right: 12, bottom: 14),
             width: 240,
             height: 100,
-           //color: Colors.red,
+            //color: Colors.red,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +67,6 @@ class _ListProductCardState extends State<ListProductCard> {
                     widget.name!,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
-
                     style: TextStyle(
                         color: MyTheme.font_grey,
                         fontSize: 14,
@@ -83,31 +81,34 @@ class _ListProductCardState extends State<ListProductCard> {
                     alignment: WrapAlignment.spaceBetween,
                     children: [
                       Text(
-                        SystemConfig.systemCurrency!.code!=null?
-                        widget.main_price!.replaceAll(SystemConfig.systemCurrency!.code!, SystemConfig.systemCurrency!.symbol!)
-                            :widget.main_price!,
+                        SystemConfig.systemCurrency!.code != null
+                            ? widget.main_price!.replaceAll(
+                                SystemConfig.systemCurrency!.code!,
+                                SystemConfig.systemCurrency!.symbol!)
+                            : widget.main_price!,
                         textAlign: TextAlign.left,
                         maxLines: 1,
                         style: TextStyle(
-
                             color: MyTheme.accent_color,
                             fontSize: 16,
                             fontWeight: FontWeight.w700),
                       ),
-                      widget.has_discount!
+                      // widget.has_discount!
+                      widget.main_price != widget.stroked_price
                           ? Text(
-                        SystemConfig.systemCurrency!.code!=null?
-                        widget.stroked_price!.replaceAll(SystemConfig.systemCurrency!.code!, SystemConfig.systemCurrency!.symbol!)
-                            :widget.stroked_price!,
-
-                            textAlign: TextAlign.left,
-                            maxLines: 1,
-                            style: TextStyle(
-                                decoration: TextDecoration.lineThrough,
-                                color: MyTheme.medium_grey,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400),
-                          )
+                              SystemConfig.systemCurrency!.code != null
+                                  ? widget.stroked_price!.replaceAll(
+                                      SystemConfig.systemCurrency!.code!,
+                                      SystemConfig.systemCurrency!.symbol!)
+                                  : widget.stroked_price!,
+                              textAlign: TextAlign.left,
+                              maxLines: 1,
+                              style: TextStyle(
+                                  decoration: TextDecoration.lineThrough,
+                                  color: MyTheme.medium_grey,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400),
+                            )
                           : Container(),
                     ],
                   ),

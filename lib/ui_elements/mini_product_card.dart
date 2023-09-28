@@ -3,7 +3,6 @@ import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/product_details.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/shared_value_helper.dart';
@@ -25,7 +24,7 @@ class MiniProductCard extends StatefulWidget {
     this.main_price,
     this.stroked_price,
     this.has_discount,
-    this.is_wholesale=false,
+    this.is_wholesale = false,
     this.discount,
   }) : super(key: key);
 
@@ -56,13 +55,13 @@ class _MiniProductCardState extends State<MiniProductCard> {
                   child: Container(
                       width: double.infinity,
                       child: ClipRRect(
-                          borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(6), bottom: Radius.zero),
-                          // child: FadeInImage.assetNetwork(
-                          //   placeholder: 'assets/placeholder.png',
-                          //   image: widget.image!,
-                          //   fit: BoxFit.cover,
-                          // )
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(6), bottom: Radius.zero),
+                        // child: FadeInImage.assetNetwork(
+                        //   placeholder: 'assets/placeholder.png',
+                        //   image: widget.image!,
+                        //   fit: BoxFit.cover,
+                        // )
                         // child: CachedNetworkImage(
                         //   imageUrl: widget.image!,
                         //   fit: BoxFit.cover,
@@ -87,7 +86,8 @@ class _MiniProductCardState extends State<MiniProductCard> {
                         fontWeight: FontWeight.w400),
                   ),
                 ),
-                widget.has_discount!
+                // widget.has_discount!
+                widget.main_price != widget.stroked_price
                     ? Padding(
                         padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
                         child: Text(
@@ -163,7 +163,7 @@ class _MiniProductCardState extends State<MiniProductCard> {
                     ),
                   Visibility(
                     visible: whole_sale_addon_installed.$,
-                    child:  widget.is_wholesale!
+                    child: widget.is_wholesale!
                         ? Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 4),

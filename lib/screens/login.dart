@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io' show Platform;
 import 'dart:math';
 
 import 'package:active_ecommerce_flutter/app_config.dart';
@@ -383,22 +382,20 @@ class _LoginState extends State<Login> {
                               hint_text: "johndoe@example.com"),
                         ),
                       ),
-                     GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _login_by = "phone";
-                                });
-                              },
-                              child: Text(
-                                AppLocalizations.of(context)!
-                                    .or_login_with_a_phone,
-                                style: TextStyle(
-                                    color: MyTheme.accent_color,
-                                    fontStyle: FontStyle.italic,
-                                    decoration: TextDecoration.underline),
-                              ),
-                            )
-
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _login_by = "phone";
+                          });
+                        },
+                        child: Text(
+                          AppLocalizations.of(context)!.or_login_with_a_phone,
+                          style: TextStyle(
+                              color: MyTheme.accent_color,
+                              fontStyle: FontStyle.italic,
+                              decoration: TextDecoration.underline),
+                        ),
+                      )
                     ],
                   ),
                 )
@@ -482,7 +479,10 @@ class _LoginState extends State<Login> {
                         enableSuggestions: false,
                         autocorrect: false,
                         decoration: InputDecoration(
-                          hintText: "• • • • • • • •",
+                          // hintText: "• • • • • • • •",
+                          hintText: "Enter Password",
+                          hintStyle: TextStyle(
+                              color: Colors.grey.shade400, fontSize: 14),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureText
@@ -499,6 +499,9 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 4,
                     ),
                     GestureDetector(
                       onTap: () {
