@@ -174,28 +174,26 @@ class _WishlistState extends State<Wishlist> {
     } else {
       return Container(
         height: MediaQuery.of(context).size.height * 0.85,
-        child: Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/orders.png",
-                width: 60,
-                height: 60,
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Text(
-                "Your Wishlist is Empty",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text("Explore more and shortlist some items"),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/orders.png",
+              width: 60,
+              height: 60,
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Text(
+              "Your Wishlist is Empty",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text("Explore more and shortlist some items"),
+          ],
         ),
       );
       // return Container(

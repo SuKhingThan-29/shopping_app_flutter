@@ -218,21 +218,19 @@ class _ClubpointState extends State<Clubpoint> {
     } else if (_totalData == 0) {
       return Container(
         height: MediaQuery.of(context).size.height * 0.85,
-        child: Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/orders.png",
-                width: 60,
-                height: 60,
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text("There are currently no items in your wishlist"),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/orders.png",
+              width: 60,
+              height: 60,
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text("There are currently no items in your wishlist"),
+          ],
         ),
       );
       // return Center(
