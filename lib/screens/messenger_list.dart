@@ -167,28 +167,26 @@ class _MessengerListState extends State<MessengerList> {
     } else if (_totalData == 0) {
       return Container(
         height: MediaQuery.of(context).size.height * 0.85,
-        child: Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/messages.png",
-                width: 60,
-                height: 60,
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Text(
-                "No Message, yet",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text("No messages in your inbox"),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/messages.png",
+              width: 60,
+              height: 60,
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Text(
+              "No Message, yet",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text("No messages in your inbox"),
+          ],
         ),
       );
     } else {
