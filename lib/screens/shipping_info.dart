@@ -1281,6 +1281,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
           },
           child: ListTile(
             title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   _delivery[index].deliveryName,
@@ -1290,10 +1291,13 @@ class _ShippingInfoState extends State<ShippingInfo> {
                         _selectedValue == index ? Colors.white : Colors.black,
                   ),
                 ),
+                SizedBox(
+                  height: 3,
+                ),
                 Text(
                   _delivery[index].deliveryDescription,
                   style: TextStyle(
-                    fontSize: 8,
+                    fontSize: 11,
                     color: Colors.white,
                   ),
                 ),
@@ -1389,7 +1393,10 @@ class _ShippingInfoState extends State<ShippingInfo> {
                                     _deliveryInfoList[sellerIndex]
                                         .cartItems![itemIndex]
                                         .quantity!)
-                                .toStringAsFixed(2),
+                                // .toStringAsFixed(2),
+                                .toString()
+                                .replaceAll(SystemConfig.systemCurrency!.code!,
+                                    SystemConfig.systemCurrency!.symbol!),
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
