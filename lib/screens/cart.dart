@@ -92,8 +92,8 @@ class _CartState extends State<Cart> {
             // print(cartItem.price);
             print("Card id: ${cartItem.total_price}");
             print(cartItem);
-            // _cartTotal += cartItem.total_price;
-            _cartTotal += cartItem.quantity * cartItem.price;
+             _cartTotal += cartItem.total_price;
+            //_cartTotal += cartItem.quantity * cartItem.price;
             _cartTotalString =
                 "${SystemConfig.systemCurrency!.symbol} ${_cartTotal.toString()}";
             print(_cartTotal);
@@ -117,8 +117,8 @@ class _CartState extends State<Cart> {
     var partialTotalString = "";
     if (_shopList[index].cart_items.length > 0) {
       _shopList[index].cart_items.forEach((cartItem) {
-        // partialTotal += cartItem.total_price;
-        partialTotal += cartItem.quantity * cartItem.price;
+         partialTotal += cartItem.total_price;
+       // partialTotal += cartItem.quantity * cartItem.price;
         partialTotalString =
             "${SystemConfig.systemCurrency!.symbol} ${partialTotal.toString()}";
       });
@@ -643,10 +643,7 @@ class _CartState extends State<Cart> {
                                 " " +
                                 (_shopList[sellerIndex]
                                             .cart_items[itemIndex]
-                                            .price! *
-                                        _shopList[sellerIndex]
-                                            .cart_items[itemIndex]
-                                            .quantity!)
+                                            .total_price!)
                                     .toString()
                                     .replaceAll(
                                         SystemConfig.systemCurrency!.code!,

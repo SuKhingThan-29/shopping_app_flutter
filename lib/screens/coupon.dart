@@ -150,42 +150,42 @@ class _CouponState extends State<Coupon> {
                       ),
                       padding: EdgeInsets.all(20),
                       height: 150,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Point Balance',
-                            style: TextStyle(
-                              fontSize: 25,
-                              color: Color.fromARGB(255, 255, 255, 255),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.center, // Center the Row
-                            children: [
-                              Image.asset(
-                                "assets/point.png",
-                                width: 30,
-                                height: 30,
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                '$_member_level Point',
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  color: Color.fromARGB(255, 253, 252, 252),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                      // child: Column(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Text(
+                      //       'Point Balance',
+                      //       style: TextStyle(
+                      //         fontSize: 25,
+                      //         color: Color.fromARGB(255, 255, 255, 255),
+                      //         fontWeight: FontWeight.bold,
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       height: 15,
+                      //     ),
+                      //     Row(
+                      //       mainAxisAlignment:
+                      //           MainAxisAlignment.center, // Center the Row
+                      //       children: [
+                      //         Image.asset(
+                      //           "assets/point.png",
+                      //           width: 30,
+                      //           height: 30,
+                      //         ),
+                      //         SizedBox(width: 5),
+                      //         Text(
+                      //           '$_member_level Point',
+                      //           style: TextStyle(
+                      //             fontSize: 25,
+                      //             color: Color.fromARGB(255, 253, 252, 252),
+                      //             fontWeight: FontWeight.bold,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ],
+                      // ),
                     ),
                   ),
                   Container(

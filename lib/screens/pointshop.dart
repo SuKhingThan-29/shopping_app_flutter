@@ -131,88 +131,99 @@ class _PointShopState extends State<PointShop> {
             child: Scaffold(
                 backgroundColor: Colors.white,
                 appBar: buildAppBar(statusBarHeight, context),
-                body: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Stack(
-                        children: [
-                          Container(
-                            alignment: Alignment.topCenter,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              color: MyTheme.accent_color,
-
-                            ),
-                            padding: EdgeInsets.all(10),
-                            height: 100,
-                            child:
-                            // _member_level == null
-                            //     ? Container()
-                            //     :
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Point Balance',
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
+                body:Center(child:
+                                  Text(
+                                    'Comming Soon...',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .center, // Center the Row
-                                  children: [
-                                    Image.asset(
-                                      "assets/point.png",
-                                      width: 30,
-                                      height: 30,
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      '${_member_level??0} Point',
-                                      style: TextStyle(
-                                        fontSize: 22,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-
-                    Text(
-                      'Point Shop',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(top: 20),
-                        child: buildOrderListList()),
-                    SizedBox(
-                      height: 100,
-                    ),
-                    Align(
-                        alignment: Alignment.bottomCenter,
-                        child: buildLoadingContainer()),
-                  ],
-                )),
+                )
+                // Column(
+                //   children: [
+                //     Padding(
+                //       padding: const EdgeInsets.all(15),
+                //       child: Stack(
+                //         children: [
+                //           Container(
+                //             alignment: Alignment.topCenter,
+                //             decoration: BoxDecoration(
+                //               borderRadius: BorderRadius.circular(20.0),
+                //               color: MyTheme.accent_color,
+                //
+                //             ),
+                //             padding: EdgeInsets.all(10),
+                //             height: 100,
+                //             child:
+                //             // _member_level == null
+                //             //     ? Container()
+                //             //     :
+                //             Column(
+                //               mainAxisAlignment: MainAxisAlignment.center,
+                //               children: [
+                //                 Text(
+                //                   'Point Balance',
+                //                   style: TextStyle(
+                //                     fontSize: 22,
+                //                     color: Colors.black,
+                //                     fontWeight: FontWeight.bold,
+                //                   ),
+                //                 ),
+                //                 SizedBox(
+                //                   height: 15,
+                //                 ),
+                //                 Row(
+                //                   mainAxisAlignment: MainAxisAlignment
+                //                       .center, // Center the Row
+                //                   children: [
+                //                     Image.asset(
+                //                       "assets/point.png",
+                //                       width: 30,
+                //                       height: 30,
+                //                     ),
+                //                     SizedBox(width: 5),
+                //                     Text(
+                //                       '${_member_level??0} Point',
+                //                       style: TextStyle(
+                //                         fontSize: 22,
+                //                         color: Colors.black,
+                //                         fontWeight: FontWeight.bold,
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 ),
+                //
+                //
+                //               ],
+                //             ),
+                //           )
+                //         ],
+                //       ),
+                //     ),
+                //
+                //     Text(
+                //       'Point Shop',
+                //       textAlign: TextAlign.left,
+                //       style: TextStyle(
+                //         fontSize: 22,
+                //         color: Colors.black,
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     ),
+                //     Container(
+                //         margin: EdgeInsets.only(top: 20),
+                //         child: buildOrderListList()),
+                //     SizedBox(
+                //       height: 100,
+                //     ),
+                //     Align(
+                //         alignment: Alignment.bottomCenter,
+                //         child: buildLoadingContainer()),
+                //   ],
+                // )
+            ),
           ),
         ));
   }
