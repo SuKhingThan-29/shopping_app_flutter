@@ -753,7 +753,6 @@ class _CheckoutState extends State<Checkout> {
                                         Spacer(),
                                         Text(
                                           // SystemConfig.systemCurrency != null
-                                          //     ? _discountString!.replaceAll(
                                           //     SystemConfig.systemCurrency!.code!,
                                           //     SystemConfig.systemCurrency!.symbol!)
                                           //     :
