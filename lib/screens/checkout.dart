@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:toast/toast.dart';
+import 'package:intl/intl.dart' as intl;
 
 class Checkout extends StatefulWidget {
   int? order_id; // only need when making manual payment from order details
@@ -682,7 +683,9 @@ class _CheckoutState extends State<Checkout> {
                                         ),
                                         Spacer(),
                                         Text(
-                                          '$_subTotalString ${SystemConfig.systemCurrency!.symbol}',
+                                          _subTotalString != null
+                                              ? '${intl.NumberFormat.decimalPattern().format(double.tryParse(_subTotalString!) ?? 0.0)} MMK'
+                                              : 'N/A',
                                           style: TextStyle(
                                               color: MyTheme.font_grey,
                                               fontSize: 14,
@@ -711,7 +714,9 @@ class _CheckoutState extends State<Checkout> {
                                           //     SystemConfig.systemCurrency!.code!,
                                           //     SystemConfig.systemCurrency!.symbol!)
                                           //     :
-                                          '$_shippingCostString ${SystemConfig.systemCurrency!.symbol}',
+                                          _shippingCostString != null
+                                              ? '${intl.NumberFormat.decimalPattern().format(double.tryParse(_shippingCostString!) ?? 0.0)} MMK'
+                                              : 'N/A',
                                           style: TextStyle(
                                               color: MyTheme.font_grey,
                                               fontSize: 14,
@@ -740,7 +745,9 @@ class _CheckoutState extends State<Checkout> {
                                           //     SystemConfig.systemCurrency!.code!,
                                           //     SystemConfig.systemCurrency!.symbol!)
                                           //     :
-                                          '$_discountString ${SystemConfig.systemCurrency!.symbol}',
+                                          _discountString != null
+                                              ? '${intl.NumberFormat.decimalPattern().format(double.tryParse(_discountString!) ?? 0.0)} MMK'
+                                              : 'N/A',
                                           style: TextStyle(
                                               color: MyTheme.font_grey,
                                               fontSize: 14,
@@ -767,7 +774,9 @@ class _CheckoutState extends State<Checkout> {
                                           //     SystemConfig.systemCurrency!.code!,
                                           //     SystemConfig.systemCurrency!.symbol!)
                                           //     :
-                                          '- $_wallet ${SystemConfig.systemCurrency!.symbol}',
+                                          _wallet != null
+                                              ? '-${intl.NumberFormat.decimalPattern().format(_wallet!)} MMK'
+                                              : 'N/A',
                                           style: TextStyle(
                                               color: MyTheme.font_grey,
                                               fontSize: 14,
@@ -800,7 +809,9 @@ class _CheckoutState extends State<Checkout> {
                                           //     SystemConfig.systemCurrency!.code!,
                                           //     SystemConfig.systemCurrency!.symbol!)
                                           //     :
-                                          '$_grandTotalValue ${SystemConfig.systemCurrency!.symbol}',
+                                          _grandTotalValue != null
+                                              ? '${intl.NumberFormat.decimalPattern().format(_grandTotalValue!)} MMK'
+                                              : 'N/A',
                                           style: TextStyle(
                                               color: MyTheme.accent_color,
                                               fontSize: 14,

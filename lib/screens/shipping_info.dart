@@ -22,6 +22,7 @@ import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart' as intl;
 
 class ShippingInfo extends StatefulWidget {
   int? seleted_shipping_address;
@@ -1385,18 +1386,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
                   child: Row(
                     children: [
                       Text(
-                        SystemConfig.systemCurrency!.symbol! +
-                            " " +
-                            (_deliveryInfoList[sellerIndex]
-                                        .cartItems![itemIndex]
-                                        .price! *
-                                    _deliveryInfoList[sellerIndex]
-                                        .cartItems![itemIndex]
-                                        .quantity!)
-                                // .toStringAsFixed(2),
-                                .toString()
-                                .replaceAll(SystemConfig.systemCurrency!.code!,
-                                    SystemConfig.systemCurrency!.symbol!),
+                        '${intl.NumberFormat.decimalPattern().format((_deliveryInfoList[sellerIndex].cartItems![itemIndex].price! * _deliveryInfoList[sellerIndex].cartItems![itemIndex].quantity!)) ?? 0} MMK',
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,

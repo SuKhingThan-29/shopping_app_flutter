@@ -16,6 +16,7 @@ import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart' as intl;
 
 class Cart extends StatefulWidget {
   Cart(
@@ -92,10 +93,10 @@ class _CartState extends State<Cart> {
             // print(cartItem.price);
             print("Card id: ${cartItem.total_price}");
             print(cartItem);
-             _cartTotal += cartItem.total_price;
+            _cartTotal += cartItem.total_price;
             //_cartTotal += cartItem.quantity * cartItem.price;
             _cartTotalString =
-                "${SystemConfig.systemCurrency!.symbol} ${_cartTotal.toString()}";
+                '${intl.NumberFormat.decimalPattern().format(_cartTotal)} MMK';
             print(_cartTotal);
             print(_cartTotalString);
             setState(() {});
@@ -117,10 +118,10 @@ class _CartState extends State<Cart> {
     var partialTotalString = "";
     if (_shopList[index].cart_items.length > 0) {
       _shopList[index].cart_items.forEach((cartItem) {
-         partialTotal += cartItem.total_price;
-       // partialTotal += cartItem.quantity * cartItem.price;
+        partialTotal += cartItem.total_price;
+        // partialTotal += cartItem.quantity * cartItem.price;
         partialTotalString =
-            "${SystemConfig.systemCurrency!.symbol} ${partialTotal.toString()}";
+            '${intl.NumberFormat.decimalPattern().format(partialTotal)} MMK';
       });
     }
 
@@ -639,15 +640,7 @@ class _CartState extends State<Cart> {
                       child: Row(
                         children: [
                           Text(
-                            SystemConfig.systemCurrency!.symbol! +
-                                " " +
-                                (_shopList[sellerIndex]
-                                            .cart_items[itemIndex]
-                                            .total_price!)
-                                    .toString()
-                                    .replaceAll(
-                                        SystemConfig.systemCurrency!.code!,
-                                        SystemConfig.systemCurrency!.symbol!),
+                            '${intl.NumberFormat.decimalPattern().format((_shopList[sellerIndex].cart_items[itemIndex].total_price!)!) ?? 0.0} MMK',
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
