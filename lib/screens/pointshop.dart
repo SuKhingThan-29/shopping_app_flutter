@@ -136,8 +136,7 @@ class _PointShopState extends State<PointShop> {
                                     'Comming Soon...',
                                     style: TextStyle(
                                       fontSize: 22,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
                                     ),
                                   ),
                 )

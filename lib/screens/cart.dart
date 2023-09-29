@@ -18,12 +18,13 @@ import 'package:toast/toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+
 class Cart extends StatefulWidget {
   Cart(
       {Key? key,
-      this.has_bottomnav,
-      this.from_navigation = false,
-      this.counter})
+        this.has_bottomnav,
+        this.from_navigation = false,
+        this.counter})
       : super(key: key);
   final bool? has_bottomnav;
   final bool from_navigation;
@@ -72,7 +73,7 @@ class _CartState extends State<Cart> {
   fetchData() async {
     getCartCount();
     var cartResponseList =
-        await CartRepository().getCartResponseList(user_id.$);
+    await CartRepository().getCartResponseList(user_id.$);
 
     if (cartResponseList != null && cartResponseList.length > 0) {
       _shopList = cartResponseList;
@@ -93,10 +94,10 @@ class _CartState extends State<Cart> {
             // print(cartItem.price);
             print("Card id: ${cartItem.total_price}");
             print(cartItem);
-            _cartTotal += cartItem.total_price;
-            //_cartTotal += cartItem.quantity * cartItem.price;
+            //_cartTotal += cartItem.total_price;
+            _cartTotal += cartItem.quantity * cartItem.price;
             _cartTotalString =
-                '${intl.NumberFormat.decimalPattern().format(_cartTotal)} MMK';
+            "${SystemConfig.systemCurrency!.symbol} ${_cartTotal.toString()}";
             print(_cartTotal);
             print(_cartTotalString);
             setState(() {});
@@ -118,10 +119,10 @@ class _CartState extends State<Cart> {
     var partialTotalString = "";
     if (_shopList[index].cart_items.length > 0) {
       _shopList[index].cart_items.forEach((cartItem) {
-        partialTotal += cartItem.total_price;
-        // partialTotal += cartItem.quantity * cartItem.price;
+        //partialTotal += cartItem.total_price;
+        partialTotal += cartItem.quantity * cartItem.price;
         partialTotalString =
-            '${intl.NumberFormat.decimalPattern().format(partialTotal)} MMK';
+        '${intl.NumberFormat.decimalPattern().format(partialTotal)} MMK';
       });
     }
 
@@ -133,10 +134,10 @@ class _CartState extends State<Cart> {
         _shopList[sellerIndex].cart_items[itemIndex].upper_limit) {
       _shopList[sellerIndex].cart_items[itemIndex].quantity++;
       _shopList[sellerIndex].cart_items[itemIndex].total_price =
-          //     _shopList[sellerIndex].cart_items[itemIndex].quantity *
-          //         _shopList[sellerIndex].cart_items[itemIndex].price;
-          // print(_shopList[sellerIndex].cart_items[itemIndex].quantity);
-          getSetCartTotal();
+      //     _shopList[sellerIndex].cart_items[itemIndex].quantity *
+      //         _shopList[sellerIndex].cart_items[itemIndex].price;
+      // print(_shopList[sellerIndex].cart_items[itemIndex].quantity);
+      getSetCartTotal();
       setState(() {});
     } else {
       ToastComponent.showDialog(
@@ -164,46 +165,46 @@ class _CartState extends State<Cart> {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-              contentPadding: EdgeInsets.only(
-                  top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
-              content: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: Text(
-                  AppLocalizations.of(context)!
-                      .are_you_sure_to_remove_this_item,
-                  maxLines: 3,
-                  style: TextStyle(color: MyTheme.font_grey, fontSize: 14),
-                ),
+          contentPadding: EdgeInsets.only(
+              top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
+          content: Padding(
+            padding:
+            const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: Text(
+              AppLocalizations.of(context)!
+                  .are_you_sure_to_remove_this_item,
+              maxLines: 3,
+              style: TextStyle(color: MyTheme.font_grey, fontSize: 14),
+            ),
+          ),
+          actions: [
+            Btn.basic(
+              child: Text(
+                AppLocalizations.of(context)!.cancel_ucf,
+                style: TextStyle(color: MyTheme.medium_grey),
               ),
-              actions: [
-                Btn.basic(
-                  child: Text(
-                    AppLocalizations.of(context)!.cancel_ucf,
-                    style: TextStyle(color: MyTheme.medium_grey),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                ),
-                Btn.basic(
-                  color: MyTheme.soft_accent_color,
-                  child: Text(
-                    AppLocalizations.of(context)!.confirm_ucf,
-                    style: TextStyle(color: MyTheme.dark_grey),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop();
-                    confirmDelete(cartId);
-                  },
-                ),
-              ],
-            ));
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop();
+              },
+            ),
+            Btn.basic(
+              color: MyTheme.soft_accent_color,
+              child: Text(
+                AppLocalizations.of(context)!.confirm_ucf,
+                style: TextStyle(color: MyTheme.dark_grey),
+              ),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop();
+                confirmDelete(cartId);
+              },
+            ),
+          ],
+        ));
   }
 
   confirmDelete(cartId) async {
     var cartDeleteResponse =
-        await CartRepository().getCartDeleteResponse(cartId);
+    await CartRepository().getCartDeleteResponse(cartId);
 
     if (cartDeleteResponse.result == true) {
       ToastComponent.showDialog(cartDeleteResponse.message,
@@ -295,7 +296,7 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection:
-          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+      app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
           key: _scaffoldKey,
           //drawer: MainDrawer(),
@@ -394,35 +395,35 @@ class _CartState extends State<Cart> {
                         //     Border.all(color: MyTheme.accent_color, width: 1),
                         borderRadius: app_language_rtl.$!
                             ? const BorderRadius.only(
-                                topLeft: const Radius.circular(0.0),
-                                bottomLeft: const Radius.circular(0.0),
-                                topRight: const Radius.circular(6.0),
-                                bottomRight: const Radius.circular(6.0),
-                              )
+                          topLeft: const Radius.circular(0.0),
+                          bottomLeft: const Radius.circular(0.0),
+                          topRight: const Radius.circular(6.0),
+                          bottomRight: const Radius.circular(6.0),
+                        )
                             : const BorderRadius.only(
-                                topLeft: const Radius.circular(6.0),
-                                bottomLeft: const Radius.circular(6.0),
-                                topRight: const Radius.circular(0.0),
-                                bottomRight: const Radius.circular(0.0),
-                              )),
+                          topLeft: const Radius.circular(6.0),
+                          bottomLeft: const Radius.circular(6.0),
+                          topRight: const Radius.circular(0.0),
+                          bottomRight: const Radius.circular(0.0),
+                        )),
                     child: Btn.basic(
                       minWidth: MediaQuery.of(context).size.width,
                       color: MyTheme.soft_accent_color,
                       shape: app_language_rtl.$!
                           ? RoundedRectangleBorder(
-                              borderRadius: const BorderRadius.only(
-                              topLeft: const Radius.circular(0.0),
-                              bottomLeft: const Radius.circular(0.0),
-                              topRight: const Radius.circular(6.0),
-                              bottomRight: const Radius.circular(6.0),
-                            ))
+                          borderRadius: const BorderRadius.only(
+                            topLeft: const Radius.circular(0.0),
+                            bottomLeft: const Radius.circular(0.0),
+                            topRight: const Radius.circular(6.0),
+                            bottomRight: const Radius.circular(6.0),
+                          ))
                           : RoundedRectangleBorder(
-                              borderRadius: const BorderRadius.only(
-                              topLeft: const Radius.circular(6.0),
-                              bottomLeft: const Radius.circular(6.0),
-                              topRight: const Radius.circular(0.0),
-                              bottomRight: const Radius.circular(0.0),
-                            )),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: const Radius.circular(6.0),
+                            bottomLeft: const Radius.circular(6.0),
+                            topRight: const Radius.circular(0.0),
+                            bottomRight: const Radius.circular(0.0),
+                          )),
                       child: Text(
                         AppLocalizations.of(context)!.update_cart_ucf,
                         style: TextStyle(
@@ -444,38 +445,38 @@ class _CartState extends State<Cart> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         border:
-                            Border.all(color: MyTheme.accent_color, width: 1),
+                        Border.all(color: MyTheme.accent_color, width: 1),
                         borderRadius: app_language_rtl.$!
                             ? const BorderRadius.only(
-                                topLeft: const Radius.circular(6.0),
-                                bottomLeft: const Radius.circular(6.0),
-                                topRight: const Radius.circular(0.0),
-                                bottomRight: const Radius.circular(0.0),
-                              )
+                          topLeft: const Radius.circular(6.0),
+                          bottomLeft: const Radius.circular(6.0),
+                          topRight: const Radius.circular(0.0),
+                          bottomRight: const Radius.circular(0.0),
+                        )
                             : const BorderRadius.only(
-                                topLeft: const Radius.circular(0.0),
-                                bottomLeft: const Radius.circular(0.0),
-                                topRight: const Radius.circular(6.0),
-                                bottomRight: const Radius.circular(6.0),
-                              )),
+                          topLeft: const Radius.circular(0.0),
+                          bottomLeft: const Radius.circular(0.0),
+                          topRight: const Radius.circular(6.0),
+                          bottomRight: const Radius.circular(6.0),
+                        )),
                     child: Btn.basic(
                       minWidth: MediaQuery.of(context).size.width,
                       color: MyTheme.accent_color,
                       shape: app_language_rtl.$!
                           ? RoundedRectangleBorder(
-                              borderRadius: const BorderRadius.only(
-                              topLeft: const Radius.circular(6.0),
-                              bottomLeft: const Radius.circular(6.0),
-                              topRight: const Radius.circular(0.0),
-                              bottomRight: const Radius.circular(0.0),
-                            ))
+                          borderRadius: const BorderRadius.only(
+                            topLeft: const Radius.circular(6.0),
+                            bottomLeft: const Radius.circular(6.0),
+                            topRight: const Radius.circular(0.0),
+                            bottomRight: const Radius.circular(0.0),
+                          ))
                           : RoundedRectangleBorder(
-                              borderRadius: const BorderRadius.only(
-                              topLeft: const Radius.circular(0.0),
-                              bottomLeft: const Radius.circular(0.0),
-                              topRight: const Radius.circular(6.0),
-                              bottomRight: const Radius.circular(6.0),
-                            )),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: const Radius.circular(0.0),
+                            bottomLeft: const Radius.circular(0.0),
+                            topRight: const Radius.circular(6.0),
+                            bottomRight: const Radius.circular(6.0),
+                          )),
                       child: Text(
                         AppLocalizations.of(context)!.proceed_to_shipping_ucf,
                         style: TextStyle(
@@ -520,9 +521,9 @@ class _CartState extends State<Cart> {
           height: 100,
           child: Center(
               child: Text(
-            AppLocalizations.of(context)!.please_log_in_to_see_the_cart_items,
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+                AppLocalizations.of(context)!.please_log_in_to_see_the_cart_items,
+                style: TextStyle(color: MyTheme.font_grey),
+              )));
     } else if (_isInitial && _shopList.length == 0) {
       return SingleChildScrollView(
           child: ShimmerHelper()
@@ -574,9 +575,9 @@ class _CartState extends State<Cart> {
           height: 100,
           child: Center(
               child: Text(
-            AppLocalizations.of(context)!.cart_is_empty,
-            style: TextStyle(color: MyTheme.font_grey),
-          )));
+                AppLocalizations.of(context)!.cart_is_empty,
+                style: TextStyle(color: MyTheme.font_grey),
+              )));
     }
   }
 
@@ -640,7 +641,10 @@ class _CartState extends State<Cart> {
                       child: Row(
                         children: [
                           Text(
-                            '${intl.NumberFormat.decimalPattern().format((_shopList[sellerIndex].cart_items[itemIndex].total_price!)!) ?? 0.0} MMK',
+                            '${intl.NumberFormat.decimalPattern().format( (_shopList[sellerIndex]
+                                .cart_items[itemIndex]
+                                .price! * _shopList[sellerIndex].cart_items[itemIndex].quantity!)!) ?? 0.0} MMK',
+
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
@@ -694,7 +698,7 @@ class _CartState extends State<Cart> {
                       width: 24,
                       height: 24,
                       decoration:
-                          BoxDecorations.buildCartCircularButtonDecoration(),
+                      BoxDecorations.buildCartCircularButtonDecoration(),
                       child: Icon(
                         Icons.add,
                         color: MyTheme.accent_color,
@@ -710,7 +714,7 @@ class _CartState extends State<Cart> {
                           .quantity
                           .toString(),
                       style:
-                          TextStyle(color: MyTheme.accent_color, fontSize: 16),
+                      TextStyle(color: MyTheme.accent_color, fontSize: 16),
                     ),
                   ),
                   GestureDetector(
@@ -721,7 +725,7 @@ class _CartState extends State<Cart> {
                       width: 24,
                       height: 24,
                       decoration:
-                          BoxDecorations.buildCartCircularButtonDecoration(),
+                      BoxDecorations.buildCartCircularButtonDecoration(),
                       child: Icon(
                         Icons.remove,
                         color: MyTheme.accent_color,
