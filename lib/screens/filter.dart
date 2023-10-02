@@ -1079,24 +1079,34 @@ class _FilterState extends State<Filter> {
                 dense: true,
                 title: Text(category.name),
                 value: _selectedCategories.contains(category.id),
+
                 onChanged: (bool? value) {
-                  if (value!) {
-                    setState(() {
-                      _selectedCategories.clear();
-                      _selectedCategories.add(category.id);
-                    });
-                  } else {
-                    setState(() {
-                      _selectedCategories.remove(category.id);
-                    });
-                  }
+                  // if (value!) {
+                  //   setState(() {
+                  //     _selectedCategories.clear();
+                  //     _selectedCategories.add(category.id);
+                  //   });
+                  // } else {
+                  //   setState(() {
+                  //     _selectedCategories.remove(category.id);
+                  //   });
+                  // }
+                 setState(() {
+                   if (_selectedCategories.contains(category.id)) {
+                     _selectedCategories.remove(category.id);   // unselect
+                   } else {
+                     _selectedCategories.add(category.id);  // select
+                   }
+                 });
                 },
+
               ),
             )
             .toList()
       ],
     );
-  }
+
+    }
 
   Container buildProductList() {
     return Container(
