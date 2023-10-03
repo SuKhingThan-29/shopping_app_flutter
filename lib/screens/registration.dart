@@ -143,26 +143,28 @@ class _RegistrationState extends State<Registration> {
         // get the user data
         // by default we get the userId, email,name and picture
         final userData = await FacebookAuth.instance.getUserData();
-        var loginResponse = await AuthRepository().getSocialLoginResponse(
-            "facebook",
-            userData['name'].toString(),
-            userData['email'].toString(),
-            userData['id'].toString(),
-            access_token: facebookLogin.accessToken!.token);
-        print("..........................${loginResponse.toString()}");
-        if (loginResponse.result == false) {
-          ToastComponent.showDialog(loginResponse.message!,
-              gravity: Toast.center, duration: Toast.lengthLong);
-        } else {
-          ToastComponent.showDialog(loginResponse.message!,
-              gravity: Toast.center, duration: Toast.lengthLong);
+        print("fb login..........................${userData['name'].toString()}");
 
-          AuthHelper().setUserData(loginResponse);
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Main();
-          }));
-          FacebookAuth.instance.logOut();
-        }
+        // var loginResponse = await AuthRepository().getSocialLoginResponse(
+        //     "facebook",
+        //     userData['name'].toString(),
+        //     userData['email'].toString(),
+        //     userData['id'].toString(),
+        //     access_token: facebookLogin.accessToken!.token);
+        //  print("..........................${loginResponse.toString()}");
+        // if (loginResponse.result == false) {
+        //   ToastComponent.showDialog(loginResponse.message!,
+        //       gravity: Toast.center, duration: Toast.lengthLong);
+        // } else {
+        //   ToastComponent.showDialog(loginResponse.message!,
+        //       gravity: Toast.center, duration: Toast.lengthLong);
+        //
+        //   AuthHelper().setUserData(loginResponse);
+        //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+        //     return Main();
+        //   }));
+        //   FacebookAuth.instance.logOut();
+        // }
         // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
       } else {
         print("....Facebook auth Failed.........");
@@ -287,8 +289,10 @@ class _RegistrationState extends State<Registration> {
       // signupResponse.message.forEach((value) {
       //   message += value + "\n";
       // });
+      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_your_name,
+          gravity: Toast.center, duration: Toast.lengthLong);
 
-      ToastComponent.showDialog(message, gravity: Toast.center, duration: 3);
+
     } else {
       ToastComponent.showDialog(signupResponse.message.toString(),
           gravity: Toast.center, duration: Toast.lengthLong);
@@ -892,7 +896,8 @@ class _RegistrationState extends State<Registration> {
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Visibility(
-                            visible: allow_facebook_login.$,
+                           // visible: allow_facebook_login.$,
+                            visible: true,
                             child: InkWell(
                               onTap: () {
                                 onPressedFacebookLogin();

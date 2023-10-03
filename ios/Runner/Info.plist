@@ -27,8 +27,8 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.1004636433134-7cija7muppu9v9qtamafhpfb07b4d032</string>
-				<string>fb1257764744931699</string>
+				<string>com.googleusercontent.apps.1004636433134-uteetmmh1i4a9fjht1k8glbvp66ffi77</string>
+				<string>fb820731356499378</string>
 			</array>
 		</dict>
 	</array>
@@ -39,9 +39,9 @@
 	<key>FDMaximumConcurrentTasks</key>
 	<integer>5</integer>
 	<key>FacebookAppID</key>
-	<string>1257764744931699</string>
+	<string>820731356499378</string>
 	<key>FacebookClientToken</key>
-	<string>cf5583eb2acd23a5af95379716476041</string>
+	<string>3d863574946fd93cdff8524707cb80b6</string>
 	<key>FacebookDisplayName</key>
 	<string>GMP</string>
 	<key>LSApplicationCategoryType</key>

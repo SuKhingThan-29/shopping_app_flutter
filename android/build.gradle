@@ -3,6 +3,8 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()//for fb
+
     }
 
     dependencies {
@@ -17,6 +19,8 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()//for fb
+
     }
 }
 
