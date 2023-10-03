@@ -106,8 +106,8 @@ class _LoginState extends State<Login> {
       ToastComponent.showDialog(loginResponse.message.toString(),
           gravity: Toast.center, duration: Toast.lengthLong);
     } else {
-      ToastComponent.showDialog(loginResponse.message.toString(),
-          gravity: Toast.center, duration: Toast.lengthLong);
+      // ToastComponent.showDialog(loginResponse.message.toString(),
+      //     gravity: Toast.center, duration: Toast.lengthLong);
       AuthHelper().setUserData(loginResponse);
       // push notification starts
       if (OtherConfig.USE_PUSH_NOTIFICATION) {
@@ -126,7 +126,7 @@ class _LoginState extends State<Login> {
         String? fcmToken = await _fcm.getToken();
 
         if (fcmToken != null) {
-          print("--fcm token--");
+          print("--fcm token-- $fcmToken");
           if (is_logged_in.$ == true) {
             // update device token
             var deviceTokenUpdateResponse = await ProfileRepository()

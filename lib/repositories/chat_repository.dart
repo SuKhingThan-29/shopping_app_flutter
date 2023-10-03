@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/data_model/conversation_response.dart';
 import 'package:active_ecommerce_flutter/data_model/message_response.dart';
+import 'package:active_ecommerce_flutter/data_model/noti_response.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/middlewares/banned_user.dart';
 import 'package:active_ecommerce_flutter/repositories/api-request.dart';
@@ -20,6 +21,18 @@ class ChatRepository {
         },
         middleware: BannedUser());
     return conversationResponseFromJson(response.body);
+  }
+
+  Future<dynamic> getNotiResponse() async {
+    String url = ("${AppConfig.BASE_URL}/all-notifications");
+    final response = await ApiRequest.get(
+        url: url,
+        headers: {
+          "Authorization": "Bearer ${access_token.$}",
+          "App-Language": app_language.$!,
+        },
+        middleware: BannedUser());
+    return notiFromJson(response.body);
   }
 
   Future<dynamic> getMessageResponse(

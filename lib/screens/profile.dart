@@ -18,6 +18,7 @@ import 'package:active_ecommerce_flutter/screens/followed_sellers.dart';
 import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/messenger_list.dart';
+import 'package:active_ecommerce_flutter/screens/noti.dart';
 import 'package:active_ecommerce_flutter/screens/whole_sale_products.dart';
 import 'package:active_ecommerce_flutter/screens/wishlist.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +99,6 @@ class _ProfileState extends State<Profile> {
       _member_level = _userInfo!.member_level;
       print("member level: $_member_level");
       print("member point: ${_userInfo!.total_points}");
-
     }
 
     // var res = await ProfileRepository().getMemberLevel();
@@ -251,10 +251,10 @@ class _ProfileState extends State<Profile> {
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
               child: buildSettingAndAddonsHorizontalMenu(),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            //   child: buildBottomVerticalCardList(),
-            // ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18.0),
+              child: buildBottomVerticalCardList(),
+            ),
           ]),
         )
       ],
@@ -328,137 +328,137 @@ class _ProfileState extends State<Profile> {
               ],
             ),
 
-          buildBottomVerticalCardListItem("assets/download.png",
-              LangText(context).local.all_digital_products_ucf, onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return DigitalProducts();
-            }));
-          }),
-          Divider(
-            thickness: 1,
-            color: MyTheme.light_grey,
-          ),
+          // buildBottomVerticalCardListItem("assets/download.png",
+          //     LangText(context).local.all_digital_products_ucf, onPressed: () {
+          //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //     return DigitalProducts();
+          //   }));
+          // }),
+          // Divider(
+          //   thickness: 1,
+          //   color: MyTheme.light_grey,
+          // ),
 
           // this is addon
-          if (false)
-            Column(
-              children: [
-                buildBottomVerticalCardListItem("assets/auction.png",
-                    LangText(context).local.on_auction_products_ucf,
-                    onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return AuctionProducts();
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
-                ),
-              ],
-            ),
-          if (classified_product_status.$)
-            Column(
-              children: [
-                buildBottomVerticalCardListItem("assets/classified_product.png",
-                    LangText(context).local.classified_ads_ucf, onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ClassifiedAds();
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
-                ),
-              ],
-            ),
+          // if (false)
+          //   Column(
+          //     children: [
+          //       buildBottomVerticalCardListItem("assets/auction.png",
+          //           LangText(context).local.on_auction_products_ucf,
+          //           onPressed: () {
+          //         Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //           return AuctionProducts();
+          //         }));
+          //       }),
+          //       Divider(
+          //         thickness: 1,
+          //         color: MyTheme.light_grey,
+          //       ),
+          //     ],
+          //   ),
+          // if (classified_product_status.$)
+          //   Column(
+          //     children: [
+          //       buildBottomVerticalCardListItem("assets/classified_product.png",
+          //           LangText(context).local.classified_ads_ucf, onPressed: () {
+          //         Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //           return ClassifiedAds();
+          //         }));
+          //       }),
+          //       Divider(
+          //         thickness: 1,
+          //         color: MyTheme.light_grey,
+          //       ),
+          //     ],
+          //   ),
 
           // this is addon auction product
-          if (false)
-            Column(
-              children: [
-                buildBottomVerticalCardListItem("assets/auction.png",
-                    LangText(context).local.on_auction_products_ucf,
-                    onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return AuctionProducts();
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
-                ),
-              ],
-            ),
-          if (auction_addon_installed.$)
-            Column(
-              children: [
-                buildBottomVerticalCardListItem("assets/auction.png",
-                    LangText(context).local.on_auction_products_ucf,
-                    onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return AuctionProducts();
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
-                ),
-              ],
-            ),
+          // if (false)
+          //   Column(
+          //     children: [
+          //       buildBottomVerticalCardListItem("assets/auction.png",
+          //           LangText(context).local.on_auction_products_ucf,
+          //           onPressed: () {
+          //         Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //           return AuctionProducts();
+          //         }));
+          //       }),
+          //       Divider(
+          //         thickness: 1,
+          //         color: MyTheme.light_grey,
+          //       ),
+          //     ],
+          //   ),
+          // if (auction_addon_installed.$)
+          //   Column(
+          //     children: [
+          //       buildBottomVerticalCardListItem("assets/auction.png",
+          //           LangText(context).local.on_auction_products_ucf,
+          //           onPressed: () {
+          //         Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //           return AuctionProducts();
+          //         }));
+          //       }),
+          //       Divider(
+          //         thickness: 1,
+          //         color: MyTheme.light_grey,
+          //       ),
+          //     ],
+          //   ),
 
           // this is addon
-          if (false)
-            Column(
-              children: [
-                buildBottomVerticalCardListItem("assets/wholesale.png",
-                    LangText(context).local.wholesale_products_ucf,
-                    onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return WholeSaleProducts();
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
-                ),
-              ],
-            ),
+          // if (false)
+          //   Column(
+          //     children: [
+          //       buildBottomVerticalCardListItem("assets/wholesale.png",
+          //           LangText(context).local.wholesale_products_ucf,
+          //           onPressed: () {
+          //         Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //           return WholeSaleProducts();
+          //         }));
+          //       }),
+          //       Divider(
+          //         thickness: 1,
+          //         color: MyTheme.light_grey,
+          //       ),
+          //     ],
+          //   ),
 
-          if (vendor_system.$)
-            Column(
-              children: [
-                buildBottomVerticalCardListItem("assets/shop.png",
-                    LangText(context).local.browse_all_sellers_ucf,
-                    onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Filter(
-                      selected_filter: "sellers",
-                    );
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
-                ),
-              ],
-            ),
+          // if (vendor_system.$)
+          //   Column(
+          //     children: [
+          //       buildBottomVerticalCardListItem("assets/shop.png",
+          //           LangText(context).local.browse_all_sellers_ucf,
+          //           onPressed: () {
+          //         Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //           return Filter(
+          //             selected_filter: "sellers",
+          //           );
+          //         }));
+          //       }),
+          //       Divider(
+          //         thickness: 1,
+          //         color: MyTheme.light_grey,
+          //       ),
+          //     ],
+          //   ),
 
-          if (is_logged_in.$)
-            Column(
-              children: [
-                buildBottomVerticalCardListItem("assets/shop.png",
-                    LangText(context).local.followed_sellers_ucf,
-                    onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return FollowedSellers();
-                  }));
-                }),
-                Divider(
-                  thickness: 1,
-                  color: MyTheme.light_grey,
-                ),
-              ],
-            ),
+          // if (is_logged_in.$)
+          //   Column(
+          //     children: [
+          //       buildBottomVerticalCardListItem("assets/shop.png",
+          //           LangText(context).local.followed_sellers_ucf,
+          //           onPressed: () {
+          //         Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //           return FollowedSellers();
+          //         }));
+          //       }),
+          //       Divider(
+          //         thickness: 1,
+          //         color: MyTheme.light_grey,
+          //       ),
+          //     ],
+          //   ),
 
           if (is_logged_in.$)
             Column(
@@ -1340,6 +1340,25 @@ class _ProfileState extends State<Profile> {
           ),
           buildUserInfo(),
           Spacer(),
+          if (is_logged_in.$)
+            InkWell(
+              onTap: () {
+                {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Noti();
+                  }));
+                }
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 20),
+                child: Image.asset(
+                  "assets/bell.png",
+                  height: 30,
+                ),
+              ),
+            )
+          else
+            Container(),
           Container(
             width: 70,
             height: 26,
