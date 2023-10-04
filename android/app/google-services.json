@@ -39,10 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1004636433134-95okedktcu0bvr36q181ot81fkmb9u96.apps.googleusercontent.com",
+              "client_id": "1004636433134-7cija7muppu9v9qtamafhpfb07b4d032.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.ethicaldigit.gmp"
+                "bundle_id": "com.gmp.ethical-digit"
               }
             }
           ]
@@ -91,70 +91,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1004636433134-95okedktcu0bvr36q181ot81fkmb9u96.apps.googleusercontent.com",
+              "client_id": "1004636433134-7cija7muppu9v9qtamafhpfb07b4d032.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.ethicaldigit.gmp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1004636433134:android:0539a2ab1cecb9c05ce1ff",
-        "android_client_info": {
-          "package_name": "com.example.active_ecommerce_flutter"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1004636433134-4fv19um5782cifapc0ubgk0i4et0ok20.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.active_ecommerce_flutter",
-            "certificate_hash": "802a32ac063c891a6e7f942a07140bd574450f58"
-          }
-        },
-        {
-          "client_id": "1004636433134-aftcnbcp5n7jgd06o1ilel9c21iptgpq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.active_ecommerce_flutter",
-            "certificate_hash": "8253b5fcc9a81b69352ef11409ae436ad37e5384"
-          }
-        },
-        {
-          "client_id": "1004636433134-ies4anfrjh7rcsf15gir1dcb2fhgf55h.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.active_ecommerce_flutter",
-            "certificate_hash": "10bde768cdf66435242dda51d3d4b6899decfa33"
-          }
-        },
-        {
-          "client_id": "1004636433134-5jsi1lfbk18fgo4l6ivc8qqa700rh4bu.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyD14aSmLrR7dbimRAX8o_Z-qZjF6P7FX1o"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1004636433134-5jsi1lfbk18fgo4l6ivc8qqa700rh4bu.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1004636433134-95okedktcu0bvr36q181ot81fkmb9u96.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.ethicaldigit.gmp"
+                "bundle_id": "com.gmp.ethical-digit"
               }
             }
           ]
@@ -186,6 +126,14 @@
           }
         },
         {
+          "client_id": "1004636433134-j87hr73oi79klnfevimjc73j6g7tbggt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "gmp.ethicaldigit.com",
+            "certificate_hash": "b9964f8d2d521df69626adeb9fcec659c0019c95"
+          }
+        },
+        {
           "client_id": "1004636433134-5jsi1lfbk18fgo4l6ivc8qqa700rh4bu.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -203,10 +151,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1004636433134-95okedktcu0bvr36q181ot81fkmb9u96.apps.googleusercontent.com",
+              "client_id": "1004636433134-7cija7muppu9v9qtamafhpfb07b4d032.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.ethicaldigit.gmp"
+                "bundle_id": "com.gmp.ethical-digit"
               }
             }
           ]

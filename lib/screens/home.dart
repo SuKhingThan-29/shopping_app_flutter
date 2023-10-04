@@ -526,7 +526,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     _isBrandInitial = false;
     _totalBrandData = brandResponse.meta!.total;
     _showBrandLoadingContainer = false;
-    setState(() {});
   }
 
   resetBrandList() {

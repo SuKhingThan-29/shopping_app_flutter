@@ -63,7 +63,7 @@ class NotiData {
         currentPage: json["current_page"],
         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
         firstPageUrl: json["first_page_url"],
-        from: json["from"],
+        from: json["from"]??0,
         lastPage: json["last_page"],
         lastPageUrl: json["last_page_url"],
         links: List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
@@ -71,7 +71,7 @@ class NotiData {
         path: json["path"],
         perPage: json["per_page"],
         prevPageUrl: json["prev_page_url"],
-        to: json["to"],
+        to: json["to"]??0,
         total: json["total"],
       );
 

@@ -310,17 +310,6 @@ class _RegistrationState extends State<Registration> {
           sound: true,
         );
 
-        String? fcmToken = await _fcm.getToken();
-
-        if (fcmToken != null) {
-          print("--fcm token--");
-          print(fcmToken);
-          if (is_logged_in.$ == true) {
-            // update device token
-            var deviceTokenUpdateResponse = await ProfileRepository()
-                .getDeviceTokenUpdateResponse(fcmToken);
-          }
-        }
       }
 
       Navigator.pushAndRemoveUntil(context,

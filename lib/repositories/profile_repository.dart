@@ -60,6 +60,8 @@ class ProfileRepository {
           "App-Language": app_language.$!,
         },
         body: postBody);
+    print("DeviceToken: $postBody");
+    print("DeviceToken token: ${access_token.$}");
 
     bool checkResult = ResponseCheck.apply(response.body);
 

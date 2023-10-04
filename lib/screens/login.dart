@@ -111,28 +111,7 @@ class _LoginState extends State<Login> {
       AuthHelper().setUserData(loginResponse);
       // push notification starts
       if (OtherConfig.USE_PUSH_NOTIFICATION) {
-        final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
-        await _fcm.requestPermission(
-          alert: true,
-          announcement: false,
-          badge: true,
-          carPlay: false,
-          criticalAlert: false,
-          provisional: false,
-          sound: true,
-        );
-
-        String? fcmToken = await _fcm.getToken();
-
-        if (fcmToken != null) {
-          print("--fcm token-- $fcmToken");
-          if (is_logged_in.$ == true) {
-            // update device token
-            var deviceTokenUpdateResponse = await ProfileRepository()
-                .getDeviceTokenUpdateResponse(fcmToken);
-          }
-        }
       }
 
       Navigator.pushAndRemoveUntil(context,
@@ -187,7 +166,6 @@ class _LoginState extends State<Login> {
     try {
       final GoogleSignInAccount googleUser = (await GoogleSignIn().signIn())!;
 
-      print(googleUser.toString());
 
       GoogleSignInAuthentication googleSignInAuthentication =
           await googleUser.authentication;
@@ -224,7 +202,7 @@ class _LoginState extends State<Login> {
           return Main();
         }));
       }
-      GoogleSignIn().disconnect();
+     GoogleSignIn().disconnect();
     } on Exception catch (e) {
       print("Google error is ....... $e");
       // TODO
@@ -594,7 +572,8 @@ class _LoginState extends State<Login> {
               //   ),
               // ),
               Visibility(
-                visible: allow_google_login.$ || allow_facebook_login.$,
+                visible: true,
+                // visible: allow_google_login.$ || allow_facebook_login.$,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Center(
@@ -612,7 +591,8 @@ class _LoginState extends State<Login> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Visibility(
-                          visible: allow_google_login.$,
+                          //visible: allow_google_login.$,
+                          visible: true,
                           child: InkWell(
                             onTap: () {
                               onPressedGoogleLogin();

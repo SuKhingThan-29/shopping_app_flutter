@@ -12,12 +12,15 @@ import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/screens/pointshop.dart';
 import 'package:active_ecommerce_flutter/screens/profile.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:one_context/one_context.dart';
 import 'package:provider/provider.dart';
 import 'package:route_transitions/route_transitions.dart';
+
+import '../repositories/profile_repository.dart';
 
 class Main extends StatefulWidget {
   Main({Key? key, go_back = true}) : super(key: key);
@@ -38,8 +41,9 @@ class _MainState extends State<Main> {
 
   var _children = [];
 
-  fetchAll() {
+  fetchAll()async {
     getCartCount();
+
   }
 
   void onTapped(int i) {
