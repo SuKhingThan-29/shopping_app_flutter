@@ -95,18 +95,16 @@ class _PointShopState extends State<PointShop> {
     var orderResponse = await OrderRepository().getCoupon();
     _orderResponseList.addAll(orderResponse.data);
     _isInitial = false;
-    //  _totalData = orderResponse.meta.total;
     _showLoadingContainer = false;
     _orderList.clear();
     _orderList =
         _orderResponseList.where((item) => item.canBuy == true).toList();
     print("CouponData: ${_orderResponseList.length}");
+    setState(() {
 
-    for (var i in _orderList) {
-      print("CouponData response code: ${i.code}");
-      print("CouponData response: ${i.canBuy}");
-    }
-    setState(() {});
+    });
+
+
   }
 
   @override
@@ -504,19 +502,16 @@ class _PointShopState extends State<PointShop> {
                                 .elementAt(index)
                                 .id);
                         print(response);
-
-                        // ToastComponent.showDialog(response.message);
-
-                        if (response.message == true) {
-                          fetchData();
+                        if (response.result == true) {
+                          _orderList.clear();
+                          ToastComponent.showDialog(response.message);
+                          var orderResponse = await OrderRepository().getCoupon();
+                          _orderList.addAll(orderResponse.data);
+                          print(_orderList);
                           setState(() {
 
-                            ToastComponent.showDialog(response.message);
-
-
                           });
-                          print(_orderList);
-                          Navigator.of(context, rootNavigator: true).pop();
+                          //Navigator.of(context, rootNavigator: true).pop();
                         } else {
                           ToastComponent.showDialog(response.message);
                           // Navigator.push(context,
