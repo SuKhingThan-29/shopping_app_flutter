@@ -15,7 +15,8 @@ import 'login.dart';
 
 class Otp extends StatefulWidget {
   String? title;
-  Otp({Key? key, this.title}) : super(key: key);
+  String? phnum;
+  Otp({Key? key, this.title, required this.phnum}) : super(key: key);
 
   @override
   _OtpState createState() => _OtpState();
@@ -175,7 +176,7 @@ class _OtpState extends State<Otp> {
                     height: 40,
                   ),
                   Text(
-                    "Verification code has been sent to +95 **********12 .",
+                    "Verification code has been sent to +95${widget.phnum} .",
                     style: TextStyle(fontSize: 15),
                   ),
                   const SizedBox(
@@ -267,7 +268,7 @@ class _OtpState extends State<Otp> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20,bottom: 20),
+                    padding: const EdgeInsets.only(top: 20, bottom: 20),
                     child: InkWell(
                       onTap: () {
                         onTapResend();
@@ -291,8 +292,8 @@ class _OtpState extends State<Otp> {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                            return Login();
-                          }));
+                        return Login();
+                      }));
                     },
                   ),
                 ],

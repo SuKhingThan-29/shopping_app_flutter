@@ -704,118 +704,130 @@ class _FilterState extends State<Filter> {
 
   Row buildTopAppbar(BuildContext context) {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          IconButton(
-            padding: EdgeInsets.zero,
-            icon: UsefulElements.backButton(context),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * .6,
-            child: Container(
-              child: Padding(
-                  padding: MediaQuery.of(context).viewPadding.top >
-                          30 //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
-                      ? const EdgeInsets.symmetric(
-                          vertical: 36.0, horizontal: 0.0)
-                      : const EdgeInsets.symmetric(
-                          vertical: 14.0, horizontal: 0.0),
-                  child: TypeAheadField(
-                    suggestionsCallback: (pattern) async {
-                      //return await BackendService.getSuggestions(pattern);
-                      var suggestions = await SearchRepository()
-                          .getSearchSuggestionListResponse(
-                              query_key: pattern,
-                              type: _selectedFilter!.option_key);
-                      //print(suggestions.toString());
-                      return suggestions;
-                    },
-                    loadingBuilder: (context) {
-                      return Container(
-                        height: 50,
-                        child: Center(
-                            child: Text(
-                                AppLocalizations.of(context)!
-                                    .loading_suggestions,
-                                style: TextStyle(color: MyTheme.medium_grey))),
-                      );
-                    },
-                    itemBuilder: (context, dynamic suggestion) {
-                      //print(suggestion.toString());
-                      var subtitle =
-                          "${AppLocalizations.of(context)!.searched_for_all_lower} ${suggestion.count} ${AppLocalizations.of(context)!.times_all_lower}";
-                      if (suggestion.type != "search") {
-                        subtitle =
-                            "${suggestion.type_string} ${AppLocalizations.of(context)!.found_all_lower}";
-                      }
-                      return ListTile(
-                        dense: true,
-                        title: Text(
-                          suggestion.query,
-                          style: TextStyle(
-                              color: suggestion.type != "search"
-                                  ? MyTheme.accent_color
-                                  : MyTheme.font_grey),
-                        ),
-                        subtitle: Text(subtitle,
-                            style: TextStyle(
-                                color: suggestion.type != "search"
-                                    ? MyTheme.font_grey
-                                    : MyTheme.medium_grey)),
-                      );
-                    },
-                    noItemsFoundBuilder: (context) {
-                      return Container(
-                        height: 50,
-                        child: Center(
-                            child: Text(
-                                AppLocalizations.of(context)!
-                                    .no_suggestion_available,
-                                style: TextStyle(color: MyTheme.medium_grey))),
-                      );
-                    },
-                    onSuggestionSelected: (dynamic suggestion) {
-                      _searchController.text = suggestion.query;
-                      _searchKey = suggestion.query;
-                      setState(() {});
-                      _onSearchSubmit();
-                    },
-                    textFieldConfiguration: TextFieldConfiguration(
-                      onTap: () {},
-                      //autofocus: true,
-                      controller: _searchController,
-                      onSubmitted: (txt) {
-                        _searchKey = txt;
-                        setState(() {});
-                        _onSearchSubmit();
-                      },
-                      decoration: InputDecoration(
-                          hintText:
-                              AppLocalizations.of(context)!.search_here_ucf,
-                          hintStyle: TextStyle(
-                              fontSize: 12.0, color: MyTheme.textfield_grey),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: MyTheme.white, width: 0.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: MyTheme.white, width: 0.0),
-                          ),
-                          contentPadding: EdgeInsets.all(0.0)),
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        // IconButton(
+        //   padding: EdgeInsets.zero,
+        //   icon: UsefulElements.backButton(context),
+        //   onPressed: () => Navigator.of(context).pop(),
+        // ),
+        Expanded(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.6,
+            child: Padding(
+              padding: MediaQuery.of(context).viewPadding.top > 30
+                  ? const EdgeInsets.symmetric(vertical: 36.0, horizontal: 0.0)
+                  : const EdgeInsets.symmetric(vertical: 14.0, horizontal: 0.0),
+              child: TypeAheadField(
+                suggestionsBoxDecoration: SuggestionsBoxDecoration(),
+                suggestionsCallback: (pattern) async {
+                  var suggestions = await SearchRepository()
+                      .getSearchSuggestionListResponse(
+                          query_key: pattern,
+                          type: _selectedFilter!.option_key);
+                  return suggestions;
+                },
+                loadingBuilder: (context) {
+                  return Container(
+                    height: 50,
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.loading_suggestions,
+                        style: TextStyle(color: MyTheme.medium_grey),
+                      ),
                     ),
-                  )),
+                  );
+                },
+                itemBuilder: (context, dynamic suggestion) {
+                  var subtitle =
+                      "${AppLocalizations.of(context)!.searched_for_all_lower} ${suggestion.count} ${AppLocalizations.of(context)!.times_all_lower}";
+                  if (suggestion.type != "search") {
+                    subtitle =
+                        "${suggestion.type_string} ${AppLocalizations.of(context)!.found_all_lower}";
+                  }
+                  return Container(
+                    width: double
+                        .infinity, // This will make the ListTile full screen width
+                    child: ListTile(
+                      dense: true,
+                      title: Text(
+                        suggestion.query,
+                        style: TextStyle(
+                          color: suggestion.type != "search"
+                              ? MyTheme.accent_color
+                              : MyTheme.font_grey,
+                        ),
+                      ),
+                      subtitle: Text(
+                        subtitle,
+                        style: TextStyle(
+                          color: suggestion.type != "search"
+                              ? MyTheme.font_grey
+                              : MyTheme.medium_grey,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                noItemsFoundBuilder: (context) {
+                  return Container(
+                    height: 50,
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.no_suggestion_available,
+                        style: TextStyle(color: MyTheme.medium_grey),
+                      ),
+                    ),
+                  );
+                },
+                onSuggestionSelected: (dynamic suggestion) {
+                  _searchController.text = suggestion.query;
+                  _searchKey = suggestion.query;
+                  setState(() {});
+                  _onSearchSubmit();
+                },
+                textFieldConfiguration: TextFieldConfiguration(
+                  onTap: () {},
+                  controller: _searchController,
+                  onSubmitted: (txt) {
+                    _searchKey = txt;
+                    setState(() {});
+                    _onSearchSubmit();
+                  },
+                  decoration: InputDecoration(
+                    icon: IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: UsefulElements.backButton(context),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                    hintText: AppLocalizations.of(context)!.search_here_ucf,
+                    hintStyle: TextStyle(
+                      fontSize: 12.0,
+                      color: MyTheme.textfield_grey,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: MyTheme.white, width: 0.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: MyTheme.white, width: 0.0),
+                    ),
+                    contentPadding: EdgeInsets.all(0.0),
+                  ),
+                ),
+              ),
             ),
           ),
-          IconButton(
-              icon: Icon(Icons.search, color: MyTheme.dark_grey),
-              onPressed: () {
-                _searchKey = _searchController.text.toString();
-                setState(() {});
-                _onSearchSubmit();
-              }),
-        ]);
+        ),
+        // IconButton(
+        //   icon: Icon(Icons.search, color: MyTheme.dark_grey),
+        //   onPressed: () {
+        //     _searchKey = _searchController.text.toString();
+        //     setState(() {});
+        //     _onSearchSubmit();
+        //   },
+        // ),
+      ],
+    );
   }
 
   buildFilterDrawer() {
@@ -1079,7 +1091,6 @@ class _FilterState extends State<Filter> {
                 dense: true,
                 title: Text(category.name),
                 value: _selectedCategories.contains(category.id),
-
                 onChanged: (bool? value) {
                   // if (value!) {
                   //   setState(() {
@@ -1091,22 +1102,20 @@ class _FilterState extends State<Filter> {
                   //     _selectedCategories.remove(category.id);
                   //   });
                   // }
-                 setState(() {
-                   if (_selectedCategories.contains(category.id)) {
-                     _selectedCategories.remove(category.id);   // unselect
-                   } else {
-                     _selectedCategories.add(category.id);  // select
-                   }
-                 });
+                  setState(() {
+                    if (_selectedCategories.contains(category.id)) {
+                      _selectedCategories.remove(category.id); // unselect
+                    } else {
+                      _selectedCategories.add(category.id); // select
+                    }
+                  });
                 },
-
               ),
             )
             .toList()
       ],
     );
-
-    }
+  }
 
   Container buildProductList() {
     return Container(
