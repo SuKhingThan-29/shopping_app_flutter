@@ -748,7 +748,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
                     child: Container(
                         height: 1.0,
                         width: MediaQuery.of(context).size.width * .4,
@@ -811,7 +811,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
                     child: Container(
                         height: 1.0,
                         width: MediaQuery.of(context).size.width * .4,
@@ -885,7 +885,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
                     child: Container(
                         height: 1.0,
                         width: MediaQuery.of(context).size.width * .4,
@@ -958,7 +958,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
                     child: Container(
                         height: 1.0,
                         width: MediaQuery.of(context).size.width * .4,

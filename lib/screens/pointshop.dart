@@ -132,15 +132,6 @@ class _PointShopState extends State<PointShop> {
                 backgroundColor: Colors.white,
                 appBar: buildAppBar(statusBarHeight, context),
                 body:
-                    // Center(child:
-                    //                   Text(
-                    //                     'Comming Soon...',
-                    //                     style: TextStyle(
-                    //                       fontSize: 22,
-                    //                       color: Colors.grey,
-                    //                     ),
-                    //                   ),
-                    // )
                     Column(
                   children: [
                     Padding(
@@ -154,11 +145,7 @@ class _PointShopState extends State<PointShop> {
                               color: MyTheme.accent_color,
                             ),
                             padding: EdgeInsets.all(10),
-                            height: 100,
                             child:
-                                // _member_level == null
-                                //     ? Container()
-                                //     :
                                 Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -208,8 +195,8 @@ class _PointShopState extends State<PointShop> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Container(
-                        margin: EdgeInsets.only(top: 20),
+                    SizedBox(height: 10,),
+                    Expanded(
                         child: buildOrderListList()),
                     SizedBox(
                       height: 100,
@@ -521,9 +508,13 @@ class _PointShopState extends State<PointShop> {
                         // ToastComponent.showDialog(response.message);
 
                         if (response.message == true) {
-                          ToastComponent.showDialog(response.message);
+                          fetchData();
+                          setState(() {
 
-                          _onRefresh();
+                            ToastComponent.showDialog(response.message);
+
+
+                          });
                           print(_orderList);
                           Navigator.of(context, rootNavigator: true).pop();
                         } else {

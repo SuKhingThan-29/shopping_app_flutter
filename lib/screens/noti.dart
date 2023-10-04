@@ -8,6 +8,8 @@ import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'order_details.dart';
+
 class Noti extends StatefulWidget {
   @override
   _NotiState createState() => _NotiState();
@@ -198,12 +200,12 @@ class _NotiState extends State<Noti> {
   buildMessengerItemCard(index) {
     return GestureDetector(
       onTap: () {
-        // Navigator.push(context, MaterialPageRoute(builder: (context) {
-        //   return Chat(
-        //     conversation_id: _list[index].id,
-        //     messenger_name: _list[index].data,
-        //   );
-        // }));
+        print("Order detailid: ${_list[index].data.orderId}");
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return OrderDetails(
+            id:  _list[index].data.orderId,
+          );
+        }));
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
