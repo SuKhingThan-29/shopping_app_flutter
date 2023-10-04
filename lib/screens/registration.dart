@@ -321,7 +321,9 @@ class _RegistrationState extends State<Registration> {
 
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
-        return Otp();
+        return Otp(
+          phnum: _phone,
+        );
       }), (newRoute) => false);
       // if ((mail_verification_status.$ && _register_by == "email") ||
       //     _register_by == "phone") {

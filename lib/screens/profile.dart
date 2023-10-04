@@ -7,6 +7,7 @@ import 'package:active_ecommerce_flutter/custom/device_info.dart';
 import 'package:active_ecommerce_flutter/custom/lang_text.dart';
 import 'package:active_ecommerce_flutter/data_model/user_info_response.dart';
 import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
+import 'package:active_ecommerce_flutter/repositories/chat_repository.dart';
 import 'package:active_ecommerce_flutter/screens/auction_products.dart';
 import 'package:active_ecommerce_flutter/screens/change_language.dart';
 import 'package:active_ecommerce_flutter/screens/classified_ads/classified_ads.dart';
@@ -59,8 +60,10 @@ class _ProfileState extends State<Profile> {
   late BuildContext loadingcontext;
   String? _member_level;
   UserInformation? _userInfo;
+  int? _totalData = 0;
 
   String userLeverl = "Normal";
+  List<dynamic> _list = [];
 
   @override
   void initState() {
@@ -90,6 +93,15 @@ class _ProfileState extends State<Profile> {
   fetchAll() {
     fetchCounters();
     getUserInfo();
+    fetchData();
+  }
+
+  fetchData() async {
+    var conversatonResponse = await ChatRepository().getNotiResponse();
+    _list.addAll(conversatonResponse.data.data);
+    _totalData = conversatonResponse.data.total;
+    setState(() {});
+    print(_totalData);
   }
 
   getUserInfo() async {
@@ -1343,18 +1355,45 @@ class _ProfileState extends State<Profile> {
           if (is_logged_in.$)
             InkWell(
               onTap: () {
-                {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Noti();
-                  }));
-                }
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Noti();
+                }));
               },
-              child: Container(
-                margin: EdgeInsets.only(right: 20),
-                child: Image.asset(
-                  "assets/bell.png",
-                  height: 30,
-                ),
+              child: Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 20),
+                    child: Image.asset(
+                      "assets/bell.png",
+                      height: 30,
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 18,
+                    child: _totalData != 0
+                        ? Container(
+                            width: 18,
+                            height: 18,
+                            padding: EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                '$_totalData',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(),
+                  ),
+                ],
               ),
             )
           else
