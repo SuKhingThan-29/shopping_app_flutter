@@ -44,6 +44,10 @@
 	<string>3d863574946fd93cdff8524707cb80b6</string>
 	<key>FacebookDisplayName</key>
 	<string>GMP</string>
+	<key>INIntentsSupported</key>
+	<array>
+		<string>Intent</string>
+	</array>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
