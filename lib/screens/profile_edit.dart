@@ -14,6 +14,7 @@ import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:toast/toast.dart';
@@ -43,41 +44,46 @@ class _ProfileEditState extends State<ProfileEdit> {
   //for image uploading
   final ImagePicker _picker = ImagePicker();
   XFile? _file;
+  CroppedFile? _croppedFile;
 
   chooseAndUploadImage(context) async {
-
-  var status =  await Permission.camera.request();
-    // var status = await Permission.photos.request();
-    //
-    // if (status.isDenied) {
-    //   // We didn't ask for permission yet.
-    //   showDialog(
-    //       context: context,
-    //       builder: (BuildContext context) => CupertinoAlertDialog(
-    //             title: Text(AppLocalizations.of(context)!.photo_permission_ucf),
-    //             content: Text(
-    //                 AppLocalizations.of(context)!.this_app_needs_permission),
-    //             actions: <Widget>[
-    //               CupertinoDialogAction(
-    //                 child: Text(AppLocalizations.of(context)!.deny_ucf),
-    //                 onPressed: () => Navigator.of(context).pop(),
-    //               ),
-    //               CupertinoDialogAction(
-    //                 child: Text(AppLocalizations.of(context)!.settings_ucf),
-    //                 onPressed: () => openAppSettings(),
-    //               ),
-    //             ],
-    //           ));
-    // } else if (status.isRestricted) {
-    //   ToastComponent.showDialog(
-    //       AppLocalizations.of(context)!
-    //           .go_to_your_application_settings_and_give_photo_permission,
-    //       gravity: Toast.center,
-    //       duration: Toast.lengthLong);
-    // } else if (status.isGranted) {}
-
-    //file = await ImagePicker.pickImage(source: ImageSource.camera);
+    var status = await Permission.camera.request();
     _file = await _picker.pickImage(source: ImageSource.gallery);
+    final croppedFile = await ImageCropper().cropImage(
+      sourcePath: _file!.path,
+      compressFormat: ImageCompressFormat.jpg,
+      compressQuality: 100,
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+        WebUiSettings(
+          context: context,
+          presentStyle: CropperPresentStyle.dialog,
+          boundary: const CroppieBoundary(
+            width: 520,
+            height: 520,
+          ),
+          viewPort:
+              const CroppieViewPort(width: 480, height: 480, type: 'circle'),
+          enableExif: true,
+          enableZoom: true,
+          showZoomer: true,
+        ),
+      ],
+    );
+
+    if (croppedFile != null) {
+      setState(() {
+        _file = XFile(croppedFile.path);
+      });
+    }
 
     if (_file == null) {
       ToastComponent.showDialog(AppLocalizations.of(context)!.no_file_is_chosen,
@@ -481,7 +487,6 @@ class _ProfileEditState extends State<ProfileEdit> {
             alignment: Alignment.center,
             width: 150,
             child: Btn.basic(
-
               minWidth: MediaQuery.of(context).size.width,
               padding: EdgeInsets.symmetric(vertical: 12),
               color: MyTheme.accent_color,
