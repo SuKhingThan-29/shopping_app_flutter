@@ -734,22 +734,30 @@ class _SelectAddressState extends State<SelectAddress> {
         //detectShippingOption();
         setState(() {});
       },
-      child: Card(
-        color: _seleted_shipping_address == _shippingAddressList[index].id
-            ? Colors.grey.shade300
-            : Colors.white,
-        shape: RoundedRectangleBorder(
-          // side: _seleted_shipping_address == _shippingAddressList[index].id
-          //     ? BorderSide(color: MyTheme.accent_color, width: 2.0)
-          //     : BorderSide(color: MyTheme.light_grey, width: 1.0),
-          side: BorderSide(color: MyTheme.light_grey, width: 1.0),
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        elevation: 0.0,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: buildShippingInfoItemChildren(index),
-        ),
+      child: Column(
+        children: [
+          _seleted_shipping_address==_shippingAddressList[index].id ?Container(
+            padding: EdgeInsets.all(0),
+            child: Text("Set as your default address*",style: TextStyle(color: Colors.red,fontSize: 18),),
+          ):Container(),
+          Card(
+            color: _seleted_shipping_address == _shippingAddressList[index].id
+                ? Colors.grey.shade300
+                : Colors.white,
+            shape: RoundedRectangleBorder(
+              // side: _seleted_shipping_address == _shippingAddressList[index].id
+              //     ? BorderSide(color: MyTheme.accent_color, width: 2.0)
+              //     : BorderSide(color: MyTheme.light_grey, width: 1.0),
+              side: BorderSide(color: MyTheme.light_grey, width: 1.0),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            elevation: 0.0,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: buildShippingInfoItemChildren(index),
+            ),
+          )
+        ],
       ),
     );
   }
