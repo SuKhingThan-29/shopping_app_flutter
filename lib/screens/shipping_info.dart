@@ -63,6 +63,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
   getDeliveryInfo() async {
     _deliveryInfoList = await (ShippingRepository().getDeliveryInfo());
+    print("Delivery list: ${_deliveryInfoList.length}");
     _isFetchDeliveryInfo = true;
 
     print(_deliveryInfoList.length);
