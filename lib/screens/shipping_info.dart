@@ -949,7 +949,15 @@ class _ShippingInfoState extends State<ShippingInfo> {
                     fontWeight: FontWeight.w600),
               ),
               onPressed: () {
-                onPressProceed(context);
+                if(_delivery.length==0){
+                  ToastComponent.showDialog(
+                      "There is no delivery service in your city.",
+                      gravity: Toast.center,
+                      duration: Toast.lengthLong);
+                }else{
+                  onPressProceed(context);
+                }
+
               },
             )
           ],

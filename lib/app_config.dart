@@ -15,7 +15,7 @@ class AppConfig {
 
   //configure this
   static const bool HTTPS = true;
-  static const DOMAIN_PATH = "dev.gmpshopping.com"; //localhost
+  static const DOMAIN_PATH = "gmpshopping.com"; //localhost
 
   //do not configure these below
   static const String API_ENDPATH = "api/v2";
