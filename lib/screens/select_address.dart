@@ -323,6 +323,14 @@ class _SelectAddressState extends State<SelectAddress> {
       return;
     }
 
+    if (_phoneController.text.toString().isEmpty) {
+      ToastComponent.showDialog(
+          AppLocalizations.of(context)!.enter_phone_number,
+          gravity: Toast.center,
+          duration: Toast.lengthLong);
+      return;
+    }
+
     var addressAddResponse = await AddressRepository().getAddressAddResponse(
         address: address,
         country_id: _selected_country!.id,
