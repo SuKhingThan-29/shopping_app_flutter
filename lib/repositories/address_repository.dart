@@ -180,10 +180,11 @@ class AddressRepository {
 
     return addressDeleteResponseFromJson(response.body);
   }
-  Future<dynamic> getPostalCodeByCidty(city_id)async{
-    String url=('${AppConfig.BASE_URL}/postalcode-by-city/$city_id');
+
+  Future<dynamic> getPostalCodeByCidty(city_id) async {
+    String url = ('${AppConfig.BASE_URL}/postalcode-by-city/$city_id');
     print("Postal URl: $url");
-    final response = await ApiRequest.get(url: url,middleware: BannedUser());
+    final response = await ApiRequest.get(url: url, middleware: BannedUser());
 
     return postalResponseFromJson(response.body);
   }
@@ -199,7 +200,7 @@ class AddressRepository {
 
   Future<dynamic> getStateListByCountry({country_id = 0, name = ""}) async {
     String url =
-        ("${AppConfig.BASE_URL}/states-by-country/${country_id}?name=");
+        ("${AppConfig.BASE_URL}/states-by-country/${country_id}?name=${name}");
     print("State URL: $url");
     final response = await ApiRequest.get(url: url, middleware: BannedUser());
 

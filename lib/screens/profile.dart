@@ -1334,14 +1334,23 @@ class _ProfileState extends State<Profile> {
                 //shape: BoxShape.rectangle,
               ),
               child: is_logged_in.$
-                  ? ClipRRect(
-                      clipBehavior: Clip.hardEdge,
-                      borderRadius: BorderRadius.all(Radius.circular(100.0)),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/placeholder.png',
-                        image: "${avatar_original.$}",
-                        fit: BoxFit.fill,
-                      ))
+                  ? InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ProfileEdit();
+                        }));
+                      },
+                      child: ClipRRect(
+                          clipBehavior: Clip.hardEdge,
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(100.0)),
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/placeholder.png',
+                            image: "${avatar_original.$}",
+                            fit: BoxFit.fill,
+                          )),
+                    )
                   : Image.asset(
                       'assets/profile_placeholder.png',
                       height: 48,

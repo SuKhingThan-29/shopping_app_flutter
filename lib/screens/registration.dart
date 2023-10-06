@@ -143,7 +143,8 @@ class _RegistrationState extends State<Registration> {
         // get the user data
         // by default we get the userId, email,name and picture
         final userData = await FacebookAuth.instance.getUserData();
-        print("fb login..........................${userData['name'].toString()}");
+        print(
+            "fb login..........................${userData['name'].toString()}");
 
         // var loginResponse = await AuthRepository().getSocialLoginResponse(
         //     "facebook",
@@ -291,11 +292,9 @@ class _RegistrationState extends State<Registration> {
       // });
       ToastComponent.showDialog(AppLocalizations.of(context)!.enter_your_name,
           gravity: Toast.center, duration: Toast.lengthLong);
-
-
     } else {
-      ToastComponent.showDialog(signupResponse.message.toString(),
-          gravity: Toast.center, duration: Toast.lengthLong);
+      // ToastComponent.showDialog(signupResponse.message.toString(),
+      //     gravity: Toast.center, duration: Toast.lengthLong);
       AuthHelper().setUserData(signupResponse);
       // push notification starts
       if (OtherConfig.USE_PUSH_NOTIFICATION) {
@@ -309,7 +308,6 @@ class _RegistrationState extends State<Registration> {
           provisional: false,
           sound: true,
         );
-
       }
 
       Navigator.pushAndRemoveUntil(context,
@@ -887,7 +885,7 @@ class _RegistrationState extends State<Registration> {
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Visibility(
-                           // visible: allow_facebook_login.$,
+                            // visible: allow_facebook_login.$,
                             visible: true,
                             child: InkWell(
                               onTap: () {
