@@ -195,7 +195,6 @@ class _MainScreenState extends State<MyApp> {
               builder: (context, provider, snapshot) {
             print("Deeplink route provider: ${provider.deepLinkRoute}");
             if (provider.deepLinkRoute == "/purchase-history") {
-              // if(provider.deepLinkRoute=="/success"){
               navigatorKey.currentState?.push(MaterialPageRoute(
                 builder: (context) {
                   return OrderList(from_checkout: true);
