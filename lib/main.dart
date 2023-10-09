@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:active_ecommerce_flutter/firebase_options.dart';
 import 'package:active_ecommerce_flutter/presenter/cart_counter.dart';
@@ -59,7 +58,6 @@ import 'screens/package/packages.dart';
 import 'screens/product_details.dart';
 import 'screens/seller_details.dart';
 import 'screens/seller_products.dart';
-import 'package:http/http.dart' as http;
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
