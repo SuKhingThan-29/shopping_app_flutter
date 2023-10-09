@@ -232,7 +232,7 @@ class _RegistrationState extends State<Registration> {
     var password = _passwordController.text.toString();
     var passwordConfirm = _passwordConfirmController.text.toString();
 
-    if (name == "") {
+    if (name.isEmpty) {
       ToastComponent.showDialog(AppLocalizations.of(context)!.enter_your_name,
           gravity: Toast.center, duration: Toast.lengthLong);
       return;
@@ -290,7 +290,7 @@ class _RegistrationState extends State<Registration> {
       // signupResponse.message.forEach((value) {
       //   message += value + "\n";
       // });
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_your_name,
+      ToastComponent.showDialog(message,
           gravity: Toast.center, duration: Toast.lengthLong);
     } else {
       // ToastComponent.showDialog(signupResponse.message.toString(),
