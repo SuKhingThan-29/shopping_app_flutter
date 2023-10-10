@@ -54,7 +54,7 @@ class AuthRepository {
       "secret_token": "$secret_token"
     });
 
-    print(postBody);
+    print("Sigin with apple $postBody");
     String url = ("${AppConfig.BASE_URL}/auth/social-login");
     final response = await ApiRequest.post(
         url: url,

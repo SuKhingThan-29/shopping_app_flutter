@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:active_ecommerce_flutter/app_config.dart';
@@ -562,18 +563,18 @@ class _LoginState extends State<Login> {
                   },
                 ),
               ),
-              //if (Platform.isIOS)
-              // Padding(
-              //   padding: const EdgeInsets.only(top: 20.0),
-              //   child: SignInWithAppleButton(
-              //     onPressed: () async {
-              //       signInWithApple();
-              //     },
-              //   ),
-              // ),
+              if (Platform.isIOS)
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: SignInWithAppleButton(
+                  onPressed: () async {
+                    signInWithApple();
+                  },
+                ),
+              ),
               Visibility(
-                visible: true,
-                // visible: allow_google_login.$ || allow_facebook_login.$,
+               // visible: true,
+                 visible: allow_google_login.$ || allow_facebook_login.$,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Center(
