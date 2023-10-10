@@ -136,58 +136,58 @@ class _CouponState extends State<Coupon> {
               appBar: buildAppBar(context),
               body: Stack(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Container(
-                      alignment: Alignment.topCenter,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        color: Colors.transparent,
-                        image: DecorationImage(
-                          image: AssetImage('assets/pointbg.jpg'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      padding: EdgeInsets.all(20),
-                      height: 150,
-                      // child: Column(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     Text(
-                      //       'Point Balance',
-                      //       style: TextStyle(
-                      //         fontSize: 25,
-                      //         color: Color.fromARGB(255, 255, 255, 255),
-                      //         fontWeight: FontWeight.bold,
-                      //       ),
-                      //     ),
-                      //     SizedBox(
-                      //       height: 15,
-                      //     ),
-                      //     Row(
-                      //       mainAxisAlignment:
-                      //           MainAxisAlignment.center, // Center the Row
-                      //       children: [
-                      //         Image.asset(
-                      //           "assets/point.png",
-                      //           width: 30,
-                      //           height: 30,
-                      //         ),
-                      //         SizedBox(width: 5),
-                      //         Text(
-                      //           '$_member_level Point',
-                      //           style: TextStyle(
-                      //             fontSize: 25,
-                      //             color: Color.fromARGB(255, 253, 252, 252),
-                      //             fontWeight: FontWeight.bold,
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ],
-                      // ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(15),
+                  //   child: Container(
+                  //     alignment: Alignment.topCenter,
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(20.0),
+                  //       color: Colors.transparent,
+                  //       image: DecorationImage(
+                  //         image: AssetImage('assets/pointbg.jpg'),
+                  //         fit: BoxFit.cover,
+                  //       ),
+                  //     ),
+                  //     padding: EdgeInsets.all(20),
+                  //     height: 150,
+                  //     // child: Column(
+                  //     //   mainAxisAlignment: MainAxisAlignment.center,
+                  //     //   children: [
+                  //     //     Text(
+                  //     //       'Point Balance',
+                  //     //       style: TextStyle(
+                  //     //         fontSize: 25,
+                  //     //         color: Color.fromARGB(255, 255, 255, 255),
+                  //     //         fontWeight: FontWeight.bold,
+                  //     //       ),
+                  //     //     ),
+                  //     //     SizedBox(
+                  //     //       height: 15,
+                  //     //     ),
+                  //     //     Row(
+                  //     //       mainAxisAlignment:
+                  //     //           MainAxisAlignment.center, // Center the Row
+                  //     //       children: [
+                  //     //         Image.asset(
+                  //     //           "assets/point.png",
+                  //     //           width: 30,
+                  //     //           height: 30,
+                  //     //         ),
+                  //     //         SizedBox(width: 5),
+                  //     //         Text(
+                  //     //           '$_member_level Point',
+                  //     //           style: TextStyle(
+                  //     //             fontSize: 25,
+                  //     //             color: Color.fromARGB(255, 253, 252, 252),
+                  //     //             fontWeight: FontWeight.bold,
+                  //     //           ),
+                  //     //         ),
+                  //     //       ],
+                  //     //     ),
+                  //     //   ],
+                  //     // ),
+                  //   ),
+                  // ),
                   Container(
                       margin: EdgeInsets.only(bottom: 10, top: 200),
                       child: buildOrderListList()),

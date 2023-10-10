@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:active_ecommerce_flutter/app_config.dart';
@@ -18,6 +19,7 @@ import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/otp.dart';
 import 'package:active_ecommerce_flutter/ui_elements/auth_ui.dart';
+import 'package:crypto/crypto.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:toast/toast.dart';
 
 import '../repositories/address_repository.dart';
@@ -225,7 +228,64 @@ class _RegistrationState extends State<Registration> {
       // TODO
     }
   }
+  /// Returns the sha256 hash of [input] in hex notation.
+  String sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+  signInWithApple() async {
+    // To prevent replay attacks with the credential returned from Apple, we
+    // include a nonce in the credential request. When signing in with
+    // Firebase, the nonce in the id token returned by Apple, is expected to
+    // match the sha256 hash of `rawNonce`.
+    final rawNonce = generateNonce();
+    final nonce = sha256ofString(rawNonce);
 
+    // Request credential for the currently signed in Apple account.
+    try {
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: nonce,
+      );
+
+      var loginResponse = await AuthRepository().getSocialLoginResponse(
+          "apple",
+          appleCredential.givenName,
+          appleCredential.email,
+          appleCredential.userIdentifier,
+          access_token: appleCredential.identityToken);
+
+      if (loginResponse.result == false) {
+        ToastComponent.showDialog(loginResponse.message!,
+            gravity: Toast.center, duration: Toast.lengthLong);
+      } else {
+        ToastComponent.showDialog(loginResponse.message!,
+            gravity: Toast.center, duration: Toast.lengthLong);
+        AuthHelper().setUserData(loginResponse);
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return Main();
+        }));
+      }
+    } on Exception catch (e) {
+      print(e);
+      // TODO
+    }
+
+    // Create an `OAuthCredential` from the credential returned by Apple.
+    // final oauthCredential = OAuthProvider("apple.com").credential(
+    //   idToken: appleCredential.identityToken,
+    //   rawNonce: rawNonce,
+    // );
+    //print(oauthCredential.accessToken);
+
+    // Sign in the user with Firebase. If the nonce we generated earlier does
+    // not match the nonce in `appleCredential.identityToken`, sign in will fail.
+    //return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+  }
   onPressSignUp() async {
     var name = _nameController.text.toString();
     var email = _emailController.text.toString();
@@ -771,7 +831,7 @@ class _RegistrationState extends State<Registration> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Container(
-                        width: DeviceInfo(context).width! - 130,
+                        width: DeviceInfo(context).width! - 140,
                         child: RichText(
                             maxLines: 2,
                             text: TextSpan(
@@ -898,11 +958,21 @@ class _RegistrationState extends State<Registration> {
                             ),
                           ),
                         ),
+
                       ],
                     ),
                   ),
                 ),
               ),
+              if (Platform.isIOS)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: SignInWithAppleButton(
+                    onPressed: () async {
+                      signInWithApple();
+                    },
+                  ),
+                ),
               Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Row(

@@ -714,6 +714,7 @@ class _FilterState extends State<Filter> {
         Expanded(
           child: Container(
             width: MediaQuery.of(context).size.width * 0.6,
+            height: 90,
             child: Padding(
               padding: MediaQuery.of(context).viewPadding.top > 30
                   ? const EdgeInsets.symmetric(vertical: 36.0, horizontal: 0.0)

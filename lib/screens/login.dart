@@ -530,6 +530,101 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
+              if (Platform.isIOS)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: SignInWithAppleButton(
+                    onPressed: () async {
+                      signInWithApple();
+                    },
+                  ),
+                ),
+              SizedBox(height: 10,),
+              allow_google_login.$?
+    Container(
+    height: 45,
+    child: Btn.minWidthFixHeight(
+    minWidth: MediaQuery.of(context).size.width,
+    height: 50,
+    color: MyTheme.amber,
+    shape: RoundedRectangleBorder(
+    borderRadius:
+    const BorderRadius.all(Radius.circular(6.0))),
+    child: Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+
+    Visibility(
+    visible: allow_google_login.$,
+    child:  Container(
+    width: 28,
+    child: Image.asset("assets/google_logo.png"),
+    ),
+    ),
+    Visibility(
+    visible: allow_google_login.$ || allow_facebook_login.$,
+    child: Padding(
+    padding: const EdgeInsets.only(top: 0.0),
+    child: Center(
+    child: Text(
+    '  Sign in with Google',
+    style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+    )),
+    ),
+    ),
+    ],
+    ),
+    onPressed: () {
+    onPressedGoogleLogin();
+    },
+    ),
+    ):Container(),
+
+              SizedBox(height: 10,),
+              allow_facebook_login.$?Container(
+                height: 45,
+                child: Btn.minWidthFixHeight(
+                  minWidth: MediaQuery.of(context).size.width,
+                  height: 50,
+                  color: MyTheme.amber,
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                      const BorderRadius.all(Radius.circular(6.0))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      Visibility(
+                        visible: allow_google_login.$,
+                        child: InkWell(
+                          onTap: () {
+
+                          },
+                          child: Container(
+                            width: 28,
+                            child: Image.asset("assets/facebook_logo.png"),
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: allow_facebook_login.$,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 0.0),
+                          child: Center(
+                              child: Text(
+                                '  Sign in with Facebook',
+                                style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                              )),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    onPressedFacebookLogin();
+                  },
+                ),
+              ):Container(),
+
               Padding(
                 padding: const EdgeInsets.only(top: 15.0, bottom: 15),
                 child: Center(
@@ -563,94 +658,7 @@ class _LoginState extends State<Login> {
                   },
                 ),
               ),
-              if (Platform.isIOS)
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: SignInWithAppleButton(
-                  onPressed: () async {
-                    signInWithApple();
-                  },
-                ),
-              ),
-              Visibility(
-               // visible: true,
-                 visible: allow_google_login.$ || allow_facebook_login.$,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Center(
-                      child: Text(
-                    AppLocalizations.of(context)!.login_screen_login_with,
-                    style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
-                  )),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: Center(
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Visibility(
-                          //visible: allow_google_login.$,
-                          visible: true,
-                          child: InkWell(
-                            onTap: () {
-                              onPressedGoogleLogin();
-                            },
-                            child: Container(
-                              width: 28,
-                              child: Image.asset("assets/google_logo.png"),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0),
-                          child: Visibility(
-                            visible: allow_facebook_login.$,
-                            child: InkWell(
-                              onTap: () {
-                                onPressedFacebookLogin();
-                              },
-                              child: Container(
-                                width: 28,
-                                child: Image.asset("assets/facebook_logo.png"),
-                              ),
-                            ),
-                          ),
-                        ),
-                        if (allow_twitter_login.$)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15.0),
-                            child: InkWell(
-                              onTap: () {
-                                onPressedTwitterLogin();
-                              },
-                              child: Container(
-                                width: 28,
-                                child: Image.asset("assets/twitter_logo.png"),
-                              ),
-                            ),
-                          ),
-                        /* if (Platform.isIOS)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15.0),
-                            // visible: true,
-                            child: A(
-                              onTap: () async {
-                                signInWithApple();
-                              },
-                              child: Container(
-                                width: 28,
-                                child: Image.asset("assets/apple_logo.png"),
-                              ),
-                            ),
-                          ),*/
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+
             ],
           ),
         )
