@@ -176,7 +176,7 @@ class _OtpState extends State<Otp> {
                     height: 40,
                   ),
                   Text(
-                    "Verification code has been sent to +95${widget.phnum} .",
+                    "Verification code has been sent to +95*******${widget.phnum!.substring(widget.phnum!.length - 2)} .",
                     style: TextStyle(fontSize: 15),
                   ),
                   const SizedBox(

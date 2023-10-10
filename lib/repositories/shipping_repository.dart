@@ -13,7 +13,7 @@ import 'package:active_ecommerce_flutter/repositories/api-request.dart';
 class ShippingRepository {
   Future<dynamic> getDeliveryInfo() async {
     String url = ("${AppConfig.BASE_URL}${AppConfig.deliver_info}");
-    print(url.toString());
+    print('${url.toString()}orkrofs');
     final response = await ApiRequest.get(
       url: url,
       headers: {
@@ -40,7 +40,6 @@ class ShippingRepository {
       headers: {
         "Authorization": "Bearer ${access_token.$}",
       },
-
     );
     print('GetDeliveryType: ${deliverytypeFromJson(response.body)}');
     return deliverytypeFromJson(response.body);

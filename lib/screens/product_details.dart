@@ -85,7 +85,7 @@ class _ProductDetailsState extends State<ProductDetails>
   String? _totalPrice = "...";
   var _singlePrice;
   var _singlePriceString;
-  String? _price="";
+  String? _price = "";
   int? _quantity = 1;
   int? _stock = 0;
   var _stock_txt;
@@ -204,6 +204,7 @@ class _ProductDetailsState extends State<ProductDetails>
       _stock = _productDetails!.current_stock;
       _productDetails!.photos!.forEach((photo) {
         _productImageList.add(photo.path);
+        print('fkefseofsf $_productImageList');
       });
 
       _productDetails!.choice_options!.forEach((choiceOpiton) {
@@ -294,7 +295,7 @@ class _ProductDetailsState extends State<ProductDetails>
         color: colorString,
         variants: _choiceString,
         qty: _quantity);
-    _price=variantResponse.variantData!.price;
+    _price = variantResponse.variantData!.price;
     print("single price ${variantResponse.variantData!.price}");
     /*print("vr"+variantResponse.toJson().toString());
     return;*/
@@ -1004,8 +1005,7 @@ class _ProductDetailsState extends State<ProductDetails>
                           ),
 
                         Padding(
-                          padding:
-                              EdgeInsets.only(top: 14, left: 14, right: 2),
+                          padding: EdgeInsets.only(top: 14, left: 14, right: 2),
                           child: _productDetails != null
                               ? buildMainPriceRow()
                               : ShimmerHelper().buildBasicShimmer(
@@ -2047,7 +2047,8 @@ class _ProductDetailsState extends State<ProductDetails>
               ? _productDetails!.discount_price.toString().replaceAll(
                   SystemConfig.systemCurrency!.code!,
                   SystemConfig.systemCurrency!.symbol!)
-              : SystemConfig.systemCurrency!.symbol! + _productDetails!.discount_price.toString(),
+              : SystemConfig.systemCurrency!.symbol! +
+                  _productDetails!.discount_price.toString(),
           // SystemConfig.systemCurrency != null
           //     ? _singlePriceString.replaceAll(SystemConfig.systemCurrency!.code,
           //         SystemConfig.systemCurrency!.symbol)

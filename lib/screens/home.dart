@@ -46,7 +46,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   List<CountdownTimerController> _timerControllerList = [];
 
-  List productTabs = ['Recommended', 'New','Brand'];
+  List productTabs = ['Recommended', 'New', 'Brand'];
   String selectProductTab = "Recommended";
 
   List<dynamic> _brandList = [];
@@ -80,13 +80,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       }
     });
   }
+
   buildBrandScrollableList() {
     if (_isBrandInitial && _brandList.length == 0) {
       return SingleChildScrollView(
           child: ShimmerHelper()
               .buildSquareGridShimmer(scontroller: _scrollController));
     } else if (_brandList.length > 0) {
-      return  GridView.builder(
+      return GridView.builder(
         itemCount: _brandList.length,
         controller: _scrollController,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -94,8 +95,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             crossAxisSpacing: 14,
             mainAxisSpacing: 14,
             childAspectRatio: 1),
-        padding:
-        EdgeInsets.only(top: 20, bottom: 10, left: 18, right: 18),
+        padding: EdgeInsets.only(top: 20, bottom: 10, left: 18, right: 18),
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (context, index) {
@@ -148,6 +148,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       return Container(); // should never be happening
     }
   }
+
   change() {
     homeData.onRefresh();
     homeData.mainScrollListener();
@@ -305,7 +306,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   // ),
                                 ]),
                               ),
-
                               if (homeData.isTodayDeal) ...[
                                 SliverList(
                                   delegate: SliverChildListDelegate([
@@ -339,7 +339,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   ),
                                 ),
                               ],
-
                               SliverList(
                                 delegate: SliverChildListDelegate([
                                   Padding(
@@ -365,7 +364,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   ),
                                 ]),
                               ),
-
                               SliverToBoxAdapter(
                                 child: SizedBox(
                                   height: 154,
@@ -373,11 +371,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                       context, homeData),
                                 ),
                               ),
-
                               if (homeData.isFlashDeal)
                                 SliverToBoxAdapter(
                                     child: buildFlashDeal(context, homeData)),
-
                               SliverList(
                                 delegate: SliverChildListDelegate([
                                   Container(
@@ -424,7 +420,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   ),
                                 ]),
                               ),
-
                               SliverList(
                                 delegate: SliverChildListDelegate([
                                   SizedBox(
@@ -489,14 +484,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                                 ),
                                               ))),
                                   SingleChildScrollView(
-                                       controller: _brandScrollController,
-                                       physics:NeverScrollableScrollPhysics(),
+                                    controller: _brandScrollController,
+                                    physics: NeverScrollableScrollPhysics(),
                                     child: Column(
                                       children: [
-                                        selectProductTab=='Brand'?
-                                        buildBrandScrollableList():
-                                        buildHomeAllProducts2(
-                                              context, homeData),
+                                        selectProductTab == 'Brand'
+                                            ? buildBrandScrollableList()
+                                            : buildHomeAllProducts2(
+                                                context, homeData),
                                       ],
                                     ),
                                   ),
@@ -510,7 +505,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         ),
                         Align(
                             alignment: Alignment.center,
-                            child: selectProductTab=='Brand'? buildBrandLoadingContainer():buildProductLoadingContainer(homeData))
+                            child: selectProductTab == 'Brand'
+                                ? buildBrandLoadingContainer()
+                                : buildProductLoadingContainer(homeData))
                       ],
                     );
                   })),
@@ -520,8 +517,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   fetchBrandData() async {
-    var brandResponse =
-    await BrandRepository().getBrands(page: _brandPage);
+    var brandResponse = await BrandRepository().getBrands(page: _brandPage);
     _brandList.addAll(brandResponse.brands!);
     _isBrandInitial = false;
     _totalBrandData = brandResponse.meta!.total;
@@ -549,6 +545,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       ),
     );
   }
+
   Widget timerContainer(Widget child) {
     return Container(
       constraints: BoxConstraints(minWidth: 30, minHeight: 24),
@@ -635,7 +632,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       ),
     );
   }
-
 
   Widget buildHomeAllProducts2(context, HomePresenter homeData) {
     if (homeData.isAllProductInitial && homeData.allProductList.length == 0) {
@@ -1543,11 +1539,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       centerTitle: false,
       elevation: 0,
       flexibleSpace: GestureDetector(
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Filter();
-          }));
-        },
         child: buildHomeSearchBox(context),
       ),
     );
@@ -1574,27 +1565,35 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 width: 15,
               ),
               Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  height: 36,
-                  decoration: BoxDecorations.buildBoxDecoration_1(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.search_anything,
-                        style: TextStyle(
-                            fontSize: 13.0, color: MyTheme.textfield_grey),
-                      ),
-                      Spacer(),
-                      Image.asset(
-                        'assets/search.png',
-                        height: 16,
-                        //color: MyTheme.dark_grey,
-                        color: MyTheme.dark_grey,
-                      )
-                    ],
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return Filter();
+                    }));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    height: 36,
+                    decoration: BoxDecorations.buildBoxDecoration_1(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.search_anything,
+                          style: TextStyle(
+                              fontSize: 13.0, color: MyTheme.textfield_grey),
+                        ),
+                        Spacer(),
+                        Image.asset(
+                          'assets/search.png',
+                          height: 16,
+                          //color: MyTheme.dark_grey,
+                          color: MyTheme.dark_grey,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
