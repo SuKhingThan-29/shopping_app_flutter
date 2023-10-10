@@ -96,7 +96,7 @@ class _CartState extends State<Cart> {
             //_cartTotal += cartItem.total_price;
             _cartTotal += cartItem.quantity * cartItem.price;
             _cartTotalString =
-                "${SystemConfig.systemCurrency!.symbol} ${_cartTotal.toString()}";
+                '${SystemConfig.systemCurrency!.symbol} ${intl.NumberFormat.decimalPattern().format(_cartTotal)}';
             print(_cartTotal);
             print(_cartTotalString);
             setState(() {});
@@ -644,7 +644,7 @@ class _CartState extends State<Cart> {
                       child: Row(
                         children: [
                           Text(
-                            '${intl.NumberFormat.decimalPattern().format((_shopList[sellerIndex].cart_items[itemIndex].price! * _shopList[sellerIndex].cart_items[itemIndex].quantity!)!) ?? 0.0} MMK',
+                            '${intl.NumberFormat.decimalPattern().format((_shopList[sellerIndex].cart_items[itemIndex].price! * _shopList[sellerIndex].cart_items[itemIndex].quantity!)!)} MMK',
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
