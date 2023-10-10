@@ -138,58 +138,58 @@ class _CouponState extends State<Coupon> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(15),
-                    child: Container(
-                      alignment: Alignment.topCenter,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        color: Colors.transparent,
-                        image: DecorationImage(
-                          image: AssetImage('assets/pointbg.jpg'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      padding: EdgeInsets.all(20),
-                      height: 150,
-                      // child: Column(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     Text(
-                      //       'Point Balance',
-                      //       style: TextStyle(
-                      //         fontSize: 25,
-                      //         color: Color.fromARGB(255, 255, 255, 255),
-                      //         fontWeight: FontWeight.bold,
-                      //       ),
-                      //     ),
-                      //     SizedBox(
-                      //       height: 15,
-                      //     ),
-                      //     Row(
-                      //       mainAxisAlignment:
-                      //           MainAxisAlignment.center, // Center the Row
-                      //       children: [
-                      //         Image.asset(
-                      //           "assets/point.png",
-                      //           width: 30,
-                      //           height: 30,
-                      //         ),
-                      //         SizedBox(width: 5),
-                      //         Text(
-                      //           '$_member_level Point',
-                      //           style: TextStyle(
-                      //             fontSize: 25,
-                      //             color: Color.fromARGB(255, 253, 252, 252),
-                      //             fontWeight: FontWeight.bold,
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ],
-                      // ),
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 130,
+                          alignment: Alignment.topCenter,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: MyTheme.accent_color,
+                          ),
+                          padding: EdgeInsets.all(10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Point Balance',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.center, // Center the Row
+                                children: [
+                                  Image.asset(
+                                    "assets/point.png",
+                                    width: 30,
+                                    height: 30,
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    '${_member_level ?? 0} Point',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   Container(
-                      margin: EdgeInsets.only(bottom: 10, top: 200),
+                      margin: EdgeInsets.only(bottom: 10, top: 170),
                       child: buildOrderListList()),
                   SizedBox(
                     height: 10,
@@ -227,7 +227,7 @@ class _CouponState extends State<Coupon> {
 
   buildAppBar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(104.0),
+      preferredSize: Size.fromHeight(55.0),
       child: AppBar(
           centerTitle: false,
           backgroundColor: Colors.white,
