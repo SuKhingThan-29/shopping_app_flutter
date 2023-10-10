@@ -1258,8 +1258,11 @@ class _ProfileState extends State<Profile> {
       children: [
         InkWell(
           onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Cart()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return Cart(has_bottomnav: false);
+            })).then((value) {
+              onPopped(value);
+            });
           },
           child: buildCountersRowItem(
             _cartCounterString,
