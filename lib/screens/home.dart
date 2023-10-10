@@ -1611,9 +1611,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       backgroundColor: Colors.white,
       centerTitle: false,
       elevation: 0,
-      flexibleSpace: GestureDetector(
-        child: buildHomeSearchBox(context),
-      ),
+      flexibleSpace: buildHomeSearchBox(context),
     );
   }
 
@@ -1628,8 +1626,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           child: Row(
             children: [
               Container(
-                height: 60,
-                width: 60,
+                height: 65,
+                width: 65,
                 child: Image.asset(
                   "assets/app_logo.png",
                 ),

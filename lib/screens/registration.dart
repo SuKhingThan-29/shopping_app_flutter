@@ -352,6 +352,9 @@ class _RegistrationState extends State<Registration> {
       // });
       ToastComponent.showDialog(message,
           gravity: Toast.center, duration: Toast.lengthLong);
+      setState(() {
+
+      });
     } else {
       // ToastComponent.showDialog(signupResponse.message.toString(),
       //     gravity: Toast.center, duration: Toast.lengthLong);
@@ -373,7 +376,7 @@ class _RegistrationState extends State<Registration> {
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
         return Otp(
-          phnum: _phone,
+          phnum: email.isEmpty?_phone:email,
         );
       }), (newRoute) => false);
       // if ((mail_verification_status.$ && _register_by == "email") ||
