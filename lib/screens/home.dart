@@ -320,11 +320,34 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            "Today Deals",
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Today Deals",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              TodaysDealProducts()));
+                                                },
+                                                child: Text(
+                                                  "View All >",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.normal),
+                                                ),
+                                              )
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -1555,8 +1578,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           child: Row(
             children: [
               Container(
-                height: 50,
-                width: 50,
+                height: 60,
+                width: 60,
                 child: Image.asset(
                   "assets/app_logo.png",
                 ),

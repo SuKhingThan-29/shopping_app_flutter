@@ -407,7 +407,7 @@ class _ProductDetailsState extends State<ProductDetails>
 
     if (cartAddResponse.result == false) {
       ToastComponent.showDialog(cartAddResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+          gravity: Toast.bottom, duration: Toast.lengthLong);
       return;
     } else {
       Provider.of<CartCounter>(context, listen: false).getCount();
@@ -415,6 +415,9 @@ class _ProductDetailsState extends State<ProductDetails>
       if (mode == "add_to_cart") {
         if (snackbar != null && context != null) {
           ScaffoldMessenger.of(context).showSnackBar(snackbar);
+          await Future.delayed(Duration(seconds: 5)); // Wait for 5 seconds
+
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
         }
         reset();
         fetchAll();

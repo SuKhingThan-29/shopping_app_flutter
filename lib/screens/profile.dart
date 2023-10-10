@@ -9,6 +9,7 @@ import 'package:active_ecommerce_flutter/data_model/user_info_response.dart';
 import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
 import 'package:active_ecommerce_flutter/repositories/chat_repository.dart';
 import 'package:active_ecommerce_flutter/screens/auction_products.dart';
+import 'package:active_ecommerce_flutter/screens/cart.dart';
 import 'package:active_ecommerce_flutter/screens/change_language.dart';
 import 'package:active_ecommerce_flutter/screens/classified_ads/classified_ads.dart';
 import 'package:active_ecommerce_flutter/screens/coupon.dart';
@@ -1255,17 +1256,35 @@ class _ProfileState extends State<Profile> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        buildCountersRowItem(
-          _cartCounterString,
-          AppLocalizations.of(context)!.in_your_cart_all_lower,
+        InkWell(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Cart()));
+          },
+          child: buildCountersRowItem(
+            _cartCounterString,
+            AppLocalizations.of(context)!.in_your_cart_all_lower,
+          ),
         ),
-        buildCountersRowItem(
-          _wishlistCounterString,
-          AppLocalizations.of(context)!.in_your_wishlist_all_lower,
+        InkWell(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Wishlist()));
+          },
+          child: buildCountersRowItem(
+            _wishlistCounterString,
+            AppLocalizations.of(context)!.in_your_wishlist_all_lower,
+          ),
         ),
-        buildCountersRowItem(
-          _orderCounterString,
-          AppLocalizations.of(context)!.your_ordered_all_lower,
+        InkWell(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => OrderList()));
+          },
+          child: buildCountersRowItem(
+            _orderCounterString,
+            AppLocalizations.of(context)!.your_ordered_all_lower,
+          ),
         ),
       ],
     );

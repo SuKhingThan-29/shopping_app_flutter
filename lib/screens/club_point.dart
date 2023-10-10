@@ -229,7 +229,7 @@ class _ClubpointState extends State<Clubpoint> {
             SizedBox(
               height: 15,
             ),
-            Text("There are currently no items in your wishlist"),
+            Text("There are currently no items in your earnpoint"),
           ],
         ),
       );
