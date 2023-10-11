@@ -154,6 +154,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   change() {
     homeData.onRefresh();
+    homeData.setTab(selectProductTab);
     homeData.mainScrollListener();
     homeData.initPiratedAnimation(this);
     _onBrandListRefresh();
@@ -517,7 +518,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                                       productTabs[i];
                                                   homeData
                                                       .handleSelectProductTab(
-                                                          tab: productTabs[i]);
+                                                          productTabs[i]);
                                                   setState(() {});
                                                 },
                                                 child: Container(
@@ -569,7 +570,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     ),
                                   ),
                                   Container(
-                                    height: 80,
+                                    height: 40,
                                   )
                                 ]),
                               ),
@@ -733,9 +734,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             );
           });
     } else if (homeData.totalAllProductData == 0) {
-      return Center(
-          child: Text(AppLocalizations.of(context)!.no_product_is_available));
-    } else {
+      return Container(
+          child: Text(AppLocalizations.of(context)!.no_product_is_available,style: TextStyle(color: Colors.black),));
+    } else if(homeData.totalAllProductData==homeData.allProductList.length){
+      return Container(
+          child: Text(AppLocalizations.of(context)!.no_more_products_ucf,style: TextStyle(color: Colors.black),));
+    }
+      else {
       return Container(); // should never be happening
     }
   }
@@ -1619,21 +1624,21 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     return Column(
       children: [
         SizedBox(
-          height: 15,
+          height: 10,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(
             children: [
               Container(
-                height: 65,
-                width: 65,
+                height: 70,
+                width: 70,
                 child: Image.asset(
                   "assets/app_logo.png",
                 ),
               ),
               SizedBox(
-                width: 15,
+                width: 5,
               ),
               Expanded(
                 child: InkWell(
@@ -1691,8 +1696,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         child: Text(
             homeData.totalAllProductData == homeData.allProductList.length
                 ? AppLocalizations.of(context)!.no_more_products_ucf
-                : AppLocalizations.of(context)!.loading_more_products_ucf),
-      ),
+                : AppLocalizations.of(context)!.loading_more_products_ucf
+        ,style: TextStyle(fontSize: 16),),
+      )
+
     );
   }
 }

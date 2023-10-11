@@ -180,19 +180,7 @@ class ProductRepository {
     return productMiniResponseFromJson(response.body);
   }
 
-  Future<ProductMiniResponse> getProductTab(
-      {name = "recommend", page = 1}) async {
-    String url = ("${AppConfig.BASE_URL}/products/recommend" + "?page=${1}");
 
-    print('Home page: ${url.toString()}');
-    final response = await ApiRequest.get(url: url, headers: {
-      "App-Language": app_language.$!,
-      // "Currency-Code": SystemConfig.systemCurrency!.code!,
-      // "Currency-Exchange-Rate":
-      //  SystemConfig.systemCurrency!.exchangeRate.toString(),
-    });
-    return productMiniResponseFromJson(response.body);
-  }
 
   Future<ProductMiniResponse> getProductTabNewest(
       {name = "newest", page = 1}) async {

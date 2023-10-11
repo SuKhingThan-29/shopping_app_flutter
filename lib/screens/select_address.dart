@@ -36,6 +36,8 @@ class _SelectAddressState extends State<SelectAddress> {
 
   // list type variables
   List<dynamic> _shippingAddressList = [];
+  Address? _selected_address;
+
   // List<PickupPoint> _pickupList = [];
   // List<City> _cityList = [];
   // List<Country> _countryList = [];
@@ -193,6 +195,28 @@ class _SelectAddressState extends State<SelectAddress> {
     late var addressUpdateInCartResponse;
 
     if (_seleted_shipping_address != 0) {
+      // if(i.address!=null || i.address==''){
+      //   ToastComponent.showDialog('Your address is not complete}',
+      //       gravity: Toast.center, duration: Toast.lengthLong);
+      //   return;
+      // }
+      // else if(i.country_name!=null || i.country_name=="" ){
+      //   ToastComponent.showDialog('Your address countryname is not complete }',
+      //       gravity: Toast.center, duration: Toast.lengthLong);
+      //   return;
+      // }else if(i.state_name!=null || i.state_name==""){
+      //   ToastComponent.showDialog('Your address state name is not complete}',
+      //       gravity: Toast.center, duration: Toast.lengthLong);
+      //   return;
+      // }else if(i.city_name!=null || i.city_name=="" ){
+      //   ToastComponent.showDialog('Your address city name is not complete}',
+      //       gravity: Toast.center, duration: Toast.lengthLong);
+      //   return;
+      // }else if(i.phone!=null || i.phone==''){
+      //   ToastComponent.showDialog('Your address phone no is not complete}',
+      //       gravity: Toast.center, duration: Toast.lengthLong);
+      //   return;
+      // }
       print(_seleted_shipping_address.toString() + "dddd");
       addressUpdateInCartResponse = await AddressRepository()
           .getAddressUpdateInCartResponse(
@@ -206,6 +230,7 @@ class _SelectAddressState extends State<SelectAddress> {
 
     ToastComponent.showDialog(addressUpdateInCartResponse.message,
         gravity: Toast.center, duration: Toast.lengthLong);
+
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ShippingInfo(_seleted_shipping_address!);
@@ -939,7 +964,7 @@ class _SelectAddressState extends State<SelectAddress> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 55,
+            width: 75,
             child: Text(
               LangText(context).local.address_ucf,
               style: TextStyle(
@@ -948,7 +973,7 @@ class _SelectAddressState extends State<SelectAddress> {
             ),
           ),
           Container(
-            width: 175,
+            width: 200,
             child: Text(
               _shippingAddressList[index].address ?? '',
               maxLines: 2,

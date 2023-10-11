@@ -47,9 +47,12 @@ class HomePresenter extends ChangeNotifier {
   var allProductList = [];
   bool isAllProductInitial = true;
   int? totalAllProductData = 0;
+  int to =0;
   int allProductPage = 1;
   bool showAllLoadingContainer = false;
   int cartCount = 0;
+  int lastPage=1;
+  String selectedTab="Recommended";
 
 
   fetchAll() {
@@ -58,14 +61,19 @@ class HomePresenter extends ChangeNotifier {
     fetchBannerTwoImages();
     fetchFeaturedCategories();
     fetchFeaturedProducts();
-    fetchAllProducts();
+    fetchAllProducts(tab: selectedTab);
     fetchTodayDealData();
     fetchFlashDealData();
   }
+  setTab(String tab){
+    selectedTab=tab;
+    notifyListeners();
+  }
 
-  handleSelectProductTab({String tab = ""}) {
+  handleSelectProductTab(String tab) {
+    selectedTab=tab;
     resetAllProductList();
-    fetchAllProducts(tab: tab);
+    fetchAllProducts(tab: selectedTab);
     notifyListeners();
   }
 
@@ -141,18 +149,17 @@ class HomePresenter extends ChangeNotifier {
     // var productResponse =
     //     await ProductRepository().getFilteredProducts(page: allProductPage);
 
+    print("Tab Selected $tab");
     var productResponse;
 
     if (tab == "New") {
       productResponse =
           await ProductRepository().getNewProducts(page: allProductPage);
-    } else if (tab == "Brand Shops") {
 
-      // productResponse =
-      //     await ProductRepository().getBrancedProducts(page: allProductPage);
-    } else {
+    } else if(tab == "Recommended") {
       productResponse =
           await ProductRepository().getRecommendProducts(page: allProductPage);
+
     }
 
     if (productResponse.products!.isEmpty) {
@@ -161,10 +168,17 @@ class HomePresenter extends ChangeNotifier {
       showAllLoadingContainer = false;
       return;
     }
+    print('AllProductPage response: ${productResponse.products!.length}');
+    if(totalAllProductData! >= to){
+      allProductList.addAll(productResponse.products!);
 
-    allProductList.addAll(productResponse.products!);
+    }
+  //  allProductList.addAll(productResponse.products!);
+
     isAllProductInitial = false;
     totalAllProductData = productResponse.meta!.total;
+    lastPage=productResponse.meta!.lastPage!;
+
     showAllLoadingContainer = false;
     notifyListeners();
   }
@@ -215,11 +229,23 @@ class HomePresenter extends ChangeNotifier {
 
       if (mainScrollController.position.pixels ==
           mainScrollController.position.maxScrollExtent) {
-        allProductPage++;
+        if(lastPage>=allProductPage){
+          allProductPage++;
+          showAllLoadingContainer = true;
+          fetchAllProducts(tab: selectedTab);
+          print("AllProductPage selectedTab: $selectedTab)");
+
+        }
+        print("AllProductPage: $allProductPage)");
+        print("AllProductPage last: $lastPage)");
+        print("AllProductPage total: $totalAllProductData)");
+        print("AllProductPage ProductList: ${allProductList.length.toString()})");
+
+
+
         // ToastComponent.showDialog("More Products Loading...",
         //     gravity: Toast.center);
-        showAllLoadingContainer = true;
-        fetchAllProducts();
+
       }
     });
   }

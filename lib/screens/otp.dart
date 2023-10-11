@@ -167,8 +167,8 @@ class _OtpState extends State<Otp> {
                   const SizedBox(
                     height: 40,
                   ),
-                  const Text(
-                    "Verify your phone",
+                   Text(
+                     widget.phnum!.contains('.com')?"Verify your email":"Verify your phone",
                     textAlign: TextAlign.left,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
@@ -177,7 +177,7 @@ class _OtpState extends State<Otp> {
                   ),
                   Text(
                     widget.phnum!.contains('.com')?
-                    "Verification code has been sent to ******${widget.phnum!.substring(widget.phnum!.length - 9)} ":"Verification code has been sent to +95*******${widget.phnum!.substring(widget.phnum!.length - 2)} .",
+                    "Verification code has been sent to ${widget.phnum!.substring(0,1)}****${widget.phnum!.substring(widget.phnum!.length-11)} ":"Verification code has been sent to +95*******${widget.phnum!.substring(widget.phnum!.length-2)} .",
                     style: TextStyle(fontSize: 15),
                   ),
                   const SizedBox(

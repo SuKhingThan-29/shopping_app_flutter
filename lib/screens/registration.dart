@@ -286,6 +286,12 @@ class _RegistrationState extends State<Registration> {
     // not match the nonce in `appleCredential.identityToken`, sign in will fail.
     //return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
   }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Save a reference to the ancestor widget using dependOnInheritedWidgetOfExactType.
+  }
+
   onPressSignUp() async {
     var name = _nameController.text.toString();
     var email = _emailController.text.toString();
@@ -379,19 +385,6 @@ class _RegistrationState extends State<Registration> {
           phnum: email.isEmpty?_phone:email,
         );
       }), (newRoute) => false);
-      // if ((mail_verification_status.$ && _register_by == "email") ||
-      //     _register_by == "phone") {
-      //   Navigator.push(context, MaterialPageRoute(builder: (context) {
-      //     return Otp(
-      //       verify_by: _register_by,
-      //       user_id: signupResponse.user_id,
-      //     );
-      //   }));
-      // } else {
-      //   Navigator.push(context, MaterialPageRoute(builder: (context) {
-      //     return Login();
-      //   }));
-      // }
     }
   }
 
