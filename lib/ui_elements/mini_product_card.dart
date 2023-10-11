@@ -279,7 +279,7 @@ class _MiniProductCardState extends State<MiniProductCard> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        // onQuantityIncrease(sellerIndex, itemIndex);
+                        onQuantityIncrease(widget.id, widget.id);
                       },
                       child: Container(
                         width: 24,
