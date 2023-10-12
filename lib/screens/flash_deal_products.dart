@@ -307,7 +307,7 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
     return Container(
       width: DeviceInfo(context).width,
       height: 180,
-      child: AIZImage.basicImage( widget.bannerUrl!,fit: BoxFit.contain),
+      child: AIZImage.basicImage( widget.bannerUrl!,fit: BoxFit.cover),
       // child: AIZImage.basicImage( "https://yyk.gmpshopping.com/public/uploads/all/a1lLPe073GAJQP8B65S7MKNCFP28COhPjlDArSg0.png",fit: BoxFit.cover),
     );
   }
