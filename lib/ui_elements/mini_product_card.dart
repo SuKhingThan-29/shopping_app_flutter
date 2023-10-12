@@ -1,9 +1,18 @@
 import 'package:active_ecommerce_flutter/custom/aiz_image.dart';
+import 'package:active_ecommerce_flutter/custom/aiz_route.dart';
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:active_ecommerce_flutter/presenter/cart_counter.dart';
+import 'package:active_ecommerce_flutter/repositories/cart_repository.dart';
 import 'package:active_ecommerce_flutter/screens/product_details.dart';
+import 'package:active_ecommerce_flutter/screens/select_address.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart' as intl;
 
 import '../helpers/shared_value_helper.dart';
 
@@ -33,6 +42,150 @@ class MiniProductCard extends StatefulWidget {
 }
 
 class _MiniProductCardState extends State<MiniProductCard> {
+  var _shopList = [];
+  bool _isInitial = true;
+  var _cartTotal = 0.00;
+  var _cartTotalString = ". . .";
+
+  getCartCount() {
+    Provider.of<CartCounter>(context, listen: false).getCount();
+    // var res = await CartRepository().getCartCount();
+    // widget.counter.controller.sink.add(res.count);
+  }
+
+  fetchData() async {
+    getCartCount();
+    var cartResponseList =
+        await CartRepository().getCartResponseList(user_id.$);
+
+    if (cartResponseList != null && cartResponseList.length > 0) {
+      _shopList = cartResponseList;
+    }
+    _isInitial = false;
+    getSetCartTotal();
+    setState(() {});
+  }
+
+  getSetCartTotal() async {
+    _cartTotal = 0.00;
+    if (_shopList.length > 0) {
+      _shopList.forEach((shop) {
+        if (shop.cart_items.length > 0) {
+          shop.cart_items.forEach((cartItem) {
+            // print(cartItem.total_price);
+            // print(cartItem.quantity);
+            // print(cartItem.price);
+            print("Card id: ${cartItem.total_price}");
+            print(cartItem);
+            //_cartTotal += cartItem.total_price;
+            _cartTotal += cartItem.quantity * cartItem.price;
+            _cartTotalString =
+                '${SystemConfig.systemCurrency!.symbol} ${intl.NumberFormat.decimalPattern().format(_cartTotal)}';
+            print(_cartTotal);
+            print(_cartTotalString);
+            setState(() {});
+          });
+        }
+      });
+    }
+    // var variantResponse = await ProductRepository().getVariantWiseInfo(
+    //     id: widget.id,
+    //     color: "",
+    //     variants: "",
+    //     qty: _quantity);
+    // _price=variantResponse.variantData!.price;
+    // print("single price ${variantResponse.variantData!.price}");
+  }
+
+  reset() {
+    _shopList = [];
+    _isInitial = true;
+    _cartTotal = 0.00;
+    _cartTotalString = ". . .";
+
+    setState(() {});
+  }
+
+  onPressUpdate() {
+    process(mode: "update");
+  }
+
+  onPressProceedToShipping() {
+    process(mode: "proceed_to_shipping");
+  }
+
+  process({mode}) async {
+    var cartIds = [];
+    var cartQuantities = [];
+    if (_shopList.length > 0) {
+      _shopList.forEach((shop) {
+        if (shop.cart_items.length > 0) {
+          shop.cart_items.forEach((cartItem) {
+            cartIds.add(cartItem.id);
+            cartQuantities.add(cartItem.quantity);
+          });
+        }
+      });
+    }
+
+    if (cartIds.length == 0) {
+      ToastComponent.showDialog(AppLocalizations.of(context)!.cart_is_empty,
+          gravity: Toast.center, duration: Toast.lengthLong);
+      return;
+    }
+
+    var cartIdsString = cartIds.join(',').toString();
+    var cartQuantitiesString = cartQuantities.join(',').toString();
+
+    print(cartIdsString);
+    print(cartQuantitiesString);
+
+    var cartProcessResponse = await CartRepository()
+        .getCartProcessResponse(cartIdsString, cartQuantitiesString);
+
+    if (cartProcessResponse.result == false) {
+      ToastComponent.showDialog(cartProcessResponse.message,
+          gravity: Toast.center, duration: Toast.lengthLong);
+    } else {
+      ToastComponent.showDialog(cartProcessResponse.message,
+          gravity: Toast.center, duration: Toast.lengthLong);
+
+      if (mode == "update") {
+        reset();
+        fetchData();
+      } else if (mode == "proceed_to_shipping") {
+        AIZRoute.push(context, SelectAddress()).then((value) {
+          onPopped(value);
+        });
+      }
+    }
+  }
+
+  onPopped(value) async {
+    reset();
+    fetchData();
+  }
+
+  onQuantityIncrease(sellerIndex, itemIndex) async {
+    if (_shopList[sellerIndex].cart_items[itemIndex].quantity <
+        _shopList[sellerIndex].cart_items[itemIndex].upper_limit) {
+      _shopList[sellerIndex].cart_items[itemIndex].quantity++;
+      // _shopList[sellerIndex].cart_items[itemIndex].total_price =
+      //     _shopList[sellerIndex].cart_items[itemIndex].quantity *
+      //         _shopList[sellerIndex].cart_items[itemIndex].price;
+      // print(_shopList[sellerIndex].cart_items[itemIndex].quantity);
+      // getSetCartTotal();
+      await process(mode: "");
+      getSetCartTotal();
+      setState(() {});
+    } else {
+      ToastComponent.showDialog(
+          "${AppLocalizations.of(context)!.cannot_order_more_than} ${_shopList[sellerIndex].cart_items[itemIndex].upper_limit} ${AppLocalizations.of(context)!.items_of_this_all_lower}",
+          gravity: Toast.center,
+          duration: Toast.lengthLong);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -51,7 +204,7 @@ class _MiniProductCardState extends State<MiniProductCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 AspectRatio(
-                  aspectRatio: 1,
+                  aspectRatio: 5 / 4,
                   child: Container(
                       width: double.infinity,
                       child: ClipRRect(
@@ -119,6 +272,56 @@ class _MiniProductCardState extends State<MiniProductCard> {
                         fontSize: 16,
                         fontWeight: FontWeight.w700),
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        onQuantityIncrease(widget.id, widget.id);
+                      },
+                      child: Container(
+                        width: 24,
+                        height: 24,
+                        decoration:
+                            BoxDecorations.buildCartCircularButtonDecoration(),
+                        child: Icon(
+                          Icons.add,
+                          color: MyTheme.accent_color,
+                          size: 12,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                      child: Text(
+                        'l',
+                        // '_shopList[sellerIndex]
+                        //     .cart_items[itemIndex]
+                        //     .quantity
+                        //     .toString()',
+                        style: TextStyle(
+                            color: MyTheme.accent_color, fontSize: 16),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // onQuantityDecrease(sellerIndex, itemIndex);
+                      },
+                      child: Container(
+                        width: 24,
+                        height: 24,
+                        decoration:
+                            BoxDecorations.buildCartCircularButtonDecoration(),
+                        child: Icon(
+                          Icons.remove,
+                          color: MyTheme.accent_color,
+                          size: 12,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ]),
 
