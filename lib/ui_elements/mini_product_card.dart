@@ -273,55 +273,88 @@ class _MiniProductCardState extends State<MiniProductCard> {
                         fontWeight: FontWeight.w700),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        onQuantityIncrease(widget.id, widget.id);
-                      },
-                      child: Container(
-                        width: 24,
-                        height: 24,
-                        decoration:
-                            BoxDecorations.buildCartCircularButtonDecoration(),
-                        child: Icon(
-                          Icons.add,
-                          color: MyTheme.accent_color,
-                          size: 12,
+                Padding(
+                  padding: const EdgeInsets.only(right: 10, left: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              onQuantityIncrease(widget.id, widget.id);
+                            },
+                            child: Container(
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecorations
+                                  .buildCartCircularButtonDecoration(),
+                              child: Icon(
+                                Icons.add,
+                                color: MyTheme.accent_color,
+                                size: 12,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                            child: Text(
+                              '1',
+                              // '_shopList[sellerIndex]
+                              //     .cart_items[itemIndex]
+                              //     .quantity
+                              //     .toString()',
+                              style: TextStyle(
+                                  color: MyTheme.accent_color, fontSize: 16),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // onQuantityDecrease(sellerIndex, itemIndex);
+                            },
+                            child: Container(
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecorations
+                                  .buildCartCircularButtonDecoration(),
+                              child: Icon(
+                                Icons.remove,
+                                color: MyTheme.accent_color,
+                                size: 12,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // onQuantityDecrease(sellerIndex, itemIndex);
+                        },
+                        child: Container(
+                          width: 34,
+                          height: 34,
+                          decoration: BoxDecorations
+                              .buildCartCircularButtonDecoration(),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Image.asset(
+                              "assets/cart.png",
+                              color: MyTheme.dark_font_grey,
+                              height: 8,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                      child: Text(
-                        'l',
-                        // '_shopList[sellerIndex]
-                        //     .cart_items[itemIndex]
-                        //     .quantity
-                        //     .toString()',
-                        style: TextStyle(
-                            color: MyTheme.accent_color, fontSize: 16),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        // onQuantityDecrease(sellerIndex, itemIndex);
-                      },
-                      child: Container(
-                        width: 24,
-                        height: 24,
-                        decoration:
-                            BoxDecorations.buildCartCircularButtonDecoration(),
-                        child: Icon(
-                          Icons.remove,
-                          color: MyTheme.accent_color,
-                          size: 12,
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ]),
 

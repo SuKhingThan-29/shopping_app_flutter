@@ -2,6 +2,7 @@ import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/data_model/check_response_model.dart';
 import 'package:active_ecommerce_flutter/data_model/profile_image_update_response.dart';
 import 'package:active_ecommerce_flutter/data_model/user_info_response.dart';
+import 'package:active_ecommerce_flutter/data_model/version_response.dart';
 import 'package:active_ecommerce_flutter/helpers/response_check.dart';
 import 'dart:convert';
 import 'package:active_ecommerce_flutter/data_model/profile_counters_response.dart';
@@ -125,6 +126,18 @@ class ProfileRepository {
     if (!checkResult) return responseCheckModelFromJson(response.body);
 
     return userInfoResponseFromJson(response.body);
+  }
+
+  Future<dynamic> getVersion() async {
+    String url = ("${AppConfig.BASE_URL}/get-mobile-version");
+
+    final response = await ApiRequest.get(url: url, headers: {
+      "Authorization": "Bearer ${access_token.$}",
+      "App-Language": app_language.$!,
+    });
+    print(response.body);
+
+    return versionFromJson(response.body);
   }
 
   Future<dynamic> getMemberLevel() async {
