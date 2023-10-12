@@ -36,7 +36,8 @@ class _SelectAddressState extends State<SelectAddress> {
 
   // list type variables
   List<dynamic> _shippingAddressList = [];
-  Address? _selected_address;
+  List<dynamic> _selectedAddressList = [];
+
 
   // List<PickupPoint> _pickupList = [];
   // List<City> _cityList = [];
@@ -195,53 +196,49 @@ class _SelectAddressState extends State<SelectAddress> {
     late var addressUpdateInCartResponse;
 
     if (_seleted_shipping_address != 0) {
-      // if(i.address!=null || i.address==''){
-      //   ToastComponent.showDialog('Your address is not complete}',
-      //       gravity: Toast.center, duration: Toast.lengthLong);
-      //   return;
-      // }
-      // else if(i.country_name!=null || i.country_name=="" ){
-      //   ToastComponent.showDialog('Your address countryname is not complete }',
-      //       gravity: Toast.center, duration: Toast.lengthLong);
-      //   return;
-      // }else if(i.state_name!=null || i.state_name==""){
-      //   ToastComponent.showDialog('Your address state name is not complete}',
-      //       gravity: Toast.center, duration: Toast.lengthLong);
-      //   return;
-      // }else if(i.city_name!=null || i.city_name=="" ){
-      //   ToastComponent.showDialog('Your address city name is not complete}',
-      //       gravity: Toast.center, duration: Toast.lengthLong);
-      //   return;
-      // }else if(i.phone!=null || i.phone==''){
-      //   ToastComponent.showDialog('Your address phone no is not complete}',
-      //       gravity: Toast.center, duration: Toast.lengthLong);
-      //   return;
-      // }
       print(_seleted_shipping_address.toString() + "dddd");
       addressUpdateInCartResponse = await AddressRepository()
           .getAddressUpdateInCartResponse(
-              address_id: _seleted_shipping_address);
+          address_id: _seleted_shipping_address);
+      if (addressUpdateInCartResponse.result == false) {
+        ToastComponent.showDialog(addressUpdateInCartResponse.message,
+            gravity: Toast.center, duration: Toast.lengthLong);
+        return;
+      }
+      print("Address id: $_seleted_shipping_address");
+      _shippingAddressList.forEach((i) {
+   if(i.id==_seleted_shipping_address){
+     if(i.address==null || i.address==''){
+       ToastComponent.showDialog('Your address is not complete}',
+           gravity: Toast.center, duration: Toast.lengthLong);
+       return;
+     }
+     else if(i.country_name==null || i.country_name=="" ){
+       ToastComponent.showDialog('Your countryname is not complete }',
+           gravity: Toast.center, duration: Toast.lengthLong);
+       return;
+     }else if(i.state_name==null || i.state_name==""){
+       ToastComponent.showDialog('Your state name is not complete}',
+           gravity: Toast.center, duration: Toast.lengthLong);
+       return;
+     }else if(i.city_name==null || i.city_name=="" ){
+       ToastComponent.showDialog('Your city name is not complete}',
+           gravity: Toast.center, duration: Toast.lengthLong);
+       return;
+     }else if(i.phone==null || i.phone==''){
+       ToastComponent.showDialog('Your phone no is not complete}',
+           gravity: Toast.center, duration: Toast.lengthLong);
+       return;
+     }else{
+       Navigator.push(context, MaterialPageRoute(builder: (context) {
+         return ShippingInfo(_seleted_shipping_address!);
+       })).then((value) {
+         onPopped(value);
+       });
+     }
+   }
+ });
     }
-    if (addressUpdateInCartResponse.result == false) {
-      ToastComponent.showDialog(addressUpdateInCartResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
-      return;
-    }
-
-    ToastComponent.showDialog(addressUpdateInCartResponse.message,
-        gravity: Toast.center, duration: Toast.lengthLong);
-
-
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return ShippingInfo(_seleted_shipping_address!);
-    })).then((value) {
-      onPopped(value);
-    });
-    // } else if (_seleted_shipping_pickup_point != 0) {
-    //   print("Selected pickup point ");
-    // } else {
-    //   print("..........something is wrong...........");
-    // }
   }
 
   onAddressSwitch(index) async {
@@ -624,14 +621,6 @@ class _SelectAddressState extends State<SelectAddress> {
                 InkWell(
                   onTap: () {
                     buildShowAddFormDialog(context);
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) {
-                    //   return Address(
-                    //     from_shipping_info: true,
-                    //   );
-                    // })).then((value) {
-                    //   onPopped(value);
-                    // });
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: 20, top: 20),
@@ -761,6 +750,7 @@ class _SelectAddressState extends State<SelectAddress> {
       onTap: () {
         if (_seleted_shipping_address != _shippingAddressList[index].id) {
           _seleted_shipping_address = _shippingAddressList[index].id;
+
 
           // onAddressSwitch();
         }
@@ -964,7 +954,7 @@ class _SelectAddressState extends State<SelectAddress> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 75,
+            width: 65,
             child: Text(
               LangText(context).local.address_ucf,
               style: TextStyle(
@@ -973,7 +963,7 @@ class _SelectAddressState extends State<SelectAddress> {
             ),
           ),
           Container(
-            width: 200,
+            width: 170,
             child: Text(
               _shippingAddressList[index].address ?? '',
               maxLines: 2,

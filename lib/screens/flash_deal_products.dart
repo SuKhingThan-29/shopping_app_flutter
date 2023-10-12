@@ -1,8 +1,6 @@
 import 'package:active_ecommerce_flutter/custom/aiz_image.dart';
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/device_info.dart';
-import 'package:active_ecommerce_flutter/custom/lang_text.dart';
-import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
 import 'package:active_ecommerce_flutter/data_model/product_mini_response.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +14,6 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_countdown_timer/index.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:toast/toast.dart';
 
 class FlashDealProducts extends StatefulWidget {
   FlashDealProducts(
@@ -306,10 +303,12 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
   }
 
   Container buildFlashDealBanner() {
+    print("Device width: ${DeviceInfo(context).width}");
     return Container(
       width: DeviceInfo(context).width,
       height: 180,
-      child: AIZImage.basicImage( widget.bannerUrl!),
+      child: AIZImage.basicImage( widget.bannerUrl!,fit: BoxFit.contain),
+      // child: AIZImage.basicImage( "https://yyk.gmpshopping.com/public/uploads/all/a1lLPe073GAJQP8B65S7MKNCFP28COhPjlDArSg0.png",fit: BoxFit.cover),
     );
   }
 

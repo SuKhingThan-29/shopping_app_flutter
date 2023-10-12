@@ -1688,7 +1688,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Container buildProductLoadingContainer(HomePresenter homeData) {
-    print("Data no more product: ${homeData.isScrollData} ");
     return Container(
       height: homeData.isScrollData?36:0,
       width: double.infinity,
@@ -1700,7 +1699,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 : AppLocalizations.of(context)!.no_more_products_ucf
         ,style: TextStyle(fontSize: 16),),
       )
-
     );
   }
 }
