@@ -483,7 +483,7 @@ class _FilterState extends State<Filter> {
                         .you_can_use_sorting_while_searching_for_products,
                     gravity: Toast.center,
                     duration: Toast.lengthLong);
-            ;
+
           },
           child: Container(
             decoration: BoxDecoration(

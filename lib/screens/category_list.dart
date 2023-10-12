@@ -62,7 +62,7 @@ class _CategoryListState extends State<CategoryList> {
             backgroundColor: Colors.transparent,
             appBar: PreferredSize(
                 child: Column(
-                  children: [buildAppBar(context), buildBottomAppBar(context)],
+                  children: [buildAppBar(context)],
                 ),
                 preferredSize: Size(
                   DeviceInfo(context).width!,
@@ -127,188 +127,188 @@ class _CategoryListState extends State<CategoryList> {
             )),
           ),
         ),
-        GestureDetector(
-          // onTap: () {
-          //   _selectedFilter!.option_key == "product"
-          //       ? showDialog(
-          //           context: context,
-          //           builder: (_) => Directionality(
-          //                 textDirection: app_language_rtl.$!
-          //                     ? TextDirection.rtl
-          //                     : TextDirection.ltr,
-          //                 child: AlertDialog(
-          //                   contentPadding: EdgeInsets.only(
-          //                       top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
-          //                   content: StatefulBuilder(builder:
-          //                       (BuildContext context, StateSetter setState) {
-          //                     return Column(
-          //                       mainAxisSize: MainAxisSize.min,
-          //                       crossAxisAlignment: CrossAxisAlignment.start,
-          //                       children: [
-          //                         Padding(
-          //                             padding: const EdgeInsets.symmetric(
-          //                                 horizontal: 24.0),
-          //                             child: Text(
-          //                               AppLocalizations.of(context)!
-          //                                   .sort_products_by_ucf,
-          //                             )),
-          //                         RadioListTile(
-          //                           dense: true,
-          //                           value: "",
-          //                           groupValue: _selectedSort,
-          //                           activeColor: MyTheme.font_grey,
-          //                           controlAffinity:
-          //                               ListTileControlAffinity.leading,
-          //                           title: Text(AppLocalizations.of(context)!
-          //                               .default_ucf),
-          //                           onChanged: (dynamic value) {
-          //                             setState(() {
-          //                               _selectedSort = value;
-          //                             });
-          //                             _onSortChange();
-          //                             Navigator.pop(context);
-          //                           },
-          //                         ),
-          //                         RadioListTile(
-          //                           dense: true,
-          //                           value: "price_high_to_low",
-          //                           groupValue: _selectedSort,
-          //                           activeColor: MyTheme.font_grey,
-          //                           controlAffinity:
-          //                               ListTileControlAffinity.leading,
-          //                           title: Text(AppLocalizations.of(context)!
-          //                               .price_high_to_low),
-          //                           onChanged: (dynamic value) {
-          //                             setState(() {
-          //                               _selectedSort = value;
-          //                             });
-          //                             _onSortChange();
-          //                             Navigator.pop(context);
-          //                           },
-          //                         ),
-          //                         RadioListTile(
-          //                           dense: true,
-          //                           value: "price_low_to_high",
-          //                           groupValue: _selectedSort,
-          //                           activeColor: MyTheme.font_grey,
-          //                           controlAffinity:
-          //                               ListTileControlAffinity.leading,
-          //                           title: Text(AppLocalizations.of(context)!
-          //                               .price_low_to_high),
-          //                           onChanged: (dynamic value) {
-          //                             setState(() {
-          //                               _selectedSort = value;
-          //                             });
-          //                             _onSortChange();
-          //                             Navigator.pop(context);
-          //                           },
-          //                         ),
-          //                         RadioListTile(
-          //                           dense: true,
-          //                           value: "new_arrival",
-          //                           groupValue: _selectedSort,
-          //                           activeColor: MyTheme.font_grey,
-          //                           controlAffinity:
-          //                               ListTileControlAffinity.leading,
-          //                           title: Text(AppLocalizations.of(context)!
-          //                               .new_arrival_ucf),
-          //                           onChanged: (dynamic value) {
-          //                             setState(() {
-          //                               _selectedSort = value;
-          //                             });
-          //                             _onSortChange();
-          //                             Navigator.pop(context);
-          //                           },
-          //                         ),
-          //                         RadioListTile(
-          //                           dense: true,
-          //                           value: "popularity",
-          //                           groupValue: _selectedSort,
-          //                           activeColor: MyTheme.font_grey,
-          //                           controlAffinity:
-          //                               ListTileControlAffinity.leading,
-          //                           title: Text(AppLocalizations.of(context)!
-          //                               .popularity_ucf),
-          //                           onChanged: (dynamic value) {
-          //                             setState(() {
-          //                               _selectedSort = value;
-          //                             });
-          //                             _onSortChange();
-          //                             Navigator.pop(context);
-          //                           },
-          //                         ),
-          //                         RadioListTile(
-          //                           dense: true,
-          //                           value: "top_rated",
-          //                           groupValue: _selectedSort,
-          //                           activeColor: MyTheme.font_grey,
-          //                           controlAffinity:
-          //                               ListTileControlAffinity.leading,
-          //                           title: Text(AppLocalizations.of(context)!
-          //                               .top_rated_ucf),
-          //                           onChanged: (dynamic value) {
-          //                             setState(() {
-          //                               _selectedSort = value;
-          //                             });
-          //                             _onSortChange();
-          //                             Navigator.pop(context);
-          //                           },
-          //                         ),
-          //                       ],
-          //                     );
-          //                   }),
-          //                   actions: [
-          //                     Btn.basic(
-          //                       child: Text(
-          //                         AppLocalizations.of(context)!
-          //                             .close_all_capital,
-          //                         style: TextStyle(color: MyTheme.medium_grey),
-          //                       ),
-          //                       onPressed: () {
-          //                         Navigator.of(context, rootNavigator: true)
-          //                             .pop();
-          //                       },
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ))
-          //       : ToastComponent.showDialog(
-          //           AppLocalizations.of(context)!
-          //               .you_can_use_filters_while_searching_for_products,
-          //           gravity: Toast.center,
-          //           duration: Toast.lengthLong);
-          // },
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.symmetric(
-                    vertical: BorderSide(color: MyTheme.light_grey, width: .5),
-                    horizontal:
-                        BorderSide(color: MyTheme.light_grey, width: 1))),
-            height: 36,
-            width: MediaQuery.of(context).size.width * .33,
-            child: Center(
-                child: Container(
-              width: 50,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.swap_vert,
-                    size: 13,
-                  ),
-                  SizedBox(width: 2),
-                  Text(
-                    "Sort",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              ),
-            )),
-          ),
-        )
+        // GestureDetector(
+        //   // onTap: () {
+        //   //   _selectedFilter!.option_key == "product"
+        //   //       ? showDialog(
+        //   //           context: context,
+        //   //           builder: (_) => Directionality(
+        //   //                 textDirection: app_language_rtl.$!
+        //   //                     ? TextDirection.rtl
+        //   //                     : TextDirection.ltr,
+        //   //                 child: AlertDialog(
+        //   //                   contentPadding: EdgeInsets.only(
+        //   //                       top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
+        //   //                   content: StatefulBuilder(builder:
+        //   //                       (BuildContext context, StateSetter setState) {
+        //   //                     return Column(
+        //   //                       mainAxisSize: MainAxisSize.min,
+        //   //                       crossAxisAlignment: CrossAxisAlignment.start,
+        //   //                       children: [
+        //   //                         Padding(
+        //   //                             padding: const EdgeInsets.symmetric(
+        //   //                                 horizontal: 24.0),
+        //   //                             child: Text(
+        //   //                               AppLocalizations.of(context)!
+        //   //                                   .sort_products_by_ucf,
+        //   //                             )),
+        //   //                         RadioListTile(
+        //   //                           dense: true,
+        //   //                           value: "",
+        //   //                           groupValue: _selectedSort,
+        //   //                           activeColor: MyTheme.font_grey,
+        //   //                           controlAffinity:
+        //   //                               ListTileControlAffinity.leading,
+        //   //                           title: Text(AppLocalizations.of(context)!
+        //   //                               .default_ucf),
+        //   //                           onChanged: (dynamic value) {
+        //   //                             setState(() {
+        //   //                               _selectedSort = value;
+        //   //                             });
+        //   //                             _onSortChange();
+        //   //                             Navigator.pop(context);
+        //   //                           },
+        //   //                         ),
+        //   //                         RadioListTile(
+        //   //                           dense: true,
+        //   //                           value: "price_high_to_low",
+        //   //                           groupValue: _selectedSort,
+        //   //                           activeColor: MyTheme.font_grey,
+        //   //                           controlAffinity:
+        //   //                               ListTileControlAffinity.leading,
+        //   //                           title: Text(AppLocalizations.of(context)!
+        //   //                               .price_high_to_low),
+        //   //                           onChanged: (dynamic value) {
+        //   //                             setState(() {
+        //   //                               _selectedSort = value;
+        //   //                             });
+        //   //                             _onSortChange();
+        //   //                             Navigator.pop(context);
+        //   //                           },
+        //   //                         ),
+        //   //                         RadioListTile(
+        //   //                           dense: true,
+        //   //                           value: "price_low_to_high",
+        //   //                           groupValue: _selectedSort,
+        //   //                           activeColor: MyTheme.font_grey,
+        //   //                           controlAffinity:
+        //   //                               ListTileControlAffinity.leading,
+        //   //                           title: Text(AppLocalizations.of(context)!
+        //   //                               .price_low_to_high),
+        //   //                           onChanged: (dynamic value) {
+        //   //                             setState(() {
+        //   //                               _selectedSort = value;
+        //   //                             });
+        //   //                             _onSortChange();
+        //   //                             Navigator.pop(context);
+        //   //                           },
+        //   //                         ),
+        //   //                         RadioListTile(
+        //   //                           dense: true,
+        //   //                           value: "new_arrival",
+        //   //                           groupValue: _selectedSort,
+        //   //                           activeColor: MyTheme.font_grey,
+        //   //                           controlAffinity:
+        //   //                               ListTileControlAffinity.leading,
+        //   //                           title: Text(AppLocalizations.of(context)!
+        //   //                               .new_arrival_ucf),
+        //   //                           onChanged: (dynamic value) {
+        //   //                             setState(() {
+        //   //                               _selectedSort = value;
+        //   //                             });
+        //   //                             _onSortChange();
+        //   //                             Navigator.pop(context);
+        //   //                           },
+        //   //                         ),
+        //   //                         RadioListTile(
+        //   //                           dense: true,
+        //   //                           value: "popularity",
+        //   //                           groupValue: _selectedSort,
+        //   //                           activeColor: MyTheme.font_grey,
+        //   //                           controlAffinity:
+        //   //                               ListTileControlAffinity.leading,
+        //   //                           title: Text(AppLocalizations.of(context)!
+        //   //                               .popularity_ucf),
+        //   //                           onChanged: (dynamic value) {
+        //   //                             setState(() {
+        //   //                               _selectedSort = value;
+        //   //                             });
+        //   //                             _onSortChange();
+        //   //                             Navigator.pop(context);
+        //   //                           },
+        //   //                         ),
+        //   //                         RadioListTile(
+        //   //                           dense: true,
+        //   //                           value: "top_rated",
+        //   //                           groupValue: _selectedSort,
+        //   //                           activeColor: MyTheme.font_grey,
+        //   //                           controlAffinity:
+        //   //                               ListTileControlAffinity.leading,
+        //   //                           title: Text(AppLocalizations.of(context)!
+        //   //                               .top_rated_ucf),
+        //   //                           onChanged: (dynamic value) {
+        //   //                             setState(() {
+        //   //                               _selectedSort = value;
+        //   //                             });
+        //   //                             _onSortChange();
+        //   //                             Navigator.pop(context);
+        //   //                           },
+        //   //                         ),
+        //   //                       ],
+        //   //                     );
+        //   //                   }),
+        //   //                   actions: [
+        //   //                     Btn.basic(
+        //   //                       child: Text(
+        //   //                         AppLocalizations.of(context)!
+        //   //                             .close_all_capital,
+        //   //                         style: TextStyle(color: MyTheme.medium_grey),
+        //   //                       ),
+        //   //                       onPressed: () {
+        //   //                         Navigator.of(context, rootNavigator: true)
+        //   //                             .pop();
+        //   //                       },
+        //   //                     ),
+        //   //                   ],
+        //   //                 ),
+        //   //               ))
+        //   //       : ToastComponent.showDialog(
+        //   //           AppLocalizations.of(context)!
+        //   //               .you_can_use_filters_while_searching_for_products,
+        //   //           gravity: Toast.center,
+        //   //           duration: Toast.lengthLong);
+        //   // },
+        //   child: Container(
+        //     decoration: BoxDecoration(
+        //         color: Colors.white,
+        //         border: Border.symmetric(
+        //             vertical: BorderSide(color: MyTheme.light_grey, width: .5),
+        //             horizontal:
+        //                 BorderSide(color: MyTheme.light_grey, width: 1))),
+        //     height: 36,
+        //     width: MediaQuery.of(context).size.width * .33,
+        //     child: Center(
+        //         child: Container(
+        //       width: 50,
+        //       child: Row(
+        //         children: [
+        //           Icon(
+        //             Icons.swap_vert,
+        //             size: 13,
+        //           ),
+        //           SizedBox(width: 2),
+        //           Text(
+        //             "Sort",
+        //             style: TextStyle(
+        //               color: Colors.black,
+        //               fontSize: 13,
+        //             ),
+        //           ),
+        //         ],
+        //       ),
+        //     )),
+        //   ),
+        // )
       ],
     );
   }
