@@ -235,9 +235,6 @@ class HomePresenter extends ChangeNotifier {
           allProductPage++;
           showAllLoadingContainer = true;
           fetchAllProducts(tab: selectedTab);
-          print("AllProductPage selectedTab: $selectedTab)");
-          // ToastComponent.showDialog("More Products Loading...",
-          //     gravity: Toast.center);
           isScrollData=true;
           isMoreProduct=true;
         }else{
