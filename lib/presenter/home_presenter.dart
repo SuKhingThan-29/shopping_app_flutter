@@ -53,6 +53,8 @@ class HomePresenter extends ChangeNotifier {
   int cartCount = 0;
   int lastPage=1;
   String selectedTab="Recommended";
+  bool isScrollData=false;
+  bool isMoreProduct=false;
 
 
   fetchAll() {
@@ -234,20 +236,20 @@ class HomePresenter extends ChangeNotifier {
           showAllLoadingContainer = true;
           fetchAllProducts(tab: selectedTab);
           print("AllProductPage selectedTab: $selectedTab)");
-
+          // ToastComponent.showDialog("More Products Loading...",
+          //     gravity: Toast.center);
+          isScrollData=true;
+          isMoreProduct=true;
+        }else{
+          isScrollData=true;
+          isMoreProduct=false;
         }
-        print("AllProductPage: $allProductPage)");
-        print("AllProductPage last: $lastPage)");
-        print("AllProductPage total: $totalAllProductData)");
-        print("AllProductPage ProductList: ${allProductList.length.toString()})");
-
-
-
-        // ToastComponent.showDialog("More Products Loading...",
-        //     gravity: Toast.center);
-
+      }else{
+        isScrollData=false;
       }
     });
+    notifyListeners();
+
   }
 
   initPiratedAnimation(vnc) {

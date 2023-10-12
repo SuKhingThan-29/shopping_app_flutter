@@ -570,7 +570,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     ),
                                   ),
                                   Container(
-                                    height: 40,
+                                    height: 60,
                                   )
                                 ]),
                               ),
@@ -578,7 +578,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                           ),
                         ),
                         Align(
-                            alignment: Alignment.center,
+                            alignment: Alignment.bottomCenter,
                             child: selectProductTab == 'Brand'
                                 ? buildBrandLoadingContainer()
                                 : buildProductLoadingContainer(homeData))
@@ -1688,15 +1688,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Container buildProductLoadingContainer(HomePresenter homeData) {
+    print("Data no more product: ${homeData.isScrollData} ");
     return Container(
-      height: homeData.showAllLoadingContainer ? 36 : 0,
+      height: homeData.isScrollData?36:0,
       width: double.infinity,
       color: Colors.white,
       child: Center(
         child: Text(
-            homeData.totalAllProductData == homeData.allProductList.length
-                ? AppLocalizations.of(context)!.no_more_products_ucf
-                : AppLocalizations.of(context)!.loading_more_products_ucf
+            homeData.isMoreProduct
+                ? AppLocalizations.of(context)!.loading_more_products_ucf
+                : AppLocalizations.of(context)!.no_more_products_ucf
         ,style: TextStyle(fontSize: 16),),
       )
 
