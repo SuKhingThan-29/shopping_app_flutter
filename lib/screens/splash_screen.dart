@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:io' show Platform;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -32,11 +33,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   getUserInfo() async {
     var version = await ProfileRepository().getVersion();
+    print(Platform.isAndroid);
 
     setState(() {
       print(ver);
-      ver = version.android.mobileVersion;
-      print('mobileversion $ver');
+      if (Platform.isAndroid) {
+        ver = version.android.mobileVersion;
+        print('mobileversion $ver');
+      } else {
+        ver = version.ios.mobileVersion;
+        print('mobileversion $ver');
+      }
     });
   }
 
@@ -102,7 +109,10 @@ class _SplashScreenState extends State<SplashScreen> {
                       TextButton(
                           onPressed: () async {
                             final url = Uri.parse(
-                                'https://play.google.com/store/apps/details?id=gmp.ethicaldigit.com&hl=en&gl=US'); // Replace with your app's package name or the link you want to open.
+                              Platform.isAndroid
+                                  ? 'https://play.google.com/store/apps/details?id=gmp.ethicaldigit.com&hl=en&gl=US'
+                                  : 'https://apps.apple.com/us/app/ga-mone-pwint-online/id6467404178',
+                            ); // Replace with your app's package name or the link you want to open.
 
                             if (await canLaunchUrl(url)) {
                               await launchUrl(url);
