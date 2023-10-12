@@ -7,6 +7,7 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/presenter/currency_presenter.dart';
 import 'package:active_ecommerce_flutter/providers/locale_provider.dart';
+import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
@@ -20,12 +21,21 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  String ver = '';
   PackageInfo _packageInfo = PackageInfo(
     appName: AppConfig.app_name,
     packageName: 'Unknown',
     version: 'Unknown',
     buildNumber: 'Unknown',
   );
+
+  getUserInfo() async {
+    var version = await ProfileRepository().getVersion();
+
+    setState(() {
+      print(version.android);
+    });
+  }
 
   Future<void> _initPackageInfo() async {
     final PackageInfo info = await PackageInfo.fromPlatform();
@@ -38,18 +48,24 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getUserInfo();
     _initPackageInfo();
-    getSharedValueHelperData().then((value){
+    getSharedValueHelperData().then((value) {
       Future.delayed(Duration(seconds: 3)).then((value) {
-        Provider.of<LocaleProvider>(context,listen: false).setLocale(app_mobile_language.$!);
-        Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (context) {
-
-            return Main(go_back: false,);
-          },
-          ),(route)=>false,);
-      }
-      );
+        Provider.of<LocaleProvider>(context, listen: false)
+            .setLocale(app_mobile_language.$!);
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return Main(
+                go_back: false,
+              );
+            },
+          ),
+          (route) => false,
+        );
+      });
     });
   }
 
@@ -62,7 +78,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Container(
       width: DeviceInfo(context).height,
       height: DeviceInfo(context).height,
-      color:  MyTheme.splash_screen_color,
+      color: MyTheme.splash_screen_color,
       child: InkWell(
         child: Stack(
           // mainAxisAlignment: MainAxisAlignment.start,
@@ -73,14 +89,13 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Hero(
                 tag: "backgroundImageInSplash",
                 child: Container(
-                  child: Image.asset(
-                      "assets/app_logo.png"),
+                  child: Image.asset("assets/app_logo.png"),
                 ),
               ),
               radius: 140.0,
             ),
             Positioned.fill(
-              top: DeviceInfo(context).height!/2-72,
+              top: DeviceInfo(context).height! / 2 - 72,
               child: Column(
                 children: [
                   Padding(
@@ -90,13 +105,13 @@ class _SplashScreenState extends State<SplashScreen> {
                       child: Container(
                         height: 72,
                         width: 72,
-                        padding: EdgeInsets.symmetric(horizontal: 12,vertical: 12),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                         decoration: BoxDecoration(
-                          color: MyTheme.white,
-                          borderRadius: BorderRadius.circular(8)
-                        ),
+                            color: MyTheme.white,
+                            borderRadius: BorderRadius.circular(8)),
                         child: Image.asset(
-                            "assets/app_logo.png",
+                          "assets/app_logo.png",
                           filterQuality: FilterQuality.low,
                         ),
                       ),
@@ -115,9 +130,9 @@ class _SplashScreenState extends State<SplashScreen> {
                   Text(
                     "V " + _packageInfo.version,
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.0,
-                        color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14.0,
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -158,7 +173,7 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Future<String?>  getSharedValueHelperData()async{
+  Future<String?> getSharedValueHelperData() async {
     access_token.load().whenComplete(() {
       AuthHelper().fetch_and_set();
     });
@@ -174,6 +189,5 @@ class _SplashScreenState extends State<SplashScreen> {
     // print("new splash screen app_language_rtl ${app_language_rtl.$}");
 
     return app_mobile_language.$;
-
   }
 }
