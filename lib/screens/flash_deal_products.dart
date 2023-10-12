@@ -107,11 +107,12 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+      textDirection:
+          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: buildAppBar(context),
-       body: buildProductList(context),
+        body: buildProductList(context),
       ),
     );
   }
@@ -152,8 +153,7 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
           onTap: () {},
           autofocus: true,
           decoration: InputDecoration(
-              hintText:
-                  "Search Product for flash deal  ",
+              hintText: "Search Product for flash deal  ",
               hintStyle:
                   TextStyle(fontSize: 14.0, color: MyTheme.textfield_grey),
               enabledBorder: OutlineInputBorder(
@@ -182,7 +182,7 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
   buildProductList(context) {
     return FutureBuilder(
         future: _future,
-        builder: (context,AsyncSnapshot<ProductMiniResponse> snapshot) {
+        builder: (context, AsyncSnapshot<ProductMiniResponse> snapshot) {
           if (snapshot.hasError) {
             return Container();
           } else if (snapshot.hasData) {
@@ -207,14 +207,14 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
                     itemBuilder: (context, index) {
                       // 3
                       return ProductCard(
-                          id: _searchList[index].id,
-                          image: _searchList[index].thumbnail_image,
-                          name: _searchList[index].name,
-                          main_price: _searchList[index].main_price,
-                          stroked_price: _searchList[index].stroked_price,
-                          has_discount: _searchList[index].has_discount,
-                          discount: _searchList[index].discount,
-                        is_wholesale:_searchList[index].isWholesale ,
+                        id: _searchList[index].id,
+                        image: _searchList[index].thumbnail_image,
+                        name: _searchList[index].name,
+                        main_price: _searchList[index].main_price,
+                        stroked_price: _searchList[index].stroked_price,
+                        has_discount: _searchList[index].has_discount,
+                        discount: _searchList[index].discount,
+                        is_wholesale: _searchList[index].isWholesale,
                       );
                     },
                   ),
@@ -227,11 +227,10 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
                 children: [
                   headerShimmer(),
                   ShimmerHelper()
-                  .buildProductGridShimmer(scontroller: _scrollController),
+                      .buildProductGridShimmer(scontroller: _scrollController),
                 ],
               ),
             );
-
           }
         });
   }
@@ -239,38 +238,32 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
   Container buildFlashDealsBanner(BuildContext context) {
     return Container(
       //color: MyTheme.amber,
-      height: 215,
+      height: 255,
       child: CountdownTimer(
         controller: widget.countdownTimerController,
         widgetBuilder: (_, CurrentRemainingTime? time) {
-          return Stack(
+          return Column(
             children: [
               buildFlashDealBanner(),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  width: DeviceInfo(context).width,
-                  margin: EdgeInsets.symmetric(horizontal: 18),
-                  decoration: BoxDecorations.buildBoxDecoration_1(),
-                  child: Column(
-                    children: [
-                      Container(
-                        child: Center(
-                            child: time == null
-                                ? Text(
-                                    AppLocalizations.of(context)!
-                                        .ended_ucf,
-                                    style: TextStyle(
-                                        color: MyTheme.accent_color,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w600),
-                                  )
-                                : buildTimerRowRow(time)),
-                      ),
-                    ],
-                  ),
+              Container(
+                width: DeviceInfo(context).width,
+                margin: EdgeInsets.symmetric(horizontal: 18),
+                decoration: BoxDecorations.buildBoxDecoration_1(),
+                child: Column(
+                  children: [
+                    Container(
+                      child: Center(
+                          child: time == null
+                              ? Text(
+                                  AppLocalizations.of(context)!.ended_ucf,
+                                  style: TextStyle(
+                                      color: MyTheme.accent_color,
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w600),
+                                )
+                              : buildTimerRowRow(time)),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -309,7 +302,7 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
     return Container(
       width: DeviceInfo(context).width,
       height: 180,
-      child: AIZImage.basicImage( widget.bannerUrl!),
+      child: AIZImage.basicImage(widget.bannerUrl!),
     );
   }
 
