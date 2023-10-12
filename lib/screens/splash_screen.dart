@@ -12,6 +12,7 @@ import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  String ver = '';
+  int ver = 1;
   PackageInfo _packageInfo = PackageInfo(
     appName: AppConfig.app_name,
     packageName: 'Unknown',
@@ -33,7 +34,9 @@ class _SplashScreenState extends State<SplashScreen> {
     var version = await ProfileRepository().getVersion();
 
     setState(() {
-      print(version.android);
+      print(ver);
+      ver = version.android.mobileVersion;
+      print('mobileversion $ver');
     });
   }
 
@@ -54,17 +57,63 @@ class _SplashScreenState extends State<SplashScreen> {
       Future.delayed(Duration(seconds: 3)).then((value) {
         Provider.of<LocaleProvider>(context, listen: false)
             .setLocale(app_mobile_language.$!);
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return Main(
-                go_back: false,
-              );
-            },
-          ),
-          (route) => false,
-        );
+        if (ver == _packageInfo.version) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return Main(
+                  go_back: false,
+                );
+              },
+            ),
+            (route) => false,
+          );
+        } else {
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text(
+                      'Update',
+                      style: TextStyle(
+                          fontSize: 15, color: MyTheme.dark_font_grey),
+                    ),
+                    content: Text(
+                      'Are you want to update',
+                      style: TextStyle(
+                          fontSize: 13, color: MyTheme.dark_font_grey),
+                    ),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return Main(
+                                    go_back: false,
+                                  );
+                                },
+                              ),
+                              (route) => false,
+                            );
+                          },
+                          child: Text('Cancle')),
+                      TextButton(
+                          onPressed: () async {
+                            final url = Uri.parse(
+                                'https://play.google.com/store/apps/details?id=gmp.ethicaldigit.com&hl=en&gl=US'); // Replace with your app's package name or the link you want to open.
+
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url);
+                            } else {
+                              throw 'Could not launch $url';
+                            }
+                          },
+                          child: Text('Update'))
+                    ],
+                  ));
+        }
       });
     });
   }
