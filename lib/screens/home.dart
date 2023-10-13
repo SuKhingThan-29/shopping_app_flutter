@@ -758,7 +758,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       //snapshot.hasData
       return SingleChildScrollView(
         child: SizedBox(
-          height: 260,
+          height: 250,
           child: NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification scrollInfo) {
               if (scrollInfo.metrics.pixels ==
