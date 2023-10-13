@@ -10,6 +10,7 @@ import 'package:active_ecommerce_flutter/providers/locale_provider.dart';
 import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -78,51 +79,84 @@ class _SplashScreenState extends State<SplashScreen> {
           );
         } else {
           showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                    title: Text(
-                      'Update',
-                      style: TextStyle(
-                          fontSize: 15, color: MyTheme.dark_font_grey),
-                    ),
-                    content: Text(
-                      'Are you want to update',
-                      style: TextStyle(
-                          fontSize: 13, color: MyTheme.dark_font_grey),
-                    ),
-                    actions: [
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return Main(
-                                    go_back: false,
-                                  );
-                                },
-                              ),
-                              (route) => false,
-                            );
-                          },
-                          child: Text('Cancle')),
-                      TextButton(
-                          onPressed: () async {
-                            final url = Uri.parse(
-                              Platform.isAndroid
-                                  ? 'https://play.google.com/store/apps/details?id=gmp.ethicaldigit.com&hl=en&gl=US'
-                                  : 'https://apps.apple.com/us/app/ga-mone-pwint-online/id6467404178',
-                            ); // Replace with your app's package name or the link you want to open.
-
-                            if (await canLaunchUrl(url)) {
-                              await launchUrl(url);
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                          },
-                          child: Text('Update'))
+            context: context,
+            builder: (context) => AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Update',
+                    style:
+                        TextStyle(fontSize: 15, color: MyTheme.dark_font_grey),
+                  ),
+                  Text(
+                    'Are you want to update',
+                    style:
+                        TextStyle(fontSize: 13, color: MyTheme.dark_font_grey),
+                  ),
+                  Divider(),
+                  // Add your image and text row here
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 20,
+                        width: 20,
+                        child: Platform.isAndroid
+                            ? Image.asset('assets/playstore.png')
+                            : Image.asset('assets/appstore.png'),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        Platform.isAndroid
+                            ? 'Google Play Store'
+                            : 'Apple App Store',
+                        style: TextStyle(
+                            fontSize: 13, color: MyTheme.dark_font_grey),
+                      ),
                     ],
-                  ));
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return Main(
+                            go_back: false,
+                          );
+                        },
+                      ),
+                      (route) => false,
+                    );
+                  },
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    final url = Uri.parse(
+                      Platform.isAndroid
+                          ? 'https://play.google.com/store/apps/details?id=gmp.ethicaldigit.com&hl=en&gl=US'
+                          : 'https://apps.apple.com/us/app/ga-mone-pwint-online/id6467404178',
+                    ); // Replace with your app's package name or the link you want to open.
+
+                    if (await canLaunchUrl(url)) {
+                      await launchUrl(url);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
+                  child: Text('Update'),
+                ),
+              ],
+            ),
+          );
         }
       });
     });

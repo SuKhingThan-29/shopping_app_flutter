@@ -180,7 +180,28 @@ class ProductRepository {
     return productMiniResponseFromJson(response.body);
   }
 
+  Future<ProductMiniResponse> getFilteredFlashDealProducts(
+      {name = "",
+      sort_key = "",
+      page = "",
+      brands = "",
+      categories = "",
+      min = "",
+      max = ""}) async {
+    print(page);
+    String url = ("${AppConfig.BASE_URL}/flash-deal-products/$page" +
+        "?sort_key=$sort_key");
 
+    print('Home page search: ${url.toString()}');
+    final response = await ApiRequest.get(url: url, headers: {
+      "App-Language": app_language.$!,
+      // "Currency-Code": SystemConfig.systemCurrency!.code!,
+      // "Currency-Exchange-Rate":
+      //     SystemConfig.systemCurrency!.exchangeRate.toString(),
+    });
+    print(response.body);
+    return productMiniResponseFromJson(response.body);
+  }
 
   Future<ProductMiniResponse> getProductTabNewest(
       {name = "newest", page = 1}) async {
