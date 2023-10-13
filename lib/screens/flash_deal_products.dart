@@ -1,7 +1,11 @@
 import 'package:active_ecommerce_flutter/custom/aiz_image.dart';
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
+import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/device_info.dart';
+import 'package:active_ecommerce_flutter/custom/lang_text.dart';
+import 'package:active_ecommerce_flutter/custom/toast_component.dart';
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/data_model/category_response.dart';
 import 'package:active_ecommerce_flutter/data_model/product_mini_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +18,7 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_countdown_timer/index.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:toast/toast.dart';
 
 class FlashDealProducts extends StatefulWidget {
   FlashDealProducts(
@@ -40,6 +45,17 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
   late List<Product> _searchList;
   late List<Product> _fullList;
   ScrollController? _scrollController;
+  String? _selectedSort = "";
+  int? _totalData = 0;
+  bool _showLoadingContainer = false;
+  List<dynamic> _productList = [];
+  List<Category> _subCategoryList = [];
+  bool _isInitial = true;
+  int _page = 1;
+  String _searchKey = "";
+
+  final TextEditingController _minPriceController = new TextEditingController();
+  final TextEditingController _maxPriceController = new TextEditingController();
 
   String timeText(String txt, {default_length = 3}) {
     var blank_zeros = default_length == 3 ? "000" : "00";
@@ -104,11 +120,12 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+      textDirection:
+          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: buildAppBar(context),
-       body: buildProductList(context),
+        body: buildProductList(context),
       ),
     );
   }
@@ -149,8 +166,7 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
           onTap: () {},
           autofocus: true,
           decoration: InputDecoration(
-              hintText:
-                  "Search Product for flash deal  ",
+              hintText: "Search Product for flash deal  ",
               hintStyle:
                   TextStyle(fontSize: 14.0, color: MyTheme.textfield_grey),
               enabledBorder: OutlineInputBorder(
@@ -179,7 +195,7 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
   buildProductList(context) {
     return FutureBuilder(
         future: _future,
-        builder: (context,AsyncSnapshot<ProductMiniResponse> snapshot) {
+        builder: (context, AsyncSnapshot<ProductMiniResponse> snapshot) {
           if (snapshot.hasError) {
             return Container();
           } else if (snapshot.hasData) {
@@ -204,14 +220,14 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
                     itemBuilder: (context, index) {
                       // 3
                       return ProductCard(
-                          id: _searchList[index].id,
-                          image: _searchList[index].thumbnail_image,
-                          name: _searchList[index].name,
-                          main_price: _searchList[index].main_price,
-                          stroked_price: _searchList[index].stroked_price,
-                          has_discount: _searchList[index].has_discount,
-                          discount: _searchList[index].discount,
-                        is_wholesale:_searchList[index].isWholesale ,
+                        id: _searchList[index].id,
+                        image: _searchList[index].thumbnail_image,
+                        name: _searchList[index].name,
+                        main_price: _searchList[index].main_price,
+                        stroked_price: _searchList[index].stroked_price,
+                        has_discount: _searchList[index].has_discount,
+                        discount: _searchList[index].discount,
+                        is_wholesale: _searchList[index].isWholesale,
                       );
                     },
                   ),
@@ -224,50 +240,290 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
                 children: [
                   headerShimmer(),
                   ShimmerHelper()
-                  .buildProductGridShimmer(scontroller: _scrollController),
+                      .buildProductGridShimmer(scontroller: _scrollController),
                 ],
               ),
             );
-
           }
         });
   }
 
   Container buildFlashDealsBanner(BuildContext context) {
+    fetchProductData() async {
+      print(widget.flash_deal_id);
+      // print("sc:"+_selectedCategories.join(",").toString());
+      // print("sb:"+_selectedBrands.join(",").toString());
+      var productResponse = await ProductRepository()
+          .getFilteredFlashDealProducts(
+              page: widget.flash_deal_id,
+              name: _searchKey,
+              sort_key: _selectedSort,
+              max: _maxPriceController.text.toString(),
+              min: _minPriceController.text.toString());
+
+      _searchList.addAll(productResponse.products!);
+      print("${_searchList[0].stroked_price} ${_searchList[0].name}");
+      _isInitial = false;
+      _totalData = productResponse.meta?.total;
+      _showLoadingContainer = false;
+      setState(() {});
+    }
+
+    resetProductList() {
+      _searchList.clear();
+      _isInitial = true;
+      _totalData = 0;
+      _page = 1;
+      _showLoadingContainer = false;
+      setState(() {});
+    }
+
+    reset() {
+      _subCategoryList.clear();
+      _searchList.clear();
+      _isInitial = true;
+      _totalData = 0;
+      _page = 1;
+      _showLoadingContainer = false;
+      setState(() {});
+    }
+
+    _onSortChange() {
+      _searchList.clear();
+      // print(_fullList[0].discount);
+      reset();
+      resetProductList();
+      fetchProductData();
+    }
+
     return Container(
       //color: MyTheme.amber,
-      height: 215,
+      height: 305,
       child: CountdownTimer(
         controller: widget.countdownTimerController,
         widgetBuilder: (_, CurrentRemainingTime? time) {
-          return Stack(
+          return Column(
             children: [
               buildFlashDealBanner(),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  width: DeviceInfo(context).width,
-                  margin: EdgeInsets.symmetric(horizontal: 18),
-                  decoration: BoxDecorations.buildBoxDecoration_1(),
-                  child: Column(
-                    children: [
-                      Container(
-                        child: Center(
-                            child: time == null
-                                ? Text(
-                                    AppLocalizations.of(context)!
-                                        .ended_ucf,
-                                    style: TextStyle(
-                                        color: MyTheme.accent_color,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w600),
-                                  )
-                                : buildTimerRowRow(time)),
+              Container(
+                child: Column(
+                  children: [
+                    Container(
+                      width: DeviceInfo(context).width,
+                      margin: EdgeInsets.symmetric(horizontal: 18),
+                      decoration: BoxDecorations.buildBoxDecoration_1(),
+                      child: Center(
+                          child: time == null
+                              ? Text(
+                                  AppLocalizations.of(context)!.ended_ucf,
+                                  style: TextStyle(
+                                      color: MyTheme.accent_color,
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w600),
+                                )
+                              : buildTimerRowRow(time)),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: GestureDetector(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (_) => Directionality(
+                                    textDirection: app_language_rtl.$!
+                                        ? TextDirection.rtl
+                                        : TextDirection.ltr,
+                                    child: AlertDialog(
+                                      contentPadding: EdgeInsets.only(
+                                          top: 16.0,
+                                          left: 2.0,
+                                          right: 2.0,
+                                          bottom: 2.0),
+                                      content: StatefulBuilder(builder:
+                                          (BuildContext context,
+                                              StateSetter setState) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 24.0),
+                                                child: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .sort_products_by_ucf,
+                                                )),
+                                            RadioListTile(
+                                              dense: true,
+                                              value: "",
+                                              groupValue: _selectedSort,
+                                              activeColor: MyTheme.font_grey,
+                                              controlAffinity:
+                                                  ListTileControlAffinity
+                                                      .leading,
+                                              title: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .default_ucf),
+                                              onChanged: (dynamic value) {
+                                                setState(() {
+                                                  _selectedSort = value;
+                                                });
+                                                _onSortChange();
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            RadioListTile(
+                                              dense: true,
+                                              value: "price_high_to_low",
+                                              groupValue: _selectedSort,
+                                              activeColor: MyTheme.font_grey,
+                                              controlAffinity:
+                                                  ListTileControlAffinity
+                                                      .leading,
+                                              title: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .price_high_to_low),
+                                              onChanged: (dynamic value) {
+                                                setState(() {
+                                                  _selectedSort = value;
+                                                });
+                                                _onSortChange();
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            RadioListTile(
+                                              dense: true,
+                                              value: "price_low_to_high",
+                                              groupValue: _selectedSort,
+                                              activeColor: MyTheme.font_grey,
+                                              controlAffinity:
+                                                  ListTileControlAffinity
+                                                      .leading,
+                                              title: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .price_low_to_high),
+                                              onChanged: (dynamic value) {
+                                                setState(() {
+                                                  _selectedSort = value;
+                                                });
+                                                _onSortChange();
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            RadioListTile(
+                                              dense: true,
+                                              value: "new_arrival",
+                                              groupValue: _selectedSort,
+                                              activeColor: MyTheme.font_grey,
+                                              controlAffinity:
+                                                  ListTileControlAffinity
+                                                      .leading,
+                                              title: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .new_arrival_ucf),
+                                              onChanged: (dynamic value) {
+                                                setState(() {
+                                                  _selectedSort = value;
+                                                });
+                                                _onSortChange();
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            RadioListTile(
+                                              dense: true,
+                                              value: "popularity",
+                                              groupValue: _selectedSort,
+                                              activeColor: MyTheme.font_grey,
+                                              controlAffinity:
+                                                  ListTileControlAffinity
+                                                      .leading,
+                                              title: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .popularity_ucf),
+                                              onChanged: (dynamic value) {
+                                                setState(() {
+                                                  _selectedSort = value;
+                                                });
+                                                _onSortChange();
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            RadioListTile(
+                                              dense: true,
+                                              value: "top_rated",
+                                              groupValue: _selectedSort,
+                                              activeColor: MyTheme.font_grey,
+                                              controlAffinity:
+                                                  ListTileControlAffinity
+                                                      .leading,
+                                              title: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .top_rated_ucf),
+                                              onChanged: (dynamic value) {
+                                                setState(() {
+                                                  _selectedSort = value;
+                                                });
+                                                _onSortChange();
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      }),
+                                      actions: [
+                                        Btn.basic(
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .close_all_capital,
+                                            style: TextStyle(
+                                                color: MyTheme.medium_grey),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context,
+                                                    rootNavigator: true)
+                                                .pop();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.symmetric(
+                                  vertical: BorderSide(
+                                      color: MyTheme.light_grey, width: .5),
+                                  horizontal: BorderSide(
+                                      color: MyTheme.light_grey, width: 1))),
+                          height: 36,
+                          width: MediaQuery.of(context).size.width * .33,
+                          child: Center(
+                              child: Container(
+                            width: 50,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.swap_vert,
+                                  size: 13,
+                                ),
+                                SizedBox(width: 2),
+                                Text(
+                                  "Sort",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -303,12 +559,10 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
   }
 
   Container buildFlashDealBanner() {
-    print("Device width: ${DeviceInfo(context).width}");
     return Container(
       width: DeviceInfo(context).width,
       height: 180,
-      child: AIZImage.basicImage( widget.bannerUrl!,fit: BoxFit.cover),
-      // child: AIZImage.basicImage( "https://yyk.gmpshopping.com/public/uploads/all/a1lLPe073GAJQP8B65S7MKNCFP28COhPjlDArSg0.png",fit: BoxFit.cover),
+      child: AIZImage.basicImage(widget.bannerUrl!),
     );
   }
 
