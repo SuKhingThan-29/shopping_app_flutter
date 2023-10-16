@@ -9,9 +9,7 @@ class CategoryRepository {
   Future<CategoryResponse> getCategories({parent_id = 0}) async {
     String url=("${AppConfig.BASE_URL}/categories?parent_id=${parent_id}");
     final response =
-    await ApiRequest.get(url: url,headers: {
-      "App-Language": app_language.$!,
-    });
+    await ApiRequest.get(url: url);
     // print("${AppConfig.BASE_URL}/categories?parent_id=${parent_id}");
     // print(response.body.toString());
     return categoryResponseFromJson(response.body);
