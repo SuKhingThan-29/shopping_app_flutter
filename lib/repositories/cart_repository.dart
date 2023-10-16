@@ -43,7 +43,6 @@ class CartRepository {
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!,
         },
       );
       bool checkResult = ResponseCheck.apply(response.body);

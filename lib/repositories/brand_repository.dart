@@ -19,9 +19,7 @@ class BrandRepository {
         "?page=${page}&name=${name}");
 print("brand: $url");
     final response =
-    await ApiRequest.get(url: url,headers: {
-      "App-Language": app_language.$!,
-    });
+    await ApiRequest.get(url: url);
     return brandResponseFromJson(response.body);
   }
 

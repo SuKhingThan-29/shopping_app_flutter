@@ -147,6 +147,7 @@ $string
 
   setProductDetailValues() {
     _productImageList.clear();
+    _colorList.clear();
     if (_productDetails != null) {
       controller.loadHtmlString(makeHtml(_productDetails!.description!));
       _stock = _productDetails!.current_stock;
@@ -178,7 +179,14 @@ $string
   }
 
   reset() {
+    _currentImage = 0;
     _productImageList.clear();
+    _colorList.clear();
+    _selectedChoices.clear();
+    _choiceString = "";
+    _variant = "";
+    _selectedColorIndex = 0;
+    _quantity = 1;
     setState(() {});
   }
 
@@ -240,7 +248,6 @@ $string
               ? Alignment.centerRight
               : Alignment.centerLeft,
           height: 40,
-          width: MediaQuery.of(context).size.width - (107 + 44),
           child: Scrollbar(
             controller: _colorScrollController,
             child: ListView.separated(
@@ -363,10 +370,10 @@ $string
                                 itemBuilder: (BuildContext ctx, int index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      _currentImage = index;
-                                      print(
-                                          "Print current image: $_currentImage");
-                                      setState(() {});
+                                      stateSetter(() {
+                                        _currentImage = index;
+                                        print("CurrentImage: $_currentImage");
+                                      });
                                     },
                                     child: Container(
                                         width: 50,
@@ -390,7 +397,7 @@ $string
                                           borderRadius:
                                               BorderRadius.circular(10),
                                           child: AIZImage.basicImage(
-                                              _productImageList[index]),
+                                              _productImageList[_currentImage]),
                                         )),
                                   );
                                 }),
@@ -539,12 +546,14 @@ $string
       Provider.of<CartCounter>(context, listen: false).getCount();
 
       if (mode == "add_to_cart") {
-        ToastComponent.showDialog(cartAddResponse.message,
-            gravity: Toast.bottom, duration: Toast.lengthLong);
+
+        Navigator.of(context).pop();
+
         Navigator.push(context,
             MaterialPageRoute(builder: (context) {
               return CartScreen(has_bottomnav:false);
             }));
+
       }
     }
   }
@@ -600,8 +609,8 @@ $string
 
     stateSetter!(() {
       _totalPrice = variantResponse.variantData!.price;
-    });
 
+    });
     int pindex = 0;
     _productDetails!.photos!.forEach((photo) {
       if (photo.variant == _variant &&
@@ -610,6 +619,7 @@ $string
       }
       pindex++;
     });
+
     setState(() {});
   }
 
