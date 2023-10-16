@@ -35,6 +35,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
   bool _isInitial = true;
   int _page = 1;
   String _searchKey = "";
+  String _category = "";
   int? _totalData = 0;
   bool _showLoadingContainer = false;
   bool _showSearchBar = false;
@@ -163,7 +164,9 @@ class _CategoryProductsState extends State<CategoryProducts> {
             //color: MyTheme.textfield_grey,
             height: _subCategoryList.isEmpty ? 0 : 100,
             duration: Duration(milliseconds: 500),
-            child: !_isInitial ? buildSubCategory() : buildSubCategory(),
+            child: !_isInitial
+                ? buildSubCategory(context)
+                : buildSubCategory(context),
           ),
           preferredSize: Size.fromHeight(0.0)),
       // leading: Builder(
@@ -306,9 +309,11 @@ class _CategoryProductsState extends State<CategoryProducts> {
   fetchProductData() async {
     //print("sc:"+_selectedCategories.join(",").toString());
     //print("sb:"+_selectedBrands.join(",").toString());
+    print('esufnssufsjfncejfnncxmd ce ${widget.category_name}');
     var productResponse = await ProductRepository().getFilteredProducts(
         page: _page,
         name: _searchKey,
+        categories: widget.category_name,
         sort_key: _selectedSort,
         max: _maxPriceController.text.toString(),
         min: _minPriceController.text.toString());
@@ -320,7 +325,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
     setState(() {});
   }
 
-  Column buildSubCategory() {
+  Column buildSubCategory(context) {
     return Column(
       children: [
         Expanded(
@@ -330,6 +335,10 @@ class _CategoryProductsState extends State<CategoryProducts> {
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
+                    setState(() {
+                      _category = _subCategoryList[index].name!;
+                      print(_category);
+                    });
                     Navigator.push(
                       context,
                       MaterialPageRoute(

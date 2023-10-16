@@ -735,12 +735,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           });
     } else if (homeData.totalAllProductData == 0) {
       return Container(
-          child: Text(AppLocalizations.of(context)!.no_product_is_available,style: TextStyle(color: Colors.black),));
-    } else if(homeData.totalAllProductData==homeData.allProductList.length){
+          child: Text(
+        AppLocalizations.of(context)!.no_product_is_available,
+        style: TextStyle(color: Colors.black),
+      ));
+    } else if (homeData.totalAllProductData == homeData.allProductList.length) {
       return Container(
-          child: Text(AppLocalizations.of(context)!.no_more_products_ucf,style: TextStyle(color: Colors.black),));
-    }
-      else {
+          child: Text(
+        AppLocalizations.of(context)!.no_more_products_ucf,
+        style: TextStyle(color: Colors.black),
+      ));
+    } else {
       return Container(); // should never be happening
     }
   }
@@ -758,7 +763,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       //snapshot.hasData
       return SingleChildScrollView(
         child: SizedBox(
-          height: 260,
+          height: 230,
           child: NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification scrollInfo) {
               if (scrollInfo.metrics.pixels ==
@@ -853,17 +858,40 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         widgetBuilder: (_, CurrentRemainingTime? time) {
           return Column(
             children: [
-              Container(
-                child: Center(
-                    child: time == null
-                        ? Text(
-                            AppLocalizations.of(context)!.ended_ucf,
-                            style: TextStyle(
-                                color: MyTheme.accent_color,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w600),
-                          )
-                        : buildTimerRowRow(time)),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 20),
+                    child: InkWell(
+                      child: Text('view all >'),
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return FlashDealProducts(
+                            flash_deal_id: homeData.flashDealProducts[0].id,
+                            flash_deal_name:
+                                homeData.flashDealProducts[0].title,
+                            bannerUrl: homeData.flashDealProducts[0].banner,
+                            countdownTimerController: _timerControllerList[0],
+                          );
+                        }));
+                      },
+                    ),
+                  ),
+                  Container(
+                    child: Center(
+                        child: time == null
+                            ? Text(
+                                AppLocalizations.of(context)!.ended_ucf,
+                                style: TextStyle(
+                                    color: MyTheme.accent_color,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            : buildTimerRowRow(time)),
+                  ),
+                ],
               ),
               SingleChildScrollView(
                 child: SizedBox(
@@ -1689,16 +1717,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   Container buildProductLoadingContainer(HomePresenter homeData) {
     return Container(
-      height: homeData.isScrollData?36:0,
-      width: double.infinity,
-      color: Colors.white,
-      child: Center(
-        child: Text(
+        height: homeData.isScrollData ? 36 : 0,
+        width: double.infinity,
+        color: Colors.white,
+        child: Center(
+          child: Text(
             homeData.isMoreProduct
                 ? AppLocalizations.of(context)!.loading_more_products_ucf
-                : AppLocalizations.of(context)!.no_more_products_ucf
-        ,style: TextStyle(fontSize: 16),),
-      )
-    );
+                : AppLocalizations.of(context)!.no_more_products_ucf,
+            style: TextStyle(fontSize: 16),
+          ),
+        ));
   }
 }
