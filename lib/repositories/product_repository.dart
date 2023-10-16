@@ -308,13 +308,7 @@ class ProductRepository {
   Future<ProductDetailsResponse> getProductDetails({int? id = 0}) async {
     String url = ("${AppConfig.BASE_URL}/products/" + id.toString());
     print("Product detail: ${url.toString()}");
-    print(SystemConfig.systemCurrency!.code.toString());
-    final response = await ApiRequest.get(url: url, headers: {
-      "App-Language": app_language.$!,
-      "Currency-Code": SystemConfig.systemCurrency!.code!,
-      "Currency-Exchange-Rate":
-          SystemConfig.systemCurrency!.exchangeRate.toString(),
-    });
+    final response = await ApiRequest.get(url: url);
 
     return productDetailsResponseFromJson(response.body);
   }

@@ -59,8 +59,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   bool _showBrandLoadingContainer = false;
   ScrollController _brandScrollController = ScrollController();
 
+
   @override
   void initState() {
+
     Future.delayed(Duration.zero).then((value) {
       change();
     });
@@ -201,7 +203,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-
+    double width=MediaQuery.of(context).size.width;
+    double height=MediaQuery.of(context).size.height;
+    print("Widget width: $width \n $height");
     return WillPopScope(
       onWillPop: () async {
         //CommonFunctions(context).appExitDialog();

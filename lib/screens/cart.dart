@@ -18,8 +18,8 @@ import 'package:toast/toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
-class Cart extends StatefulWidget {
-  Cart(
+class CartScreen extends StatefulWidget {
+  CartScreen(
       {Key? key,
       this.has_bottomnav,
       this.from_navigation = false,
@@ -30,10 +30,10 @@ class Cart extends StatefulWidget {
   final CartCounter? counter;
 
   @override
-  _CartState createState() => _CartState();
+  _CartScreenState createState() => _CartScreenState();
 }
 
-class _CartState extends State<Cart> {
+class _CartScreenState extends State<CartScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   ScrollController _mainScrollController = ScrollController();
   var _shopList = [];

@@ -102,6 +102,8 @@ class CartRepository {
     });
 
     String url=("${AppConfig.BASE_URL}/carts/add");
+    print("add to cart: $post_body");
+
     final response = await ApiRequest.post(url:url,
         headers: {
           "Content-Type": "application/json",
