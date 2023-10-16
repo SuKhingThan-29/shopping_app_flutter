@@ -35,16 +35,17 @@ class _CategoryProductsState extends State<CategoryProducts> {
   bool _isInitial = true;
   int _page = 1;
   String _searchKey = "";
+  String _category = "";
   int? _totalData = 0;
   bool _showLoadingContainer = false;
   bool _showSearchBar = false;
 
   String? _selectedSort = "";
 
- // bool _isProductInitial = true;
+  // bool _isProductInitial = true;
   //int _productPage = 1;
- // int? _totalProductData = 0;
- // bool _showProductLoadingContainer = false;
+  // int? _totalProductData = 0;
+  // bool _showProductLoadingContainer = false;
 
   final TextEditingController _minPriceController = new TextEditingController();
   final TextEditingController _maxPriceController = new TextEditingController();
@@ -163,7 +164,9 @@ class _CategoryProductsState extends State<CategoryProducts> {
             //color: MyTheme.textfield_grey,
             height: _subCategoryList.isEmpty ? 0 : 100,
             duration: Duration(milliseconds: 500),
-            child: !_isInitial ? buildSubCategory() : buildSubCategory(),
+            child: !_isInitial
+                ? buildSubCategory(context)
+                : buildSubCategory(context),
           ),
           preferredSize: Size.fromHeight(0.0)),
       // leading: Builder(
@@ -287,11 +290,13 @@ class _CategoryProductsState extends State<CategoryProducts> {
       ),
     );
   }
+
   _onSortChange() {
     reset();
     resetProductList();
-     fetchProductData();
+    fetchProductData();
   }
+
   resetProductList() {
     _productList.clear();
     _isInitial = true;
@@ -300,12 +305,15 @@ class _CategoryProductsState extends State<CategoryProducts> {
     _showLoadingContainer = false;
     setState(() {});
   }
+
   fetchProductData() async {
     //print("sc:"+_selectedCategories.join(",").toString());
     //print("sb:"+_selectedBrands.join(",").toString());
+    print('esufnssufsjfncejfnncxmd ce ${widget.category_name}');
     var productResponse = await ProductRepository().getFilteredProducts(
         page: _page,
         name: _searchKey,
+        categories: widget.category_name,
         sort_key: _selectedSort,
         max: _maxPriceController.text.toString(),
         min: _minPriceController.text.toString());
@@ -316,7 +324,8 @@ class _CategoryProductsState extends State<CategoryProducts> {
     _showLoadingContainer = false;
     setState(() {});
   }
-  Column buildSubCategory() {
+
+  Column buildSubCategory(context) {
     return Column(
       children: [
         Expanded(
@@ -326,6 +335,10 @@ class _CategoryProductsState extends State<CategoryProducts> {
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
+                    setState(() {
+                      _category = _subCategoryList[index].name!;
+                      print(_category);
+                    });
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -367,145 +380,143 @@ class _CategoryProductsState extends State<CategoryProducts> {
             showDialog(
                 context: context,
                 builder: (_) => Directionality(
-                  textDirection: app_language_rtl.$!
-                      ? TextDirection.rtl
-                      : TextDirection.ltr,
-                  child: AlertDialog(
-                    contentPadding: EdgeInsets.only(
-                        top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
-                    content: StatefulBuilder(builder:
-                        (BuildContext context, StateSetter setState) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 24.0),
-                              child: Text(
-                                AppLocalizations.of(context)!
-                                    .sort_products_by_ucf,
-                              )),
-                          RadioListTile(
-                            dense: true,
-                            value: "",
-                            groupValue: _selectedSort,
-                            activeColor: MyTheme.font_grey,
-                            controlAffinity:
-                            ListTileControlAffinity.leading,
-                            title: Text(AppLocalizations.of(context)!
-                                .default_ucf),
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                _selectedSort = value;
-                              });
-                              _onSortChange();
-                              Navigator.pop(context);
-                            },
-                          ),
-                          RadioListTile(
-                            dense: true,
-                            value: "price_high_to_low",
-                            groupValue: _selectedSort,
-                            activeColor: MyTheme.font_grey,
-                            controlAffinity:
-                            ListTileControlAffinity.leading,
-                            title: Text(AppLocalizations.of(context)!
-                                .price_high_to_low),
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                _selectedSort = value;
-                              });
-                              _onSortChange();
-                              Navigator.pop(context);
-                            },
-                          ),
-                          RadioListTile(
-                            dense: true,
-                            value: "price_low_to_high",
-                            groupValue: _selectedSort,
-                            activeColor: MyTheme.font_grey,
-                            controlAffinity:
-                            ListTileControlAffinity.leading,
-                            title: Text(AppLocalizations.of(context)!
-                                .price_low_to_high),
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                _selectedSort = value;
-                              });
-                              _onSortChange();
-                              Navigator.pop(context);
-                            },
-                          ),
-                          RadioListTile(
-                            dense: true,
-                            value: "new_arrival",
-                            groupValue: _selectedSort,
-                            activeColor: MyTheme.font_grey,
-                            controlAffinity:
-                            ListTileControlAffinity.leading,
-                            title: Text(AppLocalizations.of(context)!
-                                .new_arrival_ucf),
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                _selectedSort = value;
-                              });
-                              _onSortChange();
-                              Navigator.pop(context);
-                            },
-                          ),
-                          RadioListTile(
-                            dense: true,
-                            value: "popularity",
-                            groupValue: _selectedSort,
-                            activeColor: MyTheme.font_grey,
-                            controlAffinity:
-                            ListTileControlAffinity.leading,
-                            title: Text(AppLocalizations.of(context)!
-                                .popularity_ucf),
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                _selectedSort = value;
-                              });
-                              _onSortChange();
-                              Navigator.pop(context);
-                            },
-                          ),
-                          RadioListTile(
-                            dense: true,
-                            value: "top_rated",
-                            groupValue: _selectedSort,
-                            activeColor: MyTheme.font_grey,
-                            controlAffinity:
-                            ListTileControlAffinity.leading,
-                            title: Text(AppLocalizations.of(context)!
-                                .top_rated_ucf),
-                            onChanged: (dynamic value) {
-                              setState(() {
-                                _selectedSort = value;
-                              });
-                              _onSortChange();
-                              Navigator.pop(context);
+                      textDirection: app_language_rtl.$!
+                          ? TextDirection.rtl
+                          : TextDirection.ltr,
+                      child: AlertDialog(
+                        contentPadding: EdgeInsets.only(
+                            top: 16.0, left: 2.0, right: 2.0, bottom: 2.0),
+                        content: StatefulBuilder(builder:
+                            (BuildContext context, StateSetter setState) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24.0),
+                                  child: Text(
+                                    AppLocalizations.of(context)!
+                                        .sort_products_by_ucf,
+                                  )),
+                              RadioListTile(
+                                dense: true,
+                                value: "",
+                                groupValue: _selectedSort,
+                                activeColor: MyTheme.font_grey,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text(
+                                    AppLocalizations.of(context)!.default_ucf),
+                                onChanged: (dynamic value) {
+                                  setState(() {
+                                    _selectedSort = value;
+                                  });
+                                  _onSortChange();
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              RadioListTile(
+                                dense: true,
+                                value: "price_high_to_low",
+                                groupValue: _selectedSort,
+                                activeColor: MyTheme.font_grey,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text(AppLocalizations.of(context)!
+                                    .price_high_to_low),
+                                onChanged: (dynamic value) {
+                                  setState(() {
+                                    _selectedSort = value;
+                                  });
+                                  _onSortChange();
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              RadioListTile(
+                                dense: true,
+                                value: "price_low_to_high",
+                                groupValue: _selectedSort,
+                                activeColor: MyTheme.font_grey,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text(AppLocalizations.of(context)!
+                                    .price_low_to_high),
+                                onChanged: (dynamic value) {
+                                  setState(() {
+                                    _selectedSort = value;
+                                  });
+                                  _onSortChange();
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              RadioListTile(
+                                dense: true,
+                                value: "new_arrival",
+                                groupValue: _selectedSort,
+                                activeColor: MyTheme.font_grey,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text(AppLocalizations.of(context)!
+                                    .new_arrival_ucf),
+                                onChanged: (dynamic value) {
+                                  setState(() {
+                                    _selectedSort = value;
+                                  });
+                                  _onSortChange();
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              RadioListTile(
+                                dense: true,
+                                value: "popularity",
+                                groupValue: _selectedSort,
+                                activeColor: MyTheme.font_grey,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text(AppLocalizations.of(context)!
+                                    .popularity_ucf),
+                                onChanged: (dynamic value) {
+                                  setState(() {
+                                    _selectedSort = value;
+                                  });
+                                  _onSortChange();
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              RadioListTile(
+                                dense: true,
+                                value: "top_rated",
+                                groupValue: _selectedSort,
+                                activeColor: MyTheme.font_grey,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text(AppLocalizations.of(context)!
+                                    .top_rated_ucf),
+                                onChanged: (dynamic value) {
+                                  setState(() {
+                                    _selectedSort = value;
+                                  });
+                                  _onSortChange();
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        }),
+                        actions: [
+                          Btn.basic(
+                            child: Text(
+                              AppLocalizations.of(context)!.close_all_capital,
+                              style: TextStyle(color: MyTheme.medium_grey),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).pop();
                             },
                           ),
                         ],
-                      );
-                    }),
-                    actions: [
-                      Btn.basic(
-                        child: Text(
-                          AppLocalizations.of(context)!
-                              .close_all_capital,
-                          style: TextStyle(color: MyTheme.medium_grey),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context, rootNavigator: true)
-                              .pop();
-                        },
                       ),
-                    ],
-                  ),
-                ));
+                    ));
           },
           child: Container(
             decoration: BoxDecoration(
@@ -538,7 +549,9 @@ class _CategoryProductsState extends State<CategoryProducts> {
             )),
           ),
         ),
-        SizedBox(height: 5,)
+        SizedBox(
+          height: 5,
+        )
       ],
     );
   }

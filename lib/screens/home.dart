@@ -59,10 +59,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   bool _showBrandLoadingContainer = false;
   ScrollController _brandScrollController = ScrollController();
 
-
   @override
   void initState() {
-
     Future.delayed(Duration.zero).then((value) {
       change();
     });
@@ -203,9 +201,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    double width=MediaQuery.of(context).size.width;
-    double height=MediaQuery.of(context).size.height;
-    print("Widget width: $width \n $height");
+
     return WillPopScope(
       onWillPop: () async {
         //CommonFunctions(context).appExitDialog();
@@ -762,7 +758,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       //snapshot.hasData
       return SingleChildScrollView(
         child: SizedBox(
-          height: 250,
+          height: 260,
           child: NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification scrollInfo) {
               if (scrollInfo.metrics.pixels ==
@@ -857,17 +853,40 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         widgetBuilder: (_, CurrentRemainingTime? time) {
           return Column(
             children: [
-              Container(
-                child: Center(
-                    child: time == null
-                        ? Text(
-                            AppLocalizations.of(context)!.ended_ucf,
-                            style: TextStyle(
-                                color: MyTheme.accent_color,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w600),
-                          )
-                        : buildTimerRowRow(time)),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 20),
+                    child: InkWell(
+                      child: Text('view all >'),
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return FlashDealProducts(
+                            flash_deal_id: homeData.flashDealProducts[0].id,
+                            flash_deal_name:
+                                homeData.flashDealProducts[0].title,
+                            bannerUrl: homeData.flashDealProducts[0].banner,
+                            countdownTimerController: _timerControllerList[0],
+                          );
+                        }));
+                      },
+                    ),
+                  ),
+                  Container(
+                    child: Center(
+                        child: time == null
+                            ? Text(
+                                AppLocalizations.of(context)!.ended_ucf,
+                                style: TextStyle(
+                                    color: MyTheme.accent_color,
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            : buildTimerRowRow(time)),
+                  ),
+                ],
               ),
               SingleChildScrollView(
                 child: SizedBox(
