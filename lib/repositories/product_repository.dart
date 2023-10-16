@@ -167,6 +167,7 @@ class ProductRepository {
       categories = "",
       min = "",
       max = ""}) async {
+    print(categories);
     String url = ("${AppConfig.BASE_URL}/products/search" +
         "?page=$page&name=$name&sort_key=$sort_key&brands=$brands&categories=$categories&min=$min&max=$max");
 
@@ -177,6 +178,7 @@ class ProductRepository {
       // "Currency-Exchange-Rate":
       //     SystemConfig.systemCurrency!.exchangeRate.toString(),
     });
+    print(response.body);
     return productMiniResponseFromJson(response.body);
   }
 

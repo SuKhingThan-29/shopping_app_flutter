@@ -298,7 +298,7 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
 
     return Container(
       //color: MyTheme.amber,
-      height: 305,
+      height: 320,
       child: CountdownTimer(
         controller: widget.countdownTimerController,
         widgetBuilder: (_, CurrentRemainingTime? time) {
@@ -586,50 +586,70 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
           SizedBox(
             width: 10,
           ),
-          timerContainer(
-            Text(
-              timeText(time.days.toString(), default_length: 3),
-              style: TextStyle(
-                  color: MyTheme.white,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w600),
-            ),
+          Column(
+            children: [
+              Text('day'),
+              timerContainer(
+                Text(
+                  timeText(time.days.toString(), default_length: 3),
+                  style: TextStyle(
+                      color: MyTheme.white,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
           ),
           SizedBox(
             width: 4,
           ),
-          timerContainer(
-            Text(
-              timeText(time.hours.toString(), default_length: 2),
-              style: TextStyle(
-                  color: MyTheme.white,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w600),
-            ),
+          Column(
+            children: [
+              Text('hr'),
+              timerContainer(
+                Text(
+                  timeText(time.hours.toString(), default_length: 2),
+                  style: TextStyle(
+                      color: MyTheme.white,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
           ),
           SizedBox(
             width: 4,
           ),
-          timerContainer(
-            Text(
-              timeText(time.min.toString(), default_length: 2),
-              style: TextStyle(
-                  color: MyTheme.white,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w600),
-            ),
+          Column(
+            children: [
+              Text('min'),
+              timerContainer(
+                Text(
+                  timeText(time.min.toString(), default_length: 2),
+                  style: TextStyle(
+                      color: MyTheme.white,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
           ),
           SizedBox(
             width: 4,
           ),
-          timerContainer(
-            Text(
-              timeText(time.sec.toString(), default_length: 2),
-              style: TextStyle(
-                  color: MyTheme.white,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w600),
-            ),
+          Column(
+            children: [
+              Text('sec'),
+              timerContainer(
+                Text(
+                  timeText(time.sec.toString(), default_length: 2),
+                  style: TextStyle(
+                      color: MyTheme.white,
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
           ),
           SizedBox(
             width: 10,
