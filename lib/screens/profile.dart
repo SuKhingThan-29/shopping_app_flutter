@@ -1259,7 +1259,7 @@ class _ProfileState extends State<Profile> {
         InkWell(
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Cart(has_bottomnav: false);
+              return CartScreen(has_bottomnav: false);
             })).then((value) {
               onPopped(value);
             });

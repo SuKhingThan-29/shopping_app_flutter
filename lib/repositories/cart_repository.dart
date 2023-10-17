@@ -43,7 +43,6 @@ class CartRepository {
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer ${access_token.$}",
-          "App-Language": app_language.$!,
         },
       );
       bool checkResult = ResponseCheck.apply(response.body);
@@ -102,6 +101,8 @@ class CartRepository {
     });
 
     String url=("${AppConfig.BASE_URL}/carts/add");
+    print("add to cart: $post_body");
+
     final response = await ApiRequest.post(url:url,
         headers: {
           "Content-Type": "application/json",

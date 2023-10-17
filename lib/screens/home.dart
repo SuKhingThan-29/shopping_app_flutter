@@ -735,17 +735,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           });
     } else if (homeData.totalAllProductData == 0) {
       return Container(
-          child: Text(
-        AppLocalizations.of(context)!.no_product_is_available,
-        style: TextStyle(color: Colors.black),
-      ));
-    } else if (homeData.totalAllProductData == homeData.allProductList.length) {
+          child: Text(AppLocalizations.of(context)!.no_product_is_available,style: TextStyle(color: Colors.black),));
+    } else if(homeData.totalAllProductData==homeData.allProductList.length){
       return Container(
-          child: Text(
-        AppLocalizations.of(context)!.no_more_products_ucf,
-        style: TextStyle(color: Colors.black),
-      ));
-    } else {
+          child: Text(AppLocalizations.of(context)!.no_more_products_ucf,style: TextStyle(color: Colors.black),));
+    }
+      else {
       return Container(); // should never be happening
     }
   }
@@ -763,7 +758,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       //snapshot.hasData
       return SingleChildScrollView(
         child: SizedBox(
-          height: 230,
+          height: 260,
           child: NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification scrollInfo) {
               if (scrollInfo.metrics.pixels ==
@@ -1717,16 +1712,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   Container buildProductLoadingContainer(HomePresenter homeData) {
     return Container(
-        height: homeData.isScrollData ? 36 : 0,
-        width: double.infinity,
-        color: Colors.white,
-        child: Center(
-          child: Text(
+      height: homeData.isScrollData?36:0,
+      width: double.infinity,
+      color: Colors.white,
+      child: Center(
+        child: Text(
             homeData.isMoreProduct
                 ? AppLocalizations.of(context)!.loading_more_products_ucf
-                : AppLocalizations.of(context)!.no_more_products_ucf,
-            style: TextStyle(fontSize: 16),
-          ),
-        ));
+                : AppLocalizations.of(context)!.no_more_products_ucf
+        ,style: TextStyle(fontSize: 16),),
+      )
+    );
   }
 }

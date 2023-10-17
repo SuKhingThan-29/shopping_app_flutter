@@ -292,7 +292,7 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
         fetchAll();
       } else if (mode == 'buy_now') {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Cart(has_bottomnav: false);
+          return CartScreen(has_bottomnav: false);
         })).then((value) {
           onPopped(value);
         });
@@ -677,7 +677,7 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
         label: AppLocalizations.of(context)!.show_cart_all_capital,
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Cart(has_bottomnav: false);
+            return CartScreen(has_bottomnav: false);
           })).then((value) {
             onPopped(value);
           });

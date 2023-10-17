@@ -202,9 +202,10 @@ class _ProductDetailsState extends State<ProductDetails>
       _singlePriceString = _productDetails!.main_price;
       // fetchVariantPrice();
       _stock = _productDetails!.current_stock;
+      print('fkefseofsf $_stock');
+
       _productDetails!.photos!.forEach((photo) {
         _productImageList.add(photo.path);
-        print('fkefseofsf $_productImageList');
       });
 
       _productDetails!.choice_options!.forEach((choiceOpiton) {
@@ -213,16 +214,9 @@ class _ProductDetailsState extends State<ProductDetails>
       _productDetails!.colors!.forEach((color) {
         _colorList.add(color);
       });
-
       setChoiceString();
-
-      // if (_productDetails!.colors.length > 0 ||
-      //     _productDetails!.choice_options.length > 0) {
-      //   fetchAndSetVariantWiseInfo(change_appbar_string: true);
-      // }
       fetchAndSetVariantWiseInfo(change_appbar_string: true);
       _productDetailsFetched = true;
-
       setState(() {});
     }
   }
@@ -296,7 +290,7 @@ class _ProductDetailsState extends State<ProductDetails>
         variants: _choiceString,
         qty: _quantity);
     _price = variantResponse.variantData!.price;
-    print("single price ${variantResponse.variantData!.price}");
+    print("Plus Price ${variantResponse.variantData!.price}");
     /*print("vr"+variantResponse.toJson().toString());
     return;*/
 
@@ -327,7 +321,9 @@ class _ProductDetailsState extends State<ProductDetails>
       }
       pindex++;
     });
-    setState(() {});
+    setState(() {
+
+    });
   }
 
   reset() {
@@ -423,7 +419,7 @@ class _ProductDetailsState extends State<ProductDetails>
         fetchAll();
       } else if (mode == 'buy_now') {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return Cart(has_bottomnav: false);
+          return CartScreen(has_bottomnav: false);
         })).then((value) {
           onPopped(value);
         });
@@ -805,7 +801,7 @@ class _ProductDetailsState extends State<ProductDetails>
         label: AppLocalizations.of(context)!.show_cart_all_capital,
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Cart(has_bottomnav: false);
+            return CartScreen(has_bottomnav: false);
           })).then((value) {
             onPopped(value);
           });
@@ -879,7 +875,7 @@ class _ProductDetailsState extends State<ProductDetails>
                         onTap: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return Cart(has_bottomnav: false);
+                            return CartScreen(has_bottomnav: false);
                           })).then((value) {
                             onPopped(value);
                           });

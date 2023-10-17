@@ -76,7 +76,7 @@ class _MainState extends State<Main> {
       CategoryList(
         is_base_category: true,
       ),
-      Cart(
+      CartScreen(
         has_bottomnav: true,
         from_navigation: true,
         counter: counter,

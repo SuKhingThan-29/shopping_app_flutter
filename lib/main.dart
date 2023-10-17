@@ -224,7 +224,7 @@ class _MainScreenState extends State<MyApp> {
                     AuctionProductsDetails(id: 0),
                 "/brand_products": (context) =>
                     BrandProducts(id: 0, brand_name: ""),
-                "/cart": (context) => Cart(),
+                "/cart": (context) => CartScreen(),
                 "/category_list": (context) => CategoryList(
                     parent_category_id: 0,
                     is_base_category: true,
