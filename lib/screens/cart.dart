@@ -210,8 +210,6 @@ class _CartScreenState extends State<CartScreen> {
         await CartRepository().getCartDeleteResponse(cartId);
 
     if (cartDeleteResponse.result == true) {
-      ToastComponent.showDialog(cartDeleteResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
 
       reset();
       fetchData();
@@ -262,8 +260,8 @@ class _CartScreenState extends State<CartScreen> {
       ToastComponent.showDialog(cartProcessResponse.message,
           gravity: Toast.center, duration: Toast.lengthLong);
     } else {
-      ToastComponent.showDialog(cartProcessResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      // ToastComponent.showDialog(cartProcessResponse.message,
+      //     gravity: Toast.center, duration: Toast.lengthLong);
 
       if (mode == "update") {
         reset();
