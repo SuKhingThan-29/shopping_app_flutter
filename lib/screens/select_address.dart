@@ -91,6 +91,7 @@ class _SelectAddressState extends State<SelectAddress> {
   }
 
   fetchShippingAddressList() async {
+    _shippingAddressList.clear();
     var addressResponse = await AddressRepository().getAddressList();
     _shippingAddressList.addAll(addressResponse.addresses);
     if (_shippingAddressList.length > 0) {
@@ -209,25 +210,27 @@ class _SelectAddressState extends State<SelectAddress> {
       _shippingAddressList.forEach((i) {
    if(i.id==_seleted_shipping_address){
      if(i.address==null || i.address==''){
-       // ToastComponent.showDialog('Your address is not complete}',
-       //     gravity: Toast.center, duration: Toast.lengthLong);
+       ToastComponent.showSnackBar(context,'Your address is not complete',
+           );
        return;
      }
      else if(i.country_name==null || i.country_name=="" ){
-       // ToastComponent.showDialog('Your countryname is not complete }',
-       //     gravity: Toast.center, duration: Toast.lengthLong);
+
+       ToastComponent.showSnackBar(context,'Your countryname is not complete',
+       );
        return;
      }else if(i.state_name==null || i.state_name==""){
-       // ToastComponent.showDialog('Your state name is not complete}',
-       //     gravity: Toast.center, duration: Toast.lengthLong);
+       ToastComponent.showSnackBar(context,'Your state name is not complete',
+       );
+
        return;
      }else if(i.city_name==null || i.city_name=="" ){
-       // ToastComponent.showDialog('Your city name is not complete}',
-       //     gravity: Toast.center, duration: Toast.lengthLong);
+       ToastComponent.showSnackBar(context,'Your city name is not complete',
+       );
        return;
      }else if(i.phone==null || i.phone==''){
-       // ToastComponent.showDialog('Your phone no is not complete}',
-       //     gravity: Toast.center, duration: Toast.lengthLong);
+       ToastComponent.showSnackBar(context,'Your phone no is not complete',
+       );
        return;
      }else{
        Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -419,8 +422,8 @@ class _SelectAddressState extends State<SelectAddress> {
       return;
     }
 
-    ToastComponent.showDialog(addressUpdateResponse.message,
-        gravity: Toast.center, duration: Toast.lengthLong);
+    ToastComponent.showSnackBar(context,addressUpdateResponse.message,
+      );
 
     Navigator.of(context, rootNavigator: true).pop();
     afterUpdatingAnAddress();
