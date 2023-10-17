@@ -209,25 +209,25 @@ class _SelectAddressState extends State<SelectAddress> {
       _shippingAddressList.forEach((i) {
    if(i.id==_seleted_shipping_address){
      if(i.address==null || i.address==''){
-       ToastComponent.showDialog('Your address is not complete}',
-           gravity: Toast.center, duration: Toast.lengthLong);
+       // ToastComponent.showDialog('Your address is not complete}',
+       //     gravity: Toast.center, duration: Toast.lengthLong);
        return;
      }
      else if(i.country_name==null || i.country_name=="" ){
-       ToastComponent.showDialog('Your countryname is not complete }',
-           gravity: Toast.center, duration: Toast.lengthLong);
+       // ToastComponent.showDialog('Your countryname is not complete }',
+       //     gravity: Toast.center, duration: Toast.lengthLong);
        return;
      }else if(i.state_name==null || i.state_name==""){
-       ToastComponent.showDialog('Your state name is not complete}',
-           gravity: Toast.center, duration: Toast.lengthLong);
+       // ToastComponent.showDialog('Your state name is not complete}',
+       //     gravity: Toast.center, duration: Toast.lengthLong);
        return;
      }else if(i.city_name==null || i.city_name=="" ){
-       ToastComponent.showDialog('Your city name is not complete}',
-           gravity: Toast.center, duration: Toast.lengthLong);
+       // ToastComponent.showDialog('Your city name is not complete}',
+       //     gravity: Toast.center, duration: Toast.lengthLong);
        return;
      }else if(i.phone==null || i.phone==''){
-       ToastComponent.showDialog('Your phone no is not complete}',
-           gravity: Toast.center, duration: Toast.lengthLong);
+       // ToastComponent.showDialog('Your phone no is not complete}',
+       //     gravity: Toast.center, duration: Toast.lengthLong);
        return;
      }else{
        Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -954,7 +954,7 @@ class _SelectAddressState extends State<SelectAddress> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 65,
+            width: 75,
             child: Text(
               LangText(context).local.address_ucf,
               style: TextStyle(
@@ -963,7 +963,7 @@ class _SelectAddressState extends State<SelectAddress> {
             ),
           ),
           Container(
-            width: 170,
+            width: 150,
             child: Text(
               _shippingAddressList[index].address ?? '',
               maxLines: 2,
