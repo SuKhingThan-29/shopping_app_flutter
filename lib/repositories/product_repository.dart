@@ -118,9 +118,9 @@ class ProductRepository {
     String url = ("${AppConfig.BASE_URL}/products/recommend/" + "?page=$page");
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
-      // "Currency-Code": SystemConfig.systemCurrency!.code!,
-      // "Currency-Exchange-Rate":
-      //     SystemConfig.systemCurrency!.exchangeRate.toString(),
+      "Currency-Code": SystemConfig.systemCurrency!.code!,
+      "Currency-Exchange-Rate":
+          SystemConfig.systemCurrency!.exchangeRate.toString(),
     });
     print(url.toString());
     return productMiniResponseFromJson(response.body);
@@ -130,9 +130,9 @@ class ProductRepository {
     String url = ("${AppConfig.BASE_URL}/products/newest/" + "?page=$page");
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
-      "Currency-Code": SystemConfig.systemCurrency!.code!,
-      "Currency-Exchange-Rate":
-          SystemConfig.systemCurrency!.exchangeRate.toString(),
+      //"Currency-Code": SystemConfig.systemCurrency!.code!,
+      // "Currency-Exchange-Rate":
+      //     SystemConfig.systemCurrency!.exchangeRate.toString(),
     });
     print(url.toString());
     return productMiniResponseFromJson(response.body);
@@ -395,9 +395,9 @@ class ProductRepository {
         headers: {
           "App-Language": app_language.$!,
           "Content-Type": "application/json",
-          "Currency-Code": SystemConfig.systemCurrency!.code!,
-          "Currency-Exchange-Rate":
-              SystemConfig.systemCurrency!.exchangeRate.toString(),
+          // "Currency-Code": SystemConfig.systemCurrency!.code!,
+          // "Currency-Exchange-Rate":
+          //     SystemConfig.systemCurrency!.exchangeRate.toString(),
         },
         body: postBody);
 

@@ -24,9 +24,9 @@ class CartRepository {
         "Content-Type": "application/json",
         "Authorization": "Bearer ${access_token.$}",
         "App-Language": app_language.$!,
-        "Currency-Code": SystemConfig.systemCurrency!.code!,
-        "Currency-Exchange-Rate":
-            SystemConfig.systemCurrency!.exchangeRate.toString(),
+        // "Currency-Code": SystemConfig.systemCurrency!.code!,
+        // "Currency-Exchange-Rate":
+        //     SystemConfig.systemCurrency!.exchangeRate.toString(),
       },
       body: '',middleware: BannedUser()
     );

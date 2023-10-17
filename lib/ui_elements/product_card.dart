@@ -595,18 +595,14 @@ $string
         color: colorString,
         variants: _choiceString,
         qty: _quantity);
+
+    _totalPrice = variantResponse.variantData!.price;
     _price = variantResponse.variantData!.price;
     _stock = variantResponse.variantData!.stock;
     if (_quantity! > _stock!) {
       _quantity = _stock;
     }
     _variant = variantResponse.variantData!.variant;
-    print("Variant quantity totalprice: $_totalPrice");
-
-    stateSetter!(() {
-      _totalPrice = variantResponse.variantData!.price;
-
-    });
     int pindex = 0;
     _productDetails!.photos!.forEach((photo) {
       if (photo.variant == _variant &&
@@ -615,6 +611,25 @@ $string
       }
       pindex++;
     });
+    stateSetter!(() {
+      _totalPrice = variantResponse.variantData!.price;
+      _price = variantResponse.variantData!.price;
+      _stock = variantResponse.variantData!.stock;
+      if (_quantity! > _stock!) {
+        _quantity = _stock;
+      }
+      _variant = variantResponse.variantData!.variant;
+      int pindex = 0;
+      _productDetails!.photos!.forEach((photo) {
+        if (photo.variant == _variant &&
+            variantResponse.variantData!.image != "") {
+          _currentImage = pindex;
+        }
+        pindex++;
+      });
+    });
+    print("Variant : $_variant");
+
 
     setState(() {});
   }
