@@ -735,12 +735,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           });
     } else if (homeData.totalAllProductData == 0) {
       return Container(
-          child: Text(AppLocalizations.of(context)!.no_product_is_available,style: TextStyle(color: Colors.black),));
-    } else if(homeData.totalAllProductData==homeData.allProductList.length){
+          child: Text(
+        AppLocalizations.of(context)!.no_product_is_available,
+        style: TextStyle(color: Colors.black),
+      ));
+    } else if (homeData.totalAllProductData == homeData.allProductList.length) {
       return Container(
-          child: Text(AppLocalizations.of(context)!.no_more_products_ucf,style: TextStyle(color: Colors.black),));
-    }
-      else {
+          child: Text(
+        AppLocalizations.of(context)!.no_more_products_ucf,
+        style: TextStyle(color: Colors.black),
+      ));
+    } else {
       return Container(); // should never be happening
     }
   }
@@ -938,102 +943,118 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                     );
                                   },
                                 )
-                              : Card(
-                                  margin: EdgeInsets.only(right: 5),
-                                  child: Container(
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(6.0),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        ClipRRect(
-                                          clipBehavior: Clip.none,
-                                          // child: FadeInImage(
-                                          //   placeholder: AssetImage(
-                                          //       "assets/placeholder.png"),
-                                          //   width: 100,
-                                          //   image: NetworkImage(homeData
-                                          //       .flashDealProducts[0]
-                                          //       .products
-                                          //       .products[productIndex]
-                                          //       .image),
-                                          // ),
-                                          child: AIZImage.basicImage(homeData
-                                              .flashDealProducts[0]
-                                              .products
-                                              .products[productIndex]
-                                              .image),
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(6),
-                                            bottomLeft: Radius.circular(6),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10.0),
-                                          child: Text(
-                                              homeData
-                                                  .flashDealProducts[0]
-                                                  .products
-                                                  .products[productIndex]
-                                                  .name,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              style: TextStyle(
-                                                  color: MyTheme.font_grey,
-                                                  fontSize: 13,
-                                                  height: 1.2,
-                                                  fontWeight: FontWeight.w400)),
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 0.0, top: 8),
-                                          child: Text(
-                                            homeData
-                                                .flashDealProducts[0]
-                                                .products
-                                                .products[productIndex]
-                                                .price,
-                                            textAlign: TextAlign.left,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                                color: MyTheme.accent_color,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                              // : Card(
+                              //     margin: EdgeInsets.only(right: 5),
+                              //     child: Container(
+                              //       width: 100,
+                              //       decoration: BoxDecoration(
+                              //         color: Colors.white,
+                              //         borderRadius: BorderRadius.circular(6.0),
+                              //       ),
+                              //       child: Column(
+                              //         crossAxisAlignment:
+                              //             CrossAxisAlignment.center,
+                              //         mainAxisAlignment:
+                              //             MainAxisAlignment.start,
+                              //         children: [
+                              //           ClipRRect(
+                              //             clipBehavior: Clip.none,
+                              //             // child: FadeInImage(
+                              //             //   placeholder: AssetImage(
+                              //             //       "assets/placeholder.png"),
+                              //             //   width: 100,
+                              //             //   image: NetworkImage(homeData
+                              //             //       .flashDealProducts[0]
+                              //             //       .products
+                              //             //       .products[productIndex]
+                              //             //       .image),
+                              //             // ),
+                              //             child: AIZImage.basicImage(homeData
+                              //                 .flashDealProducts[0]
+                              //                 .products
+                              //                 .products[productIndex]
+                              //                 .image),
+                              //             borderRadius: BorderRadius.only(
+                              //               topLeft: Radius.circular(6),
+                              //               bottomLeft: Radius.circular(6),
+                              //             ),
+                              //           ),
+                              //           SizedBox(
+                              //             height: 5,
+                              //           ),
+                              //           Padding(
+                              //             padding:
+                              //                 const EdgeInsets.only(left: 10.0),
+                              //             child: Text(
+                              //                 homeData
+                              //                     .flashDealProducts[0]
+                              //                     .products
+                              //                     .products[productIndex]
+                              //                     .name,
+                              //                 overflow: TextOverflow.ellipsis,
+                              //                 maxLines: 2,
+                              //                 style: TextStyle(
+                              //                     color: MyTheme.font_grey,
+                              //                     fontSize: 8,
+                              //                     height: 1.2,
+                              //                     fontWeight: FontWeight.w400)),
+                              //           ),
+                              //           SizedBox(
+                              //             height: 10,
+                              //           ),
+                              //           Text(
+                              //             homeData.flashDealProducts[0].products
+                              //                 .products[productIndex].price,
+                              //             textAlign: TextAlign.left,
+                              //             overflow: TextOverflow.ellipsis,
+                              //             maxLines: 1,
+                              //             style: TextStyle(
+                              //                 color: MyTheme.accent_color,
+                              //                 fontSize: 16,
+                              //                 fontWeight: FontWeight.w700),
+                              //           ),
+                              //           Padding(
+                              //             padding: const EdgeInsets.only(
+                              //                 left: 0.0, top: 8),
+                              //             child: Text(
+                              //               homeData
+                              //                   .flashDealProducts[0]
+                              //                   .products
+                              //                   .products[productIndex]
+                              //                   .price,
+                              //               textAlign: TextAlign.left,
+                              //               overflow: TextOverflow.ellipsis,
+                              //               maxLines: 1,
+                              //               style: TextStyle(
+                              //                   color: MyTheme.accent_color,
+                              //                   fontSize: 16,
+                              //                   fontWeight: FontWeight.w700),
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ),
+                              //   );
+                              : MiniProductCard(
+                                  id: homeData.flashDealProducts[0].products
+                                      .products[productIndex].id,
+                                  image: homeData.flashDealProducts[0].products
+                                      .products[productIndex].image,
+                                  name: homeData.flashDealProducts[0].products
+                                      .products[productIndex].name,
+                                  main_price: homeData.flashDealProducts[0]
+                                      .products.products[productIndex].price,
+                                  stroked_price: homeData.flashDealProducts[0]
+                                      .products.products[productIndex].price,
+                                  has_discount: homeData
+                                      .flashDealProducts[0]
+                                      .products
+                                      .products[productIndex]
+                                      .has_discount,
+                                  is_wholesale: false,
+                                  discount: homeData.flashDealProducts[0]
+                                      .products.products[productIndex].discount,
                                 );
-                          // : MiniProductCard(
-                          //     id: homeData.flashDealProducts[index].id,
-                          //     image:
-                          //         homeData.flashDealProducts[index].thumbnail_image,
-                          //     name: homeData.flashDealProducts[index].name,
-                          //     main_price:
-                          //         homeData.flashDealProducts[index].main_price,
-                          //     stroked_price:
-                          //         homeData.flashDealProducts[index].stroked_price,
-                          //     has_discount:
-                          //         homeData.flashDealProducts[index].has_discount,
-                          //     is_wholesale:
-                          //         homeData.flashDealProducts[index].isWholesale,
-                          //     discount: homeData.flashDealProducts[index].discount,
-                          //   );
                         },
                       ),
                     ),
@@ -1712,16 +1733,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   Container buildProductLoadingContainer(HomePresenter homeData) {
     return Container(
-      height: homeData.isScrollData?36:0,
-      width: double.infinity,
-      color: Colors.white,
-      child: Center(
-        child: Text(
+        height: homeData.isScrollData ? 36 : 0,
+        width: double.infinity,
+        color: Colors.white,
+        child: Center(
+          child: Text(
             homeData.isMoreProduct
                 ? AppLocalizations.of(context)!.loading_more_products_ucf
-                : AppLocalizations.of(context)!.no_more_products_ucf
-        ,style: TextStyle(fontSize: 16),),
-      )
-    );
+                : AppLocalizations.of(context)!.no_more_products_ucf,
+            style: TextStyle(fontSize: 16),
+          ),
+        ));
   }
 }

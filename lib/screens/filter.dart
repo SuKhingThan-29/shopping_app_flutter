@@ -30,12 +30,10 @@ class WhichFilter {
 
   static List<WhichFilter> getWhichFilterList() {
     return <WhichFilter>[
-      WhichFilter(
-          'product', 'product'),
+      WhichFilter('product', 'product'),
       // WhichFilter(
       //     'sellers', AppLocalizations.of(OneContext().context!)!.sellers_ucf),
-      WhichFilter(
-          'brands', 'brand'),
+      WhichFilter('brands', 'brand'),
     ];
   }
 }
@@ -483,7 +481,6 @@ class _FilterState extends State<Filter> {
                         .you_can_use_sorting_while_searching_for_products,
                     gravity: Toast.center,
                     duration: Toast.lengthLong);
-
           },
           child: Container(
             decoration: BoxDecoration(
@@ -712,107 +709,114 @@ class _FilterState extends State<Filter> {
         //   onPressed: () => Navigator.of(context).pop(),
         // ),
         Expanded(
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.6,
-            height: 90,
-            child: Padding(
-              padding: MediaQuery.of(context).viewPadding.top > 30
-                  ? const EdgeInsets.symmetric(vertical: 36.0, horizontal: 0.0)
-                  : const EdgeInsets.symmetric(vertical: 14.0, horizontal: 0.0),
-              child: TypeAheadField(
-                suggestionsBoxDecoration: SuggestionsBoxDecoration(),
-                suggestionsCallback: (pattern) async {
-                  var suggestions = await SearchRepository()
-                      .getSearchSuggestionListResponse(
-                          query_key: pattern,
-                          type: _selectedFilter!.option_key);
-                  return suggestions;
-                },
-                loadingBuilder: (context) {
-                  return Container(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.loading_suggestions,
-                        style: TextStyle(color: MyTheme.medium_grey),
-                      ),
-                    ),
-                  );
-                },
-                itemBuilder: (context, dynamic suggestion) {
-                  var subtitle =
-                      "${AppLocalizations.of(context)!.searched_for_all_lower} ${suggestion.count} ${AppLocalizations.of(context)!.times_all_lower}";
-                  if (suggestion.type != "search") {
-                    subtitle =
-                        "${suggestion.type_string} ${AppLocalizations.of(context)!.found_all_lower}";
-                  }
-                  return Container(
-                    width: double
-                        .infinity, // This will make the ListTile full screen width
-                    child: ListTile(
-                      dense: true,
-                      title: Text(
-                        suggestion.query,
-                        style: TextStyle(
-                          color: suggestion.type != "search"
-                              ? MyTheme.accent_color
-                              : MyTheme.font_grey,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, right: 20, top: 20),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.6,
+              height: 90,
+              child: Padding(
+                padding: MediaQuery.of(context).viewPadding.top > 30
+                    ? const EdgeInsets.symmetric(
+                        vertical: 36.0, horizontal: 0.0)
+                    : const EdgeInsets.symmetric(
+                        vertical: 14.0, horizontal: 0.0),
+                child: TypeAheadField(
+                  suggestionsBoxDecoration: SuggestionsBoxDecoration(),
+                  suggestionsCallback: (pattern) async {
+                    var suggestions = await SearchRepository()
+                        .getSearchSuggestionListResponse(
+                            query_key: pattern,
+                            type: _selectedFilter!.option_key);
+                    return suggestions;
+                  },
+                  loadingBuilder: (context) {
+                    return Container(
+                      height: 50,
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.loading_suggestions,
+                          style: TextStyle(color: MyTheme.medium_grey),
                         ),
                       ),
-                      subtitle: Text(
-                        subtitle,
-                        style: TextStyle(
-                          color: suggestion.type != "search"
-                              ? MyTheme.font_grey
-                              : MyTheme.medium_grey,
+                    );
+                  },
+                  itemBuilder: (context, dynamic suggestion) {
+                    var subtitle =
+                        "${AppLocalizations.of(context)!.searched_for_all_lower} ${suggestion.count} ${AppLocalizations.of(context)!.times_all_lower}";
+                    if (suggestion.type != "search") {
+                      subtitle =
+                          "${suggestion.type_string} ${AppLocalizations.of(context)!.found_all_lower}";
+                    }
+                    return Container(
+                      width: double
+                          .infinity, // This will make the ListTile full screen width
+                      child: ListTile(
+                        dense: true,
+                        title: Text(
+                          suggestion.query,
+                          style: TextStyle(
+                            color: suggestion.type != "search"
+                                ? MyTheme.accent_color
+                                : MyTheme.font_grey,
+                          ),
+                        ),
+                        subtitle: Text(
+                          subtitle,
+                          style: TextStyle(
+                            color: suggestion.type != "search"
+                                ? MyTheme.font_grey
+                                : MyTheme.medium_grey,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-                noItemsFoundBuilder: (context) {
-                  return Container(
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.no_suggestion_available,
-                        style: TextStyle(color: MyTheme.medium_grey),
+                    );
+                  },
+                  noItemsFoundBuilder: (context) {
+                    return Container(
+                      height: 50,
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.no_suggestion_available,
+                          style: TextStyle(color: MyTheme.medium_grey),
+                        ),
                       ),
-                    ),
-                  );
-                },
-                onSuggestionSelected: (dynamic suggestion) {
-                  _searchController.text = suggestion.query;
-                  _searchKey = suggestion.query;
-                  setState(() {});
-                  _onSearchSubmit();
-                },
-                textFieldConfiguration: TextFieldConfiguration(
-                  onTap: () {},
-                  controller: _searchController,
-                  onSubmitted: (txt) {
-                    _searchKey = txt;
+                    );
+                  },
+                  onSuggestionSelected: (dynamic suggestion) {
+                    _searchController.text = suggestion.query;
+                    _searchKey = suggestion.query;
                     setState(() {});
                     _onSearchSubmit();
                   },
-                  decoration: InputDecoration(
-                    icon: IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: UsefulElements.backButton(context),
-                      onPressed: () => Navigator.of(context).pop(),
+                  textFieldConfiguration: TextFieldConfiguration(
+                    onTap: () {},
+                    controller: _searchController,
+                    onSubmitted: (txt) {
+                      _searchKey = txt;
+                      setState(() {});
+                      _onSearchSubmit();
+                    },
+                    decoration: InputDecoration(
+                      icon: IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: UsefulElements.backButton(context),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                      hintText: AppLocalizations.of(context)!.search_here_ucf,
+                      hintStyle: TextStyle(
+                        fontSize: 12.0,
+                        color: MyTheme.textfield_grey,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: MyTheme.white, width: 0.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: MyTheme.white, width: 0.0),
+                      ),
+                      contentPadding: EdgeInsets.all(0.0),
                     ),
-                    hintText: AppLocalizations.of(context)!.search_here_ucf,
-                    hintStyle: TextStyle(
-                      fontSize: 12.0,
-                      color: MyTheme.textfield_grey,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MyTheme.white, width: 0.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: MyTheme.white, width: 0.0),
-                    ),
-                    contentPadding: EdgeInsets.all(0.0),
                   ),
                 ),
               ),
