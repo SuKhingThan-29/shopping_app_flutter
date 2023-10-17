@@ -228,7 +228,7 @@ $string
     );
   }
 
-  buildColorRow() {
+  buildColorRow(StateSetter stateSetter) {
     return Row(
       children: [
         Padding(
@@ -263,7 +263,7 @@ $string
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    buildColorItem(index),
+                    buildColorItem(index,stateSetter),
                   ],
                 );
               },
@@ -274,7 +274,7 @@ $string
     );
   }
 
-  buildColorCheckerContainer() {
+  buildColorCheckerContainer(StateSetter stateSetter) {
     return Padding(
         padding: const EdgeInsets.all(3),
         child: /*Icon(Icons.check, color: Colors.white, size: 16),*/
@@ -285,27 +285,23 @@ $string
         ));
   }
 
-  _onColorChange(index) {
-    _selectedColorIndex = index;
-    setState(() {});
-    fetchAndSetVariantWiseInfo();
+  _onColorChange(index,StateSetter stateSetter) {
+    stateSetter(() {
+      _selectedColorIndex = index;
+    });
+    fetchAndSetVariantWiseInfo(stateSetter:stateSetter);
   }
 
-  Widget buildColorItem(index) {
+  Widget buildColorItem(index,StateSetter stateSetter) {
     return InkWell(
       onTap: () {
-        _onColorChange(index);
+        _onColorChange(index,stateSetter);
       },
       child: AnimatedContainer(
         duration: Duration(milliseconds: 400),
         width: _selectedColorIndex == index ? 30 : 25,
         height: _selectedColorIndex == index ? 30 : 25,
         decoration: BoxDecoration(
-          // border: Border.all(
-          //     color: _selectedColorIndex == index
-          //         ? Colors.purple
-          //         : Colors.white,
-          //     width: 1),
           borderRadius: BorderRadius.circular(16.0),
           color: ColorHelper.getColorFromColorCode(_colorList[index]),
           boxShadow: [
@@ -319,7 +315,7 @@ $string
           ],
         ),
         child: _selectedColorIndex == index
-            ? buildColorCheckerContainer()
+            ? buildColorCheckerContainer(stateSetter)
             : Container(
                 height: 25,
               ),
@@ -397,7 +393,7 @@ $string
                                           borderRadius:
                                               BorderRadius.circular(10),
                                           child: AIZImage.basicImage(
-                                              _productImageList[_currentImage]),
+                                              _productImageList[index]),
                                         )),
                                   );
                                 }),
@@ -410,7 +406,7 @@ $string
                                     top: Radius.circular(6),
                                     bottom: Radius.zero),
                                 child: AIZImage.basicImage(
-                                    _productDetails!.thumbnail_image ?? ''),
+                                    _productImageList[_currentImage] ?? ''),
                               ))
                         ],
                       ),
@@ -434,7 +430,7 @@ $string
                         padding: EdgeInsets.only(top: 14, right: 14),
                         child: _productDetails != null
                             ? (_colorList.length > 0
-                                ? buildColorRow()
+                                ? buildColorRow(stateSetter)
                                 : Container())
                             : ShimmerHelper().buildBasicShimmer(
                                 height: 30.0,
