@@ -91,6 +91,7 @@ class _SelectAddressState extends State<SelectAddress> {
   }
 
   fetchShippingAddressList() async {
+    _shippingAddressList.clear();
     var addressResponse = await AddressRepository().getAddressList();
     _shippingAddressList.addAll(addressResponse.addresses);
     if (_shippingAddressList.length > 0) {

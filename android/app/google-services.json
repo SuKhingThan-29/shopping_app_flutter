@@ -110,11 +110,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "1004636433134-2sk26ofldrhdqsnfobg8oah7ksskcc2j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "gmp.ethicaldigit.com",
+            "certificate_hash": "845fe92731c90cd00e1d09dc590ba643fe422c6b"
+          }
+        },
+        {
           "client_id": "1004636433134-3q0s4t8aj0ugob9hj23ehdnjhrdpm5uh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "gmp.ethicaldigit.com",
             "certificate_hash": "10bde768cdf66435242dda51d3d4b6899decfa33"
+          }
+        },
+        {
+          "client_id": "1004636433134-44ubahjs1nffh5h438dg8vtn8edkpqnr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "gmp.ethicaldigit.com",
+            "certificate_hash": "8253b5fcc9a81b69352ef11409ae436ad37e5384"
           }
         },
         {
@@ -131,6 +147,14 @@
           "android_info": {
             "package_name": "gmp.ethicaldigit.com",
             "certificate_hash": "b9964f8d2d521df69626adeb9fcec659c0019c95"
+          }
+        },
+        {
+          "client_id": "1004636433134-qio0g4nlv1ce5012ejrpk1coik9rc98d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "gmp.ethicaldigit.com",
+            "certificate_hash": "802a32ac063c891a6e7f942a07140bd574450f58"
           }
         },
         {
