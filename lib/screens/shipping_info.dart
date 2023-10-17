@@ -950,10 +950,9 @@ class _ShippingInfoState extends State<ShippingInfo> {
               ),
               onPressed: () {
                 if(_delivery.length==0){
-                  ToastComponent.showDialog(
+                  ToastComponent.showSnackBar(context,
                       "There is no delivery service in your city.",
-                      gravity: Toast.center,
-                      duration: Toast.lengthLong);
+                      );
                 }else{
                   onPressProceed(context);
                 }

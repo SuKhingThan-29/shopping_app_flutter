@@ -823,14 +823,18 @@ class _FilterState extends State<Filter> {
             ),
           ),
         ),
-        // IconButton(
-        //   icon: Icon(Icons.search, color: MyTheme.dark_grey),
-        //   onPressed: () {
-        //     _searchKey = _searchController.text.toString();
-        //     setState(() {});
-        //     _onSearchSubmit();
-        //   },
-        // ),
+       // Container(
+       //   padding: EdgeInsets.only(top: 20),
+       //   height: 50,
+       //   child:  IconButton(
+       //     icon: Icon(Icons.search, color: MyTheme.dark_grey),
+       //     onPressed: () {
+       //       _searchKey = _searchController.text.toString();
+       //       setState(() {});
+       //       _onSearchSubmit();
+       //     },
+       //   ),
+       // )
       ],
     );
   }
