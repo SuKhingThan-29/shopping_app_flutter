@@ -16,6 +16,8 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io' show Platform;
 
+import 'cart.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -35,16 +37,16 @@ class _SplashScreenState extends State<SplashScreen> {
   getUserInfo() async {
     var version = await ProfileRepository().getVersion();
     print(Platform.isAndroid);
-
+    if (Platform.isAndroid) {
+      ver = version.android.mobileVersion;
+      print('mobileversion $ver');
+    } else {
+      ver = version.ios.mobileVersion;
+      print('mobileversion $ver');
+    }
     setState(() {
       print(ver);
-      if (Platform.isAndroid) {
-        ver = version.android.mobileVersion;
-        print('mobileversion $ver');
-      } else {
-        ver = version.ios.mobileVersion;
-        print('mobileversion $ver');
-      }
+
     });
   }
 
@@ -54,6 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
       _packageInfo = info;
     });
   }
+  bool isCancel=false;
 
   @override
   void initState() {
@@ -65,19 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Future.delayed(Duration(seconds: 3)).then((value) {
         Provider.of<LocaleProvider>(context, listen: false)
             .setLocale(app_mobile_language.$!);
-        if (ver == _packageInfo.version) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return Main(
-                  go_back: false,
-                );
-              },
-            ),
-            (route) => false,
-          );
-        } else {
+        if (ver != _packageInfo.version) {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -124,18 +115,9 @@ class _SplashScreenState extends State<SplashScreen> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return Main(
-                            go_back: false,
-                          );
-                        },
-                      ),
-                      (route) => false,
-                    );
-                  },
+          Navigator.of(context).pop();
+
+          },
                   child: Text('Cancel'),
                 ),
                 TextButton(
@@ -158,6 +140,17 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           );
         }
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return Main(
+                  go_back: false,
+                );
+              },
+            ),
+                (route) => true,
+          );
       });
     });
   }

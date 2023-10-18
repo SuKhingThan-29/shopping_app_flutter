@@ -161,8 +161,9 @@ class _OrderListState extends State<OrderList> {
         _selectedDeliveryStatus = _dropdownDeliveryStatusItems![x].value;
       }
     }
-    setState(() {});
     fetchData();
+    setState(() {});
+
   }
 
   fetchData() async {
@@ -172,6 +173,7 @@ class _OrderListState extends State<OrderList> {
         delivery_status: _selectedDeliveryStatus!.option_key);
     //print("or:"+orderResponse.toJson().toString());
     _orderList.addAll(orderResponse.orders);
+    print("Orderlist: ${_orderList.length}");
     _isInitial = false;
     _totalData = orderResponse.meta.total;
     _showLoadingContainer = false;

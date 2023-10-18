@@ -1,8 +1,11 @@
 
+import 'dart:io';
+
 import 'package:active_ecommerce_flutter/firebase_options.dart';
 import 'package:active_ecommerce_flutter/presenter/cart_counter.dart';
 import 'package:active_ecommerce_flutter/presenter/currency_presenter.dart';
 import 'package:active_ecommerce_flutter/providers/deep_link_provider.dart';
+import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/address.dart';
 import 'package:active_ecommerce_flutter/screens/cart.dart';
 import 'package:active_ecommerce_flutter/screens/category_list.dart';
@@ -28,7 +31,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_value/shared_value.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'app_config.dart';
 import 'package:one_context/one_context.dart';
@@ -36,6 +41,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:active_ecommerce_flutter/providers/locale_provider.dart';
+import 'helpers/addons_helper.dart';
+import 'helpers/auth_helper.dart';
+import 'helpers/business_setting_helper.dart';
+import 'helpers/shared_value_helper.dart';
 import 'lang_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -158,7 +167,36 @@ class _MainScreenState extends State<MyApp> {
   String? initialMessage;
   FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  int ver = 1;
+  PackageInfo _packageInfo = PackageInfo(
+    appName: AppConfig.app_name,
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+  );
+  getUserInfo() async {
+    var version = await ProfileRepository().getVersion();
+    print(Platform.isAndroid);
 
+    setState(() {
+      print(ver);
+      if (Platform.isAndroid) {
+        ver = version.android.mobileVersion;
+        print('mobileversion $ver');
+      } else {
+        ver = version.ios.mobileVersion;
+        print('mobileversion $ver');
+      }
+    });
+
+  }
+
+  Future<void> _initPackageInfo() async {
+    final PackageInfo info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
+  }
   @override
   void initState() {
     super.initState();
@@ -176,8 +214,30 @@ class _MainScreenState extends State<MyApp> {
       print('A new onMessageOpenedApp event was published!');
 
     });
-  }
+    getUserInfo();
+    _initPackageInfo();
+    print("version: $ver");
+    print("version: ${_packageInfo.version}");
 
+
+  }
+  Future<String?> getSharedValueHelperData() async {
+    access_token.load().whenComplete(() {
+      AuthHelper().fetch_and_set();
+    });
+    AddonsHelper().setAddonsData();
+    BusinessSettingHelper().setBusinessSettingData();
+    await app_language.load();
+    await app_mobile_language.load();
+    await app_language_rtl.load();
+    await system_currency.load();
+    Provider.of<CurrencyPresenter>(context, listen: false).fetchListData();
+
+    print("new splash screen ${app_mobile_language.$}");
+    print("new splash screen app_language_rtl ${app_language_rtl.$}");
+
+    return app_mobile_language.$;
+  }
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
