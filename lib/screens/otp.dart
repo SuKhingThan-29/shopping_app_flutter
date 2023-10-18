@@ -62,6 +62,8 @@ class _OtpState extends State<Otp> {
   }
 
   onTapResend() async {
+    _secondsRemaining=60;
+    _startTimer();
     otp = "";
     _verificationCodeController.text = "";
     setState(() {});
@@ -191,25 +193,39 @@ class _OtpState extends State<Otp> {
                   const SizedBox(
                     height: 40,
                   ),
-                  Text(
-                    widget.phnum!.contains('.com')
-                        ? "Verification code has been sent to ${widget.phnum!.substring(0, 1)}****${widget.phnum!.substring(widget.phnum!.length - 11)} "
-                        : "Verification code has been sent to +95*******${widget.phnum!.substring(widget.phnum!.length - 2)} .",
-                    style: TextStyle(fontSize: 15),
+                  Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+
+                         "Verification code has been sent to",
+
+                      style: TextStyle(fontSize: 15),
+                      maxLines: 2,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      widget.phnum!.contains('.com')
+                          ? "   ${widget.phnum!.substring(0, 1)}****${widget.phnum!.substring(widget.phnum!.length - 11)} "
+                          : "+95 ******* ${widget.phnum!.substring(widget.phnum!.length - 2)} .",
+                      style: TextStyle(fontSize: 15),
+                      maxLines: 2,
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
                     "Please wait a few minutes.",
-                    style: TextStyle(fontSize: 15),
+                    style: TextStyle(fontSize: 15,color: Colors.grey),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Container(
                     child: Text(
-                      'You will get an OTP code $_secondsRemaining',
+                      'You will get an OTP code : $_secondsRemaining',style: TextStyle(color: Colors.orangeAccent),
                     ),
                   ),
                   const SizedBox(height: 30),

@@ -171,7 +171,6 @@ class _OrderListState extends State<OrderList> {
         page: _page,
         payment_status: _selectedPaymentStatus!.option_key,
         delivery_status: _selectedDeliveryStatus!.option_key);
-    //print("or:"+orderResponse.toJson().toString());
     _orderList.addAll(orderResponse.orders);
     print("Orderlist: ${_orderList.length}");
     _isInitial = false;

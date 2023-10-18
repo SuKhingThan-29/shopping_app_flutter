@@ -299,11 +299,11 @@ class _LoginState extends State<Login> {
           access_token: appleCredential.identityToken);
 
       if (loginResponse.result == false) {
-        ToastComponent.showDialog(loginResponse.message!,
-            gravity: Toast.center, duration: Toast.lengthLong);
+        ToastComponent.showSnackBar(context,loginResponse.message!,
+        );
       } else {
-        ToastComponent.showDialog(loginResponse.message!,
-            gravity: Toast.center, duration: Toast.lengthLong);
+        ToastComponent.showSnackBar(context,loginResponse.message!,
+          );
         AuthHelper().setUserData(loginResponse);
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Main();

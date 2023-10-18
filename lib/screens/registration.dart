@@ -351,16 +351,15 @@ class _RegistrationState extends State<Registration> {
         int.parse(selectedCityId),
         int.parse(postalCode),
         googleRecaptchaKey);
+    var message = signupResponse.message.toString();
 
     if (signupResponse.result == false) {
-      var message = signupResponse.message.toString();
-      // signupResponse.message.forEach((value) {
-      //   message += value + "\n";
-      // });
-      ToastComponent.showDialog(message,
-          gravity: Toast.center, duration: Toast.lengthLong);
-      setState(() {});
+      ToastComponent.showSnackBar(context,message,
+          );
+
     } else {
+      ToastComponent.showSnackBar(context,message,
+      );
       // ToastComponent.showDialog(signupResponse.message.toString(),
       //     gravity: Toast.center, duration: Toast.lengthLong);
       AuthHelper().setUserData(signupResponse);
