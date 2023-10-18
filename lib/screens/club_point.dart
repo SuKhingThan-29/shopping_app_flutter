@@ -79,10 +79,12 @@ class _ClubpointState extends State<Clubpoint> {
         await ClubpointRepository().getClubpointToWalletResponse(itemId);
 
     if (clubpointToWalletResponse.result == false) {
-      ToastComponent.showDialog(clubpointToWalletResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        clubpointToWalletResponse.message,
+      );
     } else {
-      /*ToastComponent.showDialog(clubpointToWalletResponse.message, gravity: Toast.center, duration: Toast.lengthLong);*/
+      /*ToastComponent.showSnackBar(clubpointToWalletResponse.message, gravity: Toast.center, duration: Toast.lengthLong);*/
       // Scaffold.of(context).showSnackBar(_convertedSnackbar);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: _convertedSnackbar));

@@ -89,7 +89,7 @@ class _CategoryListState extends State<CategoryList> {
           onTap: () {
             // _selectedFilter!.option_key == "product"
             //     ? _scaffoldKey.currentState!.openEndDrawer()
-            //     : ToastComponent.showDialog(
+            //     : ToastComponent.showSnackBar(
             //         AppLocalizations.of(context)!
             //             .you_can_use_sorting_while_searching_for_products,
             //         gravity: Toast.center,
@@ -272,7 +272,7 @@ class _CategoryListState extends State<CategoryList> {
         //   //                   ],
         //   //                 ),
         //   //               ))
-        //   //       : ToastComponent.showDialog(
+        //   //       : ToastComponent.showSnackBar(
         //   //           AppLocalizations.of(context)!
         //   //               .you_can_use_filters_while_searching_for_products,
         //   //           gravity: Toast.center,
@@ -561,7 +561,7 @@ class _CategoryListState extends State<CategoryList> {
                                   ),
                                 );
                               } else {
-                                ToastComponent.showDialog(
+                                ToastComponent.showSnackBar(
                                     AppLocalizations.of(context)
                                         .category_list_screen_no_subcategories,
                                     gravity: Toast.center,

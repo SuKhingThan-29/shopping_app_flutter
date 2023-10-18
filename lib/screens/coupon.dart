@@ -121,8 +121,8 @@ class _CouponState extends State<Coupon> {
           if (widget.from_checkout) {
             Navigator.pushAndRemoveUntil(context,
                 MaterialPageRoute(builder: (context) {
-                  return Main();
-                }), (reute) => false);
+              return Main();
+            }), (reute) => false);
             return Future<bool>.value(false);
           } else {
             return Future<bool>.value(true);
@@ -130,7 +130,7 @@ class _CouponState extends State<Coupon> {
         },
         child: Directionality(
           textDirection:
-          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+              app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
           child: Scaffold(
               backgroundColor: Colors.white,
               appBar: buildAppBar(context),
@@ -164,7 +164,7 @@ class _CouponState extends State<Coupon> {
                               ),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.center, // Center the Row
+                                    MainAxisAlignment.center, // Center the Row
                                 children: [
                                   Image.asset(
                                     "assets/point.png",
@@ -243,7 +243,7 @@ class _CouponState extends State<Coupon> {
               children: [
                 Padding(
                   padding: MediaQuery.of(context).viewPadding.top >
-                      30 //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
+                          30 //MediaQuery.of(context).viewPadding.top is the statusbar height, with a notch phone it results almost 50, without a notch it shows 24.0.For safety we have checked if its greater than thirty
                       ? const EdgeInsets.only(top: 36.0)
                       : const EdgeInsets.only(top: 14.0),
                   child: buildTopAppBarContainer(),
@@ -289,27 +289,27 @@ class _CouponState extends State<Coupon> {
     if (_isInitial && _orderList.length == 0) {
       return SingleChildScrollView(
           child: ListView.builder(
-            controller: _scrollController,
-            itemCount: 10,
-            scrollDirection: Axis.vertical,
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding:
+        controller: _scrollController,
+        itemCount: 10,
+        scrollDirection: Axis.vertical,
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding:
                 const EdgeInsets.symmetric(horizontal: 18.0, vertical: 14.0),
-                child: Shimmer.fromColors(
-                  baseColor: MyTheme.shimmer_base,
-                  highlightColor: MyTheme.shimmer_highlighted,
-                  child: Container(
-                    height: 75,
-                    width: double.infinity,
-                    color: Colors.white,
-                  ),
-                ),
-              );
-            },
-          ));
+            child: Shimmer.fromColors(
+              baseColor: MyTheme.shimmer_base,
+              highlightColor: MyTheme.shimmer_highlighted,
+              child: Container(
+                height: 75,
+                width: double.infinity,
+                color: Colors.white,
+              ),
+            ),
+          );
+        },
+      ));
     } else if (_orderList.length > 0) {
       return RefreshIndicator(
         color: MyTheme.accent_color,
@@ -325,7 +325,7 @@ class _CouponState extends State<Coupon> {
               height: 14,
             ),
             padding:
-            const EdgeInsets.only(left: 18, right: 18, top: 0, bottom: 0),
+                const EdgeInsets.only(left: 18, right: 18, top: 0, bottom: 0),
             itemCount: _orderList.length,
             scrollDirection: Axis.vertical,
             physics: NeverScrollableScrollPhysics(),
@@ -452,7 +452,7 @@ class _CouponState extends State<Coupon> {
             //           var response = await OrderRepository()
             //               .buyCoupon(_orderList[index].id);
             //           print(response);
-            //           ToastComponent.showDialog(response.message);
+            //           ToastComponent.showSnackBar(response.message);
             //           if (response.message == true) {
             //             _onRefresh();
             //             print(_orderList);

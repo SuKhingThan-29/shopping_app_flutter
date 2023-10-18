@@ -151,7 +151,7 @@ class _ProfileState extends State<Profile> {
         return Main();
       }), (route) => false);
     }
-    ToastComponent.showDialog(response.message);
+    ToastComponent.showSnackBar(context, response.message);
   }
 
   String counterText(String txt, {default_length = 3}) {
@@ -650,10 +650,10 @@ class _ProfileState extends State<Profile> {
   }
 
   showLoginWarning() {
-    return ToastComponent.showDialog(
-        AppLocalizations.of(context)!.you_need_to_log_in,
-        gravity: Toast.center,
-        duration: Toast.lengthLong);
+    return ToastComponent.showSnackBar(
+      context,
+      AppLocalizations.of(context)!.you_need_to_log_in,
+    );
   }
 
   deleteWarningDialog() {

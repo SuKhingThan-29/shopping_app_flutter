@@ -43,7 +43,7 @@ class _FollowedSellersState extends State<FollowedSellers> {
     if (shopResponse.result!) {
       reset();
     }
-    ToastComponent.showDialog(shopResponse.message!);
+    ToastComponent.showSnackBar(context, shopResponse.message!);
   }
 
   clearData() {

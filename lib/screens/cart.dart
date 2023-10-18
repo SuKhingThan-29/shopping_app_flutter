@@ -141,10 +141,10 @@ class _CartScreenState extends State<CartScreen> {
       getSetCartTotal();
       setState(() {});
     } else {
-      ToastComponent.showDialog(
-          "${AppLocalizations.of(context)!.cannot_order_more_than} ${_shopList[sellerIndex].cart_items[itemIndex].upper_limit} ${AppLocalizations.of(context)!.items_of_this_all_lower}",
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        "${AppLocalizations.of(context)!.cannot_order_more_than} ${_shopList[sellerIndex].cart_items[itemIndex].upper_limit} ${AppLocalizations.of(context)!.items_of_this_all_lower}",
+      );
     }
   }
 
@@ -157,10 +157,10 @@ class _CartScreenState extends State<CartScreen> {
       getSetCartTotal();
       setState(() {});
     } else {
-      ToastComponent.showDialog(
-          "${AppLocalizations.of(context)!.cannot_order_more_than} ${_shopList[sellerIndex].cart_items[itemIndex].lower_limit} ${AppLocalizations.of(context)!.items_of_this_all_lower}",
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        "${AppLocalizations.of(context)!.cannot_order_more_than} ${_shopList[sellerIndex].cart_items[itemIndex].lower_limit} ${AppLocalizations.of(context)!.items_of_this_all_lower}",
+      );
     }
   }
 
@@ -210,12 +210,13 @@ class _CartScreenState extends State<CartScreen> {
         await CartRepository().getCartDeleteResponse(cartId);
 
     if (cartDeleteResponse.result == true) {
-
       reset();
       fetchData();
     } else {
-      ToastComponent.showDialog(cartDeleteResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        cartDeleteResponse.message,
+      );
     }
   }
 
@@ -242,8 +243,10 @@ class _CartScreenState extends State<CartScreen> {
     }
 
     if (cartIds.length == 0) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.cart_is_empty,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.cart_is_empty,
+      );
       return;
     }
 
@@ -257,13 +260,13 @@ class _CartScreenState extends State<CartScreen> {
         .getCartProcessResponse(cartIdsString, cartQuantitiesString);
 
     if (cartProcessResponse.result == false) {
-      // ToastComponent.showDialog(cartProcessResponse.message,
+      // ToastComponent.showSnackBar(cartProcessResponse.message,
       //     gravity: Toast.center, duration: Toast.lengthLong);
       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(content: Text('${cartProcessResponse.message}')),
+        SnackBar(content: Text('${cartProcessResponse.message}')),
       );
     } else {
-      // ToastComponent.showDialog(cartProcessResponse.message,
+      // ToastComponent.showSnackBar(cartProcessResponse.message,
       //     gravity: Toast.center, duration: Toast.lengthLong);
 
       if (mode == "update") {
