@@ -257,8 +257,11 @@ class _CartScreenState extends State<CartScreen> {
         .getCartProcessResponse(cartIdsString, cartQuantitiesString);
 
     if (cartProcessResponse.result == false) {
-      ToastComponent.showDialog(cartProcessResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      // ToastComponent.showDialog(cartProcessResponse.message,
+      //     gravity: Toast.center, duration: Toast.lengthLong);
+      ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(content: Text('${cartProcessResponse.message}')),
+      );
     } else {
       // ToastComponent.showDialog(cartProcessResponse.message,
       //     gravity: Toast.center, duration: Toast.lengthLong);

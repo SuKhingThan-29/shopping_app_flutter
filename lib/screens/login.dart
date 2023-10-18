@@ -171,10 +171,10 @@ class _LoginState extends State<Login> {
       GoogleSignInAuthentication googleSignInAuthentication =
           await googleUser.authentication;
       String? accessToken = googleSignInAuthentication.accessToken;
-
-      print("Google displayName ${googleUser.displayName}");
-      print("Google email ${googleUser.email}");
-      print("Google googleUser.id ${googleUser.id}");
+      //
+      // print("Google displayName ${googleUser.displayName}");
+      // print("Google email ${googleUser.email}");
+      // print("Google googleUser.id ${googleUser.id}");
 
       var loginResponse = await AuthRepository().getSocialLoginResponse(
           "google", googleUser.displayName, googleUser.email, googleUser.id,

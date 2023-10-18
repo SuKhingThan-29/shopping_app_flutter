@@ -19,11 +19,11 @@ class PaymentStatus {
 
   static List<PaymentStatus> getPaymentStatusList() {
     return <PaymentStatus>[
-      PaymentStatus('', AppLocalizations.of(OneContext().context!)!.all_ucf),
+      PaymentStatus('', 'All'),
       PaymentStatus(
-          'paid', AppLocalizations.of(OneContext().context!)!.paid_ucf),
+          'paid', 'Paid'),
       PaymentStatus(
-          'unpaid', AppLocalizations.of(OneContext().context!)!.unpaid_ucf),
+          'unpaid', 'Unpaid'),
     ];
   }
 }
@@ -36,13 +36,13 @@ class DeliveryStatus {
 
   static List<DeliveryStatus> getDeliveryStatusList() {
     return <DeliveryStatus>[
-      DeliveryStatus('', AppLocalizations.of(OneContext().context!)!.all_ucf),
+      DeliveryStatus('', 'All'),
       DeliveryStatus('confirmed',
-          AppLocalizations.of(OneContext().context!)!.confirmed_ucf),
+          'Confirmed'),
       DeliveryStatus('on_delivery',
-          AppLocalizations.of(OneContext().context!)!.on_delivery_ucf),
+          'Cash on Delivery'),
       DeliveryStatus('delivered',
-          AppLocalizations.of(OneContext().context!)!.delivered_ucf),
+          'Delivered'),
     ];
   }
 }
@@ -291,7 +291,7 @@ class _OrderListState extends State<OrderList> {
             decoration: BoxDecorations.buildBoxDecoration_1(),
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             height: 36,
-            width: MediaQuery.of(context).size.width * .4,
+            width: MediaQuery.of(context).size.width * .49,
             child: new DropdownButton<DeliveryStatus>(
               icon: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
