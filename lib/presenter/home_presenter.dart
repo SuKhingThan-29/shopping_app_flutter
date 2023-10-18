@@ -148,9 +148,6 @@ class HomePresenter extends ChangeNotifier {
   }
 
   fetchAllProducts({String tab = ""}) async {
-    // var productResponse =
-    //     await ProductRepository().getFilteredProducts(page: allProductPage);
-
     print("Tab Selected $tab");
     var productResponse;
 
