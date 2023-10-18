@@ -174,29 +174,7 @@ class _MainScreenState extends State<MyApp> {
     version: 'Unknown',
     buildNumber: 'Unknown',
   );
-  getUserInfo() async {
-    var version = await ProfileRepository().getVersion();
-    print(Platform.isAndroid);
 
-    setState(() {
-      print(ver);
-      if (Platform.isAndroid) {
-        ver = version.android.mobileVersion;
-        print('mobileversion $ver');
-      } else {
-        ver = version.ios.mobileVersion;
-        print('mobileversion $ver');
-      }
-    });
-
-  }
-
-  Future<void> _initPackageInfo() async {
-    final PackageInfo info = await PackageInfo.fromPlatform();
-    setState(() {
-      _packageInfo = info;
-    });
-  }
   @override
   void initState() {
     super.initState();
@@ -214,29 +192,7 @@ class _MainScreenState extends State<MyApp> {
       print('A new onMessageOpenedApp event was published!');
 
     });
-    getUserInfo();
-    _initPackageInfo();
-    print("version: $ver");
-    print("version: ${_packageInfo.version}");
 
-
-  }
-  Future<String?> getSharedValueHelperData() async {
-    access_token.load().whenComplete(() {
-      AuthHelper().fetch_and_set();
-    });
-    AddonsHelper().setAddonsData();
-    BusinessSettingHelper().setBusinessSettingData();
-    await app_language.load();
-    await app_mobile_language.load();
-    await app_language_rtl.load();
-    await system_currency.load();
-    Provider.of<CurrencyPresenter>(context, listen: false).fetchListData();
-
-    print("new splash screen ${app_mobile_language.$}");
-    print("new splash screen app_language_rtl ${app_language_rtl.$}");
-
-    return app_mobile_language.$;
   }
   @override
   Widget build(BuildContext context) {
