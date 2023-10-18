@@ -38,7 +38,6 @@ class _SelectAddressState extends State<SelectAddress> {
   List<dynamic> _shippingAddressList = [];
   List<dynamic> _selectedAddressList = [];
 
-
   // List<PickupPoint> _pickupList = [];
   // List<City> _cityList = [];
   // List<Country> _countryList = [];
@@ -187,10 +186,10 @@ class _SelectAddressState extends State<SelectAddress> {
 
   onPressProceed(context) async {
     if (_seleted_shipping_address == 0) {
-      ToastComponent.showDialog(
-          LangText(context).local.choose_an_address_or_pickup_point,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        LangText(context).local.choose_an_address_or_pickup_point,
+      );
       return;
     }
 
@@ -200,47 +199,57 @@ class _SelectAddressState extends State<SelectAddress> {
       print(_seleted_shipping_address.toString() + "dddd");
       addressUpdateInCartResponse = await AddressRepository()
           .getAddressUpdateInCartResponse(
-          address_id: _seleted_shipping_address);
+              address_id: _seleted_shipping_address);
       if (addressUpdateInCartResponse.result == false) {
-        ToastComponent.showDialog(addressUpdateInCartResponse.message,
-            gravity: Toast.center, duration: Toast.lengthLong);
+        ToastComponent.showSnackBar(
+          context,
+          addressUpdateInCartResponse.message,
+        );
         return;
       }
       print("Address id: $_seleted_shipping_address");
       _shippingAddressList.forEach((i) {
-   if(i.id==_seleted_shipping_address){
-     if(i.address==null || i.address==''){
-       ToastComponent.showSnackBar(context,'Your address is not complete',
-           );
-       return;
-     }
-     else if(i.country_name==null || i.country_name=="" ){
+        if (i.id == _seleted_shipping_address) {
+          if (i.address == null || i.address == '') {
+            ToastComponent.showSnackBar(
+              context,
+              'Your address is not complete',
+            );
+            return;
+          } else if (i.country_name == null || i.country_name == "") {
+            ToastComponent.showSnackBar(
+              context,
+              'Your countryname is not complete',
+            );
+            return;
+          } else if (i.state_name == null || i.state_name == "") {
+            ToastComponent.showSnackBar(
+              context,
+              'Your state name is not complete',
+            );
 
-       ToastComponent.showSnackBar(context,'Your countryname is not complete',
-       );
-       return;
-     }else if(i.state_name==null || i.state_name==""){
-       ToastComponent.showSnackBar(context,'Your state name is not complete',
-       );
-
-       return;
-     }else if(i.city_name==null || i.city_name=="" ){
-       ToastComponent.showSnackBar(context,'Your city name is not complete',
-       );
-       return;
-     }else if(i.phone==null || i.phone==''){
-       ToastComponent.showSnackBar(context,'Your phone no is not complete',
-       );
-       return;
-     }else{
-       Navigator.push(context, MaterialPageRoute(builder: (context) {
-         return ShippingInfo(_seleted_shipping_address!);
-       })).then((value) {
-         onPopped(value);
-       });
-     }
-   }
- });
+            return;
+          } else if (i.city_name == null || i.city_name == "") {
+            ToastComponent.showSnackBar(
+              context,
+              'Your city name is not complete',
+            );
+            return;
+          } else if (i.phone == null || i.phone == '') {
+            ToastComponent.showSnackBar(
+              context,
+              'Your phone no is not complete',
+            );
+            return;
+          } else {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return ShippingInfo(_seleted_shipping_address!);
+            })).then((value) {
+              onPopped(value);
+            });
+          }
+        }
+      });
     }
   }
 
@@ -249,13 +258,17 @@ class _SelectAddressState extends State<SelectAddress> {
         await AddressRepository().getAddressMakeDefaultResponse(index);
 
     if (addressMakeDefaultResponse.result == false) {
-      ToastComponent.showDialog(addressMakeDefaultResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        addressMakeDefaultResponse.message,
+      );
       return;
     }
 
-    ToastComponent.showDialog(addressMakeDefaultResponse.message,
-        gravity: Toast.center, duration: Toast.lengthLong);
+    ToastComponent.showSnackBar(
+      context,
+      addressMakeDefaultResponse.message,
+    );
 
     setState(() {
       _default_shipping_address = index;
@@ -308,13 +321,17 @@ class _SelectAddressState extends State<SelectAddress> {
         await AddressRepository().getAddressDeleteResponse(id);
 
     if (addressDeleteResponse.result == false) {
-      ToastComponent.showDialog(addressDeleteResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        addressDeleteResponse.message,
+      );
       return;
     }
 
-    ToastComponent.showDialog(addressDeleteResponse.message,
-        gravity: Toast.center, duration: Toast.lengthLong);
+    ToastComponent.showSnackBar(
+      context,
+      addressDeleteResponse.message,
+    );
 
     afterDeletingAnAddress();
   }
@@ -325,34 +342,42 @@ class _SelectAddressState extends State<SelectAddress> {
     var phone = _phoneController.text.toString();
 
     if (address == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_address_ucf,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_address_ucf,
+      );
       return;
     }
 
     if (_selected_country == null) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.select_a_country,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.select_a_country,
+      );
       return;
     }
 
     if (_selected_state == null) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.select_a_state,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.select_a_state,
+      );
       return;
     }
 
     if (_selected_city == null) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.select_a_city,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.select_a_city,
+      );
       return;
     }
 
     if (_phoneController.text.toString().isEmpty) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.enter_phone_number,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_phone_number,
+      );
       return;
     }
 
@@ -365,13 +390,17 @@ class _SelectAddressState extends State<SelectAddress> {
         phone: phone);
 
     if (addressAddResponse.result == false) {
-      ToastComponent.showDialog(addressAddResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        addressAddResponse.message,
+      );
       return;
     }
 
-    ToastComponent.showDialog(addressAddResponse.message,
-        gravity: Toast.center, duration: Toast.lengthLong);
+    ToastComponent.showSnackBar(
+      context,
+      addressAddResponse.message,
+    );
 
     Navigator.of(context, rootNavigator: true).pop();
     afterAddingAnAddress();
@@ -383,26 +412,34 @@ class _SelectAddressState extends State<SelectAddress> {
     var phone = _phoneControllerListForUpdate[index].text.toString();
 
     if (address == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_address_ucf,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_address_ucf,
+      );
       return;
     }
 
     if (_selected_country_list_for_update[index] == null) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.select_a_country,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.select_a_country,
+      );
       return;
     }
 
     if (_selected_state_list_for_update[index] == null) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.select_a_state,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.select_a_state,
+      );
       return;
     }
 
     if (_selected_city_list_for_update[index] == null) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.select_a_city,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.select_a_city,
+      );
       return;
     }
 
@@ -417,13 +454,17 @@ class _SelectAddressState extends State<SelectAddress> {
             phone: phone);
 
     if (addressUpdateResponse.result == false) {
-      ToastComponent.showDialog(addressUpdateResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        addressUpdateResponse.message,
+      );
       return;
     }
 
-    ToastComponent.showSnackBar(context,addressUpdateResponse.message,
-      );
+    ToastComponent.showSnackBar(
+      context,
+      addressUpdateResponse.message,
+    );
 
     Navigator.of(context, rootNavigator: true).pop();
     afterUpdatingAnAddress();
@@ -754,7 +795,6 @@ class _SelectAddressState extends State<SelectAddress> {
         if (_seleted_shipping_address != _shippingAddressList[index].id) {
           _seleted_shipping_address = _shippingAddressList[index].id;
 
-
           // onAddressSwitch();
         }
         //detectShippingOption();
@@ -762,10 +802,15 @@ class _SelectAddressState extends State<SelectAddress> {
       },
       child: Column(
         children: [
-          _seleted_shipping_address==_shippingAddressList[index].id ?Container(
-            padding: EdgeInsets.all(0),
-            child: Text("Set as your default address*",style: TextStyle(color: Colors.red,fontSize: 18),),
-          ):Container(),
+          _seleted_shipping_address == _shippingAddressList[index].id
+              ? Container(
+                  padding: EdgeInsets.all(0),
+                  child: Text(
+                    "Set as your default address*",
+                    style: TextStyle(color: Colors.red, fontSize: 18),
+                  ),
+                )
+              : Container(),
           Card(
             color: _seleted_shipping_address == _shippingAddressList[index].id
                 ? Colors.grey.shade300

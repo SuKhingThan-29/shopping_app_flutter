@@ -258,10 +258,10 @@ class _ProductDetailsState extends State<ProductDetails>
 
   onWishTap() {
     if (is_logged_in.$ == false) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.you_need_to_log_in,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.you_need_to_log_in,
+      );
       return;
     }
 
@@ -321,9 +321,7 @@ class _ProductDetailsState extends State<ProductDetails>
       }
       pindex++;
     });
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   reset() {
@@ -387,7 +385,7 @@ class _ProductDetailsState extends State<ProductDetails>
 
   addToCart({mode, context, snackbar}) async {
     if (is_logged_in.$ == false) {
-      // ToastComponent.showDialog(AppLocalizations.of(context).common_login_warning, context,
+      // ToastComponent.showSnackBar(AppLocalizations.of(context).common_login_warning, context,
       //     gravity: Toast.center, duration: Toast.lengthLong);
       Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
       return;
@@ -402,8 +400,10 @@ class _ProductDetailsState extends State<ProductDetails>
         .getCartAddResponse(widget.id, _variant, user_id.$, _quantity);
 
     if (cartAddResponse.result == false) {
-      ToastComponent.showDialog(cartAddResponse.message,
-          gravity: Toast.bottom, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        cartAddResponse.message,
+      );
       return;
     } else {
       Provider.of<CartCounter>(context, listen: false).getCount();
@@ -734,10 +734,10 @@ class _ProductDetailsState extends State<ProductDetails>
   }
 
   showLoginWarning() {
-    return ToastComponent.showDialog(
-        AppLocalizations.of(context)!.you_need_to_log_in,
-        gravity: Toast.center,
-        duration: Toast.lengthLong);
+    return ToastComponent.showSnackBar(
+      context,
+      AppLocalizations.of(context)!.you_need_to_log_in,
+    );
   }
 
   onPressSendMessage() async {
@@ -750,10 +750,10 @@ class _ProductDetailsState extends State<ProductDetails>
     var message = sellerChatMessageController.text.toString();
 
     if (title == "" || message == "") {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.title_or_message_empty_warning,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.title_or_message_empty_warning,
+      );
       return;
     }
 
@@ -764,10 +764,10 @@ class _ProductDetailsState extends State<ProductDetails>
     Navigator.of(loadingcontext).pop();
 
     if (conversationCreateResponse.result == false) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.could_not_create_conversation,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.could_not_create_conversation,
+      );
       return;
     }
 
@@ -1145,11 +1145,11 @@ class _ProductDetailsState extends State<ProductDetails>
                         InkWell(
                           onTap: () {
                             if (_productDetails!.video_link == "") {
-                              ToastComponent.showDialog(
-                                  AppLocalizations.of(context)!
-                                      .video_not_available,
-                                  gravity: Toast.center,
-                                  duration: Toast.lengthLong);
+                              ToastComponent.showSnackBar(
+                                context,
+                                AppLocalizations.of(context)!
+                                    .video_not_available,
+                              );
                               return;
                             }
 
@@ -1499,9 +1499,10 @@ class _ProductDetailsState extends State<ProductDetails>
                     InkWell(
                         onTap: () {
                           if (is_logged_in == false) {
-                            ToastComponent.showDialog("You need to log in",
-                                gravity: Toast.center,
-                                duration: Toast.lengthLong);
+                            ToastComponent.showSnackBar(
+                              context,
+                              "You need to log in",
+                            );
                             return;
                           }
 

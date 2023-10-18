@@ -86,8 +86,10 @@ class _ProfileEditState extends State<ProfileEdit> {
     }
 
     if (_file == null) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.no_file_is_chosen,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.no_file_is_chosen,
+      );
       return;
     }
 
@@ -102,12 +104,16 @@ class _ProfileEditState extends State<ProfileEdit> {
     );
 
     if (profileImageUpdateResponse.result == false) {
-      ToastComponent.showDialog(profileImageUpdateResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        profileImageUpdateResponse.message,
+      );
       return;
     } else {
-      ToastComponent.showDialog(profileImageUpdateResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        profileImageUpdateResponse.message,
+      );
 
       avatar_original.$ = profileImageUpdateResponse.path;
       setState(() {});
@@ -121,15 +127,17 @@ class _ProfileEditState extends State<ProfileEdit> {
     var phone = _phoneController.text.toString();
 
     if (name == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_your_name,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_your_name,
+      );
       return;
     }
     if (phone == "") {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.enter_phone_number,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_phone_number,
+      );
       return;
     }
 
@@ -139,11 +147,15 @@ class _ProfileEditState extends State<ProfileEdit> {
         .getProfileUpdateResponse(post_body: post_body);
 
     if (profileUpdateResponse.result == false) {
-      ToastComponent.showDialog(profileUpdateResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        profileUpdateResponse.message,
+      );
     } else {
-      ToastComponent.showDialog(profileUpdateResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        profileUpdateResponse.message,
+      );
 
       user_name.$ = name;
       user_phone.$ = phone;
@@ -160,30 +172,32 @@ class _ProfileEditState extends State<ProfileEdit> {
             ""; // if both fields are empty we will not change user's password
 
     if (!change_password && password == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_password,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_password,
+      );
       return;
     }
     if (!change_password && password_confirm == "") {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.confirm_your_password,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.confirm_your_password,
+      );
       return;
     }
     if (change_password && password.length < 6) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!
-              .password_must_contain_at_least_6_characters,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!
+            .password_must_contain_at_least_6_characters,
+      );
       return;
     }
     if (change_password && password != password_confirm) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.passwords_do_not_match,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.passwords_do_not_match,
+      );
       return;
     }
 
@@ -195,11 +209,15 @@ class _ProfileEditState extends State<ProfileEdit> {
     );
 
     if (profileUpdateResponse.result == false) {
-      ToastComponent.showDialog(profileUpdateResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        profileUpdateResponse.message,
+      );
     } else {
-      ToastComponent.showDialog(profileUpdateResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        profileUpdateResponse.message,
+      );
       setState(() {});
     }
   }

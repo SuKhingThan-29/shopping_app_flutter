@@ -48,7 +48,7 @@ class _SellerDetailsState extends State<SellerDetails> {
   bool _topProductInit = false;
   List<dynamic> _featuredProducts = [];
   bool _featuredProductInit = false;
-  bool? _isThisSellerFollowed ;
+  bool? _isThisSellerFollowed;
 
   List<dynamic> _allProductList = [];
   bool? _isInitialAllProduct;
@@ -67,11 +67,12 @@ class _SellerDetailsState extends State<SellerDetails> {
 
       if (_mainScrollController.position.pixels ==
           _mainScrollController.position.maxScrollExtent) {
-        if(tabOptionIndex ==2) {
-          ToastComponent.showDialog(LangText(context).local!.loading_more_products_ucf);
+        if (tabOptionIndex == 2) {
+          ToastComponent.showSnackBar(
+              context, LangText(context).local!.loading_more_products_ucf);
           setState(() {
-          _page++;
-        });
+            _page++;
+          });
           fetchAllProductData();
         }
       }
@@ -79,38 +80,34 @@ class _SellerDetailsState extends State<SellerDetails> {
     super.initState();
   }
 
-  Future  addFollow(id) async {
+  Future addFollow(id) async {
     print(id);
     var shopResponse = await ShopRepository().followedAdd(widget.id);
     //if(shopResponse.result){
-      _isThisSellerFollowed = shopResponse.result;
-      setState((){});
+    _isThisSellerFollowed = shopResponse.result;
+    setState(() {});
     //}
-    ToastComponent.showDialog(shopResponse.message!);
+    ToastComponent.showSnackBar(context, shopResponse.message!);
   }
 
+  Future removedFollow(id) async {
+    var shopResponse = await ShopRepository().followedRemove(id);
 
-  Future  removedFollow(id) async {
-    var shopResponse = await ShopRepository().followedRemove(id );
-
-    if(shopResponse.result!){
+    if (shopResponse.result!) {
       _isThisSellerFollowed = false;
-      setState((){});
+      setState(() {});
     }
-    ToastComponent.showDialog(shopResponse.message!);
+    ToastComponent.showSnackBar(context, shopResponse.message!);
   }
 
-
-  Future  checkFollowed() async {
+  Future checkFollowed() async {
     var shopResponse = await ShopRepository().followedCheck(widget.id);
     print(shopResponse.result);
     print(shopResponse.message);
 
-
-      _isThisSellerFollowed = shopResponse.result;
-      setState((){});
+    _isThisSellerFollowed = shopResponse.result;
+    setState(() {});
   }
-
 
   @override
   void dispose() {
@@ -119,15 +116,17 @@ class _SellerDetailsState extends State<SellerDetails> {
     super.dispose();
   }
 
-
   fetchAllProductData() async {
-    var productResponse = await ProductRepository().getShopProducts(id:widget.id,page: _page,);
+    var productResponse = await ProductRepository().getShopProducts(
+      id: widget.id,
+      page: _page,
+    );
     _allProductList.addAll(productResponse.products!);
     _allProductList.addAll(productResponse.products!);
     _isInitialAllProduct = false;
     setState(() {});
   }
-  
+
   fetchAll() {
     checkFollowed();
     fetchShopDetails();
@@ -141,7 +140,7 @@ class _SellerDetailsState extends State<SellerDetails> {
     var shopDetailsResponse = await ShopRepository().getShopInfo(id: widget.id);
 
     //print('ss:' + shopDetailsResponse.toString());
-    if (shopDetailsResponse.shop !=null) {
+    if (shopDetailsResponse.shop != null) {
       _shopDetails = shopDetailsResponse.shop;
     }
 
@@ -189,10 +188,10 @@ class _SellerDetailsState extends State<SellerDetails> {
     _newArrivalProductInit = false;
     _featuredProductInit = false;
 
-     _allProductList.clear();
-     _isInitialAllProduct = true;
-     _page = 1;
-     _isThisSellerFollowed = null;
+    _allProductList.clear();
+    _isInitialAllProduct = true;
+    _page = 1;
+    _isThisSellerFollowed = null;
 
     setState(() {});
   }
@@ -205,7 +204,8 @@ class _SellerDetailsState extends State<SellerDetails> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+      textDirection:
+          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
           appBar: buildAppBar(context),
           //bottomNavigationBar: buildBottomAppBar(context),
@@ -253,29 +253,26 @@ class _SellerDetailsState extends State<SellerDetails> {
   }
 
   Widget buildTabBarBody(BuildContext context) {
-
-    if(tabOptionIndex==1){
-     return
-       // false
-     _shopDetails !=null
-         ?
-       buildTopSelling(context):ShimmerHelper().buildProductGridShimmer();
+    if (tabOptionIndex == 1) {
+      return
+          // false
+          _shopDetails != null
+              ? buildTopSelling(context)
+              : ShimmerHelper().buildProductGridShimmer();
     }
-       if(tabOptionIndex==2){
-     return
-       // false
-       _shopDetails !=null
-           ?
-       buildAllProducts(context):
-     ShimmerHelper().buildProductGridShimmer();
+    if (tabOptionIndex == 2) {
+      return
+          // false
+          _shopDetails != null
+              ? buildAllProducts(context)
+              : ShimmerHelper().buildProductGridShimmer();
     }
 
-   return
-     //false
-     _shopDetails !=null
-       ?
-   buildStoreHome(context):
-   buildStoreHomeShimmer(context);
+    return
+        //false
+        _shopDetails != null
+            ? buildStoreHome(context)
+            : buildStoreHomeShimmer(context);
   }
 
   Container buildTopSelling(BuildContext context) {
@@ -354,6 +351,7 @@ class _SellerDetailsState extends State<SellerDetails> {
       ],
     );
   }
+
   Widget buildStoreHomeShimmer(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -366,8 +364,8 @@ class _SellerDetailsState extends State<SellerDetails> {
             18.0,
             0.0,
           ),
-
-          child: ShimmerHelper().buildBasicShimmer(height: 15,width:90,radius: 0),
+          child: ShimmerHelper()
+              .buildBasicShimmer(height: 15, width: 90, radius: 0),
         ),
         ShimmerHelper().buildProductGridShimmer(),
       ],
@@ -398,7 +396,7 @@ class _SellerDetailsState extends State<SellerDetails> {
           ),
           Container(
             height: 239,
-            padding: EdgeInsets.only(top: 10,bottom: 20),
+            padding: EdgeInsets.only(top: 10, bottom: 20),
             width: double.infinity,
             child: ListView.separated(
                 scrollDirection: Axis.horizontal,
@@ -444,31 +442,33 @@ class _SellerDetailsState extends State<SellerDetails> {
             padding: const EdgeInsets.only(left: 18.0, top: 20),
             child: Column(
               children: [
-                ShimmerHelper().buildBasicShimmer(height: 15,width: 90,radius: 0),
+                ShimmerHelper()
+                    .buildBasicShimmer(height: 15, width: 90, radius: 0),
               ],
             ),
           ),
           Container(
             height: 239,
-            padding: EdgeInsets.only(top: 10,bottom: 20),
+            padding: EdgeInsets.only(top: 10, bottom: 20),
             width: double.infinity,
             child: ListView.separated(
               itemCount: 10,
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 18),
-                itemBuilder: (context, index) {
-                  return Container(
-                    height: 196,
-                    width: 124,
-                    child:  ShimmerHelper().buildBasicShimmer(height: 196,width: 124),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return Container(
-                    width: 14,
-                  );
-                },
-                ),
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(horizontal: 18),
+              itemBuilder: (context, index) {
+                return Container(
+                  height: 196,
+                  width: 124,
+                  child: ShimmerHelper()
+                      .buildBasicShimmer(height: 196, width: 124),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Container(
+                  width: 14,
+                );
+              },
+            ),
           )
         ],
       ),
@@ -549,9 +549,7 @@ class _SellerDetailsState extends State<SellerDetails> {
       decoration: BoxDecorations.buildBoxDecoration_1(),
       child: Btn.basic(
         padding: EdgeInsets.zero,
-        color: tabOptionIndex == index
-            ? MyTheme.accent_color
-            : MyTheme.white,
+        color: tabOptionIndex == index ? MyTheme.accent_color : MyTheme.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(6),
         ),
@@ -693,7 +691,7 @@ class _SellerDetailsState extends State<SellerDetails> {
   }
 
   Widget buildTopSellingProducts() {
-    return  MasonryGridView.count(
+    return MasonryGridView.count(
         crossAxisCount: 2,
         mainAxisSpacing: 14,
         crossAxisSpacing: 14,
@@ -703,14 +701,14 @@ class _SellerDetailsState extends State<SellerDetails> {
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return ProductCard(
-              id: _topProducts[index].id,
-              image: _topProducts[index].thumbnail_image,
-              name: _topProducts[index].name,
-              main_price: _topProducts[index].main_price,
-              stroked_price: _topProducts[index].stroked_price,
-              has_discount: _topProducts[index].has_discount,
-              discount: _topProducts[index].discount,
-            is_wholesale:_topProducts[index].isWholesale ,
+            id: _topProducts[index].id,
+            image: _topProducts[index].thumbnail_image,
+            name: _topProducts[index].name,
+            main_price: _topProducts[index].main_price,
+            stroked_price: _topProducts[index].stroked_price,
+            has_discount: _topProducts[index].has_discount,
+            discount: _topProducts[index].discount,
+            is_wholesale: _topProducts[index].isWholesale,
           );
         });
   }
@@ -730,25 +728,23 @@ class _SellerDetailsState extends State<SellerDetails> {
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             return ProductCard(
-                id: _newArrivalProducts[index].id,
-                image: _newArrivalProducts[index].thumbnail_image,
-                name: _newArrivalProducts[index].name,
-                main_price: _newArrivalProducts[index].main_price,
-                stroked_price: _newArrivalProducts[index].stroked_price,
-                has_discount: _newArrivalProducts[index].has_discount,
-                discount: _newArrivalProducts[index].discount,
-                is_wholesale: _newArrivalProducts[index].isWholesale,
+              id: _newArrivalProducts[index].id,
+              image: _newArrivalProducts[index].thumbnail_image,
+              name: _newArrivalProducts[index].name,
+              main_price: _newArrivalProducts[index].main_price,
+              stroked_price: _newArrivalProducts[index].stroked_price,
+              has_discount: _newArrivalProducts[index].has_discount,
+              discount: _newArrivalProducts[index].discount,
+              is_wholesale: _newArrivalProducts[index].isWholesale,
             );
           });
     } else if (_newArrivalProducts.length == 0) {
       return Center(
-          child: Text(
-              AppLocalizations.of(context)!.no_product_is_available));
+          child: Text(AppLocalizations.of(context)!.no_product_is_available));
     } else {
       return Container(); // should never be happening
     }
   }
-
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
@@ -857,7 +853,7 @@ class _SellerDetailsState extends State<SellerDetails> {
                   placeholder: 'assets/placeholder.png',
                   image: _shopDetails.logo,
                   fit: BoxFit.cover,
-                  imageErrorBuilder: (BuildContext, Object, StackTrace){
+                  imageErrorBuilder: (BuildContext, Object, StackTrace) {
                     return Image.asset('assets/placeholder_rectangle.png');
                   },
                 ),
@@ -900,30 +896,44 @@ class _SellerDetailsState extends State<SellerDetails> {
               decoration: BoxDecorations.buildBoxDecoration_1(),
               child: Btn.basic(
                 padding: EdgeInsets.zero,
-                color:_isThisSellerFollowed!=null && _isThisSellerFollowed!?MyTheme.green_light:MyTheme.amber,
+                color: _isThisSellerFollowed != null && _isThisSellerFollowed!
+                    ? MyTheme.green_light
+                    : MyTheme.amber,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
-                    side: BorderSide(color:_isThisSellerFollowed!=null && _isThisSellerFollowed!?MyTheme.green: MyTheme.golden)),
+                    side: BorderSide(
+                        color: _isThisSellerFollowed != null &&
+                                _isThisSellerFollowed!
+                            ? MyTheme.green
+                            : MyTheme.golden)),
                 onPressed: () {
-                  if(!is_logged_in.$){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  if (!is_logged_in.$) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
                       return Login();
                     }));
                     return;
                   }
-                  if(_isThisSellerFollowed != null){
-
-                    if(_isThisSellerFollowed!){
+                  if (_isThisSellerFollowed != null) {
+                    if (_isThisSellerFollowed!) {
                       removedFollow(widget.id);
-                    }else{
+                    } else {
                       addFollow(widget.id);
                     }
                   }
+
                   ///TODO Seller
                 },
                 child: Text(
-                  _isThisSellerFollowed != null && _isThisSellerFollowed! ?LangText(context).local!.followed_ucf:LangText(context).local!.follow_ucf,
-                  style: TextStyle(fontSize: 10, color: _isThisSellerFollowed!=null &&_isThisSellerFollowed!?MyTheme.green:MyTheme.golden),
+                  _isThisSellerFollowed != null && _isThisSellerFollowed!
+                      ? LangText(context).local!.followed_ucf
+                      : LangText(context).local!.follow_ucf,
+                  style: TextStyle(
+                      fontSize: 10,
+                      color: _isThisSellerFollowed != null &&
+                              _isThisSellerFollowed!
+                          ? MyTheme.green
+                          : MyTheme.golden),
                 ),
               ),
             )
@@ -1002,8 +1012,7 @@ class _SellerDetailsState extends State<SellerDetails> {
           ratingWidget: RatingWidget(
             full: Icon(Icons.star, color: Colors.amber),
             half: Icon(Icons.star_half, color: Colors.amber),
-            empty:
-                Icon(Icons.star, color: Color.fromRGBO(224, 224, 225, 1)),
+            empty: Icon(Icons.star, color: Color.fromRGBO(224, 224, 225, 1)),
           ),
           itemPadding: EdgeInsets.only(right: 4.0),
           onRatingUpdate: (rating) {
@@ -1014,9 +1023,8 @@ class _SellerDetailsState extends State<SellerDetails> {
     );
   }
 
-
   Widget buildAllProductList() {
-    return  MasonryGridView.count(
+    return MasonryGridView.count(
         crossAxisCount: 2,
         mainAxisSpacing: 14,
         crossAxisSpacing: 14,
@@ -1026,14 +1034,14 @@ class _SellerDetailsState extends State<SellerDetails> {
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return ProductCard(
-              id: _allProductList[index].id,
-              image: _allProductList[index].thumbnail_image,
-              name: _allProductList[index].name,
-              main_price: _allProductList[index].main_price,
-              stroked_price: _allProductList[index].stroked_price,
-              has_discount: _allProductList[index].has_discount,
-              discount: _allProductList[index].discount,
-              is_wholesale: _allProductList[index].isWholesale,
+            id: _allProductList[index].id,
+            image: _allProductList[index].thumbnail_image,
+            name: _allProductList[index].name,
+            main_price: _allProductList[index].main_price,
+            stroked_price: _allProductList[index].stroked_price,
+            has_discount: _allProductList[index].has_discount,
+            discount: _allProductList[index].discount,
+            is_wholesale: _allProductList[index].isWholesale,
           );
         });
   }

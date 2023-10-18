@@ -65,8 +65,10 @@ class _WishlistState extends State<Wishlist> {
         await WishListRepository().delete(wishlist_id: wishlistId);
 
     if (wishlistDeleteResponse.result == true) {
-      ToastComponent.showDialog(wishlistDeleteResponse.message,
-          gravity: Toast.top, duration: Toast.lengthShort);
+      ToastComponent.showSnackBar(
+        context,
+        wishlistDeleteResponse.message,
+      );
     }
   }
 

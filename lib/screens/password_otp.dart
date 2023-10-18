@@ -64,31 +64,35 @@ class _PasswordOtpState extends State<PasswordOtp> {
     var password_confirm = _passwordConfirmController.text.toString();
 
     if (code == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_the_code,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_the_code,
+      );
       return;
     } else if (password == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_password,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_password,
+      );
       return;
     } else if (password_confirm == "") {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.confirm_your_password,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.confirm_your_password,
+      );
       return;
     } else if (password.length < 6) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!
-              .password_must_contain_at_least_6_characters,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!
+            .password_must_contain_at_least_6_characters,
+      );
       return;
     } else if (password != password_confirm) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.passwords_do_not_match,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.passwords_do_not_match,
+      );
       return;
     }
 
@@ -96,11 +100,15 @@ class _PasswordOtpState extends State<PasswordOtp> {
         await AuthRepository().getPasswordConfirmResponse(code, password);
 
     if (passwordConfirmResponse.result == false) {
-      ToastComponent.showDialog(passwordConfirmResponse.message!,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        passwordConfirmResponse.message!,
+      );
     } else {
-      ToastComponent.showDialog(passwordConfirmResponse.message!,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        passwordConfirmResponse.message!,
+      );
 
       headeText = AppLocalizations.of(context)!.password_changed_ucf;
       cardController.toggleCard();
@@ -113,11 +121,15 @@ class _PasswordOtpState extends State<PasswordOtp> {
         .getPasswordResendCodeResponse(widget.email_or_code, widget.verify_by);
 
     if (passwordResendCodeResponse.result == false) {
-      ToastComponent.showDialog(passwordResendCodeResponse.message!,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        passwordResendCodeResponse.message!,
+      );
     } else {
-      ToastComponent.showDialog(passwordResendCodeResponse.message!,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        passwordResendCodeResponse.message!,
+      );
     }
   }
 
