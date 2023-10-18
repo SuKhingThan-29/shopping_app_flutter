@@ -85,7 +85,6 @@ class _WalletState extends State<Wallet> {
     } else {}
     _rechargeListInit = false;
     _showRechageLoadingContainer = false;
-
   }
 
   reset() {
@@ -107,10 +106,10 @@ class _WalletState extends State<Wallet> {
     var amount_String = _amountController.text.toString();
 
     if (amount_String == "") {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.amount_cannot_be_empty,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.amount_cannot_be_empty,
+      );
       return;
     }
 

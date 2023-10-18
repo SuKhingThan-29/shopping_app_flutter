@@ -224,10 +224,10 @@ class _ShippingInfoState extends State<ShippingInfo> {
 
     if (_sellerWiseShippingOptionValidation.isNotEmpty &&
         carrier_base_shipping.$) {
-      ToastComponent.showDialog(
-          LangText(context).local.please_choose_valid_info,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        LangText(context).local.please_choose_valid_info,
+      );
       return;
     }
 
@@ -235,8 +235,10 @@ class _ShippingInfoState extends State<ShippingInfo> {
         .getShippingCostResponse(shipping_type: _sellerWiseShippingOption);
 
     if (shippingCostResponse.result == false) {
-      ToastComponent.showDialog(LangText(context).local.network_error,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        LangText(context).local.network_error,
+      );
       return;
     }
 
@@ -949,14 +951,14 @@ class _ShippingInfoState extends State<ShippingInfo> {
                     fontWeight: FontWeight.w600),
               ),
               onPressed: () {
-                if(_delivery.length==0){
-                  ToastComponent.showSnackBar(context,
-                      "There is no delivery service in your city.",
-                      );
-                }else{
+                if (_delivery.length == 0) {
+                  ToastComponent.showSnackBar(
+                    context,
+                    "There is no delivery service in your city.",
+                  );
+                } else {
                   onPressProceed(context);
                 }
-
               },
             )
           ],
@@ -1539,7 +1541,7 @@ class SellerWithForReqBody {
 
 //   onPressProceed(context) async {
 //     if (_seleted_shipping_address == 0) {
-//       ToastComponent.showDialog(
+//       ToastComponent.showSnackBar(
 //           LangText(context).local!.choose_an_address_or_pickup_point,
 //           gravity: Toast.center,
 //           duration: Toast.lengthLong);
@@ -1555,12 +1557,12 @@ class SellerWithForReqBody {
 //               address_id: _seleted_shipping_address);
 //     }
 //     if (addressUpdateInCartResponse.result == false) {
-//       ToastComponent.showDialog(addressUpdateInCartResponse.message,
+//       ToastComponent.showSnackBar(addressUpdateInCartResponse.message,
 //           gravity: Toast.center, duration: Toast.lengthLong);
 //       return;
 //     }
 
-//     ToastComponent.showDialog(addressUpdateInCartResponse.message,
+//     ToastComponent.showSnackBar(addressUpdateInCartResponse.message,
 //         gravity: Toast.center, duration: Toast.lengthLong);
 
 //     Navigator.push(context, MaterialPageRoute(builder: (context) {

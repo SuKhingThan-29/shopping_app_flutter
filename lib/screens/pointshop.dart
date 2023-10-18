@@ -100,11 +100,7 @@ class _PointShopState extends State<PointShop> {
     _orderList =
         _orderResponseList.where((item) => item.canBuy == true).toList();
     print("CouponData: ${_orderResponseList.length}");
-    setState(() {
-
-    });
-
-
+    setState(() {});
   }
 
   @override
@@ -129,8 +125,7 @@ class _PointShopState extends State<PointShop> {
             child: Scaffold(
                 backgroundColor: Colors.white,
                 appBar: buildAppBar(statusBarHeight, context),
-                body:
-                    Column(
+                body: Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(15),
@@ -143,8 +138,7 @@ class _PointShopState extends State<PointShop> {
                               color: MyTheme.accent_color,
                             ),
                             padding: EdgeInsets.all(10),
-                            child:
-                                Column(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
@@ -193,9 +187,10 @@ class _PointShopState extends State<PointShop> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10,),
-                    Expanded(
-                        child: buildOrderListList()),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(child: buildOrderListList()),
                     SizedBox(
                       height: 100,
                     ),
@@ -504,16 +499,17 @@ class _PointShopState extends State<PointShop> {
                         print(response);
                         if (response.result == true) {
                           _orderList.clear();
-                          ToastComponent.showDialog(response.message);
-                          var orderResponse = await OrderRepository().getCoupon();
+                          ToastComponent.showSnackBar(
+                              context, response.message);
+                          var orderResponse =
+                              await OrderRepository().getCoupon();
                           _orderList.addAll(orderResponse.data);
                           print(_orderList);
-                          setState(() {
-
-                          });
+                          setState(() {});
                           //Navigator.of(context, rootNavigator: true).pop();
                         } else {
-                          ToastComponent.showDialog(response.message);
+                          ToastComponent.showSnackBar(
+                              context, response.message);
                           // Navigator.push(context,
                           //     MaterialPageRoute(builder: (context) => Login()));
                           // return;

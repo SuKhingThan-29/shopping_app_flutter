@@ -91,7 +91,10 @@ class _ProductReviewsState extends State<ProductReviews> {
 
   onTapReviewSubmit(context) async {
     if (is_logged_in.$ == false) {
-      ToastComponent.showDialog("You need to login to give a review", gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        "You need to login to give a review",
+      );
       return;
     }
 
@@ -99,17 +102,16 @@ class _ProductReviewsState extends State<ProductReviews> {
     var myReviewText = _myReviewTextController.text.toString();
     //print(chatText);
     if (myReviewText == "") {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!
-              .review_can_not_empty_warning,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.review_can_not_empty_warning,
+      );
       return;
     } else if (_my_rating < 1.0) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.at_least_one_star_must_be_given,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.at_least_one_star_must_be_given,
+      );
       return;
     }
 
@@ -117,11 +119,17 @@ class _ProductReviewsState extends State<ProductReviews> {
         .getReviewSubmitResponse(widget.id, _my_rating.toInt(), myReviewText);
 
     if (reviewSubmitResponse.result == false) {
-      ToastComponent.showDialog(reviewSubmitResponse.message, gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        reviewSubmitResponse.message,
+      );
       return;
     }
 
-    ToastComponent.showDialog(reviewSubmitResponse.message, gravity: Toast.center, duration: Toast.lengthLong);
+    ToastComponent.showSnackBar(
+      context,
+      reviewSubmitResponse.message,
+    );
 
     reset();
     fetchData();
@@ -137,7 +145,8 @@ class _ProductReviewsState extends State<ProductReviews> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+      textDirection:
+          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
           backgroundColor: Colors.white,
           appBar: buildAppBar(context),
@@ -242,8 +251,8 @@ class _ProductReviewsState extends State<ProductReviews> {
       return Container(
         height: 300,
         child: Center(
-            child: Text(AppLocalizations.of(context)!
-                .no_reviews_yet_be_the_first)),
+            child: Text(
+                AppLocalizations.of(context)!.no_reviews_yet_be_the_first)),
       );
     } else {
       return Container(); // should never be happening
@@ -270,7 +279,7 @@ class _ProductReviewsState extends State<ProductReviews> {
                 borderRadius: BorderRadius.circular(35),
                 child: FadeInImage.assetNetwork(
                   placeholder: 'assets/placeholder.png',
-                  image:  _reviewList[index].avatar,
+                  image: _reviewList[index].avatar,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -368,7 +377,9 @@ class _ProductReviewsState extends State<ProductReviews> {
                         var controller = ExpandableController.of(context)!;
                         return Btn.basic(
                           child: Text(
-                            !controller.expanded ? AppLocalizations.of(context)!.view_more_ucf : AppLocalizations.of(context)!.show_less_ucf,
+                            !controller.expanded
+                                ? AppLocalizations.of(context)!.view_more_ucf
+                                : AppLocalizations.of(context)!.show_less_ucf,
                             style: TextStyle(
                                 color: MyTheme.font_grey, fontSize: 11),
                           ),
@@ -439,7 +450,8 @@ class _ProductReviewsState extends State<ProductReviews> {
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Color.fromRGBO(251, 251, 251, 1),
-                    hintText: AppLocalizations.of(context)!.type_your_review_here,
+                    hintText:
+                        AppLocalizations.of(context)!.type_your_review_here,
                     hintStyle: TextStyle(
                         fontSize: 14.0, color: MyTheme.textfield_grey),
                     enabledBorder: OutlineInputBorder(
