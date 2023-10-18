@@ -82,8 +82,10 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
         await CouponRepository().getCouponRemoveResponse();
 
     if (couponRemoveResponse.result == false) {
-      ToastComponent.showDialog(couponRemoveResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        couponRemoveResponse.message,
+      );
       return;
     }
   }

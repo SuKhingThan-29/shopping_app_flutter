@@ -90,30 +90,32 @@ class _LoginState extends State<Login> {
       );
       return;
     } else if (_login_by == 'phone' && _phone == "") {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.enter_phone_number,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_phone_number,
+      );
       return;
     } else if (password == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_password,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_password,
+      );
       return;
     }
 
     var loginResponse = await AuthRepository()
         .getLoginResponse(_login_by == 'email' ? email : _phone, password);
     if (loginResponse.result == false) {
-      ToastComponent.showDialog(loginResponse.message.toString(),
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        loginResponse.message.toString(),
+      );
     } else {
-      // ToastComponent.showDialog(loginResponse.message.toString(),
+      // ToastComponent.showSnackBar(loginResponse.message.toString(),
       //     gravity: Toast.center, duration: Toast.lengthLong);
       AuthHelper().setUserData(loginResponse);
       // push notification starts
-      if (OtherConfig.USE_PUSH_NOTIFICATION) {
-
-      }
+      if (OtherConfig.USE_PUSH_NOTIFICATION) {}
 
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
@@ -139,11 +141,15 @@ class _LoginState extends State<Login> {
             access_token: facebookLogin.accessToken!.token);
         print("..........................${loginResponse.toString()}");
         if (loginResponse.result == false) {
-          ToastComponent.showDialog(loginResponse.message!,
-              gravity: Toast.center, duration: Toast.lengthLong);
+          ToastComponent.showSnackBar(
+            context,
+            loginResponse.message!,
+          );
         } else {
-          ToastComponent.showDialog(loginResponse.message!,
-              gravity: Toast.center, duration: Toast.lengthLong);
+          ToastComponent.showSnackBar(
+            context,
+            loginResponse.message!,
+          );
 
           AuthHelper().setUserData(loginResponse);
           Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -166,7 +172,6 @@ class _LoginState extends State<Login> {
   onPressedGoogleLogin() async {
     try {
       final GoogleSignInAccount googleUser = (await GoogleSignIn().signIn())!;
-
 
       GoogleSignInAuthentication googleSignInAuthentication =
           await googleUser.authentication;
@@ -203,7 +208,7 @@ class _LoginState extends State<Login> {
           return Main();
         }));
       }
-     GoogleSignIn().disconnect();
+      GoogleSignIn().disconnect();
     } on Exception catch (e) {
       print("Google error is ....... $e");
       // TODO
@@ -233,11 +238,15 @@ class _LoginState extends State<Login> {
           secret_token: authResult.authTokenSecret);
 
       if (loginResponse.result == false) {
-        ToastComponent.showDialog(loginResponse.message!,
-            gravity: Toast.center, duration: Toast.lengthLong);
+        ToastComponent.showSnackBar(
+          context,
+          loginResponse.message!,
+        );
       } else {
-        ToastComponent.showDialog(loginResponse.message!,
-            gravity: Toast.center, duration: Toast.lengthLong);
+        ToastComponent.showSnackBar(
+          context,
+          loginResponse.message!,
+        );
         AuthHelper().setUserData(loginResponse);
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Main();
@@ -539,92 +548,97 @@ class _LoginState extends State<Login> {
                     },
                   ),
                 ),
-              SizedBox(height: 10,),
-              allow_google_login.$?
-    Container(
-    height: 45,
-    child: Btn.minWidthFixHeight(
-    minWidth: MediaQuery.of(context).size.width,
-    height: 50,
-    color: MyTheme.amber,
-    shape: RoundedRectangleBorder(
-    borderRadius:
-    const BorderRadius.all(Radius.circular(6.0))),
-    child: Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-
-    Visibility(
-    visible: allow_google_login.$,
-    child:  Container(
-    width: 28,
-    child: Image.asset("assets/google_logo.png"),
-    ),
-    ),
-    Visibility(
-    visible: allow_google_login.$ || allow_facebook_login.$,
-    child: Padding(
-    padding: const EdgeInsets.only(top: 0.0),
-    child: Center(
-    child: Text(
-    '  Sign in with Google',
-    style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
-    )),
-    ),
-    ),
-    ],
-    ),
-    onPressed: () {
-    onPressedGoogleLogin();
-    },
-    ),
-    ):Container(),
-
-              SizedBox(height: 10,),
-              allow_facebook_login.$?Container(
-                height: 45,
-                child: Btn.minWidthFixHeight(
-                  minWidth: MediaQuery.of(context).size.width,
-                  height: 50,
-                  color: MyTheme.amber,
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                      const BorderRadius.all(Radius.circular(6.0))),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-
-                      Visibility(
-                        visible: allow_google_login.$,
-                        child: InkWell(
-                          onTap: () {
-
-                          },
-                          child: Container(
-                            width: 28,
-                            child: Image.asset("assets/facebook_logo.png"),
-                          ),
+              SizedBox(
+                height: 10,
+              ),
+              allow_google_login.$
+                  ? Container(
+                      height: 45,
+                      child: Btn.minWidthFixHeight(
+                        minWidth: MediaQuery.of(context).size.width,
+                        height: 50,
+                        color: MyTheme.amber,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(6.0))),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Visibility(
+                              visible: allow_google_login.$,
+                              child: Container(
+                                width: 28,
+                                child: Image.asset("assets/google_logo.png"),
+                              ),
+                            ),
+                            Visibility(
+                              visible: allow_google_login.$ ||
+                                  allow_facebook_login.$,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 0.0),
+                                child: Center(
+                                    child: Text(
+                                  '  Sign in with Google',
+                                  style: TextStyle(
+                                      color: MyTheme.font_grey, fontSize: 12),
+                                )),
+                              ),
+                            ),
+                          ],
                         ),
+                        onPressed: () {
+                          onPressedGoogleLogin();
+                        },
                       ),
-                      Visibility(
-                        visible: allow_facebook_login.$,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 0.0),
-                          child: Center(
-                              child: Text(
-                                '  Sign in with Facebook',
-                                style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
-                              )),
+                    )
+                  : Container(),
+              SizedBox(
+                height: 10,
+              ),
+              allow_facebook_login.$
+                  ? Container(
+                      height: 45,
+                      child: Btn.minWidthFixHeight(
+                        minWidth: MediaQuery.of(context).size.width,
+                        height: 50,
+                        color: MyTheme.amber,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(6.0))),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Visibility(
+                              visible: allow_google_login.$,
+                              child: InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  width: 28,
+                                  child:
+                                      Image.asset("assets/facebook_logo.png"),
+                                ),
+                              ),
+                            ),
+                            Visibility(
+                              visible: allow_facebook_login.$,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 0.0),
+                                child: Center(
+                                    child: Text(
+                                  '  Sign in with Facebook',
+                                  style: TextStyle(
+                                      color: MyTheme.font_grey, fontSize: 12),
+                                )),
+                              ),
+                            ),
+                          ],
                         ),
+                        onPressed: () {
+                          onPressedFacebookLogin();
+                        },
                       ),
-                    ],
-                  ),
-                  onPressed: () {
-                    onPressedFacebookLogin();
-                  },
-                ),
-              ):Container(),
-
+                    )
+                  : Container(),
               Padding(
                 padding: const EdgeInsets.only(top: 15.0, bottom: 15),
                 child: Center(
@@ -658,7 +672,6 @@ class _LoginState extends State<Login> {
                   },
                 ),
               ),
-
             ],
           ),
         )

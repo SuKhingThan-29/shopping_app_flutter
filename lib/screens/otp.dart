@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
@@ -28,19 +30,34 @@ class _OtpState extends State<Otp> {
 
   String otp = "";
 
+  int _secondsRemaining = 60;
+  late Timer _timer;
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_secondsRemaining > 0) {
+          _secondsRemaining--;
+        } else {
+          _timer.cancel(); // Stop the timer when it reaches 0.
+        }
+      });
+    });
+  }
+
   @override
   void initState() {
-    //on Splash Screen hide statusbar
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
+    _startTimer(); // Start the timer when the widget initializes.
     super.initState();
   }
 
   @override
   void dispose() {
-    //before going to other screen show statusbar
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    _timer.cancel();
     super.dispose();
   }
 
@@ -51,27 +68,26 @@ class _OtpState extends State<Otp> {
     var resendCodeResponse = await AuthRepository().getResendCodeResponse();
 
     if (resendCodeResponse.result == false) {
-      ToastComponent.showDialog(resendCodeResponse.message!,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(context, resendCodeResponse.message!);
     } else {
-      ToastComponent.showDialog(resendCodeResponse.message!,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        resendCodeResponse.message!,
+      );
     }
   }
 
   onPressConfirm() async {
     if (otp.isEmpty || otp.length != 6) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.enter_verification_code,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+          context, AppLocalizations.of(context)!.enter_verification_code);
       return;
     }
 
     // var code = _verificationCodeController.text.toString();
 
     // if (code == "") {
-    //   ToastComponent.showDialog(
+    //   ToastComponent.showSnackBar(
     //       AppLocalizations.of(context)!.enter_verification_code,
     //       gravity: Toast.center,
     //       duration: Toast.lengthLong);
@@ -82,11 +98,9 @@ class _OtpState extends State<Otp> {
         await AuthRepository().getConfirmCodeResponse(otp);
 
     if (!(confirmCodeResponse.result)) {
-      ToastComponent.showDialog(confirmCodeResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(context, confirmCodeResponse.message);
     } else {
-      ToastComponent.showDialog(confirmCodeResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(context, confirmCodeResponse.message);
 
       // Navigator.push(context, MaterialPageRoute(builder: (context) {
       //   return Login();
@@ -167,8 +181,10 @@ class _OtpState extends State<Otp> {
                   const SizedBox(
                     height: 40,
                   ),
-                   Text(
-                     widget.phnum!.contains('.com')?"Verify your email":"Verify your phone",
+                  Text(
+                    widget.phnum!.contains('.com')
+                        ? "Verify your email"
+                        : "Verify your phone",
                     textAlign: TextAlign.left,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
@@ -176,8 +192,9 @@ class _OtpState extends State<Otp> {
                     height: 40,
                   ),
                   Text(
-                    widget.phnum!.contains('.com')?
-                    "Verification code has been sent to ${widget.phnum!.substring(0,1)}****${widget.phnum!.substring(widget.phnum!.length-11)} ":"Verification code has been sent to +95*******${widget.phnum!.substring(widget.phnum!.length-2)} .",
+                    widget.phnum!.contains('.com')
+                        ? "Verification code has been sent to ${widget.phnum!.substring(0, 1)}****${widget.phnum!.substring(widget.phnum!.length - 11)} "
+                        : "Verification code has been sent to +95*******${widget.phnum!.substring(widget.phnum!.length - 2)} .",
                     style: TextStyle(fontSize: 15),
                   ),
                   const SizedBox(
@@ -189,6 +206,11 @@ class _OtpState extends State<Otp> {
                   ),
                   const SizedBox(
                     height: 10,
+                  ),
+                  Container(
+                    child: Text(
+                      'You will get an OTP code $_secondsRemaining',
+                    ),
                   ),
                   const SizedBox(height: 30),
                   Pinput(
@@ -270,17 +292,7 @@ class _OtpState extends State<Otp> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 20),
-                    child: InkWell(
-                      onTap: () {
-                        onTapResend();
-                      },
-                      child: Text(AppLocalizations.of(context)!.resend_code_ucf,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: MyTheme.accent_color,
-                              // decoration: TextDecoration.underline,
-                              fontSize: 14)),
-                    ),
+                    child: buildResendButton(),
                   ),
                   InkWell(
                     child: Text(
@@ -304,5 +316,36 @@ class _OtpState extends State<Otp> {
         ),
       ),
     );
+  }
+
+  InkWell buildResendButton() {
+    if (_secondsRemaining > 0) {
+      return InkWell(
+        onTap: null, // Disable the button
+        child: Text(
+          AppLocalizations.of(context)!.resend_code_ucf,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color:
+                Colors.grey, // Change the text color to indicate it's disabled
+            fontSize: 14,
+          ),
+        ),
+      );
+    } else {
+      return InkWell(
+        onTap: () {
+          onTapResend();
+        },
+        child: Text(
+          AppLocalizations.of(context)!.resend_code_ucf,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: MyTheme.accent_color,
+            fontSize: 14,
+          ),
+        ),
+      );
+    }
   }
 }

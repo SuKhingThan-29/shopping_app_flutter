@@ -228,12 +228,14 @@ class _RegistrationState extends State<Registration> {
       // TODO
     }
   }
+
   /// Returns the sha256 hash of [input] in hex notation.
   String sha256ofString(String input) {
     final bytes = utf8.encode(input);
     final digest = sha256.convert(bytes);
     return digest.toString();
   }
+
   signInWithApple() async {
     // To prevent replay attacks with the credential returned from Apple, we
     // include a nonce in the credential request. When signing in with
@@ -260,11 +262,9 @@ class _RegistrationState extends State<Registration> {
           access_token: appleCredential.identityToken);
 
       if (loginResponse.result == false) {
-        ToastComponent.showDialog(loginResponse.message!,
-            gravity: Toast.center, duration: Toast.lengthLong);
+        ToastComponent.showSnackBar(context, loginResponse.message!);
       } else {
-        ToastComponent.showDialog(loginResponse.message!,
-            gravity: Toast.center, duration: Toast.lengthLong);
+        ToastComponent.showSnackBar(context, loginResponse.message!);
         AuthHelper().setUserData(loginResponse);
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Main();
@@ -286,6 +286,7 @@ class _RegistrationState extends State<Registration> {
     // not match the nonce in `appleCredential.identityToken`, sign in will fail.
     //return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
   }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -358,9 +359,7 @@ class _RegistrationState extends State<Registration> {
       // });
       ToastComponent.showDialog(message,
           gravity: Toast.center, duration: Toast.lengthLong);
-      setState(() {
-
-      });
+      setState(() {});
     } else {
       // ToastComponent.showDialog(signupResponse.message.toString(),
       //     gravity: Toast.center, duration: Toast.lengthLong);
@@ -382,7 +381,7 @@ class _RegistrationState extends State<Registration> {
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
         return Otp(
-          phnum: email.isEmpty?_phone:email,
+          phnum: email.isEmpty ? _phone : email,
         );
       }), (newRoute) => false);
     }
@@ -954,7 +953,6 @@ class _RegistrationState extends State<Registration> {
                             ),
                           ),
                         ),
-
                       ],
                     ),
                   ),

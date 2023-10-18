@@ -120,7 +120,7 @@ class _OrderDetailsState extends State<OrderDetails> {
     if (response.result) {
       _onPageRefresh();
     }
-    ToastComponent.showDialog(response.message);
+    ToastComponent.showSnackBar(context, response.message);
   }
 
   _showCancelDialog(id) {
@@ -378,8 +378,10 @@ class _OrderDetailsState extends State<OrderDetails> {
         .getRefundRequestSendResponse(id: itemId, reason: reason);
 
     if (refundRequestSendResponse.result == false) {
-      ToastComponent.showDialog(refundRequestSendResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        refundRequestSendResponse.message,
+      );
       return;
     }
 

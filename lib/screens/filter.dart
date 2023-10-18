@@ -476,11 +476,11 @@ class _FilterState extends State<Filter> {
           onTap: () {
             _selectedFilter!.option_key == "product"
                 ? _scaffoldKey.currentState!.openEndDrawer()
-                : ToastComponent.showDialog(
+                : ToastComponent.showSnackBar(
+                    context,
                     AppLocalizations.of(context)!
                         .you_can_use_sorting_while_searching_for_products,
-                    gravity: Toast.center,
-                    duration: Toast.lengthLong);
+                  );
           },
           child: Container(
             decoration: BoxDecoration(
@@ -658,11 +658,11 @@ class _FilterState extends State<Filter> {
                             ],
                           ),
                         ))
-                : ToastComponent.showDialog(
+                : ToastComponent.showSnackBar(
+                    context,
                     AppLocalizations.of(context)!
                         .you_can_use_filters_while_searching_for_products,
-                    gravity: Toast.center,
-                    duration: Toast.lengthLong);
+                  );
           },
           child: Container(
             decoration: BoxDecoration(
@@ -823,18 +823,18 @@ class _FilterState extends State<Filter> {
             ),
           ),
         ),
-       // Container(
-       //   padding: EdgeInsets.only(top: 20),
-       //   height: 50,
-       //   child:  IconButton(
-       //     icon: Icon(Icons.search, color: MyTheme.dark_grey),
-       //     onPressed: () {
-       //       _searchKey = _searchController.text.toString();
-       //       setState(() {});
-       //       _onSearchSubmit();
-       //     },
-       //   ),
-       // )
+        // Container(
+        //   padding: EdgeInsets.only(top: 20),
+        //   height: 50,
+        //   child:  IconButton(
+        //     icon: Icon(Icons.search, color: MyTheme.dark_grey),
+        //     onPressed: () {
+        //       _searchKey = _searchController.text.toString();
+        //       setState(() {});
+        //       _onSearchSubmit();
+        //     },
+        //   ),
+        // )
       ],
     );
   }
@@ -1032,11 +1032,11 @@ class _FilterState extends State<Filter> {
                         bool apply = true;
                         if (min != "" && max != "") {
                           if (max.compareTo(min) < 0) {
-                            ToastComponent.showDialog(
-                                AppLocalizations.of(context)!
-                                    .filter_screen_min_max_warning,
-                                gravity: Toast.center,
-                                duration: Toast.lengthLong);
+                            ToastComponent.showSnackBar(
+                              context,
+                              AppLocalizations.of(context)!
+                                  .filter_screen_min_max_warning,
+                            );
                             apply = false;
                           }
                         }

@@ -137,8 +137,10 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
         _auctionproductDetails.id.toString(), _bidPriceController.text);
 
     if (bidPlacedResponse.result == true) {
-      ToastComponent.showDialog(bidPlacedResponse.message!,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        bidPlacedResponse.message!,
+      );
 
       fetchAll();
     }
@@ -156,7 +158,8 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
         .getAuctionProductsDetails(id: widget.id);
 
     if (auctionproductDetailsResponse.auction_product!.length > 0) {
-      _auctionproductDetails = auctionproductDetailsResponse.auction_product![0];
+      _auctionproductDetails =
+          auctionproductDetailsResponse.auction_product![0];
       sellerChatTitleController.text =
           auctionproductDetailsResponse.auction_product![0].name!;
     }
@@ -216,8 +219,10 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
 
   onWishTap() {
     if (is_logged_in.$ == false) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.you_need_to_log_in,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.you_need_to_log_in,
+      );
       return;
     }
 
@@ -278,8 +283,10 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
         .getCartAddResponse(widget.id, _variant, user_id.$, _quantity);
 
     if (cartAddResponse.result == false) {
-      ToastComponent.showDialog(cartAddResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        cartAddResponse.message,
+      );
       return;
     } else {
       Provider.of<CartCounter>(context, listen: false).getCount();
@@ -609,10 +616,10 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
   }
 
   showLoginWarning() {
-    return ToastComponent.showDialog(
-        AppLocalizations.of(context)!.you_need_to_log_in,
-        gravity: Toast.center,
-        duration: Toast.lengthLong);
+    return ToastComponent.showSnackBar(
+      context,
+      AppLocalizations.of(context)!.you_need_to_log_in,
+    );
   }
 
   onPressSendMessage() async {
@@ -625,10 +632,10 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
     var message = sellerChatMessageController.text.toString();
 
     if (title == "" || message == "") {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.title_or_message_empty_warning,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.title_or_message_empty_warning,
+      );
       return;
     }
 
@@ -639,10 +646,10 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
     Navigator.of(loadingcontext).pop();
 
     if (conversationCreateResponse.result == false) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.could_not_create_conversation,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.could_not_create_conversation,
+      );
       return;
     }
 
@@ -688,7 +695,8 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
     );
 
     return Directionality(
-      textDirection: app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+      textDirection:
+          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
           extendBody: true,
           // bottomNavigationBar: buildBottomAppBar(context, _addedToCartSnackbar),
@@ -932,11 +940,11 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
                         InkWell(
                           onTap: () {
                             if (_auctionproductDetails.videoLink == "") {
-                              ToastComponent.showDialog(
-                                  AppLocalizations.of(context)!
-                                      .video_not_available,
-                                  gravity: Toast.center,
-                                  duration: Toast.lengthLong);
+                              ToastComponent.showSnackBar(
+                                context,
+                                AppLocalizations.of(context)!
+                                    .video_not_available,
+                              );
                               return;
                             }
 
@@ -1177,8 +1185,10 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
                           imageUrl: _auctionproductDetails.shopLogo!,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Center(
-                            child: CircularProgressIndicator(),),
-                          errorWidget: (context, url, error) => Icon(Icons.error),
+                            child: CircularProgressIndicator(),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
                         ),
                       ),
                     ),
@@ -1214,9 +1224,10 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
                     InkWell(
                         onTap: () {
                           if (is_logged_in == false) {
-                            ToastComponent.showDialog("You need to log in",
-                                gravity: Toast.center,
-                                duration: Toast.lengthLong);
+                            ToastComponent.showSnackBar(
+                              context,
+                              "You need to log in",
+                            );
                             return;
                           }
 
@@ -1804,8 +1815,7 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
           ratingWidget: RatingWidget(
             full: Icon(Icons.star, color: Colors.amber),
             half: Icon(Icons.star_half, color: Colors.amber),
-            empty:
-                Icon(Icons.star, color: Color.fromRGBO(224, 224, 225, 1)),
+            empty: Icon(Icons.star, color: Color.fromRGBO(224, 224, 225, 1)),
           ),
           itemPadding: EdgeInsets.only(right: 1.0),
           onRatingUpdate: (rating) {
@@ -2040,27 +2050,23 @@ class _AuctionProductsDetailsState extends State<AuctionProductsDetails>
                           setState(() {});
                         },
                         child: Container(
-                          width: 50,
-                          height: 50,
-                          margin: EdgeInsets.symmetric(
-                              vertical: 4.0, horizontal: 2.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                                color: _currentImage == itemIndex
-                                    ? MyTheme.accent_color
-                                    : Color.fromRGBO(112, 112, 112, .3),
-                                width: _currentImage == itemIndex ? 2 : 1),
-                            //shape: BoxShape.rectangle,
-                          ),
-                          child: ClipRRect(
+                            width: 50,
+                            height: 50,
+                            margin: EdgeInsets.symmetric(
+                                vertical: 4.0, horizontal: 2.0),
+                            decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              child:
-                            AIZImage.basicImage(_productImageList[index])
-                          )
-
-
-                        ),
+                              border: Border.all(
+                                  color: _currentImage == itemIndex
+                                      ? MyTheme.accent_color
+                                      : Color.fromRGBO(112, 112, 112, .3),
+                                  width: _currentImage == itemIndex ? 2 : 1),
+                              //shape: BoxShape.rectangle,
+                            ),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: AIZImage.basicImage(
+                                    _productImageList[index]))),
                       );
                     }),
               ),

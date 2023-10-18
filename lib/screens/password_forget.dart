@@ -56,14 +56,16 @@ class _PasswordForgetState extends State<PasswordForget> {
     var email = _emailController.text.toString();
 
     if (_send_code_by == 'email' && email == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_email,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_email,
+      );
       return;
     } else if (_send_code_by == 'phone' && _phone == "") {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.enter_phone_number,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_phone_number,
+      );
       return;
     }
 
@@ -72,11 +74,15 @@ class _PasswordForgetState extends State<PasswordForget> {
             _send_code_by == 'email' ? email : _phone, _send_code_by);
 
     if (passwordForgetResponse.result == false) {
-      ToastComponent.showDialog(passwordForgetResponse.message!,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        passwordForgetResponse.message!,
+      );
     } else {
-      ToastComponent.showDialog(passwordForgetResponse.message!,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        passwordForgetResponse.message!,
+      );
 
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return PasswordOtp(

@@ -172,13 +172,11 @@ class _AddressState extends State<Address> {
         await AddressRepository().getAddressMakeDefaultResponse(index);
 
     if (addressMakeDefaultResponse.result == false) {
-      ToastComponent.showDialog(addressMakeDefaultResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(context, addressMakeDefaultResponse.message);
       return;
     }
 
-    ToastComponent.showDialog(addressMakeDefaultResponse.message,
-        gravity: Toast.center, duration: Toast.lengthLong);
+    ToastComponent.showSnackBar(context, addressMakeDefaultResponse.message);
 
     setState(() {
       _default_shipping_address = index;
@@ -231,13 +229,14 @@ class _AddressState extends State<Address> {
         await AddressRepository().getAddressDeleteResponse(id);
 
     if (addressDeleteResponse.result == false) {
-      ToastComponent.showDialog(addressDeleteResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        addressDeleteResponse.message,
+      );
       return;
     }
 
-    ToastComponent.showDialog(addressDeleteResponse.message,
-        gravity: Toast.center, duration: Toast.lengthLong);
+    ToastComponent.showSnackBar(context, addressDeleteResponse.message);
 
     afterDeletingAnAddress();
   }
@@ -248,26 +247,28 @@ class _AddressState extends State<Address> {
     var phone = _phoneController.text.toString();
 
     if (address == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_address_ucf,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+          context, AppLocalizations.of(context)!.enter_address_ucf);
       return;
     }
 
     if (_selected_country == null) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.select_a_country,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+          context, AppLocalizations.of(context)!.select_a_country);
       return;
     }
 
     if (_selected_state == null) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.select_a_state,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.select_a_state,
+      );
       return;
     }
 
     if (_selected_city == null) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.select_a_city,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+          context, AppLocalizations.of(context)!.select_a_city);
       return;
     }
 
@@ -280,13 +281,17 @@ class _AddressState extends State<Address> {
         phone: phone);
 
     if (addressAddResponse.result == false) {
-      ToastComponent.showDialog(addressAddResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        addressAddResponse.message,
+      );
       return;
     }
 
-    ToastComponent.showDialog(addressAddResponse.message,
-        gravity: Toast.center, duration: Toast.lengthLong);
+    ToastComponent.showSnackBar(
+      context,
+      addressAddResponse.message,
+    );
 
     Navigator.of(context, rootNavigator: true).pop();
     afterAddingAnAddress();
@@ -298,26 +303,26 @@ class _AddressState extends State<Address> {
     var phone = _phoneControllerListForUpdate[index].text.toString();
 
     if (address == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_address_ucf,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+          context, AppLocalizations.of(context)!.enter_address_ucf);
       return;
     }
 
     if (_selected_country_list_for_update[index] == null) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.select_a_country,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+          context, AppLocalizations.of(context)!.select_a_country);
       return;
     }
 
     if (_selected_state_list_for_update[index] == null) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.select_a_state,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+          context, AppLocalizations.of(context)!.select_a_state);
       return;
     }
 
     if (_selected_city_list_for_update[index] == null) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.select_a_city,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+          context, AppLocalizations.of(context)!.select_a_city);
       return;
     }
 
@@ -332,13 +337,17 @@ class _AddressState extends State<Address> {
             phone: phone);
 
     if (addressUpdateResponse.result == false) {
-      ToastComponent.showDialog(addressUpdateResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        addressUpdateResponse.message,
+      );
       return;
     }
 
-    ToastComponent.showDialog(addressUpdateResponse.message,
-        gravity: Toast.center, duration: Toast.lengthLong);
+    ToastComponent.showSnackBar(
+      context,
+      addressUpdateResponse.message,
+    );
 
     Navigator.of(context, rootNavigator: true).pop();
     afterUpdatingAnAddress();
