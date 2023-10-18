@@ -23,7 +23,12 @@ import 'package:flutter_countdown_timer/index.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 
+import '../helpers/addons_helper.dart';
+import '../helpers/auth_helper.dart';
+import '../helpers/business_setting_helper.dart';
+import '../presenter/currency_presenter.dart';
 import '../repositories/brand_repository.dart';
 import '../ui_elements/brand_square_card.dart';
 
@@ -153,6 +158,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   change() {
+    getSharedValueHelperData();
     homeData.onRefresh();
     homeData.setTab(selectProductTab);
     homeData.mainScrollListener();
@@ -164,9 +170,27 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   void dispose() {
     homeData.pirated_logo_controller.dispose();
     _brandScrollController.dispose();
+    homeData.mainScrollController.dispose();
 
     //  ChangeNotifierProvider<HomePresenter>.value(value: value)
     super.dispose();
+  }
+  Future<String?> getSharedValueHelperData() async {
+    access_token.load().whenComplete(() {
+      AuthHelper().fetch_and_set();
+    });
+    AddonsHelper().setAddonsData();
+    BusinessSettingHelper().setBusinessSettingData();
+    await app_language.load();
+    await app_mobile_language.load();
+    await app_language_rtl.load();
+    await system_currency.load();
+    Provider.of<CurrencyPresenter>(context, listen: false).fetchListData();
+
+    print("new splash screen ${app_mobile_language.$}");
+    print("new splash screen app_language_rtl ${app_language_rtl.$}");
+
+    return app_mobile_language.$;
   }
 
   DateTime convertTimeStampToDateTime(int timeStamp) {
@@ -1733,16 +1757,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   Container buildProductLoadingContainer(HomePresenter homeData) {
     return Container(
-        height: homeData.isScrollData ? 36 : 0,
+        height: homeData.showAllLoadingContainer ? 36 : 0,
         width: double.infinity,
         color: Colors.white,
         child: Center(
-          child: Text(
-            homeData.isMoreProduct
-                ? AppLocalizations.of(context)!.loading_more_products_ucf
-                : AppLocalizations.of(context)!.no_more_products_ucf,
-            style: TextStyle(fontSize: 16),
-          ),
+          child: Text(homeData.totalAllProductData == homeData.allProductList.length
+              ? AppLocalizations.of(context)!.no_more_orders_ucf
+              : AppLocalizations.of(context)!.loading_more_orders_ucf),
         ));
   }
 }

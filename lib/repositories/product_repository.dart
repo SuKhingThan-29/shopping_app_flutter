@@ -116,24 +116,14 @@ class ProductRepository {
 
   Future<ProductMiniResponse> getRecommendProducts({page = 1}) async {
     String url = ("${AppConfig.BASE_URL}/products/recommend/" + "?page=$page");
-    final response = await ApiRequest.get(url: url, headers: {
-      "App-Language": app_language.$!,
-      "Currency-Code": SystemConfig.systemCurrency!.code!,
-      "Currency-Exchange-Rate":
-          SystemConfig.systemCurrency!.exchangeRate.toString(),
-    });
+    final response = await ApiRequest.get(url: url);
     print(url.toString());
     return productMiniResponseFromJson(response.body);
   }
 
   Future<ProductMiniResponse> getNewProducts({page = 1}) async {
     String url = ("${AppConfig.BASE_URL}/products/newest/" + "?page=$page");
-    final response = await ApiRequest.get(url: url, headers: {
-      "App-Language": app_language.$!,
-      //"Currency-Code": SystemConfig.systemCurrency!.code!,
-      // "Currency-Exchange-Rate":
-      //     SystemConfig.systemCurrency!.exchangeRate.toString(),
-    });
+    final response = await ApiRequest.get(url: url);
     print(url.toString());
     return productMiniResponseFromJson(response.body);
   }

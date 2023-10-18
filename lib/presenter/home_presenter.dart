@@ -157,10 +157,14 @@ class HomePresenter extends ChangeNotifier {
     if (tab == "New") {
       productResponse =
           await ProductRepository().getNewProducts(page: allProductPage);
+      showAllLoadingContainer=false;
+
 
     } else if(tab == "Recommended") {
       productResponse =
           await ProductRepository().getRecommendProducts(page: allProductPage);
+      showAllLoadingContainer=false;
+
 
     }
 
@@ -175,12 +179,9 @@ class HomePresenter extends ChangeNotifier {
       allProductList.addAll(productResponse.products!);
 
     }
-  //  allProductList.addAll(productResponse.products!);
-
     isAllProductInitial = false;
     totalAllProductData = productResponse.meta!.total;
     lastPage=productResponse.meta!.lastPage!;
-
     showAllLoadingContainer = false;
     notifyListeners();
   }
@@ -231,20 +232,13 @@ class HomePresenter extends ChangeNotifier {
 
       if (mainScrollController.position.pixels ==
           mainScrollController.position.maxScrollExtent) {
-        if(lastPage>=allProductPage){
-          allProductPage++;
           showAllLoadingContainer = true;
+          allProductPage++;
           fetchAllProducts(tab: selectedTab);
-          isScrollData=true;
-          isMoreProduct=true;
-        }else{
-          isScrollData=true;
-          isMoreProduct=false;
-        }
-      }else{
-        isScrollData=false;
+
       }
     });
+
     notifyListeners();
 
   }
