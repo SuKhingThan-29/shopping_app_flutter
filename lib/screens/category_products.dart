@@ -41,6 +41,8 @@ class _CategoryProductsState extends State<CategoryProducts> {
   bool _showSearchBar = false;
 
   String? _selectedSort = "";
+  List<dynamic> _selectedCategories = [];
+
 
   // bool _isProductInitial = true;
   //int _productPage = 1;
@@ -313,7 +315,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
     var productResponse = await ProductRepository().getFilteredProducts(
         page: _page,
         name: _searchKey,
-        categories: widget.category_name,
+        categories:  widget.category_id,
         sort_key: _selectedSort,
         max: _maxPriceController.text.toString(),
         min: _minPriceController.text.toString());
@@ -518,36 +520,30 @@ class _CategoryProductsState extends State<CategoryProducts> {
                       ),
                     ));
           },
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.symmetric(
-                    vertical: BorderSide(color: MyTheme.light_grey, width: .5),
-                    horizontal:
-                        BorderSide(color: MyTheme.light_grey, width: 1))),
-            height: 36,
-            width: MediaQuery.of(context).size.width * .33,
-            child: Center(
-                child: Container(
-              width: 50,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.swap_vert,
-                    size: 13,
+          child:  Container(
+            height: _subCategoryList.isEmpty ? 0 : 46,
+            width: _subCategoryList.isEmpty ? 0 : 96,
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecorations.buildBoxDecoration_1(),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.swap_vert,
+                  size: 13,
+                ),
+                SizedBox(width: 2),
+                Text(
+                  "Sort",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 13,
                   ),
-                  SizedBox(width: 2),
-                  Text(
-                    "Sort",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              ),
-            )),
-          ),
+                ),
+              ],
+            )
+          )
         ),
         SizedBox(
           height: 5,
