@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>gmp.ethical-digit.com</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -44,10 +44,18 @@
 	<string>3d863574946fd93cdff8524707cb80b6</string>
 	<key>FacebookDisplayName</key>
 	<string>GMP</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<string>NO</string>
+	<key>FirebaseAutomaticScreenReportingEnabled</key>
+	<string>YES</string>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
 	<key>INIntentsSupported</key>
 	<array>
 		<string>Intent</string>
 	</array>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -115,13 +123,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>ITSAppUsesNonExemptEncryption</key>
-    <false/>
-    <key>FirebaseAppDelegateProxyEnabled</key>
-    <string>NO</string>
-    <key>FirebaseAutomaticScreenReportingEnabled</key>
-    <string>YES</string>
-    <key>FlutterDeepLinkingEnabled</key>
-    <true/>
 </dict>
 </plist>
