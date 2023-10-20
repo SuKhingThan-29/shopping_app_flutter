@@ -119,6 +119,7 @@ Future<void> setupFlutterNotifications() async {
 void showFlutterNotification(RemoteMessage message) {
   RemoteNotification? notification = message.notification;
   AndroidNotification? android = message.notification?.android;
+
   if (notification != null && android != null && !kIsWeb) {
     flutterLocalNotificationsPlugin.show(
       notification.hashCode,
@@ -136,6 +137,7 @@ void showFlutterNotification(RemoteMessage message) {
       ),
     );
   }
+  print("PushNoti mess: ${notification!.title}");
 }
 
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
@@ -182,14 +184,16 @@ class _MainScreenState extends State<MyApp> {
           (value) => setState(
             () {
           initialMessage = value?.data.toString();
-        },
+          print('PushNoti: $initialMessage');
+
+            },
       ),
     );
 
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
+      print('PushNoti onMessageOpened: $message');
 
     });
 
