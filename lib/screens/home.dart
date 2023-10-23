@@ -730,6 +730,48 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       ),
     );
   }
+  Widget buildHomeBrand(context, HomePresenter homeData) {
+    if (homeData.isAllProductInitial && homeData.allProductList.length == 0) {
+      return SingleChildScrollView(
+          child: ShimmerHelper().buildProductGridShimmer(
+              scontroller: homeData.allProductScrollController));
+    } else if (homeData.allProductList.length > 0) {
+      return MasonryGridView.count(
+          crossAxisCount: 2,
+          mainAxisSpacing: 14,
+          crossAxisSpacing: 14,
+          itemCount: homeData.allProductList.length,
+          shrinkWrap: true,
+          padding: EdgeInsets.only(top: 20.0, bottom: 10, left: 18, right: 18),
+          physics: NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return ProductCard(
+              id: homeData.allProductList[index].id,
+              image: homeData.allProductList[index].thumbnail_image,
+              name: homeData.allProductList[index].name,
+              main_price: homeData.allProductList[index].main_price,
+              stroked_price: homeData.allProductList[index].stroked_price,
+              has_discount: homeData.allProductList[index].has_discount,
+              discount: homeData.allProductList[index].discount,
+              is_wholesale: homeData.allProductList[index].isWholesale,
+            );
+          });
+    } else if (homeData.totalAllProductData == 0) {
+      return Container(
+          child: Text(
+            AppLocalizations.of(context)!.no_product_is_available,
+            style: TextStyle(color: Colors.black),
+          ));
+    } else if (homeData.totalAllProductData == homeData.allProductList.length) {
+      return Container(
+          child: Text(
+            AppLocalizations.of(context)!.no_more_products_ucf,
+            style: TextStyle(color: Colors.black),
+          ));
+    } else {
+      return Container(); // should never be happening
+    }
+  }
 
   Widget buildHomeAllProducts2(context, HomePresenter homeData) {
     if (homeData.isAllProductInitial && homeData.allProductList.length == 0) {
