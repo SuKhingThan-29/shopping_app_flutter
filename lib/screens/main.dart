@@ -70,6 +70,12 @@ class _MainState extends State<Main> {
 
     setState(() {
       _currentIndex = i;
+      if(_currentIndex==0){
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) {
+              return Main();
+            }), (route) => false);
+      }
     });
     //print("i$i");
   }

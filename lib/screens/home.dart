@@ -1762,8 +1762,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         color: Colors.white,
         child: Center(
           child: Text(homeData.totalAllProductData == homeData.allProductList.length
-              ? AppLocalizations.of(context)!.no_more_orders_ucf
-              : AppLocalizations.of(context)!.loading_more_orders_ucf),
+              ? AppLocalizations.of(context)!.no_more_products_ucf
+              : AppLocalizations.of(context)!.loading_more_products_ucf),
         ));
   }
 }

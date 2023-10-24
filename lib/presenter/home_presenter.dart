@@ -171,11 +171,12 @@ class HomePresenter extends ChangeNotifier {
       showAllLoadingContainer = false;
       return;
     }
-    print('AllProductPage response: ${productResponse.products!.length}');
-    if(totalAllProductData! >= to){
-      allProductList.addAll(productResponse.products!);
-
-    }
+    // print('AllProductPage response: ${productResponse.products!.length}');
+    // if(totalAllProductData! >= to){
+    //   allProductList.addAll(productResponse.products!);
+    //
+    // }
+    allProductList.addAll(productResponse.products!);
     isAllProductInitial = false;
     totalAllProductData = productResponse.meta!.total;
     lastPage=productResponse.meta!.lastPage!;
@@ -230,8 +231,10 @@ class HomePresenter extends ChangeNotifier {
       if (mainScrollController.position.pixels ==
           mainScrollController.position.maxScrollExtent) {
           showAllLoadingContainer = true;
+          notifyListeners();
           allProductPage++;
           fetchAllProducts(tab: selectedTab);
+
 
       }
     });

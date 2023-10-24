@@ -105,6 +105,7 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/gmp-logo.png"
+  remove_alpha_ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
