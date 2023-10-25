@@ -355,7 +355,9 @@ class _LoginState extends State<Login> {
                 onPressed: () {
                   // Add your back button logic here
                   // Typically, you would use Navigator to pop the current screen.
-                  Navigator.of(context).pop();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Main();
+                  }));
                 },
               ),
             ),

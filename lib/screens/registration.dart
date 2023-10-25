@@ -399,10 +399,35 @@ class _RegistrationState extends State<Registration> {
   Widget build(BuildContext context) {
     final _screen_height = MediaQuery.of(context).size.height;
     final _screen_width = MediaQuery.of(context).size.width;
-    return AuthScreen.buildScreen(
-        context,
-        "${AppLocalizations.of(context)!.join_ucf} " + AppConfig.app_name,
-        buildBody(context, _screen_width));
+    return Stack(
+      children: [
+        AuthScreen.buildScreen(
+            context,
+            "${AppLocalizations.of(context)!.join_ucf} " + AppConfig.app_name,
+            buildBody(context, _screen_width)),
+        Positioned(
+          top: 20, // Adjust the top position as needed
+          left: 10, // Adjust the left position as needed
+          child: Container(
+            decoration: BoxDecoration(// Background color for the icon
+                ),
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white, // Icon color
+              ),
+              onPressed: () {
+                // Add your back button logic here
+                // Typically, you would use Navigator to pop the current screen.
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Main();
+                }));
+              },
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Column buildBody(BuildContext context, double _screen_width) {
