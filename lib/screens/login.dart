@@ -299,11 +299,15 @@ class _LoginState extends State<Login> {
           access_token: appleCredential.identityToken);
 
       if (loginResponse.result == false) {
-        ToastComponent.showSnackBar(context,loginResponse.message!,
+        ToastComponent.showSnackBar(
+          context,
+          loginResponse.message!,
         );
       } else {
-        ToastComponent.showSnackBar(context,loginResponse.message!,
-          );
+        ToastComponent.showSnackBar(
+          context,
+          loginResponse.message!,
+        );
         AuthHelper().setUserData(loginResponse);
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Main();
@@ -330,10 +334,35 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     final _screen_height = MediaQuery.of(context).size.height;
     final _screen_width = MediaQuery.of(context).size.width;
-    return AuthScreen.buildScreen(
-        context,
-        "${AppLocalizations.of(context)!.login_to} " + AppConfig.app_name,
-        buildBody(context, _screen_width));
+    return Scaffold(
+      body: Stack(
+        children: [
+          AuthScreen.buildScreen(
+              context,
+              "${AppLocalizations.of(context)!.login_to} " + AppConfig.app_name,
+              buildBody(context, _screen_width)),
+          Positioned(
+            top: 20, // Adjust the top position as needed
+            left: 10, // Adjust the left position as needed
+            child: Container(
+              decoration: BoxDecoration(// Background color for the icon
+                  ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white, // Icon color
+                ),
+                onPressed: () {
+                  // Add your back button logic here
+                  // Typically, you would use Navigator to pop the current screen.
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget buildBody(BuildContext context, double _screen_width) {

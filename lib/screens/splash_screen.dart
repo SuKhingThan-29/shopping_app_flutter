@@ -46,7 +46,6 @@ class _SplashScreenState extends State<SplashScreen> {
     }
     setState(() {
       print(ver);
-
     });
   }
 
@@ -56,12 +55,56 @@ class _SplashScreenState extends State<SplashScreen> {
       _packageInfo = info;
     });
   }
-  bool isCancel=false;
+
+  bool isCancel = false;
+
+  void _showDialogOnEnter() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext buildContext) {
+        return Dialog(
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                    'assets/splash_screen_logo.png'), // Replace with your image asset or network image
+                fit: BoxFit.cover, // You can adjust the fit as needed
+              ),
+            ),
+            child: Stack(
+              children: <Widget>[
+                // Add your content here
+                Center(),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(buildContext).pop();
+                    },
+                    child: Icon(
+                      Icons.close, // You can use a different icon or widget
+                      size: 32, // Adjust the size as needed
+                      color: Colors.red, // Adjust the color as needed
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showDialogOnEnter();
+    });
     getUserInfo();
     _initPackageInfo();
     getSharedValueHelperData().then((value) {
@@ -115,9 +158,8 @@ class _SplashScreenState extends State<SplashScreen> {
               actions: [
                 TextButton(
                   onPressed: () {
-          Navigator.of(context).pop();
-
-          },
+                    Navigator.of(context).pop();
+                  },
                   child: Text('Cancel'),
                 ),
                 TextButton(
@@ -140,17 +182,17 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           );
         }
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return Main(
-                  go_back: false,
-                );
-              },
-            ),
-                (route) => true,
-          );
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return Main(
+                go_back: false,
+              );
+            },
+          ),
+          (route) => true,
+        );
       });
     });
   }

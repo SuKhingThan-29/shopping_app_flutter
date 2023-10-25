@@ -300,41 +300,47 @@ class _RegistrationState extends State<Registration> {
     var passwordConfirm = _passwordConfirmController.text.toString();
 
     if (name.isEmpty) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_your_name,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_your_name,
+      );
       return;
     } else if (_phoneNumberController.text.isEmpty) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.enter_phone_number,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_phone_number,
+      );
       return;
     } else if (postalCode == "") {
-      ToastComponent.showDialog("Please fill postal code",
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        "Please fill postal code",
+      );
       return;
     } else if (password == "") {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.enter_password,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.enter_password,
+      );
       return;
     } else if (passwordConfirm == "") {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.confirm_your_password,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.confirm_your_password,
+      );
       return;
     } else if (password.length < 6) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!
-              .password_must_contain_at_least_6_characters,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!
+            .password_must_contain_at_least_6_characters,
+      );
       return;
     } else if (password != passwordConfirm) {
-      ToastComponent.showDialog(
-          AppLocalizations.of(context)!.passwords_do_not_match,
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.passwords_do_not_match,
+      );
       return;
     }
 
@@ -354,11 +360,14 @@ class _RegistrationState extends State<Registration> {
     var message = signupResponse.message.toString();
 
     if (signupResponse.result == false) {
-      ToastComponent.showSnackBar(context,message,
-          );
-
+      ToastComponent.showSnackBar(
+        context,
+        message,
+      );
     } else {
-      ToastComponent.showSnackBar(context,message,
+      ToastComponent.showSnackBar(
+        context,
+        message,
       );
       // ToastComponent.showDialog(signupResponse.message.toString(),
       //     gravity: Toast.center, duration: Toast.lengthLong);
@@ -761,7 +770,7 @@ class _RegistrationState extends State<Registration> {
                   child: TextField(
                     controller: _passwordConfirmController,
                     autofocus: false,
-                    obscureText: _obscureTextC,
+                    obscureText: _obscureText,
                     enableSuggestions: false,
                     autocorrect: false,
                     decoration: InputDecoration(
@@ -777,9 +786,9 @@ class _RegistrationState extends State<Registration> {
                           color: Colors.grey,
                         ),
                         onPressed: () {
-                          print(_obscureTextC);
+                          print(_obscureText);
                           setState(() {
-                            _obscureTextC = !_obscureTextC;
+                            _obscureText = !_obscureText;
                           });
                         },
                       ),

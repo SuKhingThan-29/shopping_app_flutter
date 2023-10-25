@@ -74,6 +74,46 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
   }
 
+  void _showDialogOnEnter() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext buildContext) {
+        return Dialog(
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                    'assets/splash_screen_logo.png'), // Replace with your image asset or network image
+                fit: BoxFit.cover, // You can adjust the fit as needed
+              ),
+            ),
+            child: Stack(
+              children: <Widget>[
+                // Add your content here
+                Center(),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(buildContext).pop();
+                    },
+                    child: Icon(
+                      Icons.close, // You can use a different icon or widget
+                      size: 32, // Adjust the size as needed
+                      color: Colors.red, // Adjust the color as needed
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _onBrandListRefresh() async {
     resetBrandList();
     fetchBrandData();
@@ -175,6 +215,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     //  ChangeNotifierProvider<HomePresenter>.value(value: value)
     super.dispose();
   }
+
   Future<String?> getSharedValueHelperData() async {
     access_token.load().whenComplete(() {
       AuthHelper().fetch_and_set();
@@ -1761,9 +1802,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         width: double.infinity,
         color: Colors.white,
         child: Center(
-          child: Text(homeData.totalAllProductData == homeData.allProductList.length
-              ? AppLocalizations.of(context)!.no_more_orders_ucf
-              : AppLocalizations.of(context)!.loading_more_orders_ucf),
+          child: Text(
+              homeData.totalAllProductData == homeData.allProductList.length
+                  ? AppLocalizations.of(context)!.no_more_orders_ucf
+                  : AppLocalizations.of(context)!.loading_more_orders_ucf),
         ));
   }
 }

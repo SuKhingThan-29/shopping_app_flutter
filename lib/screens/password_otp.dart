@@ -32,6 +32,7 @@ class _PasswordOtpState extends State<PasswordOtp> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _passwordConfirmController = TextEditingController();
   bool _resetPasswordSuccess = false;
+  bool _obscureText = true;
 
   String headeText = "";
 
@@ -234,11 +235,29 @@ class _PasswordOtpState extends State<PasswordOtp> {
                           child: TextField(
                             controller: _passwordController,
                             autofocus: false,
-                            obscureText: true,
+                            obscureText: _obscureText,
                             enableSuggestions: false,
                             autocorrect: false,
-                            decoration: InputDecorations.buildInputDecoration_1(
-                                hint_text: "• • • • • • • •"),
+                            decoration: InputDecoration(
+                              hintText: "Enter Password",
+                              hintStyle: TextStyle(
+                                color: Colors.grey.shade400,
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscureText
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.grey,
+                                ),
+                                onPressed: () {
+                                  print(_obscureText);
+                                  setState(() {
+                                    _obscureText = !_obscureText;
+                                  });
+                                },
+                              ),
+                            ),
                           ),
                         ),
                         Text(
@@ -265,13 +284,31 @@ class _PasswordOtpState extends State<PasswordOtp> {
                     child: Container(
                       height: 36,
                       child: TextField(
+                        obscureText: _obscureText,
                         controller: _passwordConfirmController,
                         autofocus: false,
-                        obscureText: true,
                         enableSuggestions: false,
                         autocorrect: false,
-                        decoration: InputDecorations.buildInputDecoration_1(
-                            hint_text: "• • • • • • • •"),
+                        decoration: InputDecoration(
+                          hintText: "Enter Password",
+                          hintStyle: TextStyle(
+                            color: Colors.grey.shade400,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              print(_obscureText);
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                          ),
+                        ),
                       ),
                     ),
                   ),
