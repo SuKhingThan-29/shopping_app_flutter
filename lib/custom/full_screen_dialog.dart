@@ -1,6 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class TutorialOverlay extends ModalRoute<void> {
+  TutorialOverlay() {
+   //Schedule the overlay to automatically disappear after 3 seconds
+    Timer(Duration(seconds: 3), () {
+      Navigator.of(navigator!.overlay!.context).pop();
+    });
+  }
+
   @override
   Duration get transitionDuration => Duration(milliseconds: 500);
 
@@ -35,19 +44,40 @@ class TutorialOverlay extends ModalRoute<void> {
     );
   }
 
+
   Widget _buildOverlayContent(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+              'assets/full_dialog.jpg'), // Replace with your image asset or network image
+          fit: BoxFit.cover, // You can adjust the fit as needed
+        ),
+      ),
+      child: Stack(
         children: <Widget>[
-          Text(
-            'This is a nice overlay',
-            style: TextStyle(color: Colors.white, fontSize: 30.0),
+          // Add your content here
+          Center(),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: Container(
+              width: 70,
+              height: 30,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+
+                borderRadius: BorderRadius.circular(25)
+              ),
+
+              child: Center(
+                child: Text(
+                  'Skip 3',
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
+            ),
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Dismiss'),
-          )
         ],
       ),
     );
@@ -66,39 +96,3 @@ class TutorialOverlay extends ModalRoute<void> {
     );
   }
 }
-
-
-// // Example application:
-// void main() => runApp(MyApp());
-//
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Playground',
-//       home: TestPage(),
-//     );
-//   }
-// }
-//
-// class TestPage extends StatelessWidget {
-//   void _showOverlay(BuildContext context) {
-//     Navigator.of(context).push(TutorialOverlay());
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('Test')),
-//       body: Padding(
-//         padding: EdgeInsets.all(16.0),
-//         child: Center(
-//           child: TextButton(
-//             onPressed: () => _showOverlay(context),
-//             child: Text('Show Overlay'),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

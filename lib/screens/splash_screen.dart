@@ -44,9 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
       ver = version.ios.mobileVersion;
       print('mobileversion $ver');
     }
-    setState(() {
-      print(ver);
-    });
+
   }
 
   Future<void> _initPackageInfo() async {
@@ -188,6 +186,7 @@ class _SplashScreenState extends State<SplashScreen> {
             builder: (context) {
               return Main(
                 go_back: false,
+                init_splash: true,
               );
             },
           ),

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:active_ecommerce_flutter/custom/aiz_route.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:one_context/one_context.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:route_transitions/route_transitions.dart';
@@ -32,9 +34,10 @@ import '../providers/locale_provider.dart';
 import '../repositories/profile_repository.dart';
 
 class Main extends StatefulWidget {
-  Main({Key? key, go_back = true}) : super(key: key);
+  Main({Key? key, go_back = true, init_splash = false}) : super(key: key);
 
   late bool go_back;
+  late bool init_splash;
 
   @override
   _MainState createState() => _MainState();
@@ -104,17 +107,59 @@ class _MainState extends State<Main> {
     //re appear statusbar in case it was not there in the previous page
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
-    //Navigator.of(context).push(TutorialOverlay());
 
     super.initState();
+    //  showAutoDisappearingDialog(context);
+// Show the TutorialOverlay when the home widget loads
 
 
+       WidgetsBinding.instance?.addPostFrameCallback((_) {
+         _showTutorialOverlay(context);
+       });
+
+
+
+  }
+  void _showTutorialOverlay(BuildContext context) {
+    Navigator.of(context).push(TutorialOverlay());
+  }
+  showAutoDisappearingDialog(BuildContext context) {
+    // Set a duration for the dialog to auto-disappear
+    const duration = Duration(seconds: 3);
+
+    // Create and start a timer
+    Timer(duration, () {
+      // Pop the dialog when the timer expires
+      //Navigator.of(context, rootNavigator: true).pop();
+    });
+
+    // Show a full-screen dialog
+    showGeneralDialog(
+      context: context,
+    //  barrierDismissible: false, // Prevent users from dismissing it by tapping outside
+      transitionDuration: Duration(milliseconds: 300),
+    //  barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      pageBuilder: (context, animation1, animation2) {
+        return Center(
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Colors.white,
+            child: Center(
+              child: Text(
+                "This is a full-screen dialog",
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
 
   @override
   Widget build(BuildContext context) {
-
 
     return WillPopScope(
       onWillPop: () async {
