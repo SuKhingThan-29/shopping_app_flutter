@@ -30,6 +30,9 @@ class _OtpState extends State<Otp> {
 
   String otp = "";
 
+  String? _firstEmailName;
+  String? _secEmailName;
+  String? _phoneNo;
   int _secondsRemaining = 60;
   late Timer _timer;
 
@@ -50,6 +53,16 @@ class _OtpState extends State<Otp> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
     _startTimer(); // Start the timer when the widget initializes.
+    print("OTP: ${widget.phnum}");
+    if(widget.phnum!.contains('.com')){
+      _firstEmailName=widget.phnum!.substring(0,1);
+      _secEmailName=widget.phnum!.length>11?(widget.phnum!.length-11).toString():widget.phnum!.length.toString();
+    }
+    if(widget.phnum!.contains('+95')){
+      _phoneNo=widget.phnum!.substring(widget.phnum!.length - 2);
+    }
+
+
     super.initState();
   }
 
@@ -184,7 +197,7 @@ class _OtpState extends State<Otp> {
                     height: 40,
                   ),
                   Text(
-                    widget.phnum!.contains('.com')
+                    widget.phnum!.contains('.com') || widget.phnum!.isEmpty
                         ? "Verify your email"
                         : "Verify your phone",
                     textAlign: TextAlign.left,
@@ -206,9 +219,9 @@ class _OtpState extends State<Otp> {
                   Padding(
                     padding: EdgeInsets.all(8),
                     child: Text(
-                      widget.phnum!.contains('.com')
-                          ? "   ${widget.phnum!.substring(0, 1)}****${widget.phnum!.substring(widget.phnum!.length - 11)} "
-                          : "+95 ******* ${widget.phnum!.substring(widget.phnum!.length - 2)} .",
+                      widget.phnum!.isEmpty?'':widget.phnum!.contains('.com')
+                          ? "   $_firstEmailName****$_secEmailName "
+                          : "+95 ******* $_phoneNo .",
                       style: TextStyle(fontSize: 15),
                       maxLines: 2,
                     ),

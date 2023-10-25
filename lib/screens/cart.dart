@@ -273,9 +273,10 @@ class _CartScreenState extends State<CartScreen> {
         reset();
         fetchData();
       } else if (mode == "proceed_to_shipping") {
-        AIZRoute.push(context, SelectAddress()).then((value) {
-          onPopped(value);
-        });
+        // AIZRoute.push(context, SelectAddress()).then((value) {
+        //   onPopped(value);
+        // });
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> SelectAddress()));
       }
     }
   }

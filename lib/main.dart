@@ -118,14 +118,17 @@ Future<void> setupFlutterNotifications() async {
 
 void showFlutterNotification(RemoteMessage message) {
   RemoteNotification? notification = message.notification;
-  AndroidNotification? android = message.notification?.android;
 
-  if (notification != null && android != null && !kIsWeb) {
+  if (notification != null) {
     flutterLocalNotificationsPlugin.show(
       notification.hashCode,
       notification.title,
       notification.body,
       NotificationDetails(
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          subtitle: notification.title
+        ),
         android: AndroidNotificationDetails(
           channel.id,
           channel.name,

@@ -23,6 +23,7 @@ import 'package:route_transitions/route_transitions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../app_config.dart';
+import '../custom/full_screen_dialog.dart';
 import '../helpers/addons_helper.dart';
 import '../helpers/auth_helper.dart';
 import '../helpers/business_setting_helper.dart';
@@ -103,7 +104,7 @@ class _MainState extends State<Main> {
     //re appear statusbar in case it was not there in the previous page
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
-
+    //Navigator.of(context).push(TutorialOverlay());
 
     super.initState();
 
@@ -113,6 +114,8 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return WillPopScope(
       onWillPop: () async {
         print(_currentIndex);

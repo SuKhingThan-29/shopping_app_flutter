@@ -102,9 +102,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showDialogOnEnter();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _showDialogOnEnter();
+    // });
     getUserInfo();
     _initPackageInfo();
     getSharedValueHelperData().then((value) {
