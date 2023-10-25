@@ -489,96 +489,97 @@ class _AddressState extends State<Address> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: buildAppBar(context),
+      bottomNavigationBar: buildBottomAppBar(context),
+      body: RefreshIndicator(
+        color: MyTheme.accent_color,
         backgroundColor: Colors.white,
-        appBar: buildAppBar(context),
-        bottomNavigationBar: buildBottomAppBar(context),
-        body: RefreshIndicator(
-          color: MyTheme.accent_color,
-          backgroundColor: Colors.white,
-          onRefresh: _onRefresh,
-          displacement: 0,
-          child: CustomScrollView(
-            controller: _mainScrollController,
-            physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
-            slivers: [
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        buildShowAddFormDialog(context);
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 15, top: 15),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(3)),
-                            color: MyTheme.golden),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.add,
-                              size: 20,
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Text("Add")
-                          ],
-                        ),
+        onRefresh: _onRefresh,
+        displacement: 0,
+        child: CustomScrollView(
+          controller: _mainScrollController,
+          physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics()),
+          slivers: [
+            SliverList(
+                delegate: SliverChildListDelegate([
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      buildShowAddFormDialog(context);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(right: 15, top: 15),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(3)),
+                          color: MyTheme.golden),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.add,
+                            size: 20,
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Text("Add")
+                        ],
                       ),
-                    )
-                  ],
-                ),
-                // Padding(
-                //   padding: const EdgeInsets.all(18.0),
-                //   child: Btn.minWidthFixHeight(
-                //     minWidth: MediaQuery.of(context).size.width - 16,
-                //     height: 90,
-                //     color: MyTheme.amber,
-                //     shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(8.0),
-                //         side: BorderSide(
-                //             color: Colors.amber.shade600, width: 1.0)),
-                //     child: Column(
-                //       children: [
-                //         Text(
-                //           "${AppLocalizations.of(context)!.no_address_is_added}",
-                //           style: TextStyle(
-                //               fontSize: 13,
-                //               color: MyTheme.dark_font_grey,
-                //               fontWeight: FontWeight.bold),
-                //         ),
-                //         Icon(
-                //           Icons.add_sharp,
-                //           color: MyTheme.accent_color,
-                //           size: 30,
-                //         ),
-                //       ],
-                //     ),
-                //     onPressed: () {
-                //       buildShowAddFormDialog(context);
-                //     },
-                //   ),
-                // ),
-                SizedBox(
-                  height: 15,
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: buildAddressList(),
-                ),
-                SizedBox(
-                  height: 100,
-                )
-              ]))
-            ],
-          ),
-        ));
+                    ),
+                  )
+                ],
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(18.0),
+              //   child: Btn.minWidthFixHeight(
+              //     minWidth: MediaQuery.of(context).size.width - 16,
+              //     height: 90,
+              //     color: MyTheme.amber,
+              //     shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(8.0),
+              //         side: BorderSide(
+              //             color: Colors.amber.shade600, width: 1.0)),
+              //     child: Column(
+              //       children: [
+              //         Text(
+              //           "${AppLocalizations.of(context)!.no_address_is_added}",
+              //           style: TextStyle(
+              //               fontSize: 13,
+              //               color: MyTheme.dark_font_grey,
+              //               fontWeight: FontWeight.bold),
+              //         ),
+              //         Icon(
+              //           Icons.add_sharp,
+              //           color: MyTheme.accent_color,
+              //           size: 30,
+              //         ),
+              //       ],
+              //     ),
+              //     onPressed: () {
+              //       buildShowAddFormDialog(context);
+              //     },
+              //   ),
+              // ),
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                child: buildAddressList(),
+              ),
+              SizedBox(
+                height: 100,
+              )
+            ]))
+          ],
+        ),
+      ),
+    );
   }
 
   Future buildShowAddFormDialog(BuildContext context) {

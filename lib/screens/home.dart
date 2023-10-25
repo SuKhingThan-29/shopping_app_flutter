@@ -74,6 +74,46 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
   }
 
+  void _showDialogOnEnter() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext buildContext) {
+        return Dialog(
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                    'assets/splash_screen_logo.png'), // Replace with your image asset or network image
+                fit: BoxFit.cover, // You can adjust the fit as needed
+              ),
+            ),
+            child: Stack(
+              children: <Widget>[
+                // Add your content here
+                Center(),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(buildContext).pop();
+                    },
+                    child: Icon(
+                      Icons.close, // You can use a different icon or widget
+                      size: 32, // Adjust the size as needed
+                      color: Colors.red, // Adjust the color as needed
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _onBrandListRefresh() async {
     resetBrandList();
     fetchBrandData();
@@ -175,6 +215,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     //  ChangeNotifierProvider<HomePresenter>.value(value: value)
     super.dispose();
   }
+
   Future<String?> getSharedValueHelperData() async {
     access_token.load().whenComplete(() {
       AuthHelper().fetch_and_set();
@@ -729,48 +770,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         ],
       ),
     );
-  }
-  Widget buildHomeBrand(context, HomePresenter homeData) {
-    if (homeData.isAllProductInitial && homeData.allProductList.length == 0) {
-      return SingleChildScrollView(
-          child: ShimmerHelper().buildProductGridShimmer(
-              scontroller: homeData.allProductScrollController));
-    } else if (homeData.allProductList.length > 0) {
-      return MasonryGridView.count(
-          crossAxisCount: 2,
-          mainAxisSpacing: 14,
-          crossAxisSpacing: 14,
-          itemCount: homeData.allProductList.length,
-          shrinkWrap: true,
-          padding: EdgeInsets.only(top: 20.0, bottom: 10, left: 18, right: 18),
-          physics: NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return ProductCard(
-              id: homeData.allProductList[index].id,
-              image: homeData.allProductList[index].thumbnail_image,
-              name: homeData.allProductList[index].name,
-              main_price: homeData.allProductList[index].main_price,
-              stroked_price: homeData.allProductList[index].stroked_price,
-              has_discount: homeData.allProductList[index].has_discount,
-              discount: homeData.allProductList[index].discount,
-              is_wholesale: homeData.allProductList[index].isWholesale,
-            );
-          });
-    } else if (homeData.totalAllProductData == 0) {
-      return Container(
-          child: Text(
-            AppLocalizations.of(context)!.no_product_is_available,
-            style: TextStyle(color: Colors.black),
-          ));
-    } else if (homeData.totalAllProductData == homeData.allProductList.length) {
-      return Container(
-          child: Text(
-            AppLocalizations.of(context)!.no_more_products_ucf,
-            style: TextStyle(color: Colors.black),
-          ));
-    } else {
-      return Container(); // should never be happening
-    }
   }
 
   Widget buildHomeAllProducts2(context, HomePresenter homeData) {
@@ -1803,9 +1802,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         width: double.infinity,
         color: Colors.white,
         child: Center(
-          child: Text(homeData.totalAllProductData == homeData.allProductList.length
-              ? AppLocalizations.of(context)!.no_more_products_ucf
-              : AppLocalizations.of(context)!.loading_more_products_ucf),
+          child: Text(
+              homeData.totalAllProductData == homeData.allProductList.length
+                  ? AppLocalizations.of(context)!.no_more_orders_ucf
+                  : AppLocalizations.of(context)!.loading_more_orders_ucf),
         ));
   }
 }
