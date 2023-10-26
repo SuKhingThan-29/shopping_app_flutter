@@ -334,35 +334,46 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     final _screen_height = MediaQuery.of(context).size.height;
     final _screen_width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: Stack(
-        children: [
-          AuthScreen.buildScreen(
-              context,
-              "${AppLocalizations.of(context)!.login_to} " + AppConfig.app_name,
-              buildBody(context, _screen_width)),
-          Positioned(
-            top: 20, // Adjust the top position as needed
-            left: 10, // Adjust the left position as needed
-            child: Container(
-              decoration: BoxDecoration(// Background color for the icon
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) {
+          return Main();
+        }), (reute) => false);
+        return Future<bool>.value(false);
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            AuthScreen.buildScreen(
+                context,
+                "${AppLocalizations.of(context)!.login_to} " +
+                    AppConfig.app_name,
+                buildBody(context, _screen_width)),
+            Positioned(
+              top: 20, // Adjust the top position as needed
+              left: 10, // Adjust the left position as needed
+              child: Container(
+                decoration: BoxDecoration(// Background color for the icon
+                    ),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white, // Icon color
                   ),
-              child: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white, // Icon color
+                  onPressed: () {
+                    // Add your back button logic here
+                    // Typically, you would use Navigator to pop the current screen.
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return Main();
+                    }));
+                  },
                 ),
-                onPressed: () {
-                  // Add your back button logic here
-                  // Typically, you would use Navigator to pop the current screen.
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Main();
-                  }));
-                },
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
