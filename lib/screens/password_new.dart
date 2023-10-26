@@ -3,7 +3,6 @@ import 'package:active_ecommerce_flutter/custom/device_info.dart';
 import 'package:active_ecommerce_flutter/custom/lang_text.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/password_forget.dart';
-import 'package:active_ecommerce_flutter/screens/password_new.dart';
 import 'package:active_ecommerce_flutter/ui_elements/auth_ui.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
@@ -17,17 +16,19 @@ import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class PasswordOtp extends StatefulWidget {
-  PasswordOtp({Key? key, this.verify_by = "email", this.email_or_code})
+class PasswordNew extends StatefulWidget {
+  PasswordNew(
+      {Key? key, this.verify_by = "email", this.email_or_code, this.otp})
       : super(key: key);
   final String verify_by;
-  final String? email_or_code;
+  final email_or_code;
+  final otp;
 
   @override
-  _PasswordOtpState createState() => _PasswordOtpState();
+  PasswordNewState createState() => PasswordNewState();
 }
 
-class _PasswordOtpState extends State<PasswordOtp> {
+class PasswordNewState extends State<PasswordNew> {
   //controllers
   TextEditingController _codeController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -42,7 +43,7 @@ class _PasswordOtpState extends State<PasswordOtp> {
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) {
-      headeText = AppLocalizations.of(context)!.enter_the_code_sent;
+      headeText = 'Create your new password';
       setState(() {});
     });
     //on Splash Screen hide statusbar
@@ -65,42 +66,39 @@ class _PasswordOtpState extends State<PasswordOtp> {
     var password = _passwordController.text.toString();
     var password_confirm = _passwordConfirmController.text.toString();
 
-    if (code == "") {
+    if (password == "") {
       ToastComponent.showSnackBar(
         context,
-        AppLocalizations.of(context)!.enter_the_code,
+        AppLocalizations.of(context)!.enter_password,
+      );
+      return;
+    } else if (password_confirm == "") {
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.confirm_your_password,
+      );
+      return;
+    } else if (password.length < 6) {
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!
+            .password_must_contain_at_least_6_characters,
+      );
+      return;
+    } else if (password != password_confirm) {
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.passwords_do_not_match,
       );
       return;
     }
-    // } else if (password == "") {
-    //   ToastComponent.showSnackBar(
-    //     context,
-    //     AppLocalizations.of(context)!.enter_password,
-    //   );
-    //   return;
-    // } else if (password_confirm == "") {
-    //   ToastComponent.showSnackBar(
-    //     context,
-    //     AppLocalizations.of(context)!.confirm_your_password,
-    //   );
-    //   return;
-    // } else if (password.length < 6) {
-    //   ToastComponent.showSnackBar(
-    //     context,
-    //     AppLocalizations.of(context)!
-    //         .password_must_contain_at_least_6_characters,
-    //   );
-    //   return;
-    // } else if (password != password_confirm) {
-    //   ToastComponent.showSnackBar(
-    //     context,
-    //     AppLocalizations.of(context)!.passwords_do_not_match,
-    //   );
-    //   return;
-    // }
 
     var passwordConfirmResponse =
-        await AuthRepository().getPasswordConfirmResponse(code, '');
+        await AuthRepository().getPasswordConfirmResponse(widget.otp, password);
+    print(passwordConfirmResponse.message);
+    print(passwordConfirmResponse.result);
+    print(widget.otp);
+    print(password);
 
     if (passwordConfirmResponse.result == false) {
       ToastComponent.showSnackBar(
@@ -113,12 +111,9 @@ class _PasswordOtpState extends State<PasswordOtp> {
         passwordConfirmResponse.message!,
       );
 
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return PasswordNew(
-          verify_by: widget.verify_by,
-          otp: code,
-        );
-      }));
+      headeText = AppLocalizations.of(context)!.password_changed_ucf;
+      cardController.toggleCard();
+      setState(() {});
     }
   }
 
@@ -176,19 +171,10 @@ class _PasswordOtpState extends State<PasswordOtp> {
               padding: const EdgeInsets.only(bottom: 16.0),
               child: Container(
                   width: _screen_width * (3 / 4),
-                  child: _verify_by == "email"
-                      ? Text(
-                          AppLocalizations.of(context)!
-                              .enter_the_verification_code_that_sent_to_your_email_recently,
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(color: MyTheme.dark_grey, fontSize: 14))
-                      : Text(
-                          AppLocalizations.of(context)!
-                              .enter_the_verification_code_that_sent_to_your_phone_recently,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: MyTheme.dark_grey, fontSize: 14))),
+                  child: Text('Create your new Password',
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(color: MyTheme.dark_grey, fontSize: 14))),
             ),
             Container(
               width: _screen_width * (3 / 4),
@@ -198,7 +184,7 @@ class _PasswordOtpState extends State<PasswordOtp> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 4.0),
                     child: Text(
-                      AppLocalizations.of(context)!.enter_the_code,
+                      AppLocalizations.of(context)!.password_ucf,
                       style: TextStyle(
                           color: MyTheme.accent_color,
                           fontWeight: FontWeight.w600),
@@ -212,13 +198,83 @@ class _PasswordOtpState extends State<PasswordOtp> {
                         Container(
                           height: 36,
                           child: TextField(
-                            controller: _codeController,
+                            controller: _passwordController,
                             autofocus: false,
-                            decoration: InputDecorations.buildInputDecoration_1(
-                                hint_text: "A X B 4 J H"),
+                            obscureText: _obscureText,
+                            enableSuggestions: false,
+                            autocorrect: false,
+                            decoration: InputDecoration(
+                              hintText: "Enter Password",
+                              hintStyle: TextStyle(
+                                color: Colors.grey.shade400,
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscureText
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.grey,
+                                ),
+                                onPressed: () {
+                                  print(_obscureText);
+                                  setState(() {
+                                    _obscureText = !_obscureText;
+                                  });
+                                },
+                              ),
+                            ),
                           ),
                         ),
+                        Text(
+                          AppLocalizations.of(context)!
+                              .password_must_contain_at_least_6_characters,
+                          style: TextStyle(
+                              color: MyTheme.textfield_grey,
+                              fontStyle: FontStyle.italic),
+                        )
                       ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: Text(
+                      AppLocalizations.of(context)!.retype_password_ucf,
+                      style: TextStyle(
+                          color: MyTheme.accent_color,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Container(
+                      height: 36,
+                      child: TextField(
+                        obscureText: _obscureText,
+                        controller: _passwordConfirmController,
+                        autofocus: false,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          hintText: "Enter Password",
+                          hintStyle: TextStyle(
+                            color: Colors.grey.shade400,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              print(_obscureText);
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   Padding(

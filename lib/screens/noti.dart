@@ -1,5 +1,6 @@
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
 import 'package:active_ecommerce_flutter/data_model/noti_response.dart';
+import 'package:active_ecommerce_flutter/repositories/order_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/chat.dart';
@@ -198,14 +199,19 @@ class _NotiState extends State<Noti> {
   }
 
   buildMessengerItemCard(index) {
-    return GestureDetector(
-      onTap: () {
+    return InkWell(
+      onTap: () async {
+        var passwordConfirmResponse = await OrderRepository()
+            .SeeNoti(_list[index].data.orderId, _list[index].id);
+        print(_list[index].id);
         print("Order detailid: ${_list[index].data.orderId}");
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return OrderDetails(
-            id:  _list[index].data.orderId,
-          );
-        }));
+        if (passwordConfirmResponse.success == true) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return OrderDetails(
+              id: _list[index].data.orderId,
+            );
+          }));
+        }
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
