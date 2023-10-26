@@ -34,10 +34,11 @@ import '../providers/locale_provider.dart';
 import '../repositories/profile_repository.dart';
 
 class Main extends StatefulWidget {
-  Main({Key? key, go_back = true, init_splash = false}) : super(key: key);
+  Main({Key? key, go_back = true, this.init_splash = false}) : super(key: key);
 
   late bool go_back;
   late bool init_splash;
+
 
   @override
   _MainState createState() => _MainState();
@@ -52,7 +53,13 @@ class _MainState extends State<Main> {
   CartCounter counter = CartCounter();
 
   var _children = [];
-
+  int ver = 1;
+  PackageInfo _packageInfo = PackageInfo(
+    appName: AppConfig.app_name,
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+  );
   fetchAll()async {
     getCartCount();
 
@@ -109,54 +116,122 @@ class _MainState extends State<Main> {
         overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
 
     super.initState();
-    //  showAutoDisappearingDialog(context);
-// Show the TutorialOverlay when the home widget loads
+    getUserInfo();
+    _initPackageInfo();
+    if (ver != _packageInfo.version && widget.init_splash) {
+     WidgetsBinding.instance?.addPostFrameCallback((_) {
+       showDialog(
+         context: context,
+         builder: (context) => AlertDialog(
+           content: Column(
+             mainAxisSize: MainAxisSize.min,
+             children: [
+               Text(
+                 'Update',
+                 style:
+                 TextStyle(fontSize: 15, color: MyTheme.dark_font_grey),
+               ),
+               Text(
+                 'Are you want to update',
+                 style:
+                 TextStyle(fontSize: 13, color: MyTheme.dark_font_grey),
+               ),
+               Divider(),
+               // Add your image and text row here
+               Row(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 crossAxisAlignment: CrossAxisAlignment.center,
+                 children: [
+                   Container(
+                     height: 20,
+                     width: 20,
+                     child: Platform.isAndroid
+                         ? Image.asset('assets/playstore.png')
+                         : Image.asset('assets/appstore.png'),
+                   ),
+                   SizedBox(
+                     height: 10,
+                   ),
+                   Text(
+                     Platform.isAndroid
+                         ? 'Google Play Store'
+                         : 'Apple App Store',
+                     style: TextStyle(
+                         fontSize: 13, color: MyTheme.dark_font_grey),
+                   ),
+                 ],
+               ),
+             ],
+           ),
+           actions: [
+             TextButton(
+               onPressed: () {
+                 Navigator.of(context).pop();
+                 _showEntertiment(context);
+
+               },
+               child: Text('Cancel'),
+             ),
+             TextButton(
+               onPressed: () async {
+                 final url = Uri.parse(
+                   Platform.isAndroid
+                       ? 'https://play.google.com/store/apps/details?id=gmp.ethicaldigit.com&hl=en&gl=US'
+                       : 'https://apps.apple.com/us/app/ga-mone-pwint-online/id6467404178',
+                 ); // Replace with your app's package name or the link you want to open.
+
+                 if (await canLaunchUrl(url)) {
+                   await launchUrl(url);
+                 } else {
+                   throw 'Could not launch $url';
+                 }
+               },
+               child: Text('Update'),
+             ),
+           ],
+         ),
+       );
+     });
+    }else{
+      _showEntertiment(context);
+    }
 
 
-       WidgetsBinding.instance?.addPostFrameCallback((_) {
-         _showTutorialOverlay(context);
-       });
 
-
+  }
+  void _showEntertiment(BuildContext context){
+    if(widget.init_splash){
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showTutorialOverlay(context);
+      });
+    }
+    widget.init_splash=false;
 
   }
   void _showTutorialOverlay(BuildContext context) {
-    Navigator.of(context).push(TutorialOverlay());
+   // Navigator.of(context).push(TutorialOverlay());
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TutorialOverlay()));
   }
-  showAutoDisappearingDialog(BuildContext context) {
-    // Set a duration for the dialog to auto-disappear
-    const duration = Duration(seconds: 3);
 
-    // Create and start a timer
-    Timer(duration, () {
-      // Pop the dialog when the timer expires
-      //Navigator.of(context, rootNavigator: true).pop();
+  getUserInfo() async {
+    var version = await ProfileRepository().getVersion();
+    print(Platform.isAndroid);
+    if (Platform.isAndroid) {
+      ver = version.android.mobileVersion;
+      print('mobileversion $ver');
+    } else {
+      ver = version.ios.mobileVersion;
+      print('mobileversion $ver');
+    }
+
+  }
+
+  Future<void> _initPackageInfo() async {
+    final PackageInfo info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
     });
-
-    // Show a full-screen dialog
-    showGeneralDialog(
-      context: context,
-    //  barrierDismissible: false, // Prevent users from dismissing it by tapping outside
-      transitionDuration: Duration(milliseconds: 300),
-    //  barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      pageBuilder: (context, animation1, animation2) {
-        return Center(
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: Colors.white,
-            child: Center(
-              child: Text(
-                "This is a full-screen dialog",
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-          ),
-        );
-      },
-    );
   }
-
 
   @override
   Widget build(BuildContext context) {
