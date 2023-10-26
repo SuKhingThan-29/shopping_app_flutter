@@ -804,7 +804,7 @@ class _RegistrationState extends State<Registration> {
                   child: TextField(
                     controller: _passwordConfirmController,
                     autofocus: false,
-                    obscureText: _obscureText,
+                    obscureText: _obscureTextC,
                     enableSuggestions: false,
                     autocorrect: false,
                     decoration: InputDecoration(
@@ -820,9 +820,9 @@ class _RegistrationState extends State<Registration> {
                           color: Colors.grey,
                         ),
                         onPressed: () {
-                          print(_obscureText);
+                          print(_obscureTextC);
                           setState(() {
-                            _obscureText = !_obscureText;
+                            _obscureTextC = !_obscureTextC;
                           });
                         },
                       ),

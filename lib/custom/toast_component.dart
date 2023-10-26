@@ -27,34 +27,15 @@ class ToastComponent {
         backgroundRadius: 6);
   }
 
-  static showSnackBar(BuildContext context, String msg) {
-    return  Toast.show(msg,
-        duration: Toast.lengthShort,
-        gravity: Toast.bottom,
-        backgroundColor: Colors.black,
-        textStyle: TextStyle(color: Colors.white),
-        border: Border(
-            top: BorderSide(
-              color: Color.fromRGBO(203, 209, 209, 1),
-            ),
-            bottom: BorderSide(
-              color: Color.fromRGBO(203, 209, 209, 1),
-            ),
-            right: BorderSide(
-              color: Color.fromRGBO(203, 209, 209, 1),
-            ),
-            left: BorderSide(
-              color: Color.fromRGBO(203, 209, 209, 1),
-            )),
-        backgroundRadius: 6);
-    // return ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(
-    //     content: Text('$ms'),
-    //     dismissDirection: DismissDirection.up,
-    //     behavior: SnackBarBehavior.floating,
-    //     margin:
-    //         EdgeInsets.only(bottom: MediaQuery.of(context).size.height - 150),
-    //   ),
-    // );
+  static showSnackBar(BuildContext context, String ms) {
+    return ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$ms'),
+        dismissDirection: DismissDirection.up,
+        behavior: SnackBarBehavior.floating,
+        margin:
+            EdgeInsets.only(bottom: MediaQuery.of(context).size.height - 50),
+      ),
+    );
   }
 }
