@@ -25,6 +25,7 @@ class ChatRepository {
 
   Future<dynamic> getNotiResponse() async {
     String url = ("${AppConfig.BASE_URL}/all-notifications");
+    print("Bearer ${access_token.$}");
     final response = await ApiRequest.get(
         url: url,
         headers: {
