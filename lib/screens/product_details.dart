@@ -915,8 +915,14 @@ class _ProductDetailsState extends State<ProductDetails>
                       ),
                       SizedBox(width: 15),
                       InkWell(
-                        onTap: () {
-                          onPressShare(context);
+                        onTap: () async {
+                          try {
+                            await SocialShare.shareOptions(
+                                _productDetails!.link!);
+                          } catch (e) {
+                            print(e);
+                            print('object');
+                          }
                         },
                         child: Container(
                           decoration:
