@@ -49,7 +49,7 @@ class TutorialOverlayState extends State<TutorialOverlay> {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/full_dialog.jpg'),
-          fit: BoxFit.cover,
+          fit: BoxFit.contain,
         ),
       ),
       child: Stack(

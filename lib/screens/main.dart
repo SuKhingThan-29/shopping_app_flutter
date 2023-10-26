@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:one_context/one_context.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:route_transitions/route_transitions.dart';
