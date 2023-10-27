@@ -99,7 +99,7 @@ class _RegistrationState extends State<Registration> {
 
   fetch_state(String countryId) async {
     var res =
-        await AddressRepository().getStateListByCountry(country_id: countryId);
+    await AddressRepository().getStateListByCountry(country_id: countryId);
     states.clear();
 
     res.states.forEach((s) {
@@ -188,7 +188,7 @@ class _RegistrationState extends State<Registration> {
       print(googleUser.toString());
 
       GoogleSignInAuthentication googleSignInAuthentication =
-          await googleUser.authentication;
+      await googleUser.authentication;
       String? accessToken = googleSignInAuthentication.accessToken;
 
       print("Google displayName ${googleUser.displayName}");
@@ -388,10 +388,10 @@ class _RegistrationState extends State<Registration> {
 
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
-        return Otp(
-          phnum: email.isEmpty ? _phone : email,
-        );
-      }), (newRoute) => false);
+            return Otp(
+              phnum: email.isEmpty ? _phone : email,
+            );
+          }), (newRoute) => false);
     }
   }
 
@@ -403,8 +403,8 @@ class _RegistrationState extends State<Registration> {
       onWillPop: () {
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (context) {
-          return Main();
-        }), (reute) => false);
+              return Main();
+            }), (reute) => false);
         return Future<bool>.value(false);
       },
       child: Stack(
@@ -418,7 +418,7 @@ class _RegistrationState extends State<Registration> {
             left: 10, // Adjust the left position as needed
             child: Container(
               decoration: BoxDecoration(// Background color for the icon
-                  ),
+              ),
               child: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
@@ -551,8 +551,8 @@ class _RegistrationState extends State<Registration> {
                         keyboardType: TextInputType.numberWithOptions(
                             signed: true, decimal: true),
                         inputDecoration:
-                            InputDecorations.buildInputDecoration_phone(
-                                hint_text: "01XXX XXX XXX"),
+                        InputDecorations.buildInputDecoration_phone(
+                            hint_text: "01XXX XXX XXX"),
                         onSaved: (PhoneNumber number) {
                           //print('On Saved: $number');
                         },
@@ -835,7 +835,7 @@ class _RegistrationState extends State<Registration> {
                   height: _isCaptchaShowing ? 350 : 50,
                   width: 300,
                   child: Captcha(
-                    (keyValue) {
+                        (keyValue) {
                       googleRecaptchaKey = keyValue;
                       setState(() {});
                     },
@@ -887,13 +887,13 @@ class _RegistrationState extends State<Registration> {
                                                 builder: (context) =>
                                                     CommonWebviewScreen(
                                                       page_name:
-                                                          "Terms Conditions",
+                                                      "Terms Conditions",
                                                       url:
-                                                          "${AppConfig.RAW_BASE_URL}/mobile-page/terms",
+                                                      "${AppConfig.RAW_BASE_URL}/mobile-page/terms",
                                                     )));
                                       },
                                     style:
-                                        TextStyle(color: MyTheme.accent_color),
+                                    TextStyle(color: MyTheme.accent_color),
                                     text: " Terms Conditions",
                                   ),
                                   TextSpan(
@@ -908,14 +908,14 @@ class _RegistrationState extends State<Registration> {
                                                 builder: (context) =>
                                                     CommonWebviewScreen(
                                                       page_name:
-                                                          "Privacy Policy",
+                                                      "Privacy Policy",
                                                       url:
-                                                          "${AppConfig.RAW_BASE_URL}/mobile-page/privacy-policy",
+                                                      "${AppConfig.RAW_BASE_URL}/mobile-page/privacy-policy",
                                                     )));
                                       },
                                     text: " Privacy Policy",
                                     style:
-                                        TextStyle(color: MyTheme.accent_color),
+                                    TextStyle(color: MyTheme.accent_color),
                                   )
                                 ])),
                       ),
@@ -933,7 +933,7 @@ class _RegistrationState extends State<Registration> {
                     color: MyTheme.accent_color,
                     shape: RoundedRectangleBorder(
                         borderRadius:
-                            const BorderRadius.all(Radius.circular(6.0))),
+                        const BorderRadius.all(Radius.circular(6.0))),
                     child: Text(
                       AppLocalizations.of(context)!.sign_up_ucf,
                       style: TextStyle(
@@ -943,8 +943,8 @@ class _RegistrationState extends State<Registration> {
                     ),
                     onPressed: _isAgree!
                         ? () {
-                            onPressSignUp();
-                          }
+                      onPressSignUp();
+                    }
                         : null,
                   ),
                 ),
@@ -955,9 +955,9 @@ class _RegistrationState extends State<Registration> {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Center(
                       child: Text(
-                    "or join with",
-                    style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
-                  )),
+                        "or join with",
+                        style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                      )),
                 ),
               ),
               Padding(
@@ -1016,9 +1016,9 @@ class _RegistrationState extends State<Registration> {
                   children: [
                     Center(
                         child: Text(
-                      AppLocalizations.of(context)!.already_have_an_account,
-                      style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
-                    )),
+                          AppLocalizations.of(context)!.already_have_an_account,
+                          style: TextStyle(color: MyTheme.font_grey, fontSize: 12),
+                        )),
                     SizedBox(
                       width: 10,
                     ),
@@ -1033,8 +1033,8 @@ class _RegistrationState extends State<Registration> {
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return Login();
-                        }));
+                              return Login();
+                            }));
                       },
                     ),
                   ],
