@@ -35,6 +35,7 @@ class PasswordNewState extends State<PasswordNew> {
   TextEditingController _passwordConfirmController = TextEditingController();
   bool _resetPasswordSuccess = false;
   bool _obscureText = true;
+  bool _obscureTextC = true;
 
   String headeText = "";
 
@@ -249,7 +250,7 @@ class PasswordNewState extends State<PasswordNew> {
                     child: Container(
                       height: 36,
                       child: TextField(
-                        obscureText: _obscureText,
+                        obscureText: _obscureTextC,
                         controller: _passwordConfirmController,
                         autofocus: false,
                         enableSuggestions: false,
@@ -261,15 +262,15 @@ class PasswordNewState extends State<PasswordNew> {
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _obscureText
+                              _obscureTextC
                                   ? Icons.visibility
                                   : Icons.visibility_off,
                               color: Colors.grey,
                             ),
                             onPressed: () {
-                              print(_obscureText);
+                              print(_obscureTextC);
                               setState(() {
-                                _obscureText = !_obscureText;
+                                _obscureTextC = !_obscureTextC;
                               });
                             },
                           ),
