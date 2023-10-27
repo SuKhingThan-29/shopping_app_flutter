@@ -18,7 +18,7 @@ class ApiRequest{
     if(headers!=null){
       headerMap.addAll(headers);
     }
-    print('Recommend: $headerMap');
+    print('News: $headerMap');
   var response =    await http.get(uri,headers: headerMap);
     return AIZApiResponse.check(response,middleware: middleware,groupMiddleWare: groupMiddleWare);
   }

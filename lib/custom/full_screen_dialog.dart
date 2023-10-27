@@ -57,7 +57,7 @@ class TutorialOverlayState extends State<TutorialOverlay> {
           Center(),
           Positioned(
             top: 10,
-            right: 10,
+            right: 30,
             child: Container(
               width: 70,
               height: 30,
