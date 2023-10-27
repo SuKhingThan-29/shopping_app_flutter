@@ -243,6 +243,8 @@ class _SplashScreenState extends State<SplashScreen> {
     Provider.of<CurrencyPresenter>(context, listen: false).fetchListData();
 
     print("new splash screen ${app_mobile_language.$}");
+    print("new splash screen ${app_language.$}");
+
     print("new splash screen app_language_rtl ${app_language_rtl.$}");
 
     return app_mobile_language.$;
