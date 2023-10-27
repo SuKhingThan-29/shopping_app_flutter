@@ -212,8 +212,8 @@ class PasswordNewState extends State<PasswordNew> {
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   _obscureText
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
                                   color: Colors.grey,
                                 ),
                                 onPressed: () {
@@ -263,8 +263,8 @@ class PasswordNewState extends State<PasswordNew> {
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureTextC
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                               color: Colors.grey,
                             ),
                             onPressed: () {
