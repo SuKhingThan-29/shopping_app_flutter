@@ -28,6 +28,7 @@ class ToastComponent {
   }
 
   static showSnackBar(BuildContext context, String msg) {
+    ToastContext().init(OneContext().context!);
     return  Toast.show(msg,
         duration: Toast.lengthShort,
         gravity: Toast.bottom,
