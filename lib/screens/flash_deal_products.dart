@@ -559,11 +559,11 @@ class _FlashDealProductsState extends State<FlashDealProducts> {
   }
 
   Container buildFlashDealBanner() {
-    print("Banner url: ${widget.bannerUrl}");
+    print("Banner url: ${DeviceInfo(context).width}");
     return Container(
       width: DeviceInfo(context).width,
       height: 180,
-      child: AIZImage.basicImage(widget.bannerUrl!,fit: BoxFit.fill
+      child: AIZImage.basicImage(widget.bannerUrl!,fit: BoxFit.contain
       ),
     );
   }
