@@ -1,4 +1,5 @@
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
+import 'package:active_ecommerce_flutter/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/chat.dart';
@@ -127,7 +128,10 @@ class _MessengerListState extends State<MessengerList> {
       leading: Builder(
         builder: (context) => IconButton(
           icon: UsefulElements.backButton(context),
-          onPressed: () => Navigator.of(context).pop(),
+         // onPressed: () => Navigator.of(context).pop(),
+          onPressed: ()=> Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+            return Profile();
+          }),(route) => false),
         ),
       ),
       title: Text(

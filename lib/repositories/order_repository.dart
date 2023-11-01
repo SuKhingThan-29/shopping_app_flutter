@@ -120,7 +120,7 @@ class OrderRepository {
     String url = ("${AppConfig.BASE_URL}/purchase-history-details/" +
         oid.toString() +
         "?notiID=$nid");
-    print("Order Detail id: $oid");
+    print("Order Detail noti: $url");
     print(url);
     final response = await ApiRequest.get(
         url: url,

@@ -61,19 +61,29 @@ class _ProfileState extends State<Profile> {
   late BuildContext loadingcontext;
   String? _member_level;
   UserInformation? _userInfo;
-  int? _totalData = 0;
+  int? _notitotalcount = 0;
+  int? _conversationtotalcount=0;
 
   String userLeverl = "Normal";
-  List<dynamic> _list = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    print("fetchdata init");
 
     if (is_logged_in.$ == true) {
       fetchAll();
     }
+  }
+  void didUpdateWidget(Profile oldWidget){
+
+    print("fetchdata didUpdateWidget");
+    super.didUpdateWidget(oldWidget);
+  }
+  void didChangeDependencies(){
+    print("fetchdata didchange");
+    super.didChangeDependencies();
   }
 
   void dispose() {
@@ -98,11 +108,12 @@ class _ProfileState extends State<Profile> {
   }
 
   fetchData() async {
-    var conversatonResponse = await ChatRepository().getNotiResponse();
-    _list.addAll(conversatonResponse.data.data);
-    _totalData = conversatonResponse.data.total;
+    var notiCountResponse = await ChatRepository().getUnReadNotiResponse();
+    var conversationCountResponse = await ChatRepository().getUnReadConversationCountResponse();
+    _notitotalcount = notiCountResponse.count;
+    _conversationtotalcount=conversationCountResponse.count;
     setState(() {});
-    print(_totalData);
+    print("_conversationtotalcount: $_conversationtotalcount");
   }
 
   getUserInfo() async {
@@ -683,6 +694,7 @@ class _ProfileState extends State<Profile> {
               ],
             ));
   }
+
 /*
   Widget buildSettingAndAddonsHorizontalMenu() {
     return Container(
@@ -876,17 +888,83 @@ class _ProfileState extends State<Profile> {
           //             }
           //           : () => null),
           if (conversation_system_status.$)
-            buildSettingAndAddonsHorizontalMenuItem(
-                "assets/messages.png",
-                AppLocalizations.of(context)!.messages_ucf,
+            // buildSettingAndAddonsHorizontalMenuItem(
+            //     "assets/messages.png",
+            //     AppLocalizations.of(context)!.messages_ucf,
+            //     is_logged_in.$
+            //         ? () {
+            //             Navigator.push(context,
+            //                 MaterialPageRoute(builder: (context) {
+            //               return MessengerList();
+            //             }));
+            //           }
+            //         : () => null),
+            InkWell(
+              onTap: () {
                 is_logged_in.$
-                    ? () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return MessengerList();
-                        }));
-                      }
-                    : () => null),
+                    ? Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                        return MessengerList();
+                      }))
+                    : showLoginWarning();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 20),
+                          child: Image.asset(
+                            "assets/messages.png",
+                            height: 30,
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 18,
+                          child: _conversationtotalcount != 0
+                              ? Container(
+                            width: 18,
+                            height: 18,
+                            padding: EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                '$_conversationtotalcount',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          )
+                              : Container(),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!.messages_ucf,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      style: TextStyle(
+                          color: is_logged_in.$
+                              ? MyTheme.dark_font_grey
+                              : MyTheme.medium_grey_50,
+                          fontSize: 12),
+                    )
+                  ],
+                ),
+              ),
+            ),
           // if (auction_addon_installed.$)
           if (false)
             buildSettingAndAddonsHorizontalMenuItem(
@@ -1402,7 +1480,7 @@ class _ProfileState extends State<Profile> {
                   Positioned(
                     top: 0,
                     right: 18,
-                    child: _totalData != 0
+                    child: _notitotalcount != 0
                         ? Container(
                             width: 18,
                             height: 18,
@@ -1414,7 +1492,7 @@ class _ProfileState extends State<Profile> {
                             child: Align(
                               alignment: Alignment.center,
                               child: Text(
-                                '$_totalData',
+                                '$_notitotalcount',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 12,

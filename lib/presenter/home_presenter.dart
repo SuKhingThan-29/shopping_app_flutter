@@ -169,20 +169,13 @@ class HomePresenter extends ChangeNotifier {
           await ProductRepository().getRecommendProducts(page: allProductPage);
       showAllLoadingContainer=false;
 
-
     }
 
     if (productResponse.products!.isEmpty) {
-      //ToastComponent.showDialog("No more products!", gravity: Toast.center);
       isAllProductInitial = false;
       showAllLoadingContainer = false;
       return;
     }
-    // print('AllProductPage response: ${productResponse.products!.length}');
-    // if(totalAllProductData! >= to){
-    //   allProductList.addAll(productResponse.products!);
-    //
-    // }
     allProductList.addAll(productResponse.products!);
     isAllProductInitial = false;
     totalAllProductData = productResponse.meta!.total;

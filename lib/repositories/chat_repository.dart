@@ -4,6 +4,7 @@ import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/data_model/conversation_response.dart';
 import 'package:active_ecommerce_flutter/data_model/message_response.dart';
 import 'package:active_ecommerce_flutter/data_model/noti_response.dart';
+import 'package:active_ecommerce_flutter/data_model/unread_conversation.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/middlewares/banned_user.dart';
 import 'package:active_ecommerce_flutter/repositories/api-request.dart';
@@ -34,6 +35,30 @@ class ChatRepository {
         },
         middleware: BannedUser());
     return notiFromJson(response.body);
+  }
+  Future<dynamic> getUnReadNotiResponse() async {
+    String url = ("${AppConfig.BASE_URL}/unread-notifications");
+    print("Bearer ${access_token.$}");
+    final response = await ApiRequest.get(
+        url: url,
+        headers: {
+          "Authorization": "Bearer ${access_token.$}",
+          "App-Language": app_language.$!,
+        },
+        middleware: BannedUser());
+    return unReadMessageFromJson(response.body);
+  }
+  Future<dynamic> getUnReadConversationCountResponse() async {
+    String url = ("${AppConfig.BASE_URL}/chat/unread-conversations-count");
+    print("Bearer ${access_token.$}");
+    final response = await ApiRequest.get(
+        url: url,
+        headers: {
+          "Authorization": "Bearer ${access_token.$}",
+          "App-Language": app_language.$!,
+        },
+        middleware: BannedUser());
+    return unReadMessageFromJson(response.body);
   }
 
   Future<dynamic> getMessageResponse(
