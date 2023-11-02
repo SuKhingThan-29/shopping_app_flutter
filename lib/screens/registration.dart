@@ -78,7 +78,7 @@ class _RegistrationState extends State<Registration> {
   bool _isName = false;
   bool _isPhNo = false;
   bool _isPassword = false;
-  bool _isConfirmPassword=false;
+  bool _isConfirmPassword = false;
 
   @override
   void initState() {
@@ -87,7 +87,6 @@ class _RegistrationState extends State<Registration> {
         overlays: [SystemUiOverlay.bottom]);
     super.initState();
     fetch_country();
-
   }
 
   String? get _errorNameText {
@@ -116,6 +115,7 @@ class _RegistrationState extends State<Registration> {
     _isPassword = false;
     return null;
   }
+
   String? get _errorConfirmPassword {
     final text = _passwordConfirmController.value.text;
     if (text.isEmpty) {
@@ -124,6 +124,7 @@ class _RegistrationState extends State<Registration> {
     _isConfirmPassword = false;
     return null;
   }
+
   void _submit() {
     setState(() {
       if (_nameController.text.toString().isEmpty) {
@@ -187,7 +188,7 @@ class _RegistrationState extends State<Registration> {
   fetch_postalCode(String cityId) async {
     var res = await AddressRepository().getPostalCodeByCidty(cityId);
     postalCode = res.data.toString();
-    _postalcodeController.text=postalCode;
+    _postalcodeController.text = postalCode;
     setState(() {});
   }
 
@@ -520,7 +521,6 @@ class _RegistrationState extends State<Registration> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Container(
-                  height: 36,
                   child: TextField(
                     controller: _nameController,
                     autofocus: false,
@@ -548,7 +548,6 @@ class _RegistrationState extends State<Registration> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      height: 36,
                       child: TextField(
                         controller: _emailController,
                         autofocus: false,
@@ -804,7 +803,7 @@ class _RegistrationState extends State<Registration> {
                       decoration: InputDecoration(
                           errorStyle: TextStyle(color: Colors.red),
                           enabled: false,
-                          hintText:  "Select city")),
+                          hintText: "Select city")),
                 ),
               ),
               SizedBox(
@@ -824,7 +823,6 @@ class _RegistrationState extends State<Registration> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      height: 36,
                       child: TextField(
                         controller: _passwordController,
                         autofocus: false,
@@ -838,8 +836,8 @@ class _RegistrationState extends State<Registration> {
                         },
                         decoration: InputDecoration(
                           errorStyle: TextStyle(color: Colors.red),
-                          errorText: _isPassword?_errorPassword:null,
-                          hintText: _isPassword?null:"Enter Password",
+                          errorText: _isPassword ? _errorPassword : null,
+                          hintText: _isPassword ? null : "Enter Password",
                           hintStyle: TextStyle(
                             color: Colors.grey.shade400,
                           ),
@@ -881,7 +879,6 @@ class _RegistrationState extends State<Registration> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Container(
-                  height: 36,
                   child: TextField(
                     controller: _passwordConfirmController,
                     autofocus: false,
@@ -895,8 +892,10 @@ class _RegistrationState extends State<Registration> {
                     },
                     decoration: InputDecoration(
                       errorStyle: TextStyle(color: Colors.red),
-                      errorText: _isConfirmPassword?_errorConfirmPassword:null,
-                      hintText: _isConfirmPassword?null:"Enter Retype Password",
+                      errorText:
+                          _isConfirmPassword ? _errorConfirmPassword : null,
+                      hintText:
+                          _isConfirmPassword ? null : "Enter Retype Password",
                       hintStyle: TextStyle(
                         color: Colors.grey.shade400,
                       ),

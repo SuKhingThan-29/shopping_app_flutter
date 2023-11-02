@@ -153,7 +153,6 @@ class _PasswordForgetState extends State<PasswordForget> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
-                        height: 36,
                         child: TextField(
                           controller: _emailController,
                           autofocus: false,

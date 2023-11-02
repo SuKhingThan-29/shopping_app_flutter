@@ -404,7 +404,6 @@ class _LoginState extends State<Login> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
-                        height: 36,
                         child: TextField(
                           controller: _emailController,
                           autofocus: false,
