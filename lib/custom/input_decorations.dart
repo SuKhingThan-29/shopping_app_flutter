@@ -7,14 +7,10 @@ class InputDecorations {
     return InputDecoration(
         errorText: error_text,
         errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: error_text != null ? Colors.red : MyTheme.accent_color,
-              width: 0.5),
+          borderSide: BorderSide(color: Colors.redAccent, width: 0.5),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: error_text != null ? Colors.red : MyTheme.accent_color,
-              width: 0.5),
+          borderSide: BorderSide(color: Colors.redAccent, width: 0.5),
         ),
         hintText: hint_text,
         filled: true,
