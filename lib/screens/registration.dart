@@ -616,7 +616,7 @@ class _RegistrationState extends State<Registration> {
                             signed: true, decimal: true),
                         inputDecoration:
                             InputDecorations.buildInputDecoration_phone(
-                                hint_text: "01XXX XXX XXX",
+                                hint_text: "09 XXX XXX",
                                 error_text: _isPhNo ? _errorPhoneNo : null),
                         onSaved: (PhoneNumber number) {
                           //print('On Saved: $number');
