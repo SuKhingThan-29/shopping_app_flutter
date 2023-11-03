@@ -463,7 +463,7 @@ class _LoginState extends State<Login> {
                               signed: true, decimal: true),
                           inputDecoration:
                               InputDecorations.buildInputDecoration_phone(
-                                  hint_text: "01XXX XXX XXX"),
+                                  hint_text: "09XXX XXX XXX"),
                           onSaved: (PhoneNumber number) {
                             print('On Saved: $number');
                           },
