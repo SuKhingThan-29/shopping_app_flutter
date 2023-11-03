@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import '../screens/main.dart';
+
 class TutorialOverlay extends StatefulWidget {
   VoidCallback onButtonPressed;
   TutorialOverlay({required this.onButtonPressed});
@@ -25,10 +27,20 @@ class TutorialOverlayState extends State<TutorialOverlay> {
       });
 
       if (timerCount == 0) {
-       // final shouldDismiss = widget.onButtonPressed(); // Invoke the callback
-
-          Navigator.of(context).pop();
-
+        // final shouldDismiss = widget.onButtonPressed(); // Invoke the callback
+        // Navigator.of(context).pop();
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return Main(
+                go_back: false,
+                init_splash: false,
+              );
+            },
+          ),
+              (route) => true,
+        );
       }
       print('Duration: $timerCount');
     });
@@ -65,8 +77,8 @@ class TutorialOverlayState extends State<TutorialOverlay> {
             top: 10,
             right: 30,
             child: GestureDetector(
-            onTap: widget.onButtonPressed,
-            child:Container(
+              onTap: widget.onButtonPressed,
+              child:Container(
                 width: 70,
                 height: 30,
                 decoration: BoxDecoration(
