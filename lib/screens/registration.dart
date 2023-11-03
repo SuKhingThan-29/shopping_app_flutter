@@ -110,8 +110,12 @@ class _RegistrationState extends State<Registration> {
 
   String? get _errorPassword {
     final text = _passwordController.value.text;
+    final text1 = _passwordConfirmController.value.text;
     if (text.isEmpty) {
       return 'your password is empty';
+    }
+    if (text != text1) {
+      return 'password does not match';
     }
     _isPassword = false;
     return null;
@@ -119,8 +123,12 @@ class _RegistrationState extends State<Registration> {
 
   String? get _errorConfirmPassword {
     final text = _passwordConfirmController.value.text;
+    final text1 = _passwordController.value.text;
     if (text.isEmpty) {
       return 'your confirm password is empty';
+    }
+    if (text != text1) {
+      return 'password does not match';
     }
     _isConfirmPassword = false;
     return null;

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:active_ecommerce_flutter/custom/input_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:pinput/pinput.dart';
 import 'package:toast/toast.dart';
 import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
 import 'package:active_ecommerce_flutter/screens/login.dart';
@@ -18,7 +19,7 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PasswordOtp extends StatefulWidget {
-  PasswordOtp({Key? key, this.verify_by = "email", this.email_or_code})
+  PasswordOtp({Key? key, required this.verify_by, this.email_or_code})
       : super(key: key);
   final String verify_by;
   final String? email_or_code;
@@ -36,6 +37,7 @@ class _PasswordOtpState extends State<PasswordOtp> {
   bool _obscureText = true;
 
   String headeText = "";
+  String otp = "";
 
   FlipCardController cardController = FlipCardController();
 
@@ -209,14 +211,27 @@ class _PasswordOtpState extends State<PasswordOtp> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Container(
-                          height: 36,
-                          child: TextField(
-                            controller: _codeController,
-                            autofocus: false,
-                            decoration: InputDecorations.buildInputDecoration_1(
-                                hint_text: "A X B 4 J H"),
+                        Pinput(
+                          autofocus: true,
+                          controller: _codeController,
+                          defaultPinTheme: PinTheme(
+                            textStyle: const TextStyle(
+                              fontSize: 20,
+                              color: Color(0xFF2B2B2B),
+                              fontWeight: FontWeight.w600,
+                            ),
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: Colors.grey.shade300,
+                            ),
                           ),
+                          length: 6,
+                          onChanged: (pin) {
+                            otp = pin;
+                            setState(() {});
+                          },
                         ),
                       ],
                     ),
