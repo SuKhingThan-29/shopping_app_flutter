@@ -54,14 +54,13 @@ class _OtpState extends State<Otp> {
         overlays: [SystemUiOverlay.bottom]);
     _startTimer(); // Start the timer when the widget initializes.
     print("OTP: ${widget.phnum}");
-    if(widget.phnum!.contains('.com')){
-      _firstEmailName=widget.phnum!.substring(0,1);
-      _secEmailName=widget.phnum!.length>11?(widget.phnum!.length-11).toString():widget.phnum!.length.toString();
+    if (widget.phnum!.contains('.com')) {
+      _firstEmailName = widget.phnum!.substring(0, 6);
+      _secEmailName = widget.phnum!.substring(widget.phnum!.length - 2);
     }
-    if(widget.phnum!.contains('+95')){
-      _phoneNo=widget.phnum!.substring(widget.phnum!.length - 2);
+    if (widget.phnum!.contains('+95')) {
+      _phoneNo = widget.phnum!.substring(widget.phnum!.length - 2);
     }
-
 
     super.initState();
   }
@@ -75,7 +74,7 @@ class _OtpState extends State<Otp> {
   }
 
   onTapResend() async {
-    _secondsRemaining=60;
+    _secondsRemaining = 60;
     _startTimer();
     otp = "";
     _verificationCodeController.text = "";
@@ -209,9 +208,7 @@ class _OtpState extends State<Otp> {
                   Padding(
                     padding: EdgeInsets.all(8),
                     child: Text(
-
-                         "Verification code has been sent to",
-
+                      "Verification code has been sent to",
                       style: TextStyle(fontSize: 15),
                       maxLines: 2,
                     ),
@@ -219,9 +216,11 @@ class _OtpState extends State<Otp> {
                   Padding(
                     padding: EdgeInsets.all(8),
                     child: Text(
-                      widget.phnum!.isEmpty?'':widget.phnum!.contains('.com')
-                          ? "   $_firstEmailName****$_secEmailName "
-                          : "+95 ******* $_phoneNo .",
+                      widget.phnum!.isEmpty
+                          ? ''
+                          : widget.phnum!.contains('.com')
+                              ? "   $_firstEmailName****$_secEmailName "
+                              : "+95 ******* $_phoneNo .",
                       style: TextStyle(fontSize: 15),
                       maxLines: 2,
                     ),
@@ -231,14 +230,15 @@ class _OtpState extends State<Otp> {
                   ),
                   Text(
                     "Please wait a few minutes.",
-                    style: TextStyle(fontSize: 15,color: Colors.grey),
+                    style: TextStyle(fontSize: 15, color: Colors.grey),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Container(
                     child: Text(
-                      'You will get an OTP code : $_secondsRemaining',style: TextStyle(color: Colors.orangeAccent),
+                      'You will get an OTP code : $_secondsRemaining',
+                      style: TextStyle(color: Colors.orangeAccent),
                     ),
                   ),
                   const SizedBox(height: 30),
