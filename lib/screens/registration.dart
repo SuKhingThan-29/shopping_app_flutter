@@ -522,6 +522,7 @@ class _RegistrationState extends State<Registration> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Container(
+                  height: 50,
                   child: TextField(
                     controller: _nameController,
                     autofocus: false,
@@ -549,6 +550,7 @@ class _RegistrationState extends State<Registration> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
+                      height: 60,
                       child: TextField(
                         controller: _emailController,
                         autofocus: false,
