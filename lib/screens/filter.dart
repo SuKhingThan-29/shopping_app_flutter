@@ -392,9 +392,6 @@ class _FilterState extends State<Filter> {
         key: _scaffoldKey,
         backgroundColor: Colors.white,
         body: Stack(fit: StackFit.loose, children: [
-          SizedBox(
-            height: 20,
-          ),
           _selectedFilter!.option_key == 'product'
               ? buildProductList()
               : (_selectedFilter!.option_key == 'brands'
