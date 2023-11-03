@@ -563,6 +563,9 @@ $string
               stateSetter(() {
                 if (_quantity! < _stock!) {
                   _quantity = (_quantity!) + 1;
+                }else{
+                  ToastComponent.showDialog("There is no quantity",
+                      gravity: Toast.bottom, duration: Toast.lengthLong);
                 }
               });
               print("Quan up: $_quantity");

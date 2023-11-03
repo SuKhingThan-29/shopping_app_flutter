@@ -715,7 +715,7 @@ class _FilterState extends State<Filter> {
             padding: const EdgeInsets.only(left: 10, right: 20, top: 20),
             child: Container(
               width: MediaQuery.of(context).size.width * 0.6,
-              height: 90,
+              height: 60,
               child: Padding(
                 padding: MediaQuery.of(context).viewPadding.top > 30
                     ? const EdgeInsets.symmetric(
@@ -810,14 +810,16 @@ class _FilterState extends State<Filter> {
                         color: MyTheme.textfield_grey,
                       ),
                       enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
                         borderSide:
-                            BorderSide(color: MyTheme.white, width: 0.0),
+                            BorderSide(color: MyTheme.grey_153, width: 1.0),
                       ),
                       focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
                         borderSide:
-                            BorderSide(color: MyTheme.white, width: 0.0),
+                            BorderSide(color: MyTheme.grey_153, width: 1.0),
                       ),
-                      contentPadding: EdgeInsets.all(0.0),
+                      contentPadding: EdgeInsets.only(left: 15.0,right: 5,top: 5,bottom: 5),
                     ),
                   ),
                 ),

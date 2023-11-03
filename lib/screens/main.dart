@@ -53,12 +53,6 @@ class _MainState extends State<Main> {
 
   var _children = [];
   int ver = 1;
-  PackageInfo _packageInfo = PackageInfo(
-    appName: AppConfig.app_name,
-    packageName: 'Unknown',
-    version: 'Unknown',
-    buildNumber: 'Unknown',
-  );
   fetchAll()async {
     getCartCount();
 
@@ -115,122 +109,9 @@ class _MainState extends State<Main> {
         overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
 
     super.initState();
-    getUserInfo();
-    _initPackageInfo();
-    if (ver != _packageInfo.version && widget.init_splash) {
-     WidgetsBinding.instance?.addPostFrameCallback((_) {
-       showDialog(
-         context: context,
-         builder: (context) => AlertDialog(
-           content: Column(
-             mainAxisSize: MainAxisSize.min,
-             children: [
-               Text(
-                 'Update',
-                 style:
-                 TextStyle(fontSize: 15, color: MyTheme.dark_font_grey),
-               ),
-               Text(
-                 'Are you want to update',
-                 style:
-                 TextStyle(fontSize: 13, color: MyTheme.dark_font_grey),
-               ),
-               Divider(),
-               // Add your image and text row here
-               Row(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 crossAxisAlignment: CrossAxisAlignment.center,
-                 children: [
-                   Container(
-                     height: 20,
-                     width: 20,
-                     child: Platform.isAndroid
-                         ? Image.asset('assets/playstore.png')
-                         : Image.asset('assets/appstore.png'),
-                   ),
-                   SizedBox(
-                     height: 10,
-                   ),
-                   Text(
-                     Platform.isAndroid
-                         ? 'Google Play Store'
-                         : 'Apple App Store',
-                     style: TextStyle(
-                         fontSize: 13, color: MyTheme.dark_font_grey),
-                   ),
-                 ],
-               ),
-             ],
-           ),
-           actions: [
-             TextButton(
-               onPressed: () {
-                 Navigator.of(context).pop();
-                 _showEntertiment(context);
-
-               },
-               child: Text('Cancel'),
-             ),
-             TextButton(
-               onPressed: () async {
-                 final url = Uri.parse(
-                   Platform.isAndroid
-                       ? 'https://play.google.com/store/apps/details?id=gmp.ethicaldigit.com&hl=en&gl=US'
-                       : 'https://apps.apple.com/us/app/ga-mone-pwint-online/id6467404178',
-                 ); // Replace with your app's package name or the link you want to open.
-
-                 if (await canLaunchUrl(url)) {
-                   await launchUrl(url);
-                 } else {
-                   throw 'Could not launch $url';
-                 }
-               },
-               child: Text('Update'),
-             ),
-           ],
-         ),
-       );
-     });
-    }else{
-      _showEntertiment(context);
-    }
-
-
-
-  }
-  void _showEntertiment(BuildContext context){
-    if(widget.init_splash){
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showTutorialOverlay(context);
-      });
-    }
-    widget.init_splash=false;
-
-  }
-  void _showTutorialOverlay(BuildContext context) {
-   // Navigator.of(context).push(TutorialOverlay());
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TutorialOverlay()));
-  }
-
-  getUserInfo() async {
-    var version = await ProfileRepository().getVersion();
-    print(Platform.isAndroid);
-    if (Platform.isAndroid) {
-      ver = version.android.mobileVersion;
-      print('mobileversion $ver');
-    } else {
-      ver = version.ios.mobileVersion;
-      print('mobileversion $ver');
-    }
 
   }
 
-  Future<void> _initPackageInfo() async {
-    final PackageInfo info = await PackageInfo.fromPlatform();
-    setState(() {
-      _packageInfo = info;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,6 @@
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/custom/aiz_image.dart';
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
-import 'package:active_ecommerce_flutter/data_model/category_response.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/shimmer_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
@@ -74,45 +73,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
   }
 
-  void _showDialogOnEnter() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext buildContext) {
-        return Dialog(
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/splash_screen_logo.png'), // Replace with your image asset or network image
-                fit: BoxFit.cover, // You can adjust the fit as needed
-              ),
-            ),
-            child: Stack(
-              children: <Widget>[
-                // Add your content here
-                Center(),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(buildContext).pop();
-                    },
-                    child: Icon(
-                      Icons.close, // You can use a different icon or widget
-                      size: 32, // Adjust the size as needed
-                      color: Colors.red, // Adjust the color as needed
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   Future<void> _onBrandListRefresh() async {
     resetBrandList();

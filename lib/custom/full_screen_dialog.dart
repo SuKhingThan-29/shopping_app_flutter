@@ -2,6 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class TutorialOverlay extends StatefulWidget {
+  VoidCallback onButtonPressed;
+  TutorialOverlay({required this.onButtonPressed});
+
   @override
   TutorialOverlayState createState() => TutorialOverlayState();
 }
@@ -22,7 +25,10 @@ class TutorialOverlayState extends State<TutorialOverlay> {
       });
 
       if (timerCount == 0) {
-        Navigator.of(context).pop();
+       // final shouldDismiss = widget.onButtonPressed(); // Invoke the callback
+
+          Navigator.of(context).pop();
+
       }
       print('Duration: $timerCount');
     });
@@ -49,7 +55,7 @@ class TutorialOverlayState extends State<TutorialOverlay> {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/full_dialog.jpg'),
-          fit: BoxFit.contain,
+          fit: BoxFit.fill,
         ),
       ),
       child: Stack(
@@ -58,21 +64,24 @@ class TutorialOverlayState extends State<TutorialOverlay> {
           Positioned(
             top: 10,
             right: 30,
-            child: Container(
-              width: 70,
-              height: 30,
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: Center(
-                child: Text(
-                  'Skip $timerCount',
-                  style: TextStyle(color: Colors.white),
+            child: GestureDetector(
+            onTap: widget.onButtonPressed,
+            child:Container(
+                width: 70,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Center(
+                  child: Text(
+                    'Skip $timerCount',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),
-          ),
+          )
         ],
       ),
     );
