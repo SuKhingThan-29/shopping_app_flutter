@@ -123,5 +123,15 @@
     <string>YES</string>
     <key>FlutterDeepLinkingEnabled</key>
     <true/>
+    <key>CFBundleIcons</key>
+       <dict>
+           <key>CFBundlePrimaryIcon</key>
+           <dict>
+               <key>CFBundleIconFiles</key>
+               <array>
+                   <string>ic_launcher</string>
+               </array>
+           </dict>
+       </dict>
 </dict>
 </plist>
