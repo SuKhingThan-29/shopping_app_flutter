@@ -219,6 +219,8 @@ class _PointShopState extends State<PointShop> {
 
   AppBar buildAppBar(double statusBarHeight, BuildContext context) {
     return AppBar(
+      actions: [],
+      automaticallyImplyLeading: false,
       // Don't show the leading button
       backgroundColor: Colors.white,
       centerTitle: false,

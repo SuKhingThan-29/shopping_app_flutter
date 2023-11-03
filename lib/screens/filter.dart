@@ -401,7 +401,9 @@ class _FilterState extends State<Filter> {
             top: 0.0,
             left: 0.0,
             right: 0.0,
-            child: buildAppBar(context),
+            child: Container(
+                margin: EdgeInsets.only(bottom: 30),
+                child: buildAppBar(context)),
           ),
           Align(
               alignment: Alignment.bottomCenter,
