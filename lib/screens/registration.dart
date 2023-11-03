@@ -82,6 +82,7 @@ class _RegistrationState extends State<Registration> {
 
   @override
   void initState() {
+    //check
     //on Splash Screen hide statusbar
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
