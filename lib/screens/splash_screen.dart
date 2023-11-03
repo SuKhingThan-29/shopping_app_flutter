@@ -44,9 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
       ver = version.ios.mobileVersion;
       print('mobileversion $ver');
     }
-    setState(() {
-      print(ver);
-    });
+
   }
 
   Future<void> _initPackageInfo() async {
@@ -102,92 +100,23 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showDialogOnEnter();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _showDialogOnEnter();
+    // });
     getUserInfo();
     _initPackageInfo();
     getSharedValueHelperData().then((value) {
       Future.delayed(Duration(seconds: 3)).then((value) {
         Provider.of<LocaleProvider>(context, listen: false)
             .setLocale(app_mobile_language.$!);
-        if (ver != _packageInfo.version) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Update',
-                    style:
-                        TextStyle(fontSize: 15, color: MyTheme.dark_font_grey),
-                  ),
-                  Text(
-                    'Are you want to update',
-                    style:
-                        TextStyle(fontSize: 13, color: MyTheme.dark_font_grey),
-                  ),
-                  Divider(),
-                  // Add your image and text row here
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 20,
-                        width: 20,
-                        child: Platform.isAndroid
-                            ? Image.asset('assets/playstore.png')
-                            : Image.asset('assets/appstore.png'),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        Platform.isAndroid
-                            ? 'Google Play Store'
-                            : 'Apple App Store',
-                        style: TextStyle(
-                            fontSize: 13, color: MyTheme.dark_font_grey),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    final url = Uri.parse(
-                      Platform.isAndroid
-                          ? 'https://play.google.com/store/apps/details?id=gmp.ethicaldigit.com&hl=en&gl=US'
-                          : 'https://apps.apple.com/us/app/ga-mone-pwint-online/id6467404178',
-                    ); // Replace with your app's package name or the link you want to open.
 
-                    if (await canLaunchUrl(url)) {
-                      await launchUrl(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                  child: Text('Update'),
-                ),
-              ],
-            ),
-          );
-        }
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
             builder: (context) {
               return Main(
                 go_back: false,
+                init_splash: true,
               );
             },
           ),
@@ -314,6 +243,8 @@ class _SplashScreenState extends State<SplashScreen> {
     Provider.of<CurrencyPresenter>(context, listen: false).fetchListData();
 
     print("new splash screen ${app_mobile_language.$}");
+    print("new splash screen ${app_language.$}");
+
     print("new splash screen app_language_rtl ${app_language_rtl.$}");
 
     return app_mobile_language.$;

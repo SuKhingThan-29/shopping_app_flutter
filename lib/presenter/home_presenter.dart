@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/repositories/category_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/flash_deal_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
@@ -44,10 +45,15 @@ class HomePresenter extends ChangeNotifier {
   bool isTodayDeal = false;
   bool isFlashDeal = false;
 
+  var allBrandList = [];
+  bool isBrandInitial =true;
+  int? totalBrandData = 0;
+  int allBrandPage=1;
+  bool showBrandLoadingContainer = false;
+
   var allProductList = [];
   bool isAllProductInitial = true;
   int? totalAllProductData = 0;
-  int to =0;
   int allProductPage = 1;
   bool showAllLoadingContainer = false;
   int cartCount = 0;
@@ -158,27 +164,21 @@ class HomePresenter extends ChangeNotifier {
 
 
     } else if(tab == "Recommended") {
+      print("AppLang recom: ${app_language.$}");
       productResponse =
           await ProductRepository().getRecommendProducts(page: allProductPage);
       showAllLoadingContainer=false;
 
-
     }
 
     if (productResponse.products!.isEmpty) {
-      //ToastComponent.showDialog("No more products!", gravity: Toast.center);
       isAllProductInitial = false;
       showAllLoadingContainer = false;
       return;
     }
-    print('AllProductPage response: ${productResponse.products!.length}');
-    if(totalAllProductData! >= to){
-      allProductList.addAll(productResponse.products!);
-
-    }
+    allProductList.addAll(productResponse.products!);
     isAllProductInitial = false;
     totalAllProductData = productResponse.meta!.total;
-    lastPage=productResponse.meta!.lastPage!;
     showAllLoadingContainer = false;
     notifyListeners();
   }
@@ -230,8 +230,10 @@ class HomePresenter extends ChangeNotifier {
       if (mainScrollController.position.pixels ==
           mainScrollController.position.maxScrollExtent) {
           showAllLoadingContainer = true;
+          notifyListeners();
           allProductPage++;
           fetchAllProducts(tab: selectedTab);
+
 
       }
     });

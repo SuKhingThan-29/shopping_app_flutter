@@ -134,7 +134,7 @@ class _BrandProductsState extends State<BrandProducts> {
               reset();
               fetchData();
             },
-            autofocus: true,
+            autofocus: false,
             decoration: InputDecoration(
                 hintText:
                     "${AppLocalizations.of(context)!.search_product_of_brand} : " +

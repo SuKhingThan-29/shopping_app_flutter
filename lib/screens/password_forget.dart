@@ -2,6 +2,7 @@ import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/intl_phone_input.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/repositories/address_repository.dart';
+import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/ui_elements/auth_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -96,8 +97,31 @@ class _PasswordForgetState extends State<PasswordForget> {
   Widget build(BuildContext context) {
     final _screen_height = MediaQuery.of(context).size.height;
     final _screen_width = MediaQuery.of(context).size.width;
-    return AuthScreen.buildScreen(
-        context, "Forget Password!", buildBody(_screen_width, context));
+    return Stack(
+      children: [
+        AuthScreen.buildScreen(
+            context, "Forget Password!", buildBody(_screen_width, context)),
+        Positioned(
+          top: 20, // Adjust the top position as needed
+          left: 10, // Adjust the left position as needed
+          child: Container(
+            decoration: BoxDecoration(// Background color for the icon
+                ),
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white, // Icon color
+              ),
+              onPressed: () {
+                // Add your back button logic here
+                // Typically, you would use Navigator to pop the current screen.
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Column buildBody(double _screen_width, BuildContext context) {
@@ -129,7 +153,6 @@ class _PasswordForgetState extends State<PasswordForget> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
-                        height: 36,
                         child: TextField(
                           controller: _emailController,
                           autofocus: false,

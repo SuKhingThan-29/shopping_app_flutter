@@ -18,7 +18,7 @@ class ApiRequest{
     if(headers!=null){
       headerMap.addAll(headers);
     }
-    print(headerMap);
+    print('All : $headerMap');
   var response =    await http.get(uri,headers: headerMap);
     return AIZApiResponse.check(response,middleware: middleware,groupMiddleWare: groupMiddleWare);
   }

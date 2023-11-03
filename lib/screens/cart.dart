@@ -273,9 +273,13 @@ class _CartScreenState extends State<CartScreen> {
         reset();
         fetchData();
       } else if (mode == "proceed_to_shipping") {
-        AIZRoute.push(context, SelectAddress()).then((value) {
-          onPopped(value);
-        });
+        // AIZRoute.push(context, SelectAddress()).then((value) {
+        //   onPopped(value);
+        // });
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => SelectAddress()));
       }
     }
   }
@@ -665,26 +669,24 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
             Spacer(),
-            Container(
-              width: 32,
-              child: Column(
+            GestureDetector(
+              onTap: () {
+                onPressDelete(_shopList[sellerIndex].cart_items[itemIndex].id);
+              },
+              child:  Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      onPressDelete(
-                          _shopList[sellerIndex].cart_items[itemIndex].id);
-                    },
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 14.0),
-                        child: Image.asset(
-                          'assets/trash.png',
-                          height: 16,
-                          color: Colors.red,
-                        ),
+                  Container(
+                    padding: EdgeInsets.only(bottom:14),
+                    width: 28,
+                    // child: Padding(
+                    //   padding: const EdgeInsets.all(14.0),
+                      child: Image.asset(
+                        'assets/trash.png',
+                        height: 16,
+                        color: Colors.red,
                       ),
-                    ),
+
                   ),
                 ],
               ),

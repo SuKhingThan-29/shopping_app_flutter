@@ -19,11 +19,9 @@ class PaymentStatus {
 
   static List<PaymentStatus> getPaymentStatusList() {
     return <PaymentStatus>[
-      PaymentStatus('', 'All'),
-      PaymentStatus(
-          'paid', 'Paid'),
-      PaymentStatus(
-          'unpaid', 'Unpaid'),
+      PaymentStatus('', 'Payment Status'),
+      PaymentStatus('paid', 'Paid'),
+      PaymentStatus('unpaid', 'Unpaid'),
     ];
   }
 }
@@ -36,13 +34,10 @@ class DeliveryStatus {
 
   static List<DeliveryStatus> getDeliveryStatusList() {
     return <DeliveryStatus>[
-      DeliveryStatus('', 'All'),
-      DeliveryStatus('confirmed',
-          'Confirmed'),
-      DeliveryStatus('on_delivery',
-          'Cash on Delivery'),
-      DeliveryStatus('delivered',
-          'Delivered'),
+      DeliveryStatus('', 'Order Status'),
+      DeliveryStatus('confirmed', 'Confirmed'),
+      DeliveryStatus('on_delivery', 'Cash on Delivery'),
+      DeliveryStatus('delivered', 'Delivered'),
     ];
   }
 }
@@ -163,7 +158,6 @@ class _OrderListState extends State<OrderList> {
     }
     fetchData();
     setState(() {});
-
   }
 
   fetchData() async {
@@ -260,19 +254,19 @@ class _OrderListState extends State<OrderList> {
         children: [
           Container(
             decoration: BoxDecorations.buildBoxDecoration_1(),
-            padding: EdgeInsets.symmetric(horizontal: 14),
+            padding: EdgeInsets.symmetric(horizontal: 0),
             height: 36,
             width: MediaQuery.of(context).size.width * .4,
             child: new DropdownButton<PaymentStatus>(
               icon: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
                 child: Icon(Icons.expand_more, color: Colors.black54),
               ),
               hint: Text(
                 AppLocalizations.of(context)!.all_payments_ucf,
                 style: TextStyle(
                   color: MyTheme.font_grey,
-                  fontSize: 12,
+                  fontSize: 11,
                 ),
               ),
               iconSize: 14,
@@ -531,7 +525,10 @@ class _OrderListState extends State<OrderList> {
                 Text(
                   _orderList[index].delivery_status_string,
                   style: TextStyle(
-                      color: MyTheme.dark_font_grey,
+                      color: _orderList[index].delivery_status_string ==
+                              'Cancelled'
+                          ? Colors.red
+                          : MyTheme.dark_font_grey,
                       fontSize: 12,
                       fontWeight: FontWeight.w500),
                 ),

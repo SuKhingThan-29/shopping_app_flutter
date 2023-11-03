@@ -1255,6 +1255,9 @@ class _SelectAddressState extends State<SelectAddress> {
                                       country_id: _selected_country!.id,
                                       name: name);
                               return stateResponse.states;
+                              // var stateResponse = await AddressRepository()
+                              //     .getStateListByCountry();
+                              // return stateResponse.states;
                             },
                             loadingBuilder: (context) {
                               return Container(

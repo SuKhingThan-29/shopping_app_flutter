@@ -82,6 +82,7 @@ class _ProfileEditState extends State<ProfileEdit> {
     if (croppedFile != null) {
       setState(() {
         _file = XFile(croppedFile.path);
+        print(_file);
       });
     }
 
@@ -113,6 +114,44 @@ class _ProfileEditState extends State<ProfileEdit> {
       ToastComponent.showSnackBar(
         context,
         profileImageUpdateResponse.message,
+      );
+
+      avatar_original.$ = profileImageUpdateResponse.path;
+      setState(() {});
+    }
+  }
+
+  deleteImage(context) async {
+    String? _filePath =
+        'assets/app_logo.png'; // Change _file to _filePath and make it nullable
+
+    if (_filePath == null) {
+      ToastComponent.showSnackBar(
+        context,
+        AppLocalizations.of(context)!.no_file_is_chosen,
+      );
+      return;
+    }
+
+    String base64Image = '';
+    String fileName = '';
+
+    var profileImageUpdateResponse =
+        await ProfileRepository().getProfileImageUpdateResponse(
+      base64Image,
+      fileName,
+    );
+
+    if (profileImageUpdateResponse.result == false) {
+      ToastComponent.showSnackBar(
+        context,
+        profileImageUpdateResponse.message,
+      );
+      return;
+    } else {
+      ToastComponent.showSnackBar(
+        context,
+        "Image was deleted",
       );
 
       avatar_original.$ = profileImageUpdateResponse.path;
@@ -326,6 +365,30 @@ class _ProfileEditState extends State<ProfileEdit> {
               ),*/
               Positioned(
                 right: 8,
+                top: 8,
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: Btn.basic(
+                    padding: EdgeInsets.all(0),
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                      size: 14,
+                    ),
+                    shape: CircleBorder(
+                      side:
+                          new BorderSide(color: MyTheme.light_grey, width: 1.0),
+                    ),
+                    color: MyTheme.light_grey,
+                    onPressed: () {
+                      deleteImage(context);
+                    },
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 8,
                 bottom: 8,
                 child: SizedBox(
                   width: 24,
@@ -347,7 +410,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                     },
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

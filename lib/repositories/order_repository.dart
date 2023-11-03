@@ -50,7 +50,6 @@ class OrderRepository {
         headers: {
           "App-Language": app_language.$!,
           "Authorization": "Bearer ${access_token.$}",
-
         },
         middleware: BannedUser());
     print(response.body);
@@ -107,6 +106,22 @@ class OrderRepository {
     String url =
         ("${AppConfig.BASE_URL}/purchase-history-details/" + id.toString());
     print("Order Detail id: $id");
+    final response = await ApiRequest.get(
+        url: url,
+        headers: {
+          "Authorization": "Bearer ${access_token.$}",
+          "App-Language": app_language.$!,
+        },
+        middleware: BannedUser());
+    return orderDetailResponseFromJson(response.body);
+  }
+
+  Future<dynamic> SeeNoti(int? oid, String? nid) async {
+    String url = ("${AppConfig.BASE_URL}/purchase-history-details/" +
+        oid.toString() +
+        "?notiID=$nid");
+    print("Order Detail noti: $url");
+    print(url);
     final response = await ApiRequest.get(
         url: url,
         headers: {

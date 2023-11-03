@@ -1722,6 +1722,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   AppBar buildAppBar(double statusBarHeight, BuildContext context) {
     return AppBar(
       // Don't show the leading button
+      actions: [],
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
       centerTitle: false,
       elevation: 0,

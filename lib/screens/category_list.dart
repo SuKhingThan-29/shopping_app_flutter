@@ -69,14 +69,14 @@ class _CategoryListState extends State<CategoryList> {
                   100,
                 )),
             body: buildBody()),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: widget.is_base_category || widget.is_top_category
-              ? Container(
-                  height: 0,
-                )
-              : buildBottomContainer(),
-        )
+        // Align(
+        //   alignment: Alignment.bottomCenter,
+        //   child: widget.is_base_category || widget.is_top_category
+        //       ? Container(
+        //           height: 0,
+        //         )
+        //       : buildBottomContainer(),
+        // )
       ]),
     );
   }

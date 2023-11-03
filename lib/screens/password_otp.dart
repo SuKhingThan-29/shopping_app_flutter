@@ -3,6 +3,7 @@ import 'package:active_ecommerce_flutter/custom/device_info.dart';
 import 'package:active_ecommerce_flutter/custom/lang_text.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/password_forget.dart';
+import 'package:active_ecommerce_flutter/screens/password_new.dart';
 import 'package:active_ecommerce_flutter/ui_elements/auth_ui.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
@@ -70,35 +71,36 @@ class _PasswordOtpState extends State<PasswordOtp> {
         AppLocalizations.of(context)!.enter_the_code,
       );
       return;
-    } else if (password == "") {
-      ToastComponent.showSnackBar(
-        context,
-        AppLocalizations.of(context)!.enter_password,
-      );
-      return;
-    } else if (password_confirm == "") {
-      ToastComponent.showSnackBar(
-        context,
-        AppLocalizations.of(context)!.confirm_your_password,
-      );
-      return;
-    } else if (password.length < 6) {
-      ToastComponent.showSnackBar(
-        context,
-        AppLocalizations.of(context)!
-            .password_must_contain_at_least_6_characters,
-      );
-      return;
-    } else if (password != password_confirm) {
-      ToastComponent.showSnackBar(
-        context,
-        AppLocalizations.of(context)!.passwords_do_not_match,
-      );
-      return;
     }
+    // } else if (password == "") {
+    //   ToastComponent.showSnackBar(
+    //     context,
+    //     AppLocalizations.of(context)!.enter_password,
+    //   );
+    //   return;
+    // } else if (password_confirm == "") {
+    //   ToastComponent.showSnackBar(
+    //     context,
+    //     AppLocalizations.of(context)!.confirm_your_password,
+    //   );
+    //   return;
+    // } else if (password.length < 6) {
+    //   ToastComponent.showSnackBar(
+    //     context,
+    //     AppLocalizations.of(context)!
+    //         .password_must_contain_at_least_6_characters,
+    //   );
+    //   return;
+    // } else if (password != password_confirm) {
+    //   ToastComponent.showSnackBar(
+    //     context,
+    //     AppLocalizations.of(context)!.passwords_do_not_match,
+    //   );
+    //   return;
+    // }
 
     var passwordConfirmResponse =
-        await AuthRepository().getPasswordConfirmResponse(code, password);
+        await AuthRepository().getPasswordConfirmResponse(code, '');
 
     if (passwordConfirmResponse.result == false) {
       ToastComponent.showSnackBar(
@@ -111,9 +113,12 @@ class _PasswordOtpState extends State<PasswordOtp> {
         passwordConfirmResponse.message!,
       );
 
-      headeText = AppLocalizations.of(context)!.password_changed_ucf;
-      cardController.toggleCard();
-      setState(() {});
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return PasswordNew(
+          verify_by: widget.verify_by,
+          otp: code,
+        );
+      }));
     }
   }
 
@@ -214,102 +219,6 @@ class _PasswordOtpState extends State<PasswordOtp> {
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4.0),
-                    child: Text(
-                      AppLocalizations.of(context)!.password_ucf,
-                      style: TextStyle(
-                          color: MyTheme.accent_color,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          height: 36,
-                          child: TextField(
-                            controller: _passwordController,
-                            autofocus: false,
-                            obscureText: _obscureText,
-                            enableSuggestions: false,
-                            autocorrect: false,
-                            decoration: InputDecoration(
-                              hintText: "Enter Password",
-                              hintStyle: TextStyle(
-                                color: Colors.grey.shade400,
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _obscureText
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.grey,
-                                ),
-                                onPressed: () {
-                                  print(_obscureText);
-                                  setState(() {
-                                    _obscureText = !_obscureText;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        Text(
-                          AppLocalizations.of(context)!
-                              .password_must_contain_at_least_6_characters,
-                          style: TextStyle(
-                              color: MyTheme.textfield_grey,
-                              fontStyle: FontStyle.italic),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4.0),
-                    child: Text(
-                      AppLocalizations.of(context)!.retype_password_ucf,
-                      style: TextStyle(
-                          color: MyTheme.accent_color,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Container(
-                      height: 36,
-                      child: TextField(
-                        obscureText: _obscureText,
-                        controller: _passwordConfirmController,
-                        autofocus: false,
-                        enableSuggestions: false,
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          hintText: "Enter Password",
-                          hintStyle: TextStyle(
-                            color: Colors.grey.shade400,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              print(_obscureText);
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
                     ),
                   ),
                   Padding(

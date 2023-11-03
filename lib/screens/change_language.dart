@@ -99,8 +99,11 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
       // if(Locale().)
 
       app_language.$ = _list[_selected_index].code;
+      print("Language code: ${app_language.$}");
       app_language.save();
       app_mobile_language.$ = _list[_selected_index].mobile_app_code;
+      print("Language code Mobile: ${app_mobile_language.$}");
+
       app_mobile_language.save();
       app_language_rtl.$ = _list[_selected_index].rtl;
       app_language_rtl.save();
