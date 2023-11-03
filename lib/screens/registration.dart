@@ -522,7 +522,6 @@ class _RegistrationState extends State<Registration> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Container(
-                  height: 50,
                   child: TextField(
                     controller: _nameController,
                     autofocus: false,
