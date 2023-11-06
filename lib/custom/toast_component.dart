@@ -35,7 +35,7 @@ class ToastComponent {
         child: Text("$msg"),
       ),
           behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.all(10),
+        //  margin: EdgeInsets.all(10),
           elevation: 5,
         )
     );
