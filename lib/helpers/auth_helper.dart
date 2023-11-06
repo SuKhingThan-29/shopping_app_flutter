@@ -25,6 +25,7 @@ class AuthHelper {
     } else {
       if (loginResponse.message == "Please verify your account") {
         SystemConfig.systemUser = loginResponse.user;
+        is_logged_in.$ = true;
         is_logged_in.save();
         access_token.$ = loginResponse.access_token;
         access_token.save();

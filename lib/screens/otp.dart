@@ -135,8 +135,8 @@ class _OtpState extends State<Otp> {
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (context) {
           return Login();
-        }), (route) => false);
-        return Future<bool>.value(false);
+        }), (route) => true);
+        return Future<bool>.value(true);
       },
       child: Directionality(
         textDirection:
