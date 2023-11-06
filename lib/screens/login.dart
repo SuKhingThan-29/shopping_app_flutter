@@ -106,42 +106,7 @@ class _LoginState extends State<Login> {
 
     if (loginResponse.result == false) {
       if (loginResponse.message == "Please verify your account") {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Verify Your account'),
-              content: Text('Are you want to verify your account?'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    // Perform some action when the "Cancel" button is pressed
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    var passwordResendCodeResponse = await AuthRepository()
-                        .getPasswordResendCodeResponse(
-                            email.isEmpty ? _phone : email,
-                            email.isEmpty ? "_phone" : "email");
-                    print(passwordResendCodeResponse.result);
-                    if (passwordResendCodeResponse.result == true) {
-                      Navigator.pushAndRemoveUntil(context,
-                          MaterialPageRoute(builder: (context) {
-                        return Otp(
-                          phnum: email.isEmpty ? _phone : email,
-                        );
-                      }), (newRoute) => false);
-                    }
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
+
       } else {
         ToastComponent.showSnackBar(
           context,

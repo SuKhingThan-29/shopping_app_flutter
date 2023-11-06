@@ -112,7 +112,7 @@ class PushNotificationService {
             child: Text('GO'),
             onPressed: () {
               if (is_logged_in.$ == false) {
-                ToastComponent.showDialog("You are not logged in", gravity: Toast.top, duration: Toast.lengthLong);
+                ToastComponent.showSnackBar(context,"You are not logged in");
                 return;
               }
               //print(message);

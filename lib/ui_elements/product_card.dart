@@ -535,8 +535,8 @@ $string
     print("add to cart response: ${cartAddResponse.result}");
 
     if (cartAddResponse.result == false) {
-      ToastComponent.showDialog(cartAddResponse.message,
-          gravity: Toast.bottom, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(context,cartAddResponse.message,
+        );
       return;
     } else {
       Provider.of<CartCounter>(context, listen: false).getCount();
@@ -564,8 +564,7 @@ $string
                 if (_quantity! < _stock!) {
                   _quantity = (_quantity!) + 1;
                 }else{
-                  ToastComponent.showDialog("There is no quantity",
-                      gravity: Toast.bottom, duration: Toast.lengthLong);
+                  ToastComponent.showSnackBar(context,"There is no quantity");
                 }
               });
               print("Quan up: $_quantity");
