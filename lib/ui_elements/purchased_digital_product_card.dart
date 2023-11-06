@@ -67,8 +67,8 @@ class _PurchasedDigitalProductCardState
       (dynamic data) {
         print(data.toString() + "llkk");
         if (data[2] >= 100) {
-          ToastComponent.showDialog("File has downloaded successfully.",
-              gravity: Toast.center, duration: Toast.lengthLong);
+          ToastComponent.showSnackBar(context,"File has downloaded successfully.",
+            );
         }
         setState(() {});
       },

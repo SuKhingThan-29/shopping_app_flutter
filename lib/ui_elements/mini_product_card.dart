@@ -129,8 +129,7 @@ class _MiniProductCardState extends State<MiniProductCard> {
     }
 
     if (cartIds.length == 0) {
-      ToastComponent.showDialog(AppLocalizations.of(context)!.cart_is_empty,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(context,AppLocalizations.of(context)!.cart_is_empty);
       return;
     }
 
@@ -144,11 +143,11 @@ class _MiniProductCardState extends State<MiniProductCard> {
         .getCartProcessResponse(cartIdsString, cartQuantitiesString);
 
     if (cartProcessResponse.result == false) {
-      ToastComponent.showDialog(cartProcessResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(context,cartProcessResponse.message,
+          );
     } else {
-      ToastComponent.showDialog(cartProcessResponse.message,
-          gravity: Toast.center, duration: Toast.lengthLong);
+      ToastComponent.showSnackBar(context,cartProcessResponse.message,
+          );
 
       if (mode == "update") {
         reset();
@@ -179,10 +178,9 @@ class _MiniProductCardState extends State<MiniProductCard> {
       getSetCartTotal();
       setState(() {});
     } else {
-      ToastComponent.showDialog(
+      ToastComponent.showSnackBar(context,
           "${AppLocalizations.of(context)!.cannot_order_more_than} ${_shopList[sellerIndex].cart_items[itemIndex].upper_limit} ${AppLocalizations.of(context)!.items_of_this_all_lower}",
-          gravity: Toast.center,
-          duration: Toast.lengthLong);
+         );
     }
   }
 
