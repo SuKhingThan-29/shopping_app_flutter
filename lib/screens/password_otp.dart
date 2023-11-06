@@ -2,7 +2,6 @@ import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/device_info.dart';
 import 'package:active_ecommerce_flutter/custom/lang_text.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
-import 'package:active_ecommerce_flutter/screens/password_forget.dart';
 import 'package:active_ecommerce_flutter/screens/password_new.dart';
 import 'package:active_ecommerce_flutter/ui_elements/auth_ui.dart';
 import 'package:flip_card/flip_card.dart';
@@ -11,10 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:active_ecommerce_flutter/custom/input_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
-import 'package:toast/toast.dart';
 import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
 import 'package:active_ecommerce_flutter/screens/login.dart';
-import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PasswordOtp extends StatefulWidget {
@@ -135,7 +132,7 @@ class _PasswordOtpState extends State<PasswordOtp> {
       ToastComponent.showSnackBar(
         context,
         passwordResendCodeResponse.message!,
-      );
+       );
     }
   }
 

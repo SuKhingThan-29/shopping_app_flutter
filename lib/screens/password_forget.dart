@@ -97,30 +97,32 @@ class _PasswordForgetState extends State<PasswordForget> {
   Widget build(BuildContext context) {
     final _screen_height = MediaQuery.of(context).size.height;
     final _screen_width = MediaQuery.of(context).size.width;
-    return Stack(
-      children: [
-        AuthScreen.buildScreen(
-            context, "Forget Password!", buildBody(_screen_width, context)),
-        Positioned(
-          top: 20, // Adjust the top position as needed
-          left: 10, // Adjust the left position as needed
-          child: Container(
-            decoration: BoxDecoration(// Background color for the icon
-                ),
-            child: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.white, // Icon color
+    return Scaffold(
+      body: Stack(
+        children: [
+          AuthScreen.buildScreen(
+              context, "Forget Password!", buildBody(_screen_width, context)),
+          Positioned(
+            top: 20, // Adjust the top position as needed
+            left: 10, // Adjust the left position as needed
+            child: Container(
+              decoration: BoxDecoration(// Background color for the icon
               ),
-              onPressed: () {
-                // Add your back button logic here
-                // Typically, you would use Navigator to pop the current screen.
-                Navigator.pop(context);
-              },
+              child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white, // Icon color
+                ),
+                onPressed: () {
+                  // Add your back button logic here
+                  // Typically, you would use Navigator to pop the current screen.
+                  Navigator.pop(context);
+                },
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -213,7 +215,7 @@ class _PasswordForgetState extends State<PasswordForget> {
                               signed: true, decimal: true),
                           inputDecoration:
                               InputDecorations.buildInputDecoration_phone(
-                                  hint_text: "01710 333 558"),
+                                  hint_text: "9XXX XXX XXX"),
                           onSaved: (PhoneNumber number) {
                             //print('On Saved: $number');
                           },
