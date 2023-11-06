@@ -110,8 +110,12 @@ class _RegistrationState extends State<Registration> {
 
   String? get _errorPassword {
     final text = _passwordController.value.text;
+    final text1 = _passwordConfirmController.value.text;
     if (text.isEmpty) {
       return 'your password is empty';
+    }
+    if (text != text1) {
+      return 'password does not match';
     }
     _isPassword = false;
     return null;
@@ -119,8 +123,12 @@ class _RegistrationState extends State<Registration> {
 
   String? get _errorConfirmPassword {
     final text = _passwordConfirmController.value.text;
+    final text1 = _passwordController.value.text;
     if (text.isEmpty) {
       return 'your confirm password is empty';
+    }
+    if (text != text1) {
+      return 'password does not match';
     }
     _isConfirmPassword = false;
     return null;
@@ -522,14 +530,16 @@ class _RegistrationState extends State<Registration> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Container(
-                  child: TextField(
-                    controller: _nameController,
-                    autofocus: false,
-                    decoration: InputDecorations.buildInputDecoration_1(
-                        error_text: _isName ? _errorNameText : null),
-                    onChanged: (_) => setState(() {
-                      _submit();
-                    }),
+                  child: Container(
+                    child: TextField(
+                      controller: _nameController,
+                      autofocus: false,
+                      decoration: InputDecorations.buildInputDecoration_1(
+                          error_text: _isName ? _errorNameText : null),
+                      onChanged: (_) => setState(() {
+                        _submit();
+                      }),
+                    ),
                   ),
                 ),
               ),
@@ -549,7 +559,6 @@ class _RegistrationState extends State<Registration> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      height: 60,
                       child: TextField(
                         controller: _emailController,
                         autofocus: false,
@@ -589,7 +598,13 @@ class _RegistrationState extends State<Registration> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      height: 36,
+                      decoration: BoxDecoration(
+                        border:
+                            Border.all(color: MyTheme.accent_color, width: 0.5),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(6.0),
+                        ),
+                      ),
                       child: CustomInternationalPhoneNumberInput(
                         countries: countries_code,
                         onInputChanged: (PhoneNumber number) {
@@ -605,9 +620,6 @@ class _RegistrationState extends State<Registration> {
                         onInputValidated: (bool value) {
                           print(value);
                         },
-                        selectorConfig: SelectorConfig(
-                          selectorType: PhoneInputSelectorType.DIALOG,
-                        ),
                         ignoreBlank: false,
                         autoValidateMode: AutovalidateMode.disabled,
                         selectorTextStyle: TextStyle(color: MyTheme.font_grey),
@@ -618,8 +630,9 @@ class _RegistrationState extends State<Registration> {
                             signed: true, decimal: true),
                         inputDecoration:
                             InputDecorations.buildInputDecoration_phone(
-                                hint_text: "09 XXX XXX",
-                                error_text: _isPhNo ? _errorPhoneNo : null),
+                          hint_text: "09 XXX XXX",
+                          error_text: _isPhNo ? _errorPhoneNo : null,
+                        ),
                         onSaved: (PhoneNumber number) {
                           //print('On Saved: $number');
                         },

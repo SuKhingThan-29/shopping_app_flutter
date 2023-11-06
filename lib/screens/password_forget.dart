@@ -25,6 +25,7 @@ class _PasswordForgetState extends State<PasswordForget> {
   String initialCountry = 'US';
   PhoneNumber phoneCode = PhoneNumber(isoCode: 'US');
   String? _phone = "";
+  String? _emailphone;
   var countries_code = <String?>[];
 
   //controllers
@@ -86,9 +87,19 @@ class _PasswordForgetState extends State<PasswordForget> {
       );
 
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return PasswordOtp(
-          verify_by: _send_code_by,
-        );
+        if (_send_code_by == 'email') {
+          print(email);
+          return PasswordOtp(
+            verify_by: _send_code_by,
+            email_or_code: email,
+          );
+        } else {
+          print(_phone);
+          return PasswordOtp(
+            verify_by: _send_code_by,
+            email_or_code: _phone,
+          );
+        }
       }));
     }
   }

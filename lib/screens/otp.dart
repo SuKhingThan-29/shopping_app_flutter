@@ -54,14 +54,13 @@ class _OtpState extends State<Otp> {
         overlays: [SystemUiOverlay.bottom]);
     _startTimer(); // Start the timer when the widget initializes.
     print("OTP: ${widget.phnum}");
-    if(widget.phnum!.contains('.com')){
-      _firstEmailName=widget.phnum!.substring(0,1);
-      _secEmailName=widget.phnum!.length>11?(widget.phnum!.length-11).toString():widget.phnum!.length.toString();
+    if (widget.phnum!.contains('.com')) {
+      _firstEmailName = widget.phnum!.substring(0, 4);
+      _secEmailName = widget.phnum!.substring(widget.phnum!.length - 2);
     }
-    if(widget.phnum!.contains('+95')){
-      _phoneNo=widget.phnum!.substring(widget.phnum!.length - 2);
+    if (widget.phnum!.contains('+95')) {
+      _phoneNo = widget.phnum!.substring(widget.phnum!.length - 2);
     }
-
 
     super.initState();
   }
@@ -75,7 +74,7 @@ class _OtpState extends State<Otp> {
   }
 
   onTapResend() async {
-    _secondsRemaining=60;
+    _secondsRemaining = 60;
     _startTimer();
     otp = "";
     _verificationCodeController.text = "";
@@ -131,217 +130,228 @@ class _OtpState extends State<Otp> {
   @override
   Widget build(BuildContext context) {
     final _screen_width = MediaQuery.of(context).size.width;
-    return Directionality(
-      textDirection:
-          app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Stack(
-          children: [
-            Container(
-              width: _screen_width * (3 / 4),
-              child: Image.asset(
-                  "assets/splash_login_registration_background_image.png"),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 30),
-              width: double.infinity,
-              child: SingleChildScrollView(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // if (widget.title != null)
-                  //   Text(
-                  //     widget.title!,
-                  //     style: TextStyle(fontSize: 25, color: MyTheme.font_grey),
-                  //   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40.0, bottom: 15),
-                    child: Container(
-                      width: 75,
-                      height: 75,
-                      child: Image.asset(
-                          'assets/login_registration_form_logo.png'),
-                    ),
-                  ),
-                  /*Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Text(
-                      "${AppLocalizations.of(context)!.verify_your} " +
-                          (_verify_by == "email"
-                              ? AppLocalizations.of(context)!.email_account_ucf
-                              : AppLocalizations.of(context)!.phone_number_ucf),
-                      style: TextStyle(
-                          color: MyTheme.accent_color,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Container(
-                        width: _screen_width * (3 / 4),
-                        child: _verify_by == "email"
-                            ? Text(
-                            AppLocalizations.of(context)!.enter_the_verification_code_that_sent_to_your_email_recently,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: MyTheme.dark_grey, fontSize: 14))
-                            : Text(
-                            AppLocalizations.of(context)!.enter_the_verification_code_that_sent_to_your_phone_recently,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: MyTheme.dark_grey, fontSize: 14))),
-                  ),*/
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Text(
-                    widget.phnum!.contains('.com') || widget.phnum!.isEmpty
-                        ? "Verify your email"
-                        : "Verify your phone",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text(
-
-                         "Verification code has been sent to",
-
-                      style: TextStyle(fontSize: 15),
-                      maxLines: 2,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text(
-                      widget.phnum!.isEmpty?'':widget.phnum!.contains('.com')
-                          ? "   $_firstEmailName****$_secEmailName "
-                          : "+95 ******* $_phoneNo .",
-                      style: TextStyle(fontSize: 15),
-                      maxLines: 2,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Please wait a few minutes.",
-                    style: TextStyle(fontSize: 15,color: Colors.grey),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    child: Text(
-                      'You will get an OTP code : $_secondsRemaining',style: TextStyle(color: Colors.orangeAccent),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  Pinput(
-                    autofocus: true,
-                    controller: _verificationCodeController,
-                    defaultPinTheme: PinTheme(
-                      textStyle: const TextStyle(
-                        fontSize: 20,
-                        color: Color(0xFF2B2B2B),
-                        fontWeight: FontWeight.w600,
-                      ),
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: Colors.grey.shade300,
-                      ),
-                    ),
-                    length: 6,
-                    onChanged: (pin) {
-                      otp = pin;
-                      setState(() {});
-                    },
-                  ),
-
-                  Container(
-                    width: _screen_width * (3 / 4),
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) {
+          return Main();
+        }), (reute) => false);
+        return Future<bool>.value(false);
+      },
+      child: Directionality(
+        textDirection:
+            app_language_rtl.$! ? TextDirection.rtl : TextDirection.ltr,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: Stack(
+            children: [
+              Container(
+                width: _screen_width * (3 / 4),
+                child: Image.asset(
+                    "assets/splash_login_registration_background_image.png"),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 30),
+                width: double.infinity,
+                child: SingleChildScrollView(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Padding(
-                        //   padding: const EdgeInsets.only(bottom: 8.0),
-                        //   child: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.end,
-                        //     children: [
-                        //       Container(
-                        //         height: 36,
-                        //         child: TextField(
-                        //           controller: _verificationCodeController,
-                        //           autofocus: false,
-                        //           decoration:
-                        //               InputDecorations.buildInputDecoration_1(
-                        //                   hint_text: "A X B 4 J H"),
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 40.0),
-                          child: Container(
-                            height: 45,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: MyTheme.textfield_grey, width: 1),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(12.0))),
-                            child: Btn.basic(
-                              minWidth: MediaQuery.of(context).size.width,
-                              color: MyTheme.golden,
-                              shape: RoundedRectangleBorder(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // if (widget.title != null)
+                    //   Text(
+                    //     widget.title!,
+                    //     style: TextStyle(fontSize: 25, color: MyTheme.font_grey),
+                    //   ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 40.0, bottom: 15),
+                      child: Container(
+                        width: 75,
+                        height: 75,
+                        child: Image.asset(
+                            'assets/login_registration_form_logo.png'),
+                      ),
+                    ),
+                    /*Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Text(
+                        "${AppLocalizations.of(context)!.verify_your} " +
+                            (_verify_by == "email"
+                                ? AppLocalizations.of(context)!.email_account_ucf
+                                : AppLocalizations.of(context)!.phone_number_ucf),
+                        style: TextStyle(
+                            color: MyTheme.accent_color,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: Container(
+                          width: _screen_width * (3 / 4),
+                          child: _verify_by == "email"
+                              ? Text(
+                              AppLocalizations.of(context)!.enter_the_verification_code_that_sent_to_your_email_recently,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: MyTheme.dark_grey, fontSize: 14))
+                              : Text(
+                              AppLocalizations.of(context)!.enter_the_verification_code_that_sent_to_your_phone_recently,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: MyTheme.dark_grey, fontSize: 14))),
+                    ),*/
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Text(
+                      widget.phnum!.contains('.com') || widget.phnum!.isEmpty
+                          ? "Verify your email"
+                          : "Verify your phone",
+                      textAlign: TextAlign.left,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Text(
+                        "Verification code has been sent to",
+                        style: TextStyle(fontSize: 15),
+                        maxLines: 2,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Text(
+                        widget.phnum!.isEmpty
+                            ? ''
+                            : widget.phnum!.contains('.com')
+                                ? "   $_firstEmailName****$_secEmailName "
+                                : "+95 ******* $_phoneNo .",
+                        style: TextStyle(fontSize: 15),
+                        maxLines: 2,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Please wait a few minutes.",
+                      style: TextStyle(fontSize: 15, color: Colors.grey),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      child: Text(
+                        'You will get an OTP code : $_secondsRemaining',
+                        style: TextStyle(color: Colors.orangeAccent),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    Pinput(
+                      autofocus: true,
+                      controller: _verificationCodeController,
+                      defaultPinTheme: PinTheme(
+                        textStyle: const TextStyle(
+                          fontSize: 20,
+                          color: Color(0xFF2B2B2B),
+                          fontWeight: FontWeight.w600,
+                        ),
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
+                      length: 6,
+                      onChanged: (pin) {
+                        otp = pin;
+                        setState(() {});
+                      },
+                    ),
+
+                    Container(
+                      width: _screen_width * (3 / 4),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Padding(
+                          //   padding: const EdgeInsets.only(bottom: 8.0),
+                          //   child: Column(
+                          //     crossAxisAlignment: CrossAxisAlignment.end,
+                          //     children: [
+                          //       Container(
+                          //         height: 36,
+                          //         child: TextField(
+                          //           controller: _verificationCodeController,
+                          //           autofocus: false,
+                          //           decoration:
+                          //               InputDecorations.buildInputDecoration_1(
+                          //                   hint_text: "A X B 4 J H"),
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 40.0),
+                            child: Container(
+                              height: 45,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: MyTheme.textfield_grey, width: 1),
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(12.0))),
-                              child: Text(
-                                "Verify",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
+                              child: Btn.basic(
+                                minWidth: MediaQuery.of(context).size.width,
+                                color: MyTheme.golden,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(12.0))),
+                                child: Text(
+                                  "Verify",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                onPressed: () {
+                                  onPressConfirm();
+                                },
                               ),
-                              onPressed: () {
-                                onPressConfirm();
-                              },
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20, bottom: 20),
-                    child: buildResendButton(),
-                  ),
-                  InkWell(
-                    child: Text(
-                      AppLocalizations.of(context)!.log_in,
-                      style: TextStyle(
-                          color: MyTheme.accent_color,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, bottom: 20),
+                      child: buildResendButton(),
                     ),
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return Login();
-                      }));
-                    },
-                  ),
-                ],
-              )),
-            )
-          ],
+                    InkWell(
+                      child: Text(
+                        AppLocalizations.of(context)!.log_in,
+                        style: TextStyle(
+                            color: MyTheme.accent_color,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return Login();
+                        }));
+                      },
+                    ),
+                  ],
+                )),
+              )
+            ],
+          ),
         ),
       ),
     );
