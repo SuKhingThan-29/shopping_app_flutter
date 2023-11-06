@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import '../screens/main.dart';
+typedef BoolCallback = bool Function();
 
 class TutorialOverlay extends StatefulWidget {
   VoidCallback onButtonPressed;
-  TutorialOverlay({required this.onButtonPressed});
+  final BoolCallback callback;
+  TutorialOverlay({required this.onButtonPressed,required this.callback});
 
   @override
   TutorialOverlayState createState() => TutorialOverlayState();
@@ -14,12 +15,13 @@ class TutorialOverlay extends StatefulWidget {
 class TutorialOverlayState extends State<TutorialOverlay> {
   int timerCount = 3;
   Timer? _timer;
+  bool isEnabled = false;
 
   @override
   void initState() {
     super.initState();
 
-    const _duration = Duration(seconds: 3);
+    const _duration = Duration(seconds: 1);
 
     _timer = Timer.periodic(_duration, (Timer timer) {
       setState(() {
@@ -27,22 +29,10 @@ class TutorialOverlayState extends State<TutorialOverlay> {
       });
 
       if (timerCount == 0) {
-        // final shouldDismiss = widget.onButtonPressed(); // Invoke the callback
-        // Navigator.of(context).pop();
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return Main(
-                go_back: false,
-                init_splash: false,
-              );
-            },
-          ),
-              (route) => true,
-        );
+        isEnabled=widget.callback();
+        print('isEnable: $isEnabled');
+
       }
-      print('Duration: $timerCount');
     });
   }
 
