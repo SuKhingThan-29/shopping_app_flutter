@@ -27,6 +27,7 @@ class SplashScreen extends StatefulWidget {
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
+typedef BoolCallback = bool Function();
 
 class _SplashScreenState extends State<SplashScreen> {
   int ver = 1;
@@ -77,6 +78,9 @@ class _SplashScreenState extends State<SplashScreen> {
         if(widget.deepLink==null){
           _showEntertiment(context);
         }
+        else{
+          callUpdateApp();
+        }
 
 
       });
@@ -85,9 +89,16 @@ class _SplashScreenState extends State<SplashScreen> {
   void _showEntertiment(BuildContext context){
     _showTutorialOverlay(context);
   }
+  bool myCallback() {
+    // Your code here
+    print("callback: ");
+    Navigator.of(context).pop();
+    callUpdateApp();
+    return true; // Replace with your own boolean logic
+  }
   void onOverlayButtonPressed(){
     print("overlay button");
-    // Navigator.of(context).pop();
+    Navigator.of(context).pop();
     callUpdateApp();
 
   }
@@ -165,8 +176,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         );
       });
-    }
-    Navigator.pushAndRemoveUntil(
+    } Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
         builder: (context) {
@@ -183,7 +193,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void _showTutorialOverlay(BuildContext context) {
     // Navigator.of(context).push(TutorialOverlay());
 
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TutorialOverlay(onButtonPressed:onOverlayButtonPressed)));
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TutorialOverlay(onButtonPressed:onOverlayButtonPressed,callback:myCallback)));
   }
   @override
   Widget build(BuildContext context) {

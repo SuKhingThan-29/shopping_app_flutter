@@ -924,8 +924,10 @@ class _ProfileState extends State<Profile> {
                         Positioned(
                           top: 0,
                           right: 18,
-                          child: _conversationtotalcount != 0
-                              ? Container(
+                          child:
+                          _conversationtotalcount != 0
+                              ?
+                          Container(
                             width: 18,
                             height: 18,
                             padding: EdgeInsets.all(2),
@@ -1036,7 +1038,7 @@ class _ProfileState extends State<Profile> {
           children: [
             Image.asset(
               img,
-              width: 16,
+             width: 16,
               height: 16,
               color: is_logged_in.$
                   ? MyTheme.dark_font_grey
