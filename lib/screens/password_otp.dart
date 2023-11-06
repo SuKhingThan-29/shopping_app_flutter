@@ -62,7 +62,7 @@ class _PasswordOtpState extends State<PasswordOtp> {
   }
 
   onPressConfirm() async {
-    print('object');
+    print('check');
     var code = _codeController.text.toString();
     var password = _passwordController.text.toString();
     var password_confirm = _passwordConfirmController.text.toString();
