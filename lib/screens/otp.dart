@@ -55,8 +55,8 @@ class _OtpState extends State<Otp> {
     _startTimer(); // Start the timer when the widget initializes.
     print("OTP: ${widget.phnum}");
     if (widget.phnum!.contains('.com')) {
-      _firstEmailName = widget.phnum!.substring(0, 4);
-      _secEmailName = widget.phnum!.substring(widget.phnum!.length - 2);
+      _firstEmailName = widget.phnum!.substring(0, 1);
+      _secEmailName = widget.phnum!.substring(widget.phnum!.length - 4);
     }
     if (widget.phnum!.contains('+95')) {
       _phoneNo = widget.phnum!.substring(widget.phnum!.length - 2);
@@ -131,12 +131,13 @@ class _OtpState extends State<Otp> {
   Widget build(BuildContext context) {
     final _screen_width = MediaQuery.of(context).size.width;
     return WillPopScope(
-      onWillPop: () {
-        Navigator.pushAndRemoveUntil(context,
-            MaterialPageRoute(builder: (context) {
-          return Login();
-        }), (reute) => false);
-        return Future<bool>.value(false);
+      onWillPop: ()async {
+        // Navigator.pushAndRemoveUntil(context,
+        //     MaterialPageRoute(builder: (context) {
+        //   return Login();
+        // }), (reute) => false);
+        // return Future<bool>.value(false);
+        return true;
       },
       child: Directionality(
         textDirection:
