@@ -125,6 +125,8 @@ class _LoginState extends State<Login> {
                 ),
                 TextButton(
                   onPressed: () async {
+                    AuthHelper().setUserData(loginResponse);
+                    print(user_id.$);
                     var passwordResendCodeResponse = await AuthRepository()
                         .getPasswordResendCodeResponse(
                             email.isEmpty ? _phone : email,
