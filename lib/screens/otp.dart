@@ -134,7 +134,7 @@ class _OtpState extends State<Otp> {
       onWillPop: () {
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (context) {
-          return Main();
+          return Login();
         }), (reute) => false);
         return Future<bool>.value(false);
       },
