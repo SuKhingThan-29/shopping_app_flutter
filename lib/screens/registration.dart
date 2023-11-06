@@ -82,7 +82,7 @@ class _RegistrationState extends State<Registration> {
 
   @override
   void initState() {
-    //check
+    //check dev1
     //on Splash Screen hide statusbar
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
@@ -549,6 +549,7 @@ class _RegistrationState extends State<Registration> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
+                      height: 60,
                       child: TextField(
                         controller: _emailController,
                         autofocus: false,
