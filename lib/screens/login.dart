@@ -14,6 +14,7 @@ import 'package:active_ecommerce_flutter/other_config.dart';
 import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
+import 'package:active_ecommerce_flutter/screens/otp.dart';
 import 'package:active_ecommerce_flutter/screens/password_forget.dart';
 import 'package:active_ecommerce_flutter/screens/registration.dart';
 import 'package:active_ecommerce_flutter/social_config.dart';
@@ -105,11 +106,51 @@ class _LoginState extends State<Login> {
 
     var loginResponse = await AuthRepository()
         .getLoginResponse(_login_by == 'email' ? email : _phone, password);
+
     if (loginResponse.result == false) {
-      ToastComponent.showSnackBar(
-        context,
-        loginResponse.message.toString(),
-      );
+      if (loginResponse.message == "Please verify your account") {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Verify Your account'),
+              content: Text('Are you want to verify your account?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    // Perform some action when the "Cancel" button is pressed
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    var passwordResendCodeResponse = await AuthRepository()
+                        .getPasswordResendCodeResponse(
+                            email.isEmpty ? _phone : email,
+                            email.isEmpty ? "_phone" : "email");
+                    print(passwordResendCodeResponse.result);
+                    if (passwordResendCodeResponse.result == true) {
+                      Navigator.pushAndRemoveUntil(context,
+                          MaterialPageRoute(builder: (context) {
+                        return Otp(
+                          phnum: email.isEmpty ? _phone : email,
+                        );
+                      }), (newRoute) => false);
+                    }
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        ToastComponent.showSnackBar(
+          context,
+          loginResponse.message.toString(),
+        );
+      }
     } else {
       // ToastComponent.showSnackBar(loginResponse.message.toString(),
       //     gravity: Toast.center, duration: Toast.lengthLong);
