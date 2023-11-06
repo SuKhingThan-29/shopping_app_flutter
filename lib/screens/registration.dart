@@ -596,7 +596,7 @@ class _RegistrationState extends State<Registration> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       decoration: BoxDecoration(
@@ -637,6 +637,15 @@ class _RegistrationState extends State<Registration> {
                         onSaved: (PhoneNumber number) {
                           //print('On Saved: $number');
                         },
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: _errorPhoneNo,
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.red),
                       ),
                     ),
                     // GestureDetector(
