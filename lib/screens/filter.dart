@@ -613,8 +613,9 @@ class _FilterState extends State<Filter> {
   }
 
   Row buildTopAppbar(BuildContext context) {
+    print("view ${MediaQuery.of(context).viewPadding.top}");
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         // IconButton(
         //   padding: EdgeInsets.zero,
@@ -627,11 +628,11 @@ class _FilterState extends State<Filter> {
             child: Container(
               margin: EdgeInsets.only(top: 0),
               width: MediaQuery.of(context).size.width * 0.6,
-              height: MediaQuery.of(context).size.height / 9.5,
+              height: MediaQuery.of(context).viewPadding.top>30?85:MediaQuery.of(context).size.height / 9.5,
               child: Padding(
                 padding: MediaQuery.of(context).viewPadding.top > 30
                     ? const EdgeInsets.symmetric(
-                        vertical: 36.0, horizontal: 0.0)
+                        vertical: 26.0, horizontal: 0.0)
                     : const EdgeInsets.symmetric(
                         vertical: 14.0, horizontal: 0.0),
                 child: TypeAheadField(
