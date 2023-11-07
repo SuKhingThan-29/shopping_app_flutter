@@ -30,9 +30,9 @@ class _OtpState extends State<Otp> {
 
   String otp = "";
 
-  String? _firstEmailName;
-  String? _secEmailName;
-  String? _phoneNo;
+  String? _firstEmailName="";
+  String? _secEmailName="";
+  String? _phoneNo="";
   int _secondsRemaining = 60;
   late Timer _timer;
 
@@ -57,10 +57,10 @@ class _OtpState extends State<Otp> {
     if (widget.phnum!.contains('.com')) {
       _firstEmailName = widget.phnum!.substring(0, 1);
       _secEmailName = widget.phnum!.substring(widget.phnum!.length - 4);
-    }
-    if (widget.phnum!.contains('+95')) {
+    }else{
       _phoneNo = widget.phnum!.substring(widget.phnum!.length - 2);
     }
+
 
     super.initState();
   }
@@ -230,7 +230,7 @@ class _OtpState extends State<Otp> {
                             ? ''
                             : widget.phnum!.contains('.com')
                                 ? "   $_firstEmailName****$_secEmailName "
-                                : "+95 ******* $_phoneNo .",
+                                : "+95 ******* $_phoneNo ",
                         style: TextStyle(fontSize: 15),
                         maxLines: 2,
                       ),
