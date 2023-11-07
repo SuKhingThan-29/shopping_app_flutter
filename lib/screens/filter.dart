@@ -714,8 +714,8 @@ class _FilterState extends State<Filter> {
           child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 20, top: 20),
             child: Container(
-              height: MediaQuery.of(context).size.height / 7.5,
               width: MediaQuery.of(context).size.width * 0.6,
+              height: MediaQuery.of(context).size.height / 7.5,
               child: Padding(
                 padding: MediaQuery.of(context).viewPadding.top > 30
                     ? const EdgeInsets.symmetric(
@@ -820,11 +820,7 @@ class _FilterState extends State<Filter> {
                             BorderSide(color: MyTheme.grey_153, width: 1.0),
                       ),
                       contentPadding: EdgeInsets.only(
-                        left: 15.0,
-                        right: 5,
-                        top: 5,
-                        bottom: 5,
-                      ),
+                          left: 15.0, right: 5, top: 5, bottom: 5),
                     ),
                   ),
                 ),
