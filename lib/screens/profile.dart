@@ -62,7 +62,7 @@ class _ProfileState extends State<Profile> {
   String? _member_level;
   UserInformation? _userInfo;
   int? _notitotalcount = 0;
-  int? _conversationtotalcount = 0;
+  int? _conversationtotalcount = 3;
 
   String userLeverl = "Normal";
 
@@ -913,6 +913,7 @@ class _ProfileState extends State<Profile> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
+                    SizedBox(height: 3,),
                     Stack(
                       children: [
                         Container(
@@ -924,9 +925,11 @@ class _ProfileState extends State<Profile> {
                         ),
                         Positioned(
                           top: 0,
-                          right: 18,
-                          child: _conversationtotalcount != 0
-                              ? Container(
+                          right: 12,
+                          child:
+                          _conversationtotalcount != 0
+                              ?
+                          Container(
                                   width: 18,
                                   height: 18,
                                   padding: EdgeInsets.all(2),
