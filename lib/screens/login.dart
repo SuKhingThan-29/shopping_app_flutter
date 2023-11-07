@@ -46,6 +46,7 @@ class _LoginState extends State<Login> {
   var countries_code = <String?>[];
 
   String? _phone = "";
+  bool isLoginClick=false;
 
   //controllers
   TextEditingController _phoneNumberController = TextEditingController();
@@ -103,7 +104,9 @@ class _LoginState extends State<Login> {
       );
       return;
     }
-
+    setState(() {
+      isLoginClick=true;
+    });
     var loginResponse = await AuthRepository()
         .getLoginResponse(_login_by == 'email' ? email : _phone, password);
 
@@ -153,7 +156,13 @@ class _LoginState extends State<Login> {
           loginResponse.message.toString(),
         );
       }
+      setState(() {
+        isLoginClick=false;
+      });
     } else {
+      setState(() {
+        isLoginClick=false;
+      });
       // ToastComponent.showSnackBar(loginResponse.message.toString(),
       //     gravity: Toast.center, duration: Toast.lengthLong);
       AuthHelper().setUserData(loginResponse);
@@ -617,7 +626,8 @@ class _LoginState extends State<Login> {
                           fontSize: 13,
                           fontWeight: FontWeight.w600),
                     ),
-                    onPressed: () {
+                    onPressed:isLoginClick==true?null: () {
+
                       onPressedLogin();
                     },
                   ),
