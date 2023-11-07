@@ -399,16 +399,14 @@ class _FilterState extends State<Filter> {
                   ? buildBrandList()
                   : buildShopList()),
           Positioned(
-            top: -10.0,
+            top: 20.0,
             left: 0.0,
             right: 0.0,
             child: Container(
-                margin: EdgeInsets.only(bottom: 50),
+                margin: EdgeInsets.only(bottom: 0),
                 child: buildAppBar(context)),
           ),
-          SizedBox(
-            height: 300,
-          ),
+
           Align(
               alignment: Alignment.bottomCenter,
               child: _selectedFilter!.option_key == 'product'
@@ -625,11 +623,11 @@ class _FilterState extends State<Filter> {
         // ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 20, top: 20),
+            padding: const EdgeInsets.only(left: 10, right: 20, top: 0),
             child: Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: EdgeInsets.only(top: 0),
               width: MediaQuery.of(context).size.width * 0.6,
-              height: MediaQuery.of(context).size.height / 7.5,
+              height: MediaQuery.of(context).size.height / 9.5,
               child: Padding(
                 padding: MediaQuery.of(context).viewPadding.top > 30
                     ? const EdgeInsets.symmetric(
