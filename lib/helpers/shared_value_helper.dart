@@ -53,6 +53,10 @@ final SharedValue<bool?> app_language_rtl = SharedValue(
   key: "app_language_rtl", // disk storage key for shared_preferences
 );
 
+final SharedValue<bool?> email_verified = SharedValue(
+    value:false,
+key:"email_verified");
+
 // addons start
 
 final SharedValue<bool> club_point_addon_installed = SharedValue(

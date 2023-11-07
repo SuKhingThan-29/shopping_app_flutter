@@ -161,6 +161,8 @@ class _ProfileState extends State<Profile> {
           MaterialPageRoute(builder: (context) {
         return Main();
       }), (route) => false);
+    }else{
+      Navigator.pop(loadingcontext);
     }
     ToastComponent.showSnackBar(context, response.message);
   }
@@ -603,12 +605,9 @@ class _ProfileState extends State<Profile> {
               is_logged_in.$
                   ? () {
                       AIZRoute.push(context, ProfileEdit()).then((value) {
-                        //onPopped(value);
+                        onPopped(value);
                       });
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) {
-                      //   return ProfileEdit();
-                      // }))
+
                     }
                   : () => showLoginWarning()),
           buildHorizontalSettingItem(
