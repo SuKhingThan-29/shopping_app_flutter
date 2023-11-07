@@ -62,7 +62,7 @@ class _ProfileState extends State<Profile> {
   String? _member_level;
   UserInformation? _userInfo;
   int? _notitotalcount = 0;
-  int? _conversationtotalcount=0;
+  int? _conversationtotalcount = 0;
 
   String userLeverl = "Normal";
 
@@ -76,12 +76,13 @@ class _ProfileState extends State<Profile> {
       fetchAll();
     }
   }
-  void didUpdateWidget(Profile oldWidget){
 
+  void didUpdateWidget(Profile oldWidget) {
     print("fetchdata didUpdateWidget");
     super.didUpdateWidget(oldWidget);
   }
-  void didChangeDependencies(){
+
+  void didChangeDependencies() {
     print("fetchdata didchange");
     super.didChangeDependencies();
   }
@@ -109,9 +110,10 @@ class _ProfileState extends State<Profile> {
 
   fetchData() async {
     var notiCountResponse = await ChatRepository().getUnReadNotiResponse();
-    var conversationCountResponse = await ChatRepository().getUnReadConversationCountResponse();
+    var conversationCountResponse =
+        await ChatRepository().getUnReadConversationCountResponse();
     _notitotalcount = notiCountResponse.count;
-    _conversationtotalcount=conversationCountResponse.count;
+    _conversationtotalcount = conversationCountResponse.count;
     setState(() {});
     print("_conversationtotalcount: $_conversationtotalcount");
   }
@@ -918,34 +920,32 @@ class _ProfileState extends State<Profile> {
                           margin: EdgeInsets.only(right: 20),
                           child: Image.asset(
                             "assets/messages.png",
-                            height: 30,
+                            height: 25,
                           ),
                         ),
                         Positioned(
                           top: 0,
                           right: 18,
-                          child:
-                          _conversationtotalcount != 0
-                              ?
-                          Container(
-                            width: 18,
-                            height: 18,
-                            padding: EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                '$_conversationtotalcount',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          )
+                          child: _conversationtotalcount != 0
+                              ? Container(
+                                  width: 18,
+                                  height: 18,
+                                  padding: EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      '$_conversationtotalcount',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                )
                               : Container(),
                         ),
                       ],
@@ -1038,7 +1038,7 @@ class _ProfileState extends State<Profile> {
           children: [
             Image.asset(
               img,
-             width: 16,
+              width: 16,
               height: 16,
               color: is_logged_in.$
                   ? MyTheme.dark_font_grey
