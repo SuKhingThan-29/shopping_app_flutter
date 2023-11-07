@@ -2,6 +2,7 @@ import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/useful_elements.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/screens/seller_details.dart';
+import 'package:active_ecommerce_flutter/screens/top_selling_products.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:active_ecommerce_flutter/ui_elements/product_card.dart';
@@ -398,7 +399,7 @@ class _FilterState extends State<Filter> {
                   ? buildBrandList()
                   : buildShopList()),
           Positioned(
-            top: 0.0,
+            top: -10.0,
             left: 0.0,
             right: 0.0,
             child: Container(
@@ -626,6 +627,7 @@ class _FilterState extends State<Filter> {
           child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 20, top: 20),
             child: Container(
+              margin: EdgeInsets.only(top: 10),
               width: MediaQuery.of(context).size.width * 0.6,
               height: MediaQuery.of(context).size.height / 7.5,
               child: Padding(
