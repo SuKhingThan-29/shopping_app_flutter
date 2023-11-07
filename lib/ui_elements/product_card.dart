@@ -722,6 +722,7 @@ $string
         decoration: BoxDecorations.buildBoxDecoration_1().copyWith(),
         child: Column(
           children: [
+
             InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -732,153 +733,162 @@ $string
                         );
                 }));
               },
-              child: Column(children: <Widget>[
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: Container(
-                      width: double.infinity,
-                      child: ClipRRect(
-                        clipBehavior: Clip.hardEdge,
-                        borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(6), bottom: Radius.zero),
-                        child: AIZImage.basicImage(widget.image!),
-                      )),
-                ),
-                Container(
-                  height: 65,
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              child:
+                  Stack(
                     children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
-                        child: Text(
-                          widget.name!,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: TextStyle(
-                              color: MyTheme.font_grey,
-                              fontSize: 14,
-                              height: 1.2,
-                              fontWeight: FontWeight.w400),
+                      Column(children: <Widget>[
+                        AspectRatio(
+                          aspectRatio:1,
+                          child: Container(
+
+                              width: double.infinity,
+                              child: ClipRRect(
+                                clipBehavior: Clip.hardEdge,
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(6), bottom: Radius.zero),
+                                child: AIZImage.basicImage(widget.image!),
+                              )),
                         ),
-                      ),
-                      // widget.has_discount!
-                      widget.main_price != widget.stroked_price
-                          ? Padding(
-                              padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
-                              child: Text(
-                                SystemConfig.systemCurrency!.code != null
-                                    ? widget.stroked_price!.replaceAll(
-                                        SystemConfig.systemCurrency!.code!,
-                                        SystemConfig.systemCurrency!.symbol!)
-                                    : widget.main_price!,
-                                textAlign: TextAlign.left,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: TextStyle(
-                                    decoration: TextDecoration.lineThrough,
-                                    color: MyTheme.medium_grey,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            )
-                          : Container(
-                              height: 10.0,
-                            ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
-                  child: Text(
-                    widget.main_price!,
-                    textAlign: TextAlign.left,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: TextStyle(
-                        color: MyTheme.accent_color,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (widget.has_discount!)
                         Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                          margin: EdgeInsets.only(bottom: 5),
-                          decoration: BoxDecoration(
-                            color: const Color(0xffe62e04),
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(6.0),
-                              bottomLeft: Radius.circular(6.0),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0x14000000),
-                                offset: Offset(-1, 1),
-                                blurRadius: 1,
+                          height: 65,
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+
+                                padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
+                                child: Text(
+                                  widget.name!,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                      color: MyTheme.font_grey,
+                                      fontSize: 14,
+                                      height: 1.2,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                              // widget.has_discount!
+                              widget.main_price != widget.stroked_price
+                                  ? Padding(
+                                padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
+                                child: Text(
+                                  SystemConfig.systemCurrency!.code != null
+                                      ? widget.stroked_price!.replaceAll(
+                                      SystemConfig.systemCurrency!.code!,
+                                      SystemConfig.systemCurrency!.symbol!)
+                                      : widget.main_price!,
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      decoration: TextDecoration.lineThrough,
+                                      color: MyTheme.medium_grey,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              )
+                                  : Container(
+                                height: 10.0,
                               ),
                             ],
                           ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                           child: Text(
-                            widget.discount ?? "",
+                            widget.main_price!,
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                             style: TextStyle(
-                              fontSize: 10,
-                              color: const Color(0xffffffff),
-                              fontWeight: FontWeight.w700,
-                              height: 1.8,
-                            ),
-                            textHeightBehavior: TextHeightBehavior(
-                                applyHeightToFirstAscent: false),
-                            softWrap: false,
+                                color: MyTheme.accent_color,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
                           ),
                         ),
-                      Visibility(
-                        visible: whole_sale_addon_installed.$,
-                        child:
-                            widget.is_wholesale != null && widget.is_wholesale!
-                                ? Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: Colors.blueGrey,
-                                      borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(6.0),
-                                        bottomLeft: Radius.circular(6.0),
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color(0x14000000),
-                                          offset: Offset(-1, 1),
-                                          blurRadius: 1,
-                                        ),
-                                      ],
+
+                      ]),
+                      Positioned.fill(child: Align(
+                        alignment: Alignment.topRight,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            if (widget.has_discount!)
+                              Container(
+                                padding:
+                                EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                margin: EdgeInsets.only(bottom: 5),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffe62e04),
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(6.0),
+                                    bottomLeft: Radius.circular(6.0),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0x14000000),
+                                      offset: Offset(-1, 1),
+                                      blurRadius: 1,
                                     ),
-                                    child: Text(
-                                      "Wholesale",
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: const Color(0xffffffff),
-                                        fontWeight: FontWeight.w700,
-                                        height: 1.8,
-                                      ),
-                                      textHeightBehavior: TextHeightBehavior(
-                                          applyHeightToFirstAscent: false),
-                                      softWrap: false,
+                                  ],
+                                ),
+                                child: Text(
+                                  widget.discount ?? "",
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: const Color(0xffffffff),
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.8,
+                                  ),
+                                  textHeightBehavior: TextHeightBehavior(
+                                      applyHeightToFirstAscent: false),
+                                  softWrap: false,
+                                ),
+                              ),
+                            Visibility(
+                              visible: whole_sale_addon_installed.$,
+                              child:
+                              widget.is_wholesale != null && widget.is_wholesale!
+                                  ? Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey,
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(6.0),
+                                    bottomLeft: Radius.circular(6.0),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0x14000000),
+                                      offset: Offset(-1, 1),
+                                      blurRadius: 1,
                                     ),
-                                  )
-                                : SizedBox.shrink(),
-                      )
+                                  ],
+                                ),
+                                child: Text(
+                                  "Wholesale",
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: const Color(0xffffffff),
+                                    fontWeight: FontWeight.w700,
+                                    height: 1.8,
+                                  ),
+                                  textHeightBehavior: TextHeightBehavior(
+                                      applyHeightToFirstAscent: false),
+                                  softWrap: false,
+                                ),
+                              )
+                                  : SizedBox.shrink(),
+                            )
+                          ],
+                        ),
+                      ),),
                     ],
-                  ),
-                )
-              ]),
+                  )
+
             ),
             GestureDetector(
               onTap: () {
