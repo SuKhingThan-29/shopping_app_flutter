@@ -138,15 +138,16 @@ class _RegistrationState extends State<Registration> {
     setState(() {
       if (_nameController.text.toString().isEmpty) {
         _isName = true;
-      }
-      if (_phoneNumberController.text.toString().isEmpty) {
-        _isPhNo = true;
       } else {
-        if (_passwordController.text.toString().isEmpty) {
-          _isPassword = true;
-        }
-        if (_passwordConfirmController.text.toString().isEmpty) {
-          _isConfirmPassword = true;
+        if (_phoneNumberController.text.toString().isEmpty) {
+          _isPhNo = true;
+        } else {
+          if (_passwordController.text.toString().isEmpty) {
+            _isPassword = true;
+          }
+          if (_passwordConfirmController.text.toString().isEmpty) {
+            _isConfirmPassword = true;
+          }
         }
       }
     });
