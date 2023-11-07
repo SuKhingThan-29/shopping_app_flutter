@@ -12,6 +12,7 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/other_config.dart';
 import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
+import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/otp.dart';
 import 'package:active_ecommerce_flutter/screens/password_forget.dart';
@@ -19,6 +20,7 @@ import 'package:active_ecommerce_flutter/screens/registration.dart';
 import 'package:active_ecommerce_flutter/social_config.dart';
 import 'package:active_ecommerce_flutter/ui_elements/auth_ui.dart';
 import 'package:crypto/crypto.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -26,6 +28,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:toast/toast.dart';
 import 'package:twitter_login/twitter_login.dart';
 
 import '../repositories/address_repository.dart';
@@ -106,7 +109,44 @@ class _LoginState extends State<Login> {
 
     if (loginResponse.result == false) {
       if (loginResponse.message == "Please verify your account") {
-
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Verify Your account'),
+              content: Text('Are you want to verify your account?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    // Perform some action when the "Cancel" button is pressed
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    AuthHelper().setUserData(loginResponse);
+                    print(user_id.$);
+                    var passwordResendCodeResponse = await AuthRepository()
+                        .getPasswordResendCodeResponse(
+                            email.isEmpty ? _phone : email,
+                            email.isEmpty ? "_phone" : "email");
+                    print(passwordResendCodeResponse.result);
+                    if (passwordResendCodeResponse.result == true) {
+                      Navigator.pushAndRemoveUntil(context,
+                          MaterialPageRoute(builder: (context) {
+                        return Otp(
+                          phnum: email.isEmpty ? _phone : email,
+                        );
+                      }), (newRoute) => false);
+                    }
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       } else {
         ToastComponent.showSnackBar(
           context,
@@ -466,7 +506,7 @@ class _LoginState extends State<Login> {
                               signed: true, decimal: true),
                           inputDecoration:
                               InputDecorations.buildInputDecoration_phone(
-                                  hint_text: "9XXX XXX XXX"),
+                                  hint_text: "09XXX XXX XXX"),
                           onSaved: (PhoneNumber number) {
                             print('On Saved: $number');
                           },
