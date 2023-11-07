@@ -472,8 +472,19 @@ class _ProfileEditState extends State<ProfileEdit> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Container(
-                decoration: BoxDecorations.buildBoxDecoration_1(),
-                height: 36,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  color: Colors.transparent,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(.08),
+                      blurRadius: 20,
+                      spreadRadius: 0.0,
+                      offset:
+                          Offset(0.0, 10.0), // shadow direction: bottom right
+                    )
+                  ],
+                ),
                 child: TextField(
                   style: TextStyle(fontSize: 12),
                   controller: _passwordController,
@@ -530,8 +541,18 @@ class _ProfileEditState extends State<ProfileEdit> {
         Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
           child: Container(
-            decoration: BoxDecorations.buildBoxDecoration_1(),
-            height: 36,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
+              color: Colors.transparent,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(.08),
+                  blurRadius: 20,
+                  spreadRadius: 0.0,
+                  offset: Offset(0.0, 10.0), // shadow direction: bottom right
+                )
+              ],
+            ),
             child: TextField(
               controller: _passwordConfirmController,
               autofocus: false,
@@ -617,8 +638,18 @@ class _ProfileEditState extends State<ProfileEdit> {
         Padding(
           padding: const EdgeInsets.only(bottom: 14.0),
           child: Container(
-            decoration: BoxDecorations.buildBoxDecoration_1(),
-            height: 36,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
+              color: Colors.transparent,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(.08),
+                  blurRadius: 20,
+                  spreadRadius: 0.0,
+                  offset: Offset(0.0, 10.0), // shadow direction: bottom right
+                )
+              ],
+            ),
             child: TextField(
               controller: _nameController,
               autofocus: false,
@@ -649,8 +680,18 @@ class _ProfileEditState extends State<ProfileEdit> {
         Padding(
           padding: const EdgeInsets.only(bottom: 14.0),
           child: Container(
-            decoration: BoxDecorations.buildBoxDecoration_1(),
-            height: 36,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
+              color: Colors.transparent,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(.08),
+                  blurRadius: 20,
+                  spreadRadius: 0.0,
+                  offset: Offset(0.0, 10.0), // shadow direction: bottom right
+                )
+              ],
+            ),
             child: TextField(
               controller: _phoneController,
               autofocus: false,
@@ -688,7 +729,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                 padding: const EdgeInsets.only(bottom: 14.0),
                 child: Container(
                     decoration: BoxDecorations.buildBoxDecoration_1(),
-                    height: 36,
+                    height: 50,
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     alignment: Alignment.centerLeft,
                     child: Text(
