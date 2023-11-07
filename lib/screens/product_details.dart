@@ -73,7 +73,7 @@ class _ProductDetailsState extends State<ProductDetails>
 
   //init values
 
-  bool? _isInWishList = false;
+  bool _isInWishList = false;
   var _productDetailsFetched = false;
   DetailedProduct? _productDetails;
   var _productImageList = [];
@@ -951,7 +951,7 @@ class _ProductDetailsState extends State<ProductDetails>
                           child: Center(
                             child: Icon(
                               Icons.favorite,
-                              color: _isInWishList!
+                              color: _isInWishList
                                   ? Color.fromRGBO(230, 46, 4, 1)
                                   : MyTheme.dark_font_grey,
                               size: 16,

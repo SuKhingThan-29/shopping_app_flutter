@@ -62,7 +62,7 @@ class User {
   String? avatar;
   String? avatar_original;
   String? phone;
-  bool?emailVerified;
+  bool? emailVerified;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],

@@ -22,6 +22,8 @@ class AuthHelper {
       user_phone.save();
       avatar_original.$ = loginResponse.user?.avatar_original;
       avatar_original.save();
+      email_verified.$=loginResponse.user?.emailVerified;
+      email_verified.save();
     } else {
       if (loginResponse.message == "Please verify your account") {
         SystemConfig.systemUser = loginResponse.user;
