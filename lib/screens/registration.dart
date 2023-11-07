@@ -49,6 +49,7 @@ class _RegistrationState extends State<Registration> {
 
   String? _phone = "";
   bool? _isAgree = false;
+  bool _isSignupClick=false;
   bool _isCaptchaShowing = false;
   String googleRecaptchaKey = "";
 
@@ -413,6 +414,9 @@ class _RegistrationState extends State<Registration> {
       );
       return;
     }
+    setState(() {
+      _isSignupClick=true;
+    });
     var signupResponse = await AuthRepository().getSignupResponse(
         name,
         email,
@@ -427,7 +431,9 @@ class _RegistrationState extends State<Registration> {
         int.parse(postalCode),
         googleRecaptchaKey);
     var message = signupResponse.message.toString();
-
+    setState(() {
+      _isSignupClick=false;
+    });
     if (signupResponse.result == false) {
       ToastComponent.showSnackBar(
         context,
@@ -1054,7 +1060,7 @@ class _RegistrationState extends State<Registration> {
                           fontSize: 14,
                           fontWeight: FontWeight.w600),
                     ),
-                    onPressed: _isAgree!
+                    onPressed: _isAgree! && _isSignupClick==false
                         ? () {
                             onPressSignUp();
                           }
