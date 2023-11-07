@@ -642,7 +642,7 @@ class _RegistrationState extends State<Registration> {
                     ),
                     RichText(
                       text: TextSpan(
-                        text: _errorPhoneNo,
+                        text:  _isPhNo ? _errorPhoneNo : null,
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
