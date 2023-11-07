@@ -62,7 +62,7 @@ class _ProfileState extends State<Profile> {
   String? _member_level;
   UserInformation? _userInfo;
   int? _notitotalcount = 0;
-  int? _conversationtotalcount = 3;
+  int? _conversationtotalcount = 0;
 
   String userLeverl = "Normal";
 
