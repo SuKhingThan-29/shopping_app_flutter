@@ -272,6 +272,7 @@ class _MiniProductCardState extends State<MiniProductCard> {
                   ),
                 ),
               ]),
+
           // discount and wholesale
           Positioned.fill(
             child: Align(
