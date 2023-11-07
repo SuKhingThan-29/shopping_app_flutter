@@ -920,7 +920,7 @@ class _ProfileState extends State<Profile> {
                           margin: EdgeInsets.only(right: 20),
                           child: Image.asset(
                             "assets/messages.png",
-                            height: 25,
+                            height: 20,
                           ),
                         ),
                         Positioned(
