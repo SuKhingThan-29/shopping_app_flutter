@@ -138,15 +138,16 @@ class _RegistrationState extends State<Registration> {
     setState(() {
       if (_nameController.text.toString().isEmpty) {
         _isName = true;
-      }
-      if (_phoneNumberController.text.toString().isEmpty) {
-        _isPhNo = true;
       } else {
-        if (_passwordController.text.toString().isEmpty) {
-          _isPassword = true;
-        }
-        if (_passwordConfirmController.text.toString().isEmpty) {
-          _isConfirmPassword = true;
+        if (_phoneNumberController.text.toString().isEmpty) {
+          _isPhNo = true;
+        } else {
+          if (_passwordController.text.toString().isEmpty) {
+            _isPassword = true;
+          }
+          if (_passwordConfirmController.text.toString().isEmpty) {
+            _isConfirmPassword = true;
+          }
         }
       }
     });
@@ -596,7 +597,7 @@ class _RegistrationState extends State<Registration> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       decoration: BoxDecoration(
@@ -637,6 +638,15 @@ class _RegistrationState extends State<Registration> {
                         onSaved: (PhoneNumber number) {
                           //print('On Saved: $number');
                         },
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text:  _isPhNo ? _errorPhoneNo : null,
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.red),
                       ),
                     ),
                     // GestureDetector(
