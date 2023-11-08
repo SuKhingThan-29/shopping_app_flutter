@@ -49,7 +49,7 @@ class _RegistrationState extends State<Registration> {
 
   String? _phone = "";
   bool? _isAgree = false;
-  bool _isSignupClick=false;
+  bool _isSignupClick = false;
   bool _isCaptchaShowing = false;
   String googleRecaptchaKey = "";
 
@@ -94,7 +94,7 @@ class _RegistrationState extends State<Registration> {
   String? get _errorNameText {
     final text = _nameController.value.text;
     if (text.isEmpty) {
-      return 'your name is empty';
+      return 'name is empty';
     }
     _isName = false;
     return null;
@@ -103,19 +103,18 @@ class _RegistrationState extends State<Registration> {
   String? get _errorPhoneNo {
     final text = _phoneNumberController.value.text;
     if (text.isEmpty) {
-      return 'your phone number is empty';
+      return 'phone number is empty';
     }
     _isPhNo = false;
     return null;
   }
 
   String? get _errorPassword {
-    final text = _passwordController.value.text;
-    final text1 = _passwordConfirmController.value.text;
-    if (text.isEmpty) {
-      return 'your password is empty';
-    }
-    if (text != text1) {
+    final textPassword = _passwordController.value.text;
+    final textConfirm = _passwordConfirmController.value.text;
+    if (textPassword.isEmpty) {
+      return 'password is empty';
+    } else if (textPassword.isNotEmpty && textConfirm.isNotEmpty && textPassword != textConfirm) {
       return 'password does not match';
     }
     _isPassword = false;
@@ -123,13 +122,12 @@ class _RegistrationState extends State<Registration> {
   }
 
   String? get _errorConfirmPassword {
-    final text = _passwordConfirmController.value.text;
-    final text1 = _passwordController.value.text;
-    if (text.isEmpty) {
-      return 'your confirm password is empty';
-    }
-    if (text != text1) {
-      return 'password does not match';
+    final textConfirm = _passwordConfirmController.value.text;
+    final textPassword = _passwordController.value.text;
+    if (textConfirm.isEmpty) {
+      return 'confirm password is empty';
+    }else if (textPassword.isNotEmpty && textConfirm.isNotEmpty && textConfirm != textPassword) {
+      return 'confirm password does not match';
     }
     _isConfirmPassword = false;
     return null;
@@ -139,17 +137,16 @@ class _RegistrationState extends State<Registration> {
     setState(() {
       if (_nameController.text.toString().isEmpty) {
         _isName = true;
-      } else {
-        if (_phoneNumberController.text.toString().isEmpty) {
-          _isPhNo = true;
-        } else {
-          if (_passwordController.text.toString().isEmpty) {
-            _isPassword = true;
-          }
-          if (_passwordConfirmController.text.toString().isEmpty) {
-            _isConfirmPassword = true;
-          }
-        }
+      } else if (_phoneNumberController.text.toString().isEmpty) {
+      _isPhNo = true;
+      }else if (_passwordController.text.toString().isEmpty) {
+        _isPassword = true;
+      }else if (_passwordConfirmController.text.toString().isEmpty) {
+        _isConfirmPassword = true;
+      }else if(_passwordController.text.toString().isNotEmpty && _passwordConfirmController.text.toString().isNotEmpty){
+        if(_passwordController.text.toString() != _passwordConfirmController.text.toString())
+        _isPassword = true;
+        _isConfirmPassword=true;
       }
     });
   }
@@ -375,7 +372,6 @@ class _RegistrationState extends State<Registration> {
     var email = _emailController.text.toString();
     var password = _passwordController.text.toString();
     var passwordConfirm = _passwordConfirmController.text.toString();
-    _submit();
     if (_phoneNumberController.text.isEmpty) {
       ToastComponent.showSnackBar(
         context,
@@ -415,7 +411,7 @@ class _RegistrationState extends State<Registration> {
       return;
     }
     setState(() {
-      _isSignupClick=true;
+      _isSignupClick = true;
     });
     var signupResponse = await AuthRepository().getSignupResponse(
         name,
@@ -467,7 +463,7 @@ class _RegistrationState extends State<Registration> {
       }), (newRoute) => false);
     }
     setState(() {
-      _isSignupClick=false;
+      _isSignupClick = false;
     });
   }
 
@@ -649,7 +645,7 @@ class _RegistrationState extends State<Registration> {
                     ),
                     RichText(
                       text: TextSpan(
-                        text:  _isPhNo ? _errorPhoneNo : null,
+                        text: _isPhNo ? _errorPhoneNo : null,
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
@@ -829,9 +825,7 @@ class _RegistrationState extends State<Registration> {
                       controller: _postalcodeController,
                       autofocus: false,
                       onChanged: (_) {
-                        setState(() {
-                          _submit();
-                        });
+
                       },
                       decoration: InputDecoration(
                           errorStyle: TextStyle(color: Colors.red),
@@ -868,26 +862,27 @@ class _RegistrationState extends State<Registration> {
                           });
                         },
                         decoration: InputDecoration(
-                          errorStyle: TextStyle(color: Colors.red),
-                          errorText: _isPassword ? _errorPassword : null,
-                          hintText: _isPassword ? null : "Enter Password",
-                          hintStyle: TextStyle(
-                            color: Colors.grey.shade400,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.grey,
+                            errorStyle: TextStyle(color: Colors.red),
+                            errorText: _isPassword ? _errorPassword : null,
+                            hintText: _isPassword ? null : "Enter Password",
+                            hintStyle: TextStyle(
+                              color: Colors.grey.shade400,
                             ),
-                            onPressed: () {
-                              print(_obscureText);
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
-                          ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () {
+                                print(_obscureText);
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                            ),
+                           
                         ),
                       ),
                     ),
@@ -1061,7 +1056,7 @@ class _RegistrationState extends State<Registration> {
                           fontSize: 14,
                           fontWeight: FontWeight.w600),
                     ),
-                    onPressed: _isAgree! && _isSignupClick==false
+                    onPressed: _isAgree! && _isSignupClick == false
                         ? () {
                             onPressSignUp();
                           }
