@@ -431,9 +431,7 @@ class _RegistrationState extends State<Registration> {
         int.parse(postalCode),
         googleRecaptchaKey);
     var message = signupResponse.message.toString();
-    setState(() {
-      _isSignupClick=false;
-    });
+
     if (signupResponse.result == false) {
       ToastComponent.showSnackBar(
         context,

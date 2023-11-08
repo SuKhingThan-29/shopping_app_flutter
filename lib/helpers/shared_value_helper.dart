@@ -53,7 +53,7 @@ final SharedValue<bool?> app_language_rtl = SharedValue(
   key: "app_language_rtl", // disk storage key for shared_preferences
 );
 
-final SharedValue<bool?> email_verified = SharedValue(
+final SharedValue<bool?> is_email_verified = SharedValue(
     value:false,
 key:"email_verified");
 

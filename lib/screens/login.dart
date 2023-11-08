@@ -110,70 +110,37 @@ class _LoginState extends State<Login> {
     var loginResponse = await AuthRepository()
         .getLoginResponse(_login_by == 'email' ? email : _phone, password);
 
-    if (loginResponse.result == false) {
-      if (loginResponse.message == "Please verify your account") {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Verify Your account'),
-              content: Text('Are you want to verify your account?'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    // Perform some action when the "Cancel" button is pressed
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    AuthHelper().setUserData(loginResponse);
-                    print(user_id.$);
-                    var passwordResendCodeResponse = await AuthRepository()
-                        .getPasswordResendCodeResponse(
-                            email.isEmpty ? _phone : email,
-                            email.isEmpty ? "_phone" : "email");
-                    print(passwordResendCodeResponse.result);
-                    if (passwordResendCodeResponse.result == true) {
-                      Navigator.pushAndRemoveUntil(context,
-                          MaterialPageRoute(builder: (context) {
-                        return Otp(
-                          phnum: email.isEmpty ? _phone : email,
-                        );
-                      }), (newRoute) => false);
-                    }
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        ToastComponent.showSnackBar(
-          context,
-          loginResponse.message.toString(),
-        );
-      }
-      setState(() {
-        isLoginClick=false;
-      });
-    } else {
-      setState(() {
-        isLoginClick=false;
-      });
-      // ToastComponent.showSnackBar(loginResponse.message.toString(),
-      //     gravity: Toast.center, duration: Toast.lengthLong);
+    if (loginResponse.result == true) {
       AuthHelper().setUserData(loginResponse);
       // push notification starts
       if (OtherConfig.USE_PUSH_NOTIFICATION) {}
 
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
-        return Main();
-      }), (newRoute) => false);
+            return Main();
+          }), (newRoute) => false);
+
+    }else if(loginResponse.result==false && loginResponse.message=='Please verify your account'){
+      AuthHelper().setUserData(loginResponse);
+      // push notification starts
+      if (OtherConfig.USE_PUSH_NOTIFICATION) {}
+
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) {
+            return Main();
+          }), (newRoute) => false);
+
+    } else {
+      ToastComponent.showSnackBar(
+        context,
+        loginResponse.message.toString(),
+      );
+
     }
+    ToastComponent.showSnackBar(
+      context,
+      loginResponse.message.toString(),
+    );
     setState(() {
       isLoginClick=false;
     });
