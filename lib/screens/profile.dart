@@ -83,7 +83,7 @@ class _ProfileState extends State<Profile> {
   }
 
   void didChangeDependencies() {
-    print("fetchdata didchange");
+    print("fetchdata");
     super.didChangeDependencies();
   }
 

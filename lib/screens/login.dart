@@ -174,6 +174,9 @@ class _LoginState extends State<Login> {
         return Main();
       }), (newRoute) => false);
     }
+    setState(() {
+      isLoginClick=false;
+    });
   }
 
   onPressedFacebookLogin() async {
