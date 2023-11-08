@@ -468,6 +468,9 @@ class _RegistrationState extends State<Registration> {
         );
       }), (newRoute) => false);
     }
+    setState(() {
+      _isSignupClick=false;
+    });
   }
 
   @override
