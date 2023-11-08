@@ -114,7 +114,7 @@ class _OtpState extends State<Otp> {
     if (!(confirmCodeResponse.result)) {
       ToastComponent.showSnackBar(context, confirmCodeResponse.message);
     } else {
-      ToastComponent.showSnackBar(context, confirmCodeResponse.message);
+      ToastComponent.showSnackBar(context, "Your account is now verified.");
 
       // Navigator.push(context, MaterialPageRoute(builder: (context) {
       //   return Login();
@@ -132,11 +132,6 @@ class _OtpState extends State<Otp> {
     final _screen_width = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: ()async {
-        // Navigator.pushAndRemoveUntil(context,
-        //     MaterialPageRoute(builder: (context) {
-        //   return Login();
-        // }), (reute) => false);
-        // return Future<bool>.value(false);
         return true;
       },
       child: Directionality(

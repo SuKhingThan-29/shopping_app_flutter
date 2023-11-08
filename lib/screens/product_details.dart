@@ -38,6 +38,9 @@ import 'package:social_share/social_share.dart';
 import 'package:toast/toast.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../repositories/auth_repository.dart';
+import 'otp.dart';
+
 class ProductDetails extends StatefulWidget {
   int? id;
 
@@ -389,6 +392,24 @@ class _ProductDetailsState extends State<ProductDetails>
       //     gravity: Toast.center, duration: Toast.lengthLong);
       Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
       return;
+    }else if(is_email_verified.$ == false){
+      ToastComponent.showSnackBar(
+        context,
+        'user is unverified',
+      );
+      var passwordResendCodeResponse = await AuthRepository()
+          .getPasswordResendCodeResponse(
+          user_email.$.isEmpty ? user_phone.$ : user_email.$,
+          user_email.$.isEmpty ? "_phone" : "email");
+      print(passwordResendCodeResponse.result);
+      if (passwordResendCodeResponse.result == true) {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) {
+              return Otp(
+                phnum: user_email.$.isEmpty ? user_phone.$ : user_email.$,
+              );
+            }), (newRoute) => false);
+      }      return;
     }
 
     // print(widget.id);
@@ -398,6 +419,7 @@ class _ProductDetailsState extends State<ProductDetails>
 
     var cartAddResponse = await CartRepository()
         .getCartAddResponse(widget.id, _variant, user_id.$, _quantity);
+print("LoginResponse: ${cartAddResponse.message}");
 
     if (cartAddResponse.result == false) {
       ToastComponent.showSnackBar(
