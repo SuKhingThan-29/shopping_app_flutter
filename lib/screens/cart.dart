@@ -89,7 +89,7 @@ class _CartState extends State<CartScreen> {
       _shopList.forEach((shop) {
         if (shop.cart_items.length > 0) {
           shop.cart_items.forEach((cartItem) {
-            // print(cartItem.total_price);
+            // print(cartItem.total_prices);
             // print(cartItem.quantity);
             // print(cartItem.price);
             print("Card id: ${cartItem.total_price}");
