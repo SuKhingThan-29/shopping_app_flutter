@@ -73,7 +73,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
   }
 
-
   Future<void> _onBrandListRefresh() async {
     resetBrandList();
     fetchBrandData();
@@ -1702,8 +1701,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           child: Row(
             children: [
               Container(
-                height: 70,
-                width: 70,
+                height: 40,
+                width: 50,
                 child: Image.asset(
                   "assets/app_logo.png",
                 ),

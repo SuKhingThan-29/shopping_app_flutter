@@ -224,7 +224,7 @@ class _ClubpointState extends State<Clubpoint> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              "assets/orders.png",
+              "assets/points.png",
               width: 60,
               height: 60,
             ),

@@ -46,7 +46,7 @@ class _LoginState extends State<Login> {
   var countries_code = <String?>[];
 
   String? _phone = "";
-  bool isLoginClick=false;
+  bool isLoginClick = false;
 
   //controllers
   TextEditingController _phoneNumberController = TextEditingController();
@@ -105,7 +105,7 @@ class _LoginState extends State<Login> {
       return;
     }
     setState(() {
-      isLoginClick=true;
+      isLoginClick = true;
     });
     var loginResponse = await AuthRepository()
         .getLoginResponse(_login_by == 'email' ? email : _phone, password);
@@ -117,32 +117,30 @@ class _LoginState extends State<Login> {
 
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
-            return Main();
-          }), (newRoute) => false);
-
-    }else if(loginResponse.result==false && loginResponse.message=='Please verify your account'){
+        return Main();
+      }), (newRoute) => false);
+    } else if (loginResponse.result == false &&
+        loginResponse.message == 'Please verify your account') {
       AuthHelper().setUserData(loginResponse);
       // push notification starts
       if (OtherConfig.USE_PUSH_NOTIFICATION) {}
 
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
-            return Main();
-          }), (newRoute) => false);
-
+        return Main();
+      }), (newRoute) => false);
     } else {
       ToastComponent.showSnackBar(
         context,
         loginResponse.message.toString(),
       );
-
     }
     ToastComponent.showSnackBar(
       context,
       loginResponse.message.toString(),
     );
     setState(() {
-      isLoginClick=false;
+      isLoginClick = false;
     });
   }
 
@@ -522,7 +520,6 @@ class _LoginState extends State<Login> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      height: 36,
                       child: TextField(
                         controller: _passwordController,
                         autofocus: false,
@@ -532,6 +529,22 @@ class _LoginState extends State<Login> {
                         decoration: InputDecoration(
                           // hintText: "• • • • • • • •",
                           hintText: "Enter Password",
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.accent_color, width: 0.2),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(6.0),
+                            ),
+                          ),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 10.0),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.accent_color, width: 0.5),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(6.0),
+                            ),
+                          ),
                           hintStyle: TextStyle(
                               color: Colors.grey.shade400, fontSize: 14),
                           suffixIcon: IconButton(
@@ -596,10 +609,11 @@ class _LoginState extends State<Login> {
                           fontSize: 13,
                           fontWeight: FontWeight.w600),
                     ),
-                    onPressed:isLoginClick==true?null: () {
-
-                      onPressedLogin();
-                    },
+                    onPressed: isLoginClick == true
+                        ? null
+                        : () {
+                            onPressedLogin();
+                          },
                   ),
                 ),
               ),
