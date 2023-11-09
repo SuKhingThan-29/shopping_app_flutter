@@ -531,16 +531,17 @@ class _LoginState extends State<Login> {
                           hintText: "Enter Password",
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: MyTheme.accent_color, width: 0.2),
+                                color: MyTheme.accent_color, width: 0.5),
                             borderRadius: const BorderRadius.all(
                               const Radius.circular(6.0),
                             ),
                           ),
+
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 10.0),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: MyTheme.accent_color, width: 0.5),
+                                color: Colors.red, width: 0.5),
                             borderRadius: const BorderRadius.all(
                               const Radius.circular(6.0),
                             ),
