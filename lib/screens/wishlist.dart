@@ -180,7 +180,7 @@ class _WishlistState extends State<Wishlist> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              "assets/orders.png",
+              "assets/heart.png",
               width: 60,
               height: 60,
             ),
