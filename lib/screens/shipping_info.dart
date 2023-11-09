@@ -1396,7 +1396,7 @@ class _ShippingInfoState extends State<ShippingInfo> {
                   child: Row(
                     children: [
                       Text(
-                        '${intl.NumberFormat.decimalPattern().format((_deliveryInfoList[sellerIndex].cartItems![itemIndex].price! * _deliveryInfoList[sellerIndex].cartItems![itemIndex].quantity!)) ?? 0} MMK',
+                        '${intl.NumberFormat.decimalPattern().format((_deliveryInfoList[sellerIndex].cartItems![itemIndex].total_price!)) ?? 0} MMK',
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
