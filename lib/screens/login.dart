@@ -455,7 +455,13 @@ class _LoginState extends State<Login> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
-                        height: 36,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: MyTheme.accent_color, width: 0.5),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(6.0),
+                          ),
+                        ),
                         child: CustomInternationalPhoneNumberInput(
                           countries: countries_code,
                           onInputChanged: (PhoneNumber number) {
@@ -467,9 +473,9 @@ class _LoginState extends State<Login> {
                           onInputValidated: (bool value) {
                             print(value);
                           },
-                          selectorConfig: SelectorConfig(
-                            selectorType: PhoneInputSelectorType.DIALOG,
-                          ),
+                          // selectorConfig: SelectorConfig(
+                          //   selectorType: PhoneInputSelectorType.DIALOG,
+                          // ),
                           ignoreBlank: false,
                           autoValidateMode: AutovalidateMode.disabled,
                           selectorTextStyle:
@@ -531,17 +537,16 @@ class _LoginState extends State<Login> {
                           hintText: "Enter Password",
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: MyTheme.accent_color, width: 0.5),
+                                color: MyTheme.accent_color, width: 0.2),
                             borderRadius: const BorderRadius.all(
                               const Radius.circular(6.0),
                             ),
                           ),
-
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 10.0),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: Colors.red, width: 0.5),
+                                color: MyTheme.accent_color, width: 0.5),
                             borderRadius: const BorderRadius.all(
                               const Radius.circular(6.0),
                             ),

@@ -145,13 +145,8 @@ class _RegistrationState extends State<Registration> {
         _isConfirmPassword = true;
       }else if(_passwordController.text.toString().isNotEmpty && _passwordConfirmController.text.toString().isNotEmpty){
         if(_passwordController.text.toString() != _passwordConfirmController.text.toString())
-       {
-         _isPassword = true;
-         _isConfirmPassword=true;
-       }else{
-          _isPassword =false;
-          _isConfirmPassword=false;
-        }
+        _isPassword = true;
+        _isConfirmPassword=true;
       }
     });
   }
@@ -648,17 +643,15 @@ class _RegistrationState extends State<Registration> {
                         },
                       ),
                     ),
-                    Center(
-                      child: RichText(
-                        text: TextSpan(
-                          text: _isPhNo ? _errorPhoneNo : null,
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.redAccent),
-                        ),
+                    RichText(
+                      text: TextSpan(
+                        text: _isPhNo ? _errorPhoneNo : null,
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.red),
                       ),
-                    )
+                    ),
                     // GestureDetector(
                     //   onTap: () {
                     //     setState(() {

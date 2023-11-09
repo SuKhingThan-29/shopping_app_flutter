@@ -21,6 +21,7 @@ import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/messenger_list.dart';
 import 'package:active_ecommerce_flutter/screens/noti.dart';
+import 'package:active_ecommerce_flutter/screens/otp.dart';
 import 'package:active_ecommerce_flutter/screens/whole_sale_products.dart';
 import 'package:active_ecommerce_flutter/screens/wishlist.dart';
 import 'package:flutter/material.dart';
@@ -163,10 +164,32 @@ class _ProfileState extends State<Profile> {
           MaterialPageRoute(builder: (context) {
         return Main();
       }), (route) => false);
-    }else{
+    } else {
       Navigator.pop(loadingcontext);
     }
     ToastComponent.showSnackBar(context, response.message);
+  }
+
+  OtpVerified() async {
+    print('${is_email_verified.$}ekkekkekek');
+
+    ToastComponent.showSnackBar(
+      context,
+      'user is unverified',
+    );
+    var passwordResendCodeResponse = await AuthRepository()
+        .getPasswordResendCodeResponse(
+            user_email.$.isEmpty ? user_phone.$ : user_email.$,
+            user_email.$.isEmpty ? "_phone" : "email");
+    print(passwordResendCodeResponse.result);
+    if (passwordResendCodeResponse.result == true) {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) {
+        return Otp(
+          phnum: user_email.$.isEmpty ? user_phone.$ : user_email.$,
+        );
+      }), (newRoute) => false);
+    }
   }
 
   String counterText(String txt, {default_length = 3}) {
@@ -609,7 +632,6 @@ class _ProfileState extends State<Profile> {
                       AIZRoute.push(context, ProfileEdit()).then((value) {
                         onPopped(value);
                       });
-
                     }
                   : () => showLoginWarning()),
           buildHorizontalSettingItem(
@@ -837,6 +859,9 @@ class _ProfileState extends State<Profile> {
               child: buildSettingAndAddonsHorizontalMenuItem(
                   "assets/wallet.png",
                   AppLocalizations.of(context)!.my_wallet_ucf, () {
+                if (is_email_verified.$ == false) {
+                  OtpVerified();
+                }
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return Wallet();
                 }));
@@ -847,10 +872,14 @@ class _ProfileState extends State<Profile> {
               AppLocalizations.of(context)!.orders_ucf,
               is_logged_in.$
                   ? () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return OrderList();
-                      }));
+                      if (is_email_verified.$ == false) {
+                        OtpVerified();
+                      } else {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return OrderList();
+                        }));
+                      }
                     }
                   : () => null),
           buildSettingAndAddonsHorizontalMenuItem(
@@ -858,10 +887,14 @@ class _ProfileState extends State<Profile> {
               AppLocalizations.of(context)!.my_wishlist_ucf,
               is_logged_in.$
                   ? () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return Wishlist();
-                      }));
+                      if (is_email_verified.$ == false) {
+                        OtpVerified();
+                      } else {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return Wishlist();
+                        }));
+                      }
                     }
                   : () => null),
           if (club_point_addon_installed.$)
@@ -870,10 +903,14 @@ class _ProfileState extends State<Profile> {
                 AppLocalizations.of(context)!.earned_points_ucf,
                 is_logged_in.$
                     ? () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return Clubpoint();
-                        }));
+                        if (is_email_verified.$ == false) {
+                          OtpVerified();
+                        } else {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return Clubpoint();
+                          }));
+                        }
                       }
                     : () => null),
           // if (refund_addon_installed.$)
@@ -913,7 +950,9 @@ class _ProfileState extends State<Profile> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
-                    SizedBox(height: 3,),
+                    SizedBox(
+                      height: 3,
+                    ),
                     Stack(
                       children: [
                         Container(
@@ -926,10 +965,8 @@ class _ProfileState extends State<Profile> {
                         Positioned(
                           top: 0,
                           right: 12,
-                          child:
-                          _conversationtotalcount != 0
-                              ?
-                          Container(
+                          child: _conversationtotalcount != 0
+                              ? Container(
                                   width: 18,
                                   height: 18,
                                   padding: EdgeInsets.all(2),
@@ -1012,10 +1049,14 @@ class _ProfileState extends State<Profile> {
               AppLocalizations.of(context)!.coupon_ucf,
               is_logged_in.$
                   ? () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return Coupon();
-                      }));
+                      if (is_email_verified.$ == false) {
+                        OtpVerified();
+                      } else {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return Coupon();
+                        }));
+                      }
                     }
                   : () => null),
         ],

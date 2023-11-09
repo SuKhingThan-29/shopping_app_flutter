@@ -118,7 +118,7 @@ class _PasswordForgetState extends State<PasswordForget> {
             left: 10, // Adjust the left position as needed
             child: Container(
               decoration: BoxDecoration(// Background color for the icon
-              ),
+                  ),
               child: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
@@ -200,7 +200,13 @@ class _PasswordForgetState extends State<PasswordForget> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
-                        height: 36,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: MyTheme.accent_color, width: 0.5),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(6.0),
+                          ),
+                        ),
                         child: CustomInternationalPhoneNumberInput(
                           countries: countries_code,
                           onInputChanged: (PhoneNumber number) {
@@ -212,9 +218,9 @@ class _PasswordForgetState extends State<PasswordForget> {
                           onInputValidated: (bool value) {
                             //print(value);
                           },
-                          selectorConfig: SelectorConfig(
-                            selectorType: PhoneInputSelectorType.DIALOG,
-                          ),
+                          // selectorConfig: SelectorConfig(
+                          //   selectorType: PhoneInputSelectorType.DIALOG,
+                          // ),
                           ignoreBlank: false,
                           autoValidateMode: AutovalidateMode.disabled,
                           selectorTextStyle:
