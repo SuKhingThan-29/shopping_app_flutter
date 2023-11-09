@@ -32,6 +32,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:social_share/social_share.dart';
@@ -199,6 +200,8 @@ class _ProductDetailsState extends State<ProductDetails>
 
   setProductDetailValues() {
     if (_productDetails != null) {
+      print('productDetails ${_productDetails!.description!}');
+
       controller.loadHtmlString(makeHtml(_productDetails!.description!));
       _appbarPriceString = _productDetails!.price_high_low;
       _singlePrice = _productDetails!.calculable_price;
@@ -419,7 +422,7 @@ class _ProductDetailsState extends State<ProductDetails>
 
     var cartAddResponse = await CartRepository()
         .getCartAddResponse(widget.id, _variant, user_id.$, _quantity);
-print("LoginResponse: ${cartAddResponse.message}");
+print("CartAddResponse: ${cartAddResponse.message}");
 
     if (cartAddResponse.result == false) {
       ToastComponent.showSnackBar(
@@ -1172,6 +1175,7 @@ print("LoginResponse: ${cartAddResponse.message}");
                         divider(),
                         InkWell(
                           onTap: () {
+                            print("Video url: ${_productDetails!.video_link}");
                             if (_productDetails!.video_link == "") {
                               ToastComponent.showSnackBar(
                                 context,
@@ -1180,15 +1184,16 @@ print("LoginResponse: ${cartAddResponse.message}");
                               );
                               return;
                             }
+                            _launchUrl(_productDetails!.video_link);
 
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return VideoDescription(
-                                url: _productDetails!.video_link,
-                              );
-                            })).then((value) {
-                              onPopped(value);
-                            });
+                            // Navigator.push(context,
+                            //     MaterialPageRoute(builder: (context) {
+                            //   return VideoDescription(
+                            //     url: _productDetails!.video_link,
+                            //   );
+                            // })).then((value) {
+                            //   onPopped(value);
+                            // });
                           },
                           child: Container(
                             color: MyTheme.white,
@@ -1454,7 +1459,9 @@ print("LoginResponse: ${cartAddResponse.message}");
           )),
     );
   }
-
+  Future<void> _launchUrl(_url) async {
+    await FlutterWebBrowser.openWebPage(url: _url);
+  }
   Widget buildSellerRow(BuildContext context) {
     //print("sl:" +  _productDetails!.shop_logo);
     return Container(
