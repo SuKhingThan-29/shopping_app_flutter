@@ -103,6 +103,7 @@ class CartRepository {
 
     String url=("${AppConfig.BASE_URL}/carts/add");
     print("add to cart: $post_body");
+    print("add to token: ${access_token.$}");
 
     final response = await ApiRequest.post(url:url,
         headers: {

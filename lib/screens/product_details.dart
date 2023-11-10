@@ -37,6 +37,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:social_share/social_share.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../repositories/auth_repository.dart';
@@ -69,7 +70,37 @@ class _ProductDetailsState extends State<ProductDetails>
   Animation? _colorTween;
   late AnimationController _ColorAnimationController;
   WebViewController controller = WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.unrestricted);
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..setNavigationDelegate(
+        NavigationDelegate(
+            onProgress: (int progress) {
+              debugPrint('WebView is loading (progress : $progress%)');
+            },
+            onPageStarted: (String url) {
+              debugPrint('Page started loading: $url');
+            },
+            onPageFinished: (String url) {
+              debugPrint('Page finished loading: $url');
+            },
+            onWebResourceError: (WebResourceError error) {
+              debugPrint('''
+Page resource error:
+  code: ${error.errorCode}
+  description: ${error.description}
+  errorType: ${error.errorType}
+  isForMainFrame: ${error.isForMainFrame}
+          ''');
+            },
+            onNavigationRequest: (NavigationRequest request)async {
+              final url = request.url;
+              if (await canLaunch(url)) {
+              await launch(url, forceSafariVC: false, forceWebView: false);
+              return NavigationDecision.prevent;
+              } else {
+              return NavigationDecision.navigate;
+              }
+            }
+        ));
   double webViewHeight = 50.0;
 
   CarouselController _carouselController = CarouselController();
@@ -2402,7 +2433,8 @@ print("CartAddResponse: ${cartAddResponse.message}");
                 if (webViewHeight == 50) {
                   webViewHeight = double.parse(
                     (await controller.runJavaScriptReturningResult(
-                            "document.getElementById('scaled-frame').clientHeight"))
+                            "document.getElementById('scaled-frame').clientHeight")
+                    )
                         .toString(),
                   );
                 } else {
