@@ -9,6 +9,8 @@
 		<string>Default</string>
 	</array>
 	<key>com.apple.developer.associated-domains</key>
-	<array/>
+	<array>
+		<string>applinks:gmp.ethical-digit.com</string>
+	</array>
 </dict>
 </plist>
