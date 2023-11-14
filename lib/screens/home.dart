@@ -11,6 +11,7 @@ import 'package:active_ecommerce_flutter/screens/featured_products.dart';
 import 'package:active_ecommerce_flutter/screens/filter.dart';
 import 'package:active_ecommerce_flutter/screens/flash_deal_list.dart';
 import 'package:active_ecommerce_flutter/screens/flash_deal_products.dart';
+import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/todays_deal_products.dart';
 import 'package:active_ecommerce_flutter/screens/top_selling_products.dart';
 import 'package:active_ecommerce_flutter/ui_elements/mini_product_card.dart';
@@ -65,6 +66,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    print("Init state home:");
     Future.delayed(Duration.zero).then((value) {
       change();
     });
@@ -221,6 +223,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
     return newtxt;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -1689,7 +1692,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       flexibleSpace: buildHomeSearchBox(context),
     );
   }
-
   buildHomeSearchBox(BuildContext context) {
     return Column(
       children: [
@@ -1700,13 +1702,20 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(
             children: [
-              Container(
-                height: 40,
-                width: 50,
-                child: Image.asset(
-                  "assets/app_logo.png",
-                ),
-              ),
+             InkWell(
+               onTap: (){
+                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                   return Main();
+                 }));
+               },
+               child:  Container(
+                 height: 40,
+                 width: 50,
+                 child: Image.asset(
+                   "assets/app_logo.png",
+                 ),
+               ),
+             ),
               SizedBox(
                 width: 5,
               ),

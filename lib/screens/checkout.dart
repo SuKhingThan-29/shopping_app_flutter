@@ -672,7 +672,7 @@ class _CheckoutState extends State<Checkout> {
       children: [
         Container(
           height: 42,
-          width: (MediaQuery.of(context).size.width-32) * (2 / 3.47),
+          width: (MediaQuery.of(context).size.width-38) * (2 / 3.47),
           child: DropDownTextField(
             controller: _couponControllerValue,
             clearOption: true,

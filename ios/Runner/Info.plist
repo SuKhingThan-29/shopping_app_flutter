@@ -25,10 +25,13 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+            <string>ethicaldigit.page.link</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.1004636433134-r09qj5fhm1e7qainsb7gg5pa3sa64tte</string>
 				<string>fb820731356499378</string>
+				<string>https</string>
 			</array>
 		</dict>
 	</array>
@@ -123,6 +126,11 @@
     <string>YES</string>
     <key>FlutterDeepLinkingEnabled</key>
     <true/>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>gmp.ethical-digit.com</string>
+    </array>
+
     <key>CFBundleIcons</key>
        <dict>
            <key>CFBundlePrimaryIcon</key>

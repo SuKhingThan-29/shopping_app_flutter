@@ -229,7 +229,7 @@ class _MainScreenState extends State<MyApp> {
               initialRoute: provider.deepLinkRoute ?? '/',
               routes: {
                 '/': (BuildContext context) => SplashScreen(),
-                "/purchase-history": (BuildContext context) => OrderList(),
+                "/purchase-history": (BuildContext context) => OrderList(from_checkout: true),
                 "/classified_ads": (context) => ClassifiedAds(),
                 "/classified_ads_details": (context) =>
                     ClassifiedAdsDetails(id: 0),

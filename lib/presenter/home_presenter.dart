@@ -222,6 +222,14 @@ class HomePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  resetBrandList() {
+    allBrandList.clear();
+    isBrandInitial = true;
+    totalBrandData = 0;
+    allBrandPage = 1;
+    showAllLoadingContainer = false;
+    notifyListeners();
+  }
   mainScrollListener() {
     mainScrollController.addListener(() {
       //print("position: " + xcrollController.position.pixels.toString());
