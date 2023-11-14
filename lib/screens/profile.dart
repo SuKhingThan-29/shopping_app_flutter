@@ -80,11 +80,13 @@ class _ProfileState extends State<Profile> {
 
   void didUpdateWidget(Profile oldWidget) {
     print("fetchdata didUpdateWidget");
+    fetchData();
     super.didUpdateWidget(oldWidget);
   }
 
   void didChangeDependencies() {
     print("fetchdata");
+    fetchData();
     super.didChangeDependencies();
   }
 
