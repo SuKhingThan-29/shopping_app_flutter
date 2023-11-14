@@ -81,6 +81,7 @@ class HomePresenter extends ChangeNotifier {
   handleSelectProductTab(String tab) {
     selectedTab=tab;
     resetAllProductList();
+    resetBrandList();
     fetchAllProducts(tab: selectedTab);
     notifyListeners();
   }
@@ -152,10 +153,21 @@ class HomePresenter extends ChangeNotifier {
     showFeaturedLoadingContainer = false;
     notifyListeners();
   }
+  fetchBrandData() async {
+    var brandResponse = await BrandRepository().getBrands(page: allBrandPage);
+    allBrandList.addAll(brandResponse.brands!);
+    isBrandInitial = false;
+    totalBrandData = brandResponse.meta!.total;
+    print("Total Branddata list: ${allBrandList.length}");
 
+    print("Total Branddata: $totalBrandData");
+    showBrandLoadingContainer = false;
+    notifyListeners();
+  }
   fetchAllProducts({String tab = ""}) async {
     print("Tab Selected $tab");
     var productResponse;
+    var brandResponse;
 
     if (tab == "New") {
       productResponse =
@@ -169,6 +181,9 @@ class HomePresenter extends ChangeNotifier {
           await ProductRepository().getRecommendProducts(page: allProductPage);
       showAllLoadingContainer=false;
 
+    }else if(tab == "Brand"){
+      fetchBrandData();
+      resetAllProductList();
     }
 
     if (productResponse.products!.isEmpty) {
@@ -176,10 +191,14 @@ class HomePresenter extends ChangeNotifier {
       showAllLoadingContainer = false;
       return;
     }
-    allProductList.addAll(productResponse.products!);
-    isAllProductInitial = false;
-    totalAllProductData = productResponse.meta!.total;
-    showAllLoadingContainer = false;
+    if(productResponse.products!.isNotEmpty){
+      allProductList.addAll(productResponse.products!);
+      print("productList: ${allProductList.length}");
+      isAllProductInitial = false;
+      totalAllProductData = productResponse.meta!.total;
+      showAllLoadingContainer = false;
+    }
+
     notifyListeners();
   }
 
@@ -197,6 +216,7 @@ class HomePresenter extends ChangeNotifier {
 
     resetFeaturedProductList();
     resetAllProductList();
+    resetBrandList();
   }
 
   Future<void> onRefresh() async {
@@ -237,11 +257,20 @@ class HomePresenter extends ChangeNotifier {
 
       if (mainScrollController.position.pixels ==
           mainScrollController.position.maxScrollExtent) {
+        if(selectedTab=="Brand"){
+          showBrandLoadingContainer=true;
+        }else{
           showAllLoadingContainer = true;
+        }
           notifyListeners();
-          allProductPage++;
-          fetchAllProducts(tab: selectedTab);
-
+          print("selected tab scroll: $selectedTab");
+          if(selectedTab=="Brand"){
+            allBrandPage++;
+            fetchBrandData();
+          }else{
+            allProductPage++;
+            fetchAllProducts(tab: selectedTab);
+          }
 
       }
     });

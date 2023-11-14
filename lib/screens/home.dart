@@ -57,13 +57,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   List productTabs = ['Recommended', 'New', 'Brand'];
   String selectProductTab = "Recommended";
 
-  List<dynamic> _brandList = [];
-  bool _isBrandInitial = true;
-  int _brandPage = 1;
-  int? _totalBrandData = 0;
-  bool _showBrandLoadingContainer = false;
-  ScrollController _brandScrollController = ScrollController();
-
   @override
   void initState() {
     print("Init state home:");
@@ -75,102 +68,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
   }
 
-  Future<void> _onBrandListRefresh() async {
-    resetBrandList();
-    fetchBrandData();
-    _brandScrollController.addListener(() {
-      if (_brandScrollController.position.pixels ==
-          _brandScrollController.position.maxScrollExtent) {
-        setState(() {
-          _brandPage++;
-        });
-        _showBrandLoadingContainer = true;
-        fetchBrandData();
-      }
-    });
-  }
-
-  buildBrandScrollableList() {
-    if (_isBrandInitial && _brandList.length == 0) {
-      return SingleChildScrollView(
-          child: ShimmerHelper()
-              .buildSquareGridShimmer(scontroller: _scrollController));
-    } else if (_brandList.length > 0) {
-      return GridView.builder(
-        itemCount: _brandList.length,
-        controller: _scrollController,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 14,
-            mainAxisSpacing: 14,
-            childAspectRatio: 1),
-        padding: EdgeInsets.only(top: 20, bottom: 10, left: 18, right: 18),
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          // 3
-          return BrandSquareCard(
-            id: _brandList[index].id,
-            image: _brandList[index].logo,
-            name: _brandList[index].name,
-          );
-        },
-      );
-      // return RefreshIndicator(
-      //   color: Colors.white,
-      //   backgroundColor: MyTheme.accent_color,
-      //   onRefresh: _onBrandListRefresh,
-      //   child: SingleChildScrollView(
-      //     controller: _brandScrollController,
-      //     physics: const BouncingScrollPhysics(
-      //         parent: AlwaysScrollableScrollPhysics()),
-      //     child:  GridView.builder(
-      //       // 2
-      //       //addAutomaticKeepAlives: true,
-      //       itemCount: _brandList.length,
-      //       controller: _scrollController,
-      //       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      //           crossAxisCount: 2,
-      //           crossAxisSpacing: 14,
-      //           mainAxisSpacing: 14,
-      //           childAspectRatio: 1),
-      //       padding:
-      //       EdgeInsets.only(top: 20, bottom: 10, left: 18, right: 18),
-      //       physics: NeverScrollableScrollPhysics(),
-      //       shrinkWrap: true,
-      //       itemBuilder: (context, index) {
-      //         // 3
-      //         return BrandSquareCard(
-      //           id: _brandList[index].id,
-      //           image: _brandList[index].logo,
-      //           name: _brandList[index].name,
-      //         );
-      //       },
-      //     )
-      //
-      //   ),
-      // );
-    } else if (_totalBrandData == 0) {
-      return Center(
-          child: Text(AppLocalizations.of(context)!.no_brand_is_available));
-    } else {
-      return Container(); // should never be happening
-    }
-  }
-
   change() {
     getSharedValueHelperData();
     homeData.onRefresh();
     homeData.setTab(selectProductTab);
     homeData.mainScrollListener();
     homeData.initPiratedAnimation(this);
-    _onBrandListRefresh();
   }
 
   @override
   void dispose() {
     homeData.pirated_logo_controller.dispose();
-    _brandScrollController.dispose();
     homeData.mainScrollController.dispose();
 
     //  ChangeNotifierProvider<HomePresenter>.value(value: value)
@@ -584,18 +492,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                                   ),
                                                 ),
                                               ))),
-                                  SingleChildScrollView(
-                                    controller: _brandScrollController,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    child: Column(
-                                      children: [
-                                        selectProductTab == 'Brand'
-                                            ? buildBrandScrollableList()
-                                            : buildHomeAllProducts2(
-                                                context, homeData),
-                                      ],
-                                    ),
-                                  ),
+                                  selectProductTab == 'Brand'
+                                      ? buildHomeAllBrand(context, homeData)
+                                      : buildHomeAllProducts2(
+                                      context, homeData),
                                   Container(
                                     height: 60,
                                   )
@@ -607,8 +507,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         Align(
                             alignment: Alignment.bottomCenter,
                             child: selectProductTab == 'Brand'
-                                ? buildBrandLoadingContainer()
+                                ? buildBrandLoadingContainer(homeData)
                                 : buildProductLoadingContainer(homeData))
+
                       ],
                     );
                   })),
@@ -617,34 +518,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 
-  fetchBrandData() async {
-    var brandResponse = await BrandRepository().getBrands(page: _brandPage);
-    _brandList.addAll(brandResponse.brands!);
-    _isBrandInitial = false;
-    _totalBrandData = brandResponse.meta!.total;
-    _showBrandLoadingContainer = false;
-  }
-
-  resetBrandList() {
-    _brandList.clear();
-    _isBrandInitial = true;
-    _totalBrandData = 0;
-    _brandPage = 1;
-    _showBrandLoadingContainer = false;
-    setState(() {});
-  }
-
-  Container buildBrandLoadingContainer() {
+  Container buildBrandLoadingContainer(HomePresenter homeData) {
     return Container(
-      height: _showBrandLoadingContainer ? 36 : 0,
-      width: double.infinity,
-      color: Colors.white,
-      child: Center(
-        child: Text(_totalBrandData == _brandList.length
-            ? AppLocalizations.of(context)!.no_more_brands_ucf
-            : AppLocalizations.of(context)!.loading_more_brands_ucf),
-      ),
-    );
+        height: homeData.showBrandLoadingContainer ? 36 : 0,
+        width: double.infinity,
+        color: Colors.white,
+        child: Center(
+          child: Text(
+              homeData.totalBrandData == homeData.allBrandList.length
+                  ? AppLocalizations.of(context)!.no_more_brands_ucf
+                  : AppLocalizations.of(context)!.loading_more_brands_ucf),
+        ));
   }
 
   Widget timerContainer(Widget child) {
@@ -733,7 +617,47 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       ),
     );
   }
-
+  Widget buildHomeAllBrand(context, HomePresenter homeData) {
+    if (homeData.isBrandInitial && homeData.allBrandList.length == 0) {
+      return SingleChildScrollView(
+          child: ShimmerHelper().buildProductGridShimmer(
+              scontroller: homeData.allProductScrollController));
+    } else if (homeData.allBrandList.length > 0) {
+      return GridView.builder(
+        itemCount: homeData.allBrandList.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 14,
+            mainAxisSpacing: 14,
+            childAspectRatio: 1),
+        padding: EdgeInsets.only(top: 20, bottom: 10, left: 18, right: 18),
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          // 3
+          return BrandSquareCard(
+            id: homeData.allBrandList[index].id,
+            image: homeData.allBrandList[index].logo,
+            name: homeData.allBrandList[index].name,
+          );
+        },
+      );;
+    } else if (homeData.totalBrandData == 0) {
+      return Container(
+          child: Text(
+            AppLocalizations.of(context)!.no_product_is_available,
+            style: TextStyle(color: Colors.black),
+          ));
+    } else if (homeData.totalBrandData == homeData.allBrandList.length) {
+      return Container(
+          child: Text(
+            AppLocalizations.of(context)!.no_more_products_ucf,
+            style: TextStyle(color: Colors.black),
+          ));
+    } else {
+      return Container(); // should never be happening
+    }
+  }
   Widget buildHomeAllProducts2(context, HomePresenter homeData) {
     if (homeData.isAllProductInitial && homeData.allProductList.length == 0) {
       return SingleChildScrollView(
@@ -1774,8 +1698,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         child: Center(
           child: Text(
               homeData.totalAllProductData == homeData.allProductList.length
-                  ? AppLocalizations.of(context)!.no_more_orders_ucf
-                  : AppLocalizations.of(context)!.loading_more_orders_ucf),
+                  ? AppLocalizations.of(context)!.no_more_products_ucf
+                  : AppLocalizations.of(context)!.loading_more_products_ucf),
         ));
   }
 }
