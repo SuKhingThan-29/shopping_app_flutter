@@ -305,12 +305,14 @@ class _CheckoutState extends State<Checkout> {
     Navigator.of(loadingcontext).pop();
     print("order create ed response: ${orderCreateEDResponse.url}");
     if (orderCreateEDResponse.result == false) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return Main();
-      }));
-    }
-
-    if (orderCreateEDResponse.result == true &&
+      ToastComponent.showSnackBar(
+        context,
+        orderCreateEDResponse.message,
+      );
+      // Navigator.push(context, MaterialPageRoute(builder: (context) {
+      //   return Main();
+      // }));
+    } else if (orderCreateEDResponse.result == true &&
         orderCreateEDResponse.url != null) {
       print("Invoice ID: ${orderCreateEDResponse.combined_order_id}");
       _launchUrl(orderCreateEDResponse.url);
@@ -318,6 +320,10 @@ class _CheckoutState extends State<Checkout> {
         orderCreateEDResponse.url == null) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return OrderList(from_checkout: true);
+      }));
+    }else{
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return Main();
       }));
     }
   }
@@ -353,11 +359,20 @@ class _CheckoutState extends State<Checkout> {
       );
       Navigator.of(context).pop();
       return;
+    }else if(orderCreateResponse.result == true){
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return OrderList(from_checkout: true);
+      }));
+    }else{
+      ToastComponent.showSnackBar(
+        context,
+        orderCreateResponse.message,
+      );
+      Navigator.of(context).pop();
+      return;
     }
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return OrderList(from_checkout: true);
-    }));
+
   }
 
   pay_by_manual_payment() async {
