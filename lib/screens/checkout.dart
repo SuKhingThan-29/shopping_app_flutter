@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/confirm_dialog.dart';
@@ -22,6 +24,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:toast/toast.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:url_launcher/url_launcher.dart';
 
 class Checkout extends StatefulWidget {
   int? order_id; // only need when making manual payment from order details
@@ -329,7 +332,14 @@ class _CheckoutState extends State<Checkout> {
   }
 
   Future<void> _launchUrl(_url) async {
-    await FlutterWebBrowser.openWebPage(url: _url);
+    if(Platform.isAndroid){
+      await FlutterWebBrowser.openWebPage(url: _url);
+    }else{
+      final url = Uri.parse(_url);
+      if (await canLaunchUrl(url)) {
+        launchUrl(url, mode: LaunchMode.externalApplication);
+      }
+    }
   }
 
   pay_by_wallet(price) async {
