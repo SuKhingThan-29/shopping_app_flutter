@@ -1642,19 +1642,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(
             children: [
-             InkWell(
-                onTap: (){
-                  scrollToPosition();
-                },
-
-               child:  Container(
-                 height: 40,
-                 width: 50,
-                 child: Image.asset(
-                   "assets/app_logo.png",
-                 ),
-               ),
-             ),
+              Container(
+                height: 40,
+                width: 50,
+                child: Image.asset(
+                  "assets/app_logo.png",
+                ),
+              ),
               SizedBox(
                 width: 5,
               ),

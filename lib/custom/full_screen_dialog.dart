@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:active_ecommerce_flutter/custom/device_info.dart';
 import 'package:flutter/material.dart';
 
 typedef BoolCallback = bool Function();
@@ -54,6 +55,8 @@ class TutorialOverlayState extends State<TutorialOverlay> {
 
   Widget _buildOverlayContent(BuildContext context) {
     return Container(
+      width: DeviceInfo(context).height,
+      height: DeviceInfo(context).height,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/full_dialog.jpg'),
