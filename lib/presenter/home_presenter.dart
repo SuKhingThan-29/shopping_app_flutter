@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:active_ecommerce_flutter/custom/toast_component.dart';
+import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/repositories/category_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/flash_deal_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/product_repository.dart';
@@ -44,10 +45,15 @@ class HomePresenter extends ChangeNotifier {
   bool isTodayDeal = false;
   bool isFlashDeal = false;
 
+  var allBrandList = [];
+  bool isBrandInitial =true;
+  int? totalBrandData = 0;
+  int allBrandPage=1;
+  bool showBrandLoadingContainer = false;
+
   var allProductList = [];
   bool isAllProductInitial = true;
   int? totalAllProductData = 0;
-  int to =0;
   int allProductPage = 1;
   bool showAllLoadingContainer = false;
   int cartCount = 0;
@@ -75,6 +81,7 @@ class HomePresenter extends ChangeNotifier {
   handleSelectProductTab(String tab) {
     selectedTab=tab;
     resetAllProductList();
+    resetBrandList();
     fetchAllProducts(tab: selectedTab);
     notifyListeners();
   }
@@ -146,10 +153,21 @@ class HomePresenter extends ChangeNotifier {
     showFeaturedLoadingContainer = false;
     notifyListeners();
   }
+  fetchBrandData() async {
+    var brandResponse = await BrandRepository().getBrands(page: allBrandPage);
+    allBrandList.addAll(brandResponse.brands!);
+    isBrandInitial = false;
+    totalBrandData = brandResponse.meta!.total;
+    print("Total Branddata list: ${allBrandList.length}");
 
+    print("Total Branddata: $totalBrandData");
+    showBrandLoadingContainer = false;
+    notifyListeners();
+  }
   fetchAllProducts({String tab = ""}) async {
     print("Tab Selected $tab");
     var productResponse;
+    var brandResponse;
 
     if (tab == "New") {
       productResponse =
@@ -158,28 +176,29 @@ class HomePresenter extends ChangeNotifier {
 
 
     } else if(tab == "Recommended") {
+      print("AppLang recom: ${app_language.$}");
       productResponse =
           await ProductRepository().getRecommendProducts(page: allProductPage);
       showAllLoadingContainer=false;
 
-
+    }else if(tab == "Brand"){
+      fetchBrandData();
+      resetAllProductList();
     }
 
     if (productResponse.products!.isEmpty) {
-      //ToastComponent.showDialog("No more products!", gravity: Toast.center);
       isAllProductInitial = false;
       showAllLoadingContainer = false;
       return;
     }
-    print('AllProductPage response: ${productResponse.products!.length}');
-    if(totalAllProductData! >= to){
+    if(productResponse.products!.isNotEmpty){
       allProductList.addAll(productResponse.products!);
-
+      print("productList: ${allProductList.length}");
+      isAllProductInitial = false;
+      totalAllProductData = productResponse.meta!.total;
+      showAllLoadingContainer = false;
     }
-    isAllProductInitial = false;
-    totalAllProductData = productResponse.meta!.total;
-    lastPage=productResponse.meta!.lastPage!;
-    showAllLoadingContainer = false;
+
     notifyListeners();
   }
 
@@ -197,6 +216,7 @@ class HomePresenter extends ChangeNotifier {
 
     resetFeaturedProductList();
     resetAllProductList();
+    resetBrandList();
   }
 
   Future<void> onRefresh() async {
@@ -222,6 +242,14 @@ class HomePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  resetBrandList() {
+    allBrandList.clear();
+    isBrandInitial = true;
+    totalBrandData = 0;
+    allBrandPage = 1;
+    showAllLoadingContainer = false;
+    notifyListeners();
+  }
   mainScrollListener() {
     mainScrollController.addListener(() {
       //print("position: " + xcrollController.position.pixels.toString());
@@ -229,9 +257,20 @@ class HomePresenter extends ChangeNotifier {
 
       if (mainScrollController.position.pixels ==
           mainScrollController.position.maxScrollExtent) {
+        if(selectedTab=="Brand"){
+          showBrandLoadingContainer=true;
+        }else{
           showAllLoadingContainer = true;
-          allProductPage++;
-          fetchAllProducts(tab: selectedTab);
+        }
+          notifyListeners();
+          print("selected tab scroll: $selectedTab");
+          if(selectedTab=="Brand"){
+            allBrandPage++;
+            fetchBrandData();
+          }else{
+            allProductPage++;
+            fetchAllProducts(tab: selectedTab);
+          }
 
       }
     });

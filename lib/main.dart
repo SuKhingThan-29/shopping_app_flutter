@@ -118,14 +118,17 @@ Future<void> setupFlutterNotifications() async {
 
 void showFlutterNotification(RemoteMessage message) {
   RemoteNotification? notification = message.notification;
-  AndroidNotification? android = message.notification?.android;
 
-  if (notification != null && android != null && !kIsWeb) {
+  if (notification != null) {
     flutterLocalNotificationsPlugin.show(
       notification.hashCode,
       notification.title,
       notification.body,
       NotificationDetails(
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          subtitle: notification.title
+        ),
         android: AndroidNotificationDetails(
           channel.id,
           channel.name,
@@ -213,9 +216,17 @@ class _MainScreenState extends State<MyApp> {
               builder: (context, provider, snapshot) {
             print("Deeplink route provider: ${provider.deepLinkRoute}");
             if (provider.deepLinkRoute == "/purchase-history") {
+
               navigatorKey.currentState?.push(MaterialPageRoute(
                 builder: (context) {
                   return OrderList(from_checkout: true);
+                },
+              ));
+
+            }else if(provider.deepLinkRoute == "/wallet-recharge"){
+              navigatorKey.currentState?.push(MaterialPageRoute(
+                builder: (context) {
+                  return Wallet();
                 },
               ));
             }
@@ -224,9 +235,7 @@ class _MainScreenState extends State<MyApp> {
               initialRoute: provider.deepLinkRoute ?? '/',
               routes: {
                 '/': (BuildContext context) => SplashScreen(),
-                "/purchase-history": (BuildContext context) => OrderList(),
-
-                // "/purchase-history":(BuildContext context) =>OrderList(),
+                "/purchase-history": (BuildContext context) => OrderList(from_checkout: true),
                 "/classified_ads": (context) => ClassifiedAds(),
                 "/classified_ads_details": (context) =>
                     ClassifiedAdsDetails(id: 0),

@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:active_ecommerce_flutter/custom/aiz_route.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/presenter/bottom_appbar_index.dart';
 import 'package:active_ecommerce_flutter/presenter/cart_counter.dart';
+import 'package:active_ecommerce_flutter/presenter/home_presenter.dart';
 import 'package:active_ecommerce_flutter/screens/cart.dart';
 import 'package:active_ecommerce_flutter/screens/category_list.dart';
 import 'package:active_ecommerce_flutter/screens/home.dart';
@@ -12,28 +12,21 @@ import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/screens/pointshop.dart';
 import 'package:active_ecommerce_flutter/screens/profile.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:one_context/one_context.dart';
-import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
-import 'package:route_transitions/route_transitions.dart';
-import 'package:url_launcher/url_launcher.dart';
+import '../screens/home.dart';
 
-import '../app_config.dart';
-import '../helpers/addons_helper.dart';
-import '../helpers/auth_helper.dart';
-import '../helpers/business_setting_helper.dart';
-import '../presenter/currency_presenter.dart';
-import '../providers/locale_provider.dart';
-import '../repositories/profile_repository.dart';
 
 class Main extends StatefulWidget {
-  Main({Key? key, go_back = true}) : super(key: key);
+  Main({Key? key, go_back = true, this.init_splash = false,this.isHomeTap=false}) : super(key: key);
 
   late bool go_back;
+  late bool init_splash;
+  bool isHomeTap;
+
 
   @override
   _MainState createState() => _MainState();
@@ -42,19 +35,22 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   int _currentIndex = 0;
   //int _cartCount = 0;
+  HomePresenter homeData=HomePresenter();
 
   BottomAppbarIndex bottomAppbarIndex = BottomAppbarIndex();
+  final customScrollViewState = HomeState().customScrollViewKey.currentState;
 
   CartCounter counter = CartCounter();
-
   var _children = [];
-
+  int ver = 1;
   fetchAll()async {
     getCartCount();
 
   }
 
   void onTapped(int i) {
+    print("HomeTap i: ${i}");
+
     fetchAll();
     if (!is_logged_in.$ && (i == 2)) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
@@ -70,6 +66,31 @@ class _MainState extends State<Main> {
 
     setState(() {
       _currentIndex = i;
+      if(_currentIndex==0 && widget.isHomeTap==false){
+        print("HomeTap false: ${widget.isHomeTap}");
+
+        widget.isHomeTap=true;
+        print("HomeTap : ${widget.isHomeTap}");
+
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) {
+              return Main(isHomeTap:true);
+            }), (route) => false);
+      }else if(_currentIndex==0 && widget.isHomeTap==true){
+        if(HomeState().customScrollViewKey.currentState!=null){
+          print("HomeTap not null");
+        }
+        if (customScrollViewState?.homeData.mainScrollController != null) {
+          print("HomeTap true: ${widget.isHomeTap}");
+          customScrollViewState?.homeData.mainScrollController.animateTo(
+            0.0,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        }
+      }
+
+
     });
     //print("i$i");
   }
@@ -98,15 +119,14 @@ class _MainState extends State<Main> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
 
-
     super.initState();
-
 
   }
 
 
   @override
   Widget build(BuildContext context) {
+
     return WillPopScope(
       onWillPop: () async {
         print(_currentIndex);

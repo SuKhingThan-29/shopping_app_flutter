@@ -32,11 +32,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:social_share/social_share.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../repositories/auth_repository.dart';
+import 'otp.dart';
 
 class ProductDetails extends StatefulWidget {
   int? id;
@@ -65,7 +70,37 @@ class _ProductDetailsState extends State<ProductDetails>
   Animation? _colorTween;
   late AnimationController _ColorAnimationController;
   WebViewController controller = WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.unrestricted);
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..setNavigationDelegate(
+        NavigationDelegate(
+            onProgress: (int progress) {
+              debugPrint('WebView is loading (progress : $progress%)');
+            },
+            onPageStarted: (String url) {
+              debugPrint('Page started loading: $url');
+            },
+            onPageFinished: (String url) {
+              debugPrint('Page finished loading: $url');
+            },
+            onWebResourceError: (WebResourceError error) {
+              debugPrint('''
+Page resource error:
+  code: ${error.errorCode}
+  description: ${error.description}
+  errorType: ${error.errorType}
+  isForMainFrame: ${error.isForMainFrame}
+          ''');
+            },
+            onNavigationRequest: (NavigationRequest request)async {
+              final url = request.url;
+              if (await canLaunch(url)) {
+              await launch(url, forceSafariVC: false, forceWebView: false);
+              return NavigationDecision.prevent;
+              } else {
+              return NavigationDecision.navigate;
+              }
+            }
+        ));
   double webViewHeight = 50.0;
 
   CarouselController _carouselController = CarouselController();
@@ -73,7 +108,7 @@ class _ProductDetailsState extends State<ProductDetails>
 
   //init values
 
-  bool? _isInWishList = false;
+  bool _isInWishList = false;
   var _productDetailsFetched = false;
   DetailedProduct? _productDetails;
   var _productImageList = [];
@@ -196,6 +231,8 @@ class _ProductDetailsState extends State<ProductDetails>
 
   setProductDetailValues() {
     if (_productDetails != null) {
+      print('productDetails ${_productDetails!.description!}');
+
       controller.loadHtmlString(makeHtml(_productDetails!.description!));
       _appbarPriceString = _productDetails!.price_high_low;
       _singlePrice = _productDetails!.calculable_price;
@@ -389,6 +426,24 @@ class _ProductDetailsState extends State<ProductDetails>
       //     gravity: Toast.center, duration: Toast.lengthLong);
       Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
       return;
+    }else if(is_email_verified.$ == false){
+      ToastComponent.showSnackBar(
+        context,
+        'user is unverified',
+      );
+      var passwordResendCodeResponse = await AuthRepository()
+          .getPasswordResendCodeResponse(
+          user_email.$.isEmpty ? user_phone.$ : user_email.$,
+          user_email.$.isEmpty ? "_phone" : "email");
+      print(passwordResendCodeResponse.result);
+      if (passwordResendCodeResponse.result == true) {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) {
+              return Otp(
+                phnum: user_email.$.isEmpty ? user_phone.$ : user_email.$,
+              );
+            }), (newRoute) => false);
+      }      return;
     }
 
     // print(widget.id);
@@ -398,6 +453,7 @@ class _ProductDetailsState extends State<ProductDetails>
 
     var cartAddResponse = await CartRepository()
         .getCartAddResponse(widget.id, _variant, user_id.$, _quantity);
+print("CartAddResponse: ${cartAddResponse.message}");
 
     if (cartAddResponse.result == false) {
       ToastComponent.showSnackBar(
@@ -915,8 +971,14 @@ class _ProductDetailsState extends State<ProductDetails>
                       ),
                       SizedBox(width: 15),
                       InkWell(
-                        onTap: () {
-                          onPressShare(context);
+                        onTap: () async {
+                          try {
+                            await SocialShare.shareOptions(
+                                _productDetails!.link!);
+                          } catch (e) {
+                            print(e);
+                            print('object');
+                          }
                         },
                         child: Container(
                           decoration:
@@ -945,7 +1007,7 @@ class _ProductDetailsState extends State<ProductDetails>
                           child: Center(
                             child: Icon(
                               Icons.favorite,
-                              color: _isInWishList!
+                              color: _isInWishList
                                   ? Color.fromRGBO(230, 46, 4, 1)
                                   : MyTheme.dark_font_grey,
                               size: 16,
@@ -1144,6 +1206,7 @@ class _ProductDetailsState extends State<ProductDetails>
                         divider(),
                         InkWell(
                           onTap: () {
+                            print("Video url: ${_productDetails!.video_link}");
                             if (_productDetails!.video_link == "") {
                               ToastComponent.showSnackBar(
                                 context,
@@ -1152,15 +1215,16 @@ class _ProductDetailsState extends State<ProductDetails>
                               );
                               return;
                             }
+                            _launchUrl(_productDetails!.video_link);
 
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return VideoDescription(
-                                url: _productDetails!.video_link,
-                              );
-                            })).then((value) {
-                              onPopped(value);
-                            });
+                            // Navigator.push(context,
+                            //     MaterialPageRoute(builder: (context) {
+                            //   return VideoDescription(
+                            //     url: _productDetails!.video_link,
+                            //   );
+                            // })).then((value) {
+                            //   onPopped(value);
+                            // });
                           },
                           child: Container(
                             color: MyTheme.white,
@@ -1426,7 +1490,9 @@ class _ProductDetailsState extends State<ProductDetails>
           )),
     );
   }
-
+  Future<void> _launchUrl(_url) async {
+    await FlutterWebBrowser.openWebPage(url: _url);
+  }
   Widget buildSellerRow(BuildContext context) {
     //print("sl:" +  _productDetails!.shop_logo);
     return Container(
@@ -2367,7 +2433,8 @@ class _ProductDetailsState extends State<ProductDetails>
                 if (webViewHeight == 50) {
                   webViewHeight = double.parse(
                     (await controller.runJavaScriptReturningResult(
-                            "document.getElementById('scaled-frame').clientHeight"))
+                            "document.getElementById('scaled-frame').clientHeight")
+                    )
                         .toString(),
                   );
                 } else {

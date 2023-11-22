@@ -331,52 +331,52 @@ class _CategoryProductsState extends State<CategoryProducts> {
     return Column(
       children: [
         Expanded(
-          child: ListView.separated(
-              padding: EdgeInsets.only(left: 18, right: 18, bottom: 10),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    setState(() {
-                      _category = _subCategoryList[index].name!;
-                      print(_category);
-                    });
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return CategoryProducts(
-                            category_id: _subCategoryList[index].id,
-                            category_name: _subCategoryList[index].name,
-                          );
-                        },
+            child: ListView.separated(
+                padding: EdgeInsets.only(left: 18, right: 18, bottom: 10),
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        _category = _subCategoryList[index].name!;
+                        print(_category);
+                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CategoryProducts(
+                              category_id: _subCategoryList[index].id,
+                              category_name: _subCategoryList[index].name,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: _subCategoryList.isEmpty ? 0 : 46,
+                      width: _subCategoryList.isEmpty ? 0 : 96,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecorations.buildBoxDecoration_1(),
+                      child: Text(
+                        _subCategoryList[index].name!,
+                        style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: MyTheme.font_grey),
+                        textAlign: TextAlign.center,
                       ),
-                    );
-                  },
-                  child: Container(
-                    height: _subCategoryList.isEmpty ? 0 : 46,
-                    width: _subCategoryList.isEmpty ? 0 : 96,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecorations.buildBoxDecoration_1(),
-                    child: Text(
-                      _subCategoryList[index].name!,
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: MyTheme.font_grey),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return SizedBox(
-                  width: 10,
-                );
-              },
-              itemCount: _subCategoryList.length),
-        ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return SizedBox(
+                    width: 10,
+                  );
+                },
+                itemCount: _subCategoryList.length),
+          ),
         GestureDetector(
           onTap: () {
             showDialog(

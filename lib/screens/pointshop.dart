@@ -219,18 +219,13 @@ class _PointShopState extends State<PointShop> {
 
   AppBar buildAppBar(double statusBarHeight, BuildContext context) {
     return AppBar(
+      actions: [],
+      automaticallyImplyLeading: false,
       // Don't show the leading button
       backgroundColor: Colors.white,
       centerTitle: false,
       elevation: 0,
-      flexibleSpace: GestureDetector(
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Filter();
-          }));
-        },
-        child: buildHomeSearchBox(context),
-      ),
+      flexibleSpace: buildHomeSearchBox(context),
     );
   }
 
@@ -255,27 +250,35 @@ class _PointShopState extends State<PointShop> {
                 width: 15,
               ),
               Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  height: 36,
-                  decoration: BoxDecorations.buildBoxDecoration_1(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.search_anything,
-                        style: TextStyle(
-                            fontSize: 13.0, color: MyTheme.textfield_grey),
-                      ),
-                      Spacer(),
-                      Image.asset(
-                        'assets/search.png',
-                        height: 16,
-                        //color: MyTheme.dark_grey,
-                        color: MyTheme.dark_grey,
-                      )
-                    ],
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return Filter();
+                    }));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    height: 36,
+                    decoration: BoxDecorations.buildBoxDecoration_1(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.search_anything,
+                          style: TextStyle(
+                              fontSize: 13.0, color: MyTheme.textfield_grey),
+                        ),
+                        Spacer(),
+                        Image.asset(
+                          'assets/search.png',
+                          height: 16,
+                          //color: MyTheme.dark_grey,
+                          color: MyTheme.dark_grey,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

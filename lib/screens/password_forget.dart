@@ -2,6 +2,7 @@ import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/intl_phone_input.dart';
 import 'package:active_ecommerce_flutter/my_theme.dart';
 import 'package:active_ecommerce_flutter/repositories/address_repository.dart';
+import 'package:active_ecommerce_flutter/screens/login.dart';
 import 'package:active_ecommerce_flutter/ui_elements/auth_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,7 @@ class _PasswordForgetState extends State<PasswordForget> {
   String initialCountry = 'US';
   PhoneNumber phoneCode = PhoneNumber(isoCode: 'US');
   String? _phone = "";
+  String? _emailphone;
   var countries_code = <String?>[];
 
   //controllers
@@ -85,9 +87,19 @@ class _PasswordForgetState extends State<PasswordForget> {
       );
 
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return PasswordOtp(
-          verify_by: _send_code_by,
-        );
+        if (_send_code_by == 'email') {
+          print(email);
+          return PasswordOtp(
+            verify_by: _send_code_by,
+            email_or_code: email,
+          );
+        } else {
+          print(_phone);
+          return PasswordOtp(
+            verify_by: _send_code_by,
+            email_or_code: _phone,
+          );
+        }
       }));
     }
   }
@@ -96,8 +108,33 @@ class _PasswordForgetState extends State<PasswordForget> {
   Widget build(BuildContext context) {
     final _screen_height = MediaQuery.of(context).size.height;
     final _screen_width = MediaQuery.of(context).size.width;
-    return AuthScreen.buildScreen(
-        context, "Forget Password!", buildBody(_screen_width, context));
+    return Scaffold(
+      body: Stack(
+        children: [
+          AuthScreen.buildScreen(
+              context, "Forget Password!", buildBody(_screen_width, context)),
+          Positioned(
+            top: 20, // Adjust the top position as needed
+            left: 10, // Adjust the left position as needed
+            child: Container(
+              decoration: BoxDecoration(// Background color for the icon
+                  ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white, // Icon color
+                ),
+                onPressed: () {
+                  // Add your back button logic here
+                  // Typically, you would use Navigator to pop the current screen.
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Column buildBody(double _screen_width, BuildContext context) {
@@ -129,7 +166,6 @@ class _PasswordForgetState extends State<PasswordForget> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
-                        height: 36,
                         child: TextField(
                           controller: _emailController,
                           autofocus: false,
@@ -164,7 +200,13 @@ class _PasswordForgetState extends State<PasswordForget> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
-                        height: 36,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: MyTheme.accent_color, width: 0.5),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(6.0),
+                          ),
+                        ),
                         child: CustomInternationalPhoneNumberInput(
                           countries: countries_code,
                           onInputChanged: (PhoneNumber number) {
@@ -176,9 +218,9 @@ class _PasswordForgetState extends State<PasswordForget> {
                           onInputValidated: (bool value) {
                             //print(value);
                           },
-                          selectorConfig: SelectorConfig(
-                            selectorType: PhoneInputSelectorType.DIALOG,
-                          ),
+                          // selectorConfig: SelectorConfig(
+                          //   selectorType: PhoneInputSelectorType.DIALOG,
+                          // ),
                           ignoreBlank: false,
                           autoValidateMode: AutovalidateMode.disabled,
                           selectorTextStyle:
@@ -190,7 +232,7 @@ class _PasswordForgetState extends State<PasswordForget> {
                               signed: true, decimal: true),
                           inputDecoration:
                               InputDecorations.buildInputDecoration_phone(
-                                  hint_text: "01710 333 558"),
+                                  hint_text: "9XXX XXX XXX"),
                           onSaved: (PhoneNumber number) {
                             //print('On Saved: $number');
                           },

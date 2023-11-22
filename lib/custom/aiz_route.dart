@@ -81,7 +81,7 @@ class AIZRoute {
   }
 
   static bool _isMailVerifiedRoute(Widget widget) {
-    print(widget.runtimeType);
+    print('Verify mail cart: ${widget.runtimeType}');
     bool mailVerifiedRoute = false;
     mailVerifiedRoute = <Type>[SelectAddress, Address, Profile]
         .any((element) => widget.runtimeType == element);

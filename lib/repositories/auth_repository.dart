@@ -18,7 +18,6 @@ class AuthRepository {
       "password": "$password",
       "identity_matrix": AppConfig.purchase_code
     });
-    
 
     String url = ("${AppConfig.BASE_URL}/auth/login");
     print("Login url: $url");
@@ -31,7 +30,7 @@ class AuthRepository {
           "App-Language": app_language.$!,
         },
         body: postBody);
-
+    print(response.body);
     return loginResponseFromJson(response.body);
   }
 
@@ -117,7 +116,7 @@ class AuthRepository {
     var postBody = jsonEncode({
       "name": "$name",
       "email": "$email",
-      "phone":"$phone",
+      "phone": "$phone",
       "password": "$password",
       "password_confirmation": "$passowrdConfirmation",
       "register_by": "$registerBy",
@@ -126,7 +125,7 @@ class AuthRepository {
       "state_id": stateId,
       "city_id": cityId,
       "postal_code": postalCode,
-      "country_code":"95"
+      "country_code": "95"
       // "g-recaptcha-response": "$capchaKey",
     });
 
@@ -196,6 +195,7 @@ class AuthRepository {
           "App-Language": app_language.$!,
         },
         body: postBody);
+    print(response.body);
 
     return passwordForgetResponseFromJson(response.body);
   }
@@ -219,8 +219,8 @@ class AuthRepository {
 
   Future<ResendCodeResponse> getPasswordResendCodeResponse(
       String? emailOrCode, String verifyBy) async {
-    var postBody =
-        jsonEncode({"email_or_code": "$emailOrCode", "verify_by": "$verifyBy"});
+    var postBody = jsonEncode(
+        {"email_or_phone": "$emailOrCode", "verify_by": "$verifyBy"});
 
     String url = ("${AppConfig.BASE_URL}/auth/password/resend_code");
     final response = await ApiRequest.post(
@@ -230,6 +230,7 @@ class AuthRepository {
           "App-Language": app_language.$!,
         },
         body: postBody);
+    print('${response.body}$url$postBody');
 
     return resendCodeResponseFromJson(response.body);
   }

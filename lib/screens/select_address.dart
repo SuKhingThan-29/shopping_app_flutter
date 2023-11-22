@@ -1255,6 +1255,9 @@ class _SelectAddressState extends State<SelectAddress> {
                                       country_id: _selected_country!.id,
                                       name: name);
                               return stateResponse.states;
+                              // var stateResponse = await AddressRepository()
+                              //     .getStateListByCountry();
+                              // return stateResponse.states;
                             },
                             loadingBuilder: (context) {
                               return Container(
@@ -1628,19 +1631,18 @@ class _SelectAddressState extends State<SelectAddress> {
                           height: 40,
                           child: TypeAheadField(
                             suggestionsCallback: (name) async {
-                              if (_selected_country_list_for_update[index] ==
-                                  null) {
-                                var stateResponse = await AddressRepository()
-                                    .getStateListByCountry(); // blank response
-                                return stateResponse.states;
-                              }
+                              // if (_selected_country_list_for_update[index] ==
+                              //     null) {
+                              //   var stateResponse = await AddressRepository()
+                              //       .getStateListByCountry(); // blank response
+                              //   return stateResponse.states;
+                              // }
                               var stateResponse = await AddressRepository()
                                   .getStateListByCountry(
                                       country_id:
                                           _selected_country_list_for_update[
                                                   index]
-                                              .id,
-                                      name: name);
+                                              .id);
                               return stateResponse.states;
                             },
                             loadingBuilder: (context) {
@@ -1709,18 +1711,17 @@ class _SelectAddressState extends State<SelectAddress> {
                           height: 40,
                           child: TypeAheadField(
                             suggestionsCallback: (name) async {
-                              if (_selected_state_list_for_update[index] ==
-                                  null) {
-                                var cityResponse = await AddressRepository()
-                                    .getCityListByState(); // blank response
-                                return cityResponse.cities;
-                              }
+                              // if (_selected_state_list_for_update[index] ==
+                              //     null) {
+                              //   var cityResponse = await AddressRepository()
+                              //       .getCityListByState(); // blank response
+                              //   return cityResponse.cities;
+                              // }
                               var cityResponse = await AddressRepository()
                                   .getCityListByState(
                                       state_id: _selected_state_list_for_update[
                                               index]!
-                                          .id,
-                                      name: name);
+                                          .id);
                               return cityResponse.cities;
                             },
                             loadingBuilder: (context) {

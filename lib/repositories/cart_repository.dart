@@ -17,6 +17,7 @@ class CartRepository {
   Future<dynamic> getCartResponseList(
      int? user_id,
   ) async {
+
     String url=("${AppConfig.BASE_URL}/carts");
     final response = await ApiRequest.post(
       url:url,
@@ -30,7 +31,7 @@ class CartRepository {
       },
       body: '',middleware: BannedUser()
     );
-    print("token key: ${access_token.$}");
+    print("token key: ${access_token.$} $user_id");
 
     return cartResponseFromJson(response.body);
   }
@@ -102,6 +103,7 @@ class CartRepository {
 
     String url=("${AppConfig.BASE_URL}/carts/add");
     print("add to cart: $post_body");
+    print("add to token: ${access_token.$}");
 
     final response = await ApiRequest.post(url:url,
         headers: {

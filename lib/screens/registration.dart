@@ -28,6 +28,8 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:pinput/pinput.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:toast/toast.dart';
 
@@ -47,6 +49,7 @@ class _RegistrationState extends State<Registration> {
 
   String? _phone = "";
   bool? _isAgree = false;
+  bool _isSignupClick = false;
   bool _isCaptchaShowing = false;
   String googleRecaptchaKey = "";
 
@@ -69,16 +72,83 @@ class _RegistrationState extends State<Registration> {
   TextEditingController _phoneNumberController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _passwordConfirmController = TextEditingController();
+  TextEditingController _postalcodeController = TextEditingController();
   bool _obscureText = true;
   bool _obscureTextC = true;
 
+  bool _isName = false;
+  bool _isPhNo = false;
+  bool _isPassword = false;
+  bool _isConfirmPassword = false;
+
   @override
   void initState() {
+    //check dev1
     //on Splash Screen hide statusbar
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
     super.initState();
     fetch_country();
+  }
+
+  String? get _errorNameText {
+    final text = _nameController.value.text;
+    if (text.isEmpty) {
+      return 'name is empty';
+    }
+    _isName = false;
+    return null;
+  }
+
+  String? get _errorPhoneNo {
+    final text = _phoneNumberController.value.text;
+    if (text.isEmpty) {
+      return 'phone number is empty';
+    }
+    _isPhNo = false;
+    return null;
+  }
+
+  String? get _errorPassword {
+    final textPassword = _passwordController.value.text;
+    final textConfirm = _passwordConfirmController.value.text;
+    if (textPassword.isEmpty) {
+      return 'password is empty';
+    } else if (textPassword.isNotEmpty && textConfirm.isNotEmpty && textPassword != textConfirm) {
+      return 'password does not match';
+    }
+    _isPassword = false;
+    return null;
+  }
+
+  String? get _errorConfirmPassword {
+    final textConfirm = _passwordConfirmController.value.text;
+    final textPassword = _passwordController.value.text;
+    if (textConfirm.isEmpty) {
+      return 'confirm password is empty';
+    }else if (textPassword.isNotEmpty && textConfirm.isNotEmpty && textConfirm != textPassword) {
+      return 'confirm password does not match';
+    }
+    _isConfirmPassword = false;
+    return null;
+  }
+
+  void _submit() {
+    setState(() {
+      if (_nameController.text.toString().isEmpty) {
+        _isName = true;
+      } else if (_phoneNumberController.text.toString().isEmpty) {
+      _isPhNo = true;
+      }else if (_passwordController.text.toString().isEmpty) {
+        _isPassword = true;
+      }else if (_passwordConfirmController.text.toString().isEmpty) {
+        _isConfirmPassword = true;
+      }else if(_passwordController.text.toString().isNotEmpty && _passwordConfirmController.text.toString().isNotEmpty){
+        if(_passwordController.text.toString() != _passwordConfirmController.text.toString())
+        _isPassword = true;
+        _isConfirmPassword=true;
+      }
+    });
   }
 
   fetch_country() async {
@@ -107,6 +177,7 @@ class _RegistrationState extends State<Registration> {
     });
     selectedStateId = res.states[0].id.toString();
     fetch_city(res.states[0].id.toString());
+
     setState(() {});
   }
 
@@ -117,6 +188,8 @@ class _RegistrationState extends State<Registration> {
       cities.add(c);
     });
     selectedCityId = res.cities[0].id.toString();
+    fetch_postalCode(selectedCityId);
+
     countryDataLoad = false;
     setState(() {});
   }
@@ -124,6 +197,7 @@ class _RegistrationState extends State<Registration> {
   fetch_postalCode(String cityId) async {
     var res = await AddressRepository().getPostalCodeByCidty(cityId);
     postalCode = res.data.toString();
+    _postalcodeController.text = postalCode;
     setState(() {});
   }
 
@@ -298,14 +372,7 @@ class _RegistrationState extends State<Registration> {
     var email = _emailController.text.toString();
     var password = _passwordController.text.toString();
     var passwordConfirm = _passwordConfirmController.text.toString();
-
-    if (name.isEmpty) {
-      ToastComponent.showSnackBar(
-        context,
-        AppLocalizations.of(context)!.enter_your_name,
-      );
-      return;
-    } else if (_phoneNumberController.text.isEmpty) {
+    if (_phoneNumberController.text.isEmpty) {
       ToastComponent.showSnackBar(
         context,
         AppLocalizations.of(context)!.enter_phone_number,
@@ -343,7 +410,9 @@ class _RegistrationState extends State<Registration> {
       );
       return;
     }
-
+    setState(() {
+      _isSignupClick = true;
+    });
     var signupResponse = await AuthRepository().getSignupResponse(
         name,
         email,
@@ -393,16 +462,57 @@ class _RegistrationState extends State<Registration> {
         );
       }), (newRoute) => false);
     }
+    setState(() {
+      _isSignupClick = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final _screen_height = MediaQuery.of(context).size.height;
     final _screen_width = MediaQuery.of(context).size.width;
-    return AuthScreen.buildScreen(
-        context,
-        "${AppLocalizations.of(context)!.join_ucf} " + AppConfig.app_name,
-        buildBody(context, _screen_width));
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) {
+          return Main();
+        }), (reute) => false);
+        return Future<bool>.value(false);
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            AuthScreen.buildScreen(
+                context,
+                "${AppLocalizations.of(context)!.join_ucf} " +
+                    AppConfig.app_name,
+                buildBody(context, _screen_width)),
+            Positioned(
+              top: 20, // Adjust the top position as needed
+              left: 10, // Adjust the left position as needed
+              child: Container(
+                decoration: BoxDecoration(// Background color for the icon
+                    ),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white, // Icon color
+                  ),
+                  onPressed: () {
+                    // Add your back button logic here
+                    // Typically, you would use Navigator to pop the current screen.
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return Main();
+                    }));
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Column buildBody(BuildContext context, double _screen_width) {
@@ -425,12 +535,16 @@ class _RegistrationState extends State<Registration> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Container(
-                  height: 36,
-                  child: TextField(
-                    controller: _nameController,
-                    autofocus: false,
-                    decoration: InputDecorations.buildInputDecoration_1(
-                        hint_text: "John Doe"),
+                  child: Container(
+                    child: TextField(
+                      controller: _nameController,
+                      autofocus: false,
+                      decoration: InputDecorations.buildInputDecoration_1(
+                          error_text: _isName ? _errorNameText : null),
+                      onChanged: (_) => setState(() {
+                        _submit();
+                      }),
+                    ),
                   ),
                 ),
               ),
@@ -450,7 +564,6 @@ class _RegistrationState extends State<Registration> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      height: 36,
                       child: TextField(
                         controller: _emailController,
                         autofocus: false,
@@ -487,15 +600,22 @@ class _RegistrationState extends State<Registration> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 36,
+                      decoration: BoxDecoration(
+                        border:
+                            Border.all(color: MyTheme.accent_color, width: 0.5),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(6.0),
+                        ),
+                      ),
                       child: CustomInternationalPhoneNumberInput(
                         countries: countries_code,
                         onInputChanged: (PhoneNumber number) {
                           print(number.phoneNumber);
                           setState(() {
+                            _submit();
                             _phone =
                                 number.phoneNumber?.replaceFirst("+95", "");
 
@@ -505,9 +625,6 @@ class _RegistrationState extends State<Registration> {
                         onInputValidated: (bool value) {
                           print(value);
                         },
-                        selectorConfig: SelectorConfig(
-                          selectorType: PhoneInputSelectorType.DIALOG,
-                        ),
                         ignoreBlank: false,
                         autoValidateMode: AutovalidateMode.disabled,
                         selectorTextStyle: TextStyle(color: MyTheme.font_grey),
@@ -518,10 +635,21 @@ class _RegistrationState extends State<Registration> {
                             signed: true, decimal: true),
                         inputDecoration:
                             InputDecorations.buildInputDecoration_phone(
-                                hint_text: "01XXX XXX XXX"),
+                          hint_text: "09 XXX XXX",
+                          error_text: _isPhNo ? _errorPhoneNo : null,
+                        ),
                         onSaved: (PhoneNumber number) {
                           //print('On Saved: $number');
                         },
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: _isPhNo ? _errorPhoneNo : null,
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.red),
                       ),
                     ),
                     // GestureDetector(
@@ -693,10 +821,16 @@ class _RegistrationState extends State<Registration> {
                 child: Container(
                   height: 36,
                   child: TextFormField(
-                      controller: TextEditingController(text: postalCode),
+                      //controller: TextEditingController(text: postalCode),
+                      controller: _postalcodeController,
                       autofocus: false,
+                      onChanged: (_) {
+
+                      },
                       decoration: InputDecoration(
-                          enabled: false, hintText: "Select city")),
+                          errorStyle: TextStyle(color: Colors.red),
+                          enabled: false,
+                          hintText: "Select city")),
                 ),
               ),
               SizedBox(
@@ -716,32 +850,39 @@ class _RegistrationState extends State<Registration> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      height: 36,
                       child: TextField(
                         controller: _passwordController,
                         autofocus: false,
                         obscureText: _obscureText,
                         enableSuggestions: false,
                         autocorrect: false,
+                        onChanged: (_) {
+                          setState(() {
+                            _submit();
+                          });
+                        },
                         decoration: InputDecoration(
-                          hintText: "Enter Password",
-                          hintStyle: TextStyle(
-                            color: Colors.grey.shade400,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.grey,
+                            errorStyle: TextStyle(color: Colors.red),
+                            errorText: _isPassword ? _errorPassword : null,
+                            hintText: _isPassword ? null : "Enter Password",
+                            hintStyle: TextStyle(
+                              color: Colors.grey.shade400,
                             ),
-                            onPressed: () {
-                              print(_obscureText);
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
-                          ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () {
+                                print(_obscureText);
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                            ),
+                           
                         ),
                       ),
                     ),
@@ -766,29 +907,37 @@ class _RegistrationState extends State<Registration> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Container(
-                  height: 36,
                   child: TextField(
                     controller: _passwordConfirmController,
                     autofocus: false,
-                    obscureText: _obscureText,
+                    obscureText: _obscureTextC,
                     enableSuggestions: false,
                     autocorrect: false,
+                    onChanged: (_) {
+                      setState(() {
+                        _submit();
+                      });
+                    },
                     decoration: InputDecoration(
-                      hintText: "Enter Retype Password",
+                      errorStyle: TextStyle(color: Colors.red),
+                      errorText:
+                          _isConfirmPassword ? _errorConfirmPassword : null,
+                      hintText:
+                          _isConfirmPassword ? null : "Enter Retype Password",
                       hintStyle: TextStyle(
                         color: Colors.grey.shade400,
                       ),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureText
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                          _obscureTextC
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: Colors.grey,
                         ),
                         onPressed: () {
-                          print(_obscureText);
+                          print(_obscureTextC);
                           setState(() {
-                            _obscureText = !_obscureText;
+                            _obscureTextC = !_obscureTextC;
                           });
                         },
                       ),
@@ -907,7 +1056,7 @@ class _RegistrationState extends State<Registration> {
                           fontSize: 14,
                           fontWeight: FontWeight.w600),
                     ),
-                    onPressed: _isAgree!
+                    onPressed: _isAgree! && _isSignupClick == false
                         ? () {
                             onPressSignUp();
                           }

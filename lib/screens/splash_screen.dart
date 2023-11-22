@@ -9,6 +9,7 @@ import 'package:active_ecommerce_flutter/presenter/currency_presenter.dart';
 import 'package:active_ecommerce_flutter/providers/locale_provider.dart';
 import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:package_info/package_info.dart';
@@ -16,14 +17,17 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io' show Platform;
 
+import '../custom/full_screen_dialog.dart';
 import 'cart.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  SplashScreen({Key? key,deepLink=null}) : super(key: key);
+  String? deepLink;
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
+typedef BoolCallback = bool Function();
 
 class _SplashScreenState extends State<SplashScreen> {
   int ver = 1;
@@ -44,9 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
       ver = version.ios.mobileVersion;
       print('mobileversion $ver');
     }
-    setState(() {
-      print(ver);
-    });
+
   }
 
   Future<void> _initPackageInfo() async {
@@ -58,145 +60,141 @@ class _SplashScreenState extends State<SplashScreen> {
 
   bool isCancel = false;
 
-  void _showDialogOnEnter() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext buildContext) {
-        return Dialog(
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/splash_screen_logo.png'), // Replace with your image asset or network image
-                fit: BoxFit.cover, // You can adjust the fit as needed
-              ),
-            ),
-            child: Stack(
-              children: <Widget>[
-                // Add your content here
-                Center(),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(buildContext).pop();
-                    },
-                    child: Icon(
-                      Icons.close, // You can use a different icon or widget
-                      size: 32, // Adjust the size as needed
-                      color: Colors.red, // Adjust the color as needed
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showDialogOnEnter();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _showDialogOnEnter();
+    // });
     getUserInfo();
     _initPackageInfo();
     getSharedValueHelperData().then((value) {
       Future.delayed(Duration(seconds: 3)).then((value) {
         Provider.of<LocaleProvider>(context, listen: false)
             .setLocale(app_mobile_language.$!);
-        if (ver != _packageInfo.version) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Update',
-                    style:
-                        TextStyle(fontSize: 15, color: MyTheme.dark_font_grey),
-                  ),
-                  Text(
-                    'Are you want to update',
-                    style:
-                        TextStyle(fontSize: 13, color: MyTheme.dark_font_grey),
-                  ),
-                  Divider(),
-                  // Add your image and text row here
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 20,
-                        width: 20,
-                        child: Platform.isAndroid
-                            ? Image.asset('assets/playstore.png')
-                            : Image.asset('assets/appstore.png'),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        Platform.isAndroid
-                            ? 'Google Play Store'
-                            : 'Apple App Store',
-                        style: TextStyle(
-                            fontSize: 13, color: MyTheme.dark_font_grey),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    final url = Uri.parse(
-                      Platform.isAndroid
-                          ? 'https://play.google.com/store/apps/details?id=gmp.ethicaldigit.com&hl=en&gl=US'
-                          : 'https://apps.apple.com/us/app/ga-mone-pwint-online/id6467404178',
-                    ); // Replace with your app's package name or the link you want to open.
-
-                    if (await canLaunchUrl(url)) {
-                      await launchUrl(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                  child: Text('Update'),
-                ),
-              ],
-            ),
-          );
+        print("SplashScreen: ${widget.deepLink}");
+        if(widget.deepLink==null){
+          _showEntertiment(context);
         }
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return Main(
-                go_back: false,
-              );
-            },
-          ),
-          (route) => true,
-        );
+        else{
+          callUpdateApp();
+        }
+
+
       });
     });
   }
+  void _showEntertiment(BuildContext context){
+    _showTutorialOverlay(context);
+  }
+  bool myCallback() {
+    // Your code here
+    print("callback: ");
+    Navigator.of(context).pop();
+    callUpdateApp();
+    return true; // Replace with your own boolean logic
+  }
+  void onOverlayButtonPressed(){
+    print("overlay button");
+    Navigator.of(context).pop();
+    callUpdateApp();
 
+  }
+  void callUpdateApp(){
+    if (ver != _packageInfo.version ) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Update',
+                  style:
+                  TextStyle(fontSize: 15, color: MyTheme.dark_font_grey),
+                ),
+                Text(
+                  'Are you want to update',
+                  style:
+                  TextStyle(fontSize: 13, color: MyTheme.dark_font_grey),
+                ),
+                Divider(),
+                // Add your image and text row here
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 20,
+                      width: 20,
+                      child: Platform.isAndroid
+                          ? Image.asset('assets/playstore.png')
+                          : Image.asset('assets/appstore.png'),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      Platform.isAndroid
+                          ? 'Google Play Store'
+                          : 'Apple App Store',
+                      style: TextStyle(
+                          fontSize: 13, color: MyTheme.dark_font_grey),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  final url = Uri.parse(
+                    Platform.isAndroid
+                        ? 'https://play.google.com/store/apps/details?id=gmp.ethicaldigit.com&hl=en&gl=US'
+                        : 'https://apps.apple.com/us/app/ga-mone-pwint-online/id6467404178',
+                  ); // Replace with your app's package name or the link you want to open.
+
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                child: Text('Update'),
+              ),
+            ],
+          ),
+        );
+      });
+    } Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return Main(
+            go_back: false,
+            init_splash: false,
+          );
+        },
+      ),
+          (route) => true,
+    );
+
+  }
+  void _showTutorialOverlay(BuildContext context) {
+    // Navigator.of(context).push(TutorialOverlay());
+
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TutorialOverlay(onButtonPressed:onOverlayButtonPressed,callback:myCallback)));
+  }
   @override
   Widget build(BuildContext context) {
     return splashScreen();
@@ -234,7 +232,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         height: 72,
                         width: 72,
                         padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                        EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                         decoration: BoxDecoration(
                             color: MyTheme.white,
                             borderRadius: BorderRadius.circular(8)),
@@ -314,8 +312,11 @@ class _SplashScreenState extends State<SplashScreen> {
     Provider.of<CurrencyPresenter>(context, listen: false).fetchListData();
 
     print("new splash screen ${app_mobile_language.$}");
+    print("new splash screen ${app_language.$}");
+
     print("new splash screen app_language_rtl ${app_language_rtl.$}");
 
     return app_mobile_language.$;
   }
 }
+

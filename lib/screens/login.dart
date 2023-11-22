@@ -14,6 +14,7 @@ import 'package:active_ecommerce_flutter/other_config.dart';
 import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
 import 'package:active_ecommerce_flutter/repositories/profile_repository.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
+import 'package:active_ecommerce_flutter/screens/otp.dart';
 import 'package:active_ecommerce_flutter/screens/password_forget.dart';
 import 'package:active_ecommerce_flutter/screens/registration.dart';
 import 'package:active_ecommerce_flutter/social_config.dart';
@@ -45,6 +46,7 @@ class _LoginState extends State<Login> {
   var countries_code = <String?>[];
 
   String? _phone = "";
+  bool isLoginClick = false;
 
   //controllers
   TextEditingController _phoneNumberController = TextEditingController();
@@ -102,17 +104,13 @@ class _LoginState extends State<Login> {
       );
       return;
     }
-
+    setState(() {
+      isLoginClick = true;
+    });
     var loginResponse = await AuthRepository()
         .getLoginResponse(_login_by == 'email' ? email : _phone, password);
-    if (loginResponse.result == false) {
-      ToastComponent.showSnackBar(
-        context,
-        loginResponse.message.toString(),
-      );
-    } else {
-      // ToastComponent.showSnackBar(loginResponse.message.toString(),
-      //     gravity: Toast.center, duration: Toast.lengthLong);
+
+    if (loginResponse.result == true) {
       AuthHelper().setUserData(loginResponse);
       // push notification starts
       if (OtherConfig.USE_PUSH_NOTIFICATION) {}
@@ -121,7 +119,29 @@ class _LoginState extends State<Login> {
           MaterialPageRoute(builder: (context) {
         return Main();
       }), (newRoute) => false);
+    } else if (loginResponse.result == false &&
+        loginResponse.message == 'Please verify your account') {
+      AuthHelper().setUserData(loginResponse);
+      // push notification starts
+      if (OtherConfig.USE_PUSH_NOTIFICATION) {}
+
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) {
+        return Main();
+      }), (newRoute) => false);
+    } else {
+      ToastComponent.showSnackBar(
+        context,
+        loginResponse.message.toString(),
+      );
     }
+    ToastComponent.showSnackBar(
+      context,
+      loginResponse.message.toString(),
+    );
+    setState(() {
+      isLoginClick = false;
+    });
   }
 
   onPressedFacebookLogin() async {
@@ -334,33 +354,46 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     final _screen_height = MediaQuery.of(context).size.height;
     final _screen_width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: Stack(
-        children: [
-          AuthScreen.buildScreen(
-              context,
-              "${AppLocalizations.of(context)!.login_to} " + AppConfig.app_name,
-              buildBody(context, _screen_width)),
-          Positioned(
-            top: 20, // Adjust the top position as needed
-            left: 10, // Adjust the left position as needed
-            child: Container(
-              decoration: BoxDecoration(// Background color for the icon
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) {
+          return Main();
+        }), (reute) => false);
+        return Future<bool>.value(false);
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            AuthScreen.buildScreen(
+                context,
+                "${AppLocalizations.of(context)!.login_to} " +
+                    AppConfig.app_name,
+                buildBody(context, _screen_width)),
+            Positioned(
+              top: 20, // Adjust the top position as needed
+              left: 10, // Adjust the left position as needed
+              child: Container(
+                decoration: BoxDecoration(// Background color for the icon
+                    ),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white, // Icon color
                   ),
-              child: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white, // Icon color
+                  onPressed: () {
+                    // Add your back button logic here
+                    // Typically, you would use Navigator to pop the current screen.
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return Main();
+                    }));
+                  },
                 ),
-                onPressed: () {
-                  // Add your back button logic here
-                  // Typically, you would use Navigator to pop the current screen.
-                  Navigator.of(context).pop();
-                },
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -391,7 +424,6 @@ class _LoginState extends State<Login> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
-                        height: 36,
                         child: TextField(
                           controller: _emailController,
                           autofocus: false,
@@ -423,7 +455,13 @@ class _LoginState extends State<Login> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
-                        height: 36,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: MyTheme.accent_color, width: 0.5),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(6.0),
+                          ),
+                        ),
                         child: CustomInternationalPhoneNumberInput(
                           countries: countries_code,
                           onInputChanged: (PhoneNumber number) {
@@ -435,9 +473,9 @@ class _LoginState extends State<Login> {
                           onInputValidated: (bool value) {
                             print(value);
                           },
-                          selectorConfig: SelectorConfig(
-                            selectorType: PhoneInputSelectorType.DIALOG,
-                          ),
+                          // selectorConfig: SelectorConfig(
+                          //   selectorType: PhoneInputSelectorType.DIALOG,
+                          // ),
                           ignoreBlank: false,
                           autoValidateMode: AutovalidateMode.disabled,
                           selectorTextStyle:
@@ -451,7 +489,7 @@ class _LoginState extends State<Login> {
                               signed: true, decimal: true),
                           inputDecoration:
                               InputDecorations.buildInputDecoration_phone(
-                                  hint_text: "01XXX XXX XXX"),
+                                  hint_text: "09XXX XXX XXX"),
                           onSaved: (PhoneNumber number) {
                             print('On Saved: $number');
                           },
@@ -488,7 +526,6 @@ class _LoginState extends State<Login> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      height: 36,
                       child: TextField(
                         controller: _passwordController,
                         autofocus: false,
@@ -498,13 +535,29 @@ class _LoginState extends State<Login> {
                         decoration: InputDecoration(
                           // hintText: "• • • • • • • •",
                           hintText: "Enter Password",
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.accent_color, width: 0.2),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(6.0),
+                            ),
+                          ),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 10.0),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MyTheme.accent_color, width: 0.5),
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(6.0),
+                            ),
+                          ),
                           hintStyle: TextStyle(
                               color: Colors.grey.shade400, fontSize: 14),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureText
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                               color: Colors.grey,
                             ),
                             onPressed: () {
@@ -562,9 +615,11 @@ class _LoginState extends State<Login> {
                           fontSize: 13,
                           fontWeight: FontWeight.w600),
                     ),
-                    onPressed: () {
-                      onPressedLogin();
-                    },
+                    onPressed: isLoginClick == true
+                        ? null
+                        : () {
+                            onPressedLogin();
+                          },
                   ),
                 ),
               ),

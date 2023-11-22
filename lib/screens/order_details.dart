@@ -27,9 +27,10 @@ class OrderDetails extends StatefulWidget {
   int? id;
   final bool from_notification;
   bool go_back;
+  int? notiId;
 
   OrderDetails(
-      {Key? key, this.id, this.from_notification = false, this.go_back = true})
+      {Key? key, this.id, this.from_notification = false, this.go_back = true, this.notiId})
       : super(key: key);
 
   @override

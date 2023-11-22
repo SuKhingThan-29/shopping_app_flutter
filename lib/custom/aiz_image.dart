@@ -9,7 +9,7 @@ class AIZImage{
       imageUrl: url,
         placeholder: (context, url) => Center(
           child: CircularProgressIndicator(),),
-        errorWidget: (context, url, error) => Image.asset("assets/placeholder.png",fit: BoxFit.cover,)
+        errorWidget: (context, url, error) => Image.asset("assets/placeholder.png",fit: BoxFit.contain,)
 
       // progressIndicatorBuilder: (context,string, progress){
       //   return Image.asset("assets/placeholder_rectangle.png",fit: BoxFit.cover,);

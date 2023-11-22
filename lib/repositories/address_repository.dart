@@ -38,7 +38,7 @@ class AddressRepository {
         "App-Language": app_language.$!,
       },
     );
-    print('Response address: ${response.body}');
+    print('Request address: ${url}');
     bool checkResult = ResponseCheck.apply(response.body);
     if (!checkResult) return responseCheckModelFromJson(response.body);
 
