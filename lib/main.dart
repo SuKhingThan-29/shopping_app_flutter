@@ -223,6 +223,12 @@ class _MainScreenState extends State<MyApp> {
                 },
               ));
 
+            }else if(provider.deepLinkRoute == "/wallet-recharge"){
+              navigatorKey.currentState?.push(MaterialPageRoute(
+                builder: (context) {
+                  return Wallet();
+                },
+              ));
             }
             return MaterialApp(
               navigatorKey: navigatorKey,

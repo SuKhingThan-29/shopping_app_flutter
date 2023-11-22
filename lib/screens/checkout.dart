@@ -340,6 +340,7 @@ class _CheckoutState extends State<Checkout> {
         launchUrl(url, mode: LaunchMode.externalApplication);
       }
     }
+
   }
 
   pay_by_wallet(price) async {

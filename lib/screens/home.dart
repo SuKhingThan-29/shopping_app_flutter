@@ -11,7 +11,6 @@ import 'package:active_ecommerce_flutter/screens/featured_products.dart';
 import 'package:active_ecommerce_flutter/screens/filter.dart';
 import 'package:active_ecommerce_flutter/screens/flash_deal_list.dart';
 import 'package:active_ecommerce_flutter/screens/flash_deal_products.dart';
-import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/todays_deal_products.dart';
 import 'package:active_ecommerce_flutter/screens/top_selling_products.dart';
 import 'package:active_ecommerce_flutter/ui_elements/mini_product_card.dart';
@@ -29,7 +28,6 @@ import '../helpers/addons_helper.dart';
 import '../helpers/auth_helper.dart';
 import '../helpers/business_setting_helper.dart';
 import '../presenter/currency_presenter.dart';
-import '../repositories/brand_repository.dart';
 import '../ui_elements/brand_square_card.dart';
 
 class Home extends StatefulWidget {
@@ -45,10 +43,12 @@ class Home extends StatefulWidget {
   late bool go_back;
 
   @override
-  _HomeState createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends State<Home> with TickerProviderStateMixin {
+class HomeState extends State<Home> with TickerProviderStateMixin {
+  final GlobalKey<HomeState> customScrollViewKey = GlobalKey<HomeState>();
+
   HomePresenter homeData = HomePresenter();
   ScrollController? _scrollController;
 
@@ -74,6 +74,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     homeData.setTab(selectProductTab);
     homeData.mainScrollListener();
     homeData.initPiratedAnimation(this);
+
   }
 
   @override
@@ -170,6 +171,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 onRefresh: homeData.onRefresh,
                 displacement: 0,
                 child: CustomScrollView(
+                  key: customScrollViewKey,
                   controller: homeData.mainScrollController,
                   physics: const BouncingScrollPhysics(
                       parent: AlwaysScrollableScrollPhysics()),
@@ -508,7 +510,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       ]),
                     ),
                   ],
-                ),
+                )
               ),
               Align(
                   alignment: Alignment.bottomCenter,
@@ -1626,7 +1628,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       duration: Duration(milliseconds: 500), // adjust the duration if needed
       curve: Curves.easeInOut,
     );
-
   }
   void _refreshUI() {
     homeData.onRefresh(); // Call the refresh method from your homeData
