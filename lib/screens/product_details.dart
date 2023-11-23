@@ -426,24 +426,25 @@ Page resource error:
       //     gravity: Toast.center, duration: Toast.lengthLong);
       Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
       return;
-    }else if(is_email_verified.$ == false){
+    } else if (is_email_verified.$ == false) {
       ToastComponent.showSnackBar(
         context,
         'user is unverified',
       );
       var passwordResendCodeResponse = await AuthRepository()
           .getPasswordResendCodeResponse(
-          user_email.$.isEmpty ? user_phone.$ : user_email.$,
-          user_email.$.isEmpty ? "_phone" : "email");
+              user_email.$.isEmpty ? user_phone.$ : user_email.$,
+              user_email.$.isEmpty ? "_phone" : "email");
       print(passwordResendCodeResponse.result);
       if (passwordResendCodeResponse.result == true) {
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (context) {
-              return Otp(
-                phnum: user_email.$.isEmpty ? user_phone.$ : user_email.$,
-              );
-            }), (newRoute) => false);
-      }      return;
+          return Otp(
+            phnum: user_email.$.isEmpty ? user_phone.$ : user_email.$,
+          );
+        }), (newRoute) => false);
+      }
+      return;
     }
 
     // print(widget.id);
@@ -453,7 +454,7 @@ Page resource error:
 
     var cartAddResponse = await CartRepository()
         .getCartAddResponse(widget.id, _variant, user_id.$, _quantity);
-print("CartAddResponse: ${cartAddResponse.message}");
+    print("CartAddResponse: ${cartAddResponse.message}");
 
     if (cartAddResponse.result == false) {
       ToastComponent.showSnackBar(
@@ -1490,9 +1491,11 @@ print("CartAddResponse: ${cartAddResponse.message}");
           )),
     );
   }
+
   Future<void> _launchUrl(_url) async {
     await FlutterWebBrowser.openWebPage(url: _url);
   }
+
   Widget buildSellerRow(BuildContext context) {
     //print("sl:" +  _productDetails!.shop_logo);
     return Container(
@@ -2415,6 +2418,7 @@ print("CartAddResponse: ${cartAddResponse.message}");
         : Container();
   }
 
+//jhjjj
   Widget buildExpandableDescription() {
     print(_productDetails!.description);
     return Container(

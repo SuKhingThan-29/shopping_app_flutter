@@ -102,27 +102,33 @@ class _WalletState extends State<Wallet> {
     fetchAll();
   }
 
-  onPressProceed() {
+  onPressProceed() async {
     var amount_String = _amountController.text.toString();
-
+    print(amount_String);
     if (amount_String == "") {
       ToastComponent.showSnackBar(
         context,
         AppLocalizations.of(context)!.amount_cannot_be_empty,
       );
       return;
+    } else {
+      var buywallet = await WalletRepository().buywallet(amount_String);
+      print(buywallet.result);
+      if (buywallet.result == true) {
+        ToastComponent.showSnackBar(context, 'done');
+      }
     }
 
     var amount = double.parse(amount_String);
 
-    Navigator.of(context, rootNavigator: true).pop();
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return Checkout(
-        paymentFor: PaymentFor.WalletRecharge,
-        rechargeAmount: amount,
-        title: AppLocalizations.of(context)!.recharge_wallet_ucf,
-      );
-    }));
+    // Navigator.of(context, rootNavigator: true).pop();
+    // Navigator.push(context, MaterialPageRoute(builder: (context) {
+    //   return Checkout(
+    //     paymentFor: PaymentFor.WalletRecharge,
+    //     rechargeAmount: amount,
+    //     title: AppLocalizations.of(context)!.recharge_wallet_ucf,
+    //   );
+    // }));
     // Navigator.push(context, MaterialPageRoute(builder: (context) {
     //   return RechargeWallet(amount: amount );
     // }));
@@ -452,43 +458,43 @@ class _WalletState extends State<Wallet> {
             ],
           ),
         ),
-        // Container(
-        //   width: DeviceInfo(context).width! / 2.3,
-        //   height: 90,
-        //   decoration: BoxDecorations.buildBoxDecoration_1().copyWith(
-        //     border: Border.all(color: Colors.amber.shade700, width: 1),
-        //   ),
-        //   child: Btn.basic(
-        //     minWidth: MediaQuery.of(context).size.width,
-        //     color: MyTheme.amber,
-        //     shape: RoundedRectangleBorder(
-        //         borderRadius: const BorderRadius.all(Radius.circular(5.0))),
-        //     child: Column(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         Text(
-        //           "${AppLocalizations.of(context)!.recharge_wallet_ucf}",
-        //           style: TextStyle(
-        //               color: MyTheme.font_grey,
-        //               fontSize: 12,
-        //               fontWeight: FontWeight.bold),
-        //           textAlign: TextAlign.center,
-        //         ),
-        //         SizedBox(
-        //           height: 14,
-        //         ),
-        //         Image.asset(
-        //           "assets/add.png",
-        //           height: 20,
-        //           width: 20,
-        //         ),
-        //       ],
-        //     ),
-        //     onPressed: () {
-        //       buildShowAddFormDialog(context);
-        //     },
-        //   ),
-        // ),
+        Container(
+          width: DeviceInfo(context).width! / 2.3,
+          height: 90,
+          decoration: BoxDecorations.buildBoxDecoration_1().copyWith(
+            border: Border.all(color: Colors.amber.shade700, width: 1),
+          ),
+          child: Btn.basic(
+            minWidth: MediaQuery.of(context).size.width,
+            color: MyTheme.amber,
+            shape: RoundedRectangleBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(5.0))),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "${AppLocalizations.of(context)!.recharge_wallet_ucf}",
+                  style: TextStyle(
+                      color: MyTheme.font_grey,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 14,
+                ),
+                Image.asset(
+                  "assets/add.png",
+                  height: 20,
+                  width: 20,
+                ),
+              ],
+            ),
+            onPressed: () {
+              buildShowAddFormDialog(context);
+            },
+          ),
+        ),
       ],
     );
   }
