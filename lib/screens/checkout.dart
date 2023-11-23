@@ -324,7 +324,7 @@ class _CheckoutState extends State<Checkout> {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return OrderList(from_checkout: true);
       }));
-    }else{
+    } else {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return Main();
       }));
@@ -332,15 +332,14 @@ class _CheckoutState extends State<Checkout> {
   }
 
   Future<void> _launchUrl(_url) async {
-    if(Platform.isAndroid){
+    if (Platform.isAndroid) {
       await FlutterWebBrowser.openWebPage(url: _url);
-    }else{
+    } else {
       final url = Uri.parse(_url);
       if (await canLaunchUrl(url)) {
         launchUrl(url, mode: LaunchMode.externalApplication);
       }
     }
-
   }
 
   pay_by_wallet(price) async {
@@ -370,11 +369,11 @@ class _CheckoutState extends State<Checkout> {
       );
       Navigator.of(context).pop();
       return;
-    }else if(orderCreateResponse.result == true){
+    } else if (orderCreateResponse.result == true) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return OrderList(from_checkout: true);
       }));
-    }else{
+    } else {
       ToastComponent.showSnackBar(
         context,
         orderCreateResponse.message,
@@ -382,8 +381,6 @@ class _CheckoutState extends State<Checkout> {
       Navigator.of(context).pop();
       return;
     }
-
-
   }
 
   pay_by_manual_payment() async {
@@ -677,10 +674,11 @@ class _CheckoutState extends State<Checkout> {
                   ],
                 ),
               ),
-              SizedBox(height: 50,),
+              SizedBox(
+                height: 50,
+              ),
 
               //Apply Coupon and order details container
-
             ],
           )),
     );
@@ -698,7 +696,7 @@ class _CheckoutState extends State<Checkout> {
       children: [
         Container(
           height: 42,
-          width: (MediaQuery.of(context).size.width-38) * (2 / 3.47),
+          width: (MediaQuery.of(context).size.width - 38) * (2 / 3.47),
           child: DropDownTextField(
             controller: _couponControllerValue,
             clearOption: true,
@@ -825,195 +823,194 @@ class _CheckoutState extends State<Checkout> {
             Align(
               alignment: Alignment.bottomCenter,
               child: widget.paymentFor == PaymentFor.WalletRecharge ||
-                  widget.paymentFor == PaymentFor.PackagePay
+                      widget.paymentFor == PaymentFor.PackagePay
                   ? Container()
                   : Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
 
-                  /*border: Border(
+                        /*border: Border(
         top: BorderSide(color: MyTheme.light_grey,width: 1.0),
       )*/
-                ),
-                width: MediaQuery.of(context).size.width,
-                height: widget.paymentFor == PaymentFor.ManualPayment
-                    ? 80
-                    : 400,
-                //color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      widget.paymentFor == PaymentFor.Order
-                          ? Padding(
-                        padding:
-                        const EdgeInsets.only(bottom: 16.0),
-                        child: buildApplyCouponRow(context),
-                      )
-                          : Container(),
-                      Divider(),
-                      Container(
-                        margin: EdgeInsets.only(top: 10),
+                      ),
+                      width: MediaQuery.of(context).size.width,
+                      height: widget.paymentFor == PaymentFor.ManualPayment
+                          ? 80
+                          : 400,
+                      //color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
-                            Row(
-                              children: [
-                                Text(
-                                  AppLocalizations.of(context)!
-                                      .subtotal_all_capital,
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                      color: MyTheme.font_grey,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Spacer(),
-                                Text(
-                                  _subTotalString != null
-                                      ? '${intl.NumberFormat.decimalPattern().format(double.tryParse(_subTotalString!) ?? 0.0)} MMK'
-                                      : 'N/A',
-                                  style: TextStyle(
-                                      color: MyTheme.font_grey,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  AppLocalizations.of(context)!
-                                      .shipping_cost_all_capital,
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                      color: MyTheme.font_grey,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Spacer(),
-                                Text(
-                                  // SystemConfig.systemCurrency != null
-                                  //     ? _shippingCostString!.replaceAll(
-                                  //     SystemConfig.systemCurrency!.code!,
-                                  //     SystemConfig.systemCurrency!.symbol!)
-                                  //     :
-                                  _shippingCostString != null
-                                      ? '${intl.NumberFormat.decimalPattern().format(double.tryParse(_shippingCostString!) ?? 0.0)} MMK'
-                                      : 'N/A',
-                                  style: TextStyle(
-                                      color: MyTheme.font_grey,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  AppLocalizations.of(context)!
-                                      .coupon_ucf,
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                      color: MyTheme.font_grey,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Spacer(),
-                                Text(
-                                  // SystemConfig.systemCurrency != null
-                                  //     ? _discountString!.replaceAll(
-                                  //     SystemConfig.systemCurrency!.code!,
-                                  //     SystemConfig.systemCurrency!.symbol!)
-                                  //     :
-                                  _discountString != null
-                                      ? '${intl.NumberFormat.decimalPattern().format(double.tryParse(_discountString!) ?? 0.0)} MMK'
-                                      : 'N/A',
-                                  style: TextStyle(
-                                      color: MyTheme.font_grey,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Wallet",
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                      color: MyTheme.font_grey,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Spacer(),
-                                Text(
-                                  // SystemConfig.systemCurrency != null
-                                  //     SystemConfig.systemCurrency!.code!,
-                                  //     SystemConfig.systemCurrency!.symbol!)
-                                  //     :
-                                  _wallet != null
-                                      ? '-${intl.NumberFormat.decimalPattern().format(_wallet!)} MMK'
-                                      : 'N/A',
-                                  style: TextStyle(
-                                      color: MyTheme.font_grey,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
+                            widget.paymentFor == PaymentFor.Order
+                                ? Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 16.0),
+                                    child: buildApplyCouponRow(context),
+                                  )
+                                : Container(),
                             Divider(),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  AppLocalizations.of(context)!
-                                      .grand_total_all_capital,
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                      color: MyTheme.font_grey,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Spacer(),
-                                Text(
-                                  // SystemConfig.systemCurrency != null
-                                  //     ? _grandTotalValue!.toString().replaceAll(
-                                  //     SystemConfig.systemCurrency!.code!,
-                                  //     SystemConfig.systemCurrency!.symbol!)
-                                  //     :
-                                  _grandTotalValue != null
-                                      ? '${intl.NumberFormat.decimalPattern().format(_grandTotalValue!)} MMK'
-                                      : 'N/A',
-                                  style: TextStyle(
-                                      color: MyTheme.accent_color,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .subtotal_all_capital,
+                                        textAlign: TextAlign.end,
+                                        style: TextStyle(
+                                            color: MyTheme.font_grey,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        _subTotalString != null
+                                            ? '${intl.NumberFormat.decimalPattern().format(double.tryParse(_subTotalString!) ?? 0.0)} MMK'
+                                            : 'N/A',
+                                        style: TextStyle(
+                                            color: MyTheme.font_grey,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .shipping_cost_all_capital,
+                                        textAlign: TextAlign.end,
+                                        style: TextStyle(
+                                            color: MyTheme.font_grey,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        // SystemConfig.systemCurrency != null
+                                        //     ? _shippingCostString!.replaceAll(
+                                        //     SystemConfig.systemCurrency!.code!,
+                                        //     SystemConfig.systemCurrency!.symbol!)
+                                        //     :
+                                        _shippingCostString != null
+                                            ? '${intl.NumberFormat.decimalPattern().format(double.tryParse(_shippingCostString!) ?? 0.0)} MMK'
+                                            : 'N/A',
+                                        style: TextStyle(
+                                            color: MyTheme.font_grey,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .coupon_ucf,
+                                        textAlign: TextAlign.end,
+                                        style: TextStyle(
+                                            color: MyTheme.font_grey,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        // SystemConfig.systemCurrency != null
+                                        //     ? _discountString!.replaceAll(
+                                        //     SystemConfig.systemCurrency!.code!,
+                                        //     SystemConfig.systemCurrency!.symbol!)
+                                        //     :
+                                        _discountString != null
+                                            ? '${intl.NumberFormat.decimalPattern().format(double.tryParse(_discountString!) ?? 0.0)} MMK'
+                                            : 'N/A',
+                                        style: TextStyle(
+                                            color: MyTheme.font_grey,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Wallet",
+                                        textAlign: TextAlign.end,
+                                        style: TextStyle(
+                                            color: MyTheme.font_grey,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        // SystemConfig.systemCurrency != null
+                                        //     SystemConfig.systemCurrency!.code!,
+                                        //     SystemConfig.systemCurrency!.symbol!)
+                                        //     :
+                                        _wallet != null
+                                            ? '-${intl.NumberFormat.decimalPattern().format(_wallet!)} MMK'
+                                            : 'N/A',
+                                        style: TextStyle(
+                                            color: MyTheme.font_grey,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Divider(),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .grand_total_all_capital,
+                                        textAlign: TextAlign.end,
+                                        style: TextStyle(
+                                            color: MyTheme.font_grey,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        // SystemConfig.systemCurrency != null
+                                        //     ? _grandTotalValue!.toString().replaceAll(
+                                        //     SystemConfig.systemCurrency!.code!,
+                                        //     SystemConfig.systemCurrency!.symbol!)
+                                        //     :
+                                        _grandTotalValue != null
+                                            ? '${intl.NumberFormat.decimalPattern().format(_grandTotalValue!)} MMK'
+                                            : 'N/A',
+                                        style: TextStyle(
+                                            color: MyTheme.accent_color,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
             )
-
           ],
         ),
       );

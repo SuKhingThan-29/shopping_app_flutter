@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:active_ecommerce_flutter/custom/box_decorations.dart';
 import 'package:active_ecommerce_flutter/custom/btn.dart';
 import 'package:active_ecommerce_flutter/custom/device_info.dart';
@@ -13,7 +15,9 @@ import 'package:active_ecommerce_flutter/screens/checkout.dart';
 import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Wallet extends StatefulWidget {
   Wallet({Key? key, this.from_recharge = false}) : super(key: key);
@@ -39,6 +43,7 @@ class _WalletState extends State<Wallet> {
   int _rechargePage = 1;
   int? _totalRechargeData = 0;
   bool _showRechageLoadingContainer = false;
+  late BuildContext loadingcontext;
 
   @override
   void initState() {
@@ -102,9 +107,43 @@ class _WalletState extends State<Wallet> {
     fetchAll();
   }
 
+  Future<void> _launchUrl(_url) async {
+    if (Platform.isAndroid) {
+      await FlutterWebBrowser.openWebPage(url: _url);
+    } else {
+      final url = Uri.parse(_url);
+      if (await canLaunchUrl(url)) {
+        launchUrl(url, mode: LaunchMode.externalApplication);
+      }
+    }
+  }
+
+  loading() async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          loadingcontext = context;
+          return AlertDialog(
+              content: Row(
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(
+                width: 10,
+              ),
+              Text("${AppLocalizations.of(context)!.please_wait_ucf}"),
+            ],
+          ));
+        });
+    await Future.delayed(
+        Duration(milliseconds: 500)); // Simulate some asynchronous work
+    Navigator.of(loadingcontext).pop();
+  }
+
   onPressProceed() async {
+    loading();
     var amount_String = _amountController.text.toString();
     print(amount_String);
+
     if (amount_String == "") {
       ToastComponent.showSnackBar(
         context,
@@ -115,11 +154,11 @@ class _WalletState extends State<Wallet> {
       var buywallet = await WalletRepository().buywallet(amount_String);
       print(buywallet.result);
       if (buywallet.result == true) {
-        ToastComponent.showSnackBar(context, 'done');
+        _launchUrl(buywallet.url);
+      } else {
+        ToastComponent.showSnackBar(context, buywallet.message);
       }
     }
-
-    var amount = double.parse(amount_String);
 
     // Navigator.of(context, rootNavigator: true).pop();
     // Navigator.push(context, MaterialPageRoute(builder: (context) {
