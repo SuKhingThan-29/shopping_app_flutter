@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/data_model/check_response_model.dart';
+import 'package:active_ecommerce_flutter/data_model/wallet_response.dart';
 import 'package:active_ecommerce_flutter/helpers/response_check.dart';
 
 import 'package:active_ecommerce_flutter/data_model/wallet_balance_response.dart';
@@ -11,33 +14,49 @@ import 'package:active_ecommerce_flutter/repositories/api-request.dart';
 
 class WalletRepository {
   Future<dynamic> getBalance() async {
-    String url=("${AppConfig.BASE_URL}/wallet/balance");
+    String url = ("${AppConfig.BASE_URL}/wallet/balance");
     print(url.toString());
     print("Bearer ${access_token.$}");
     final response = await ApiRequest.get(
-      url:url,
-      headers: {
-        "Authorization": "Bearer ${access_token.$}",
-        "App-Language": app_language.$!,
-      },
-      middleware: BannedUser()
-    );
+        url: url,
+        headers: {
+          "Authorization": "Bearer ${access_token.$}",
+          "App-Language": app_language.$!,
+        },
+        middleware: BannedUser());
     return walletBalanceResponseFromJson(response.body);
   }
 
   Future<dynamic> getRechargeList({int page = 1}) async {
-    String url=(
-        "${AppConfig.BASE_URL}/wallet/history?page=${page}");
+    String url = ("${AppConfig.BASE_URL}/wallet/history?page=${page}");
 
     final response = await ApiRequest.get(
-      url:url,
-      headers: {
-        "Authorization": "Bearer ${access_token.$}",
-        "App-Language": app_language.$!,
-      },
-      middleware: BannedUser()
-    );
+        url: url,
+        headers: {
+          "Authorization": "Bearer ${access_token.$}",
+          "App-Language": app_language.$!,
+        },
+        middleware: BannedUser());
 
-      return walletRechargeResponseFromJson(response.body);
+    return walletRechargeResponseFromJson(response.body);
+  }
+
+  Future<dynamic> buywallet(String amount) async {
+    var post_body =
+        jsonEncode({"payment_type": "ed_wallet", "amount": "$amount"});
+    String url = ("${AppConfig.BASE_URL}/payments/pay/ed");
+    print(post_body);
+
+    final response = await ApiRequest.post(
+        url: url,
+        headers: {
+          "Authorization": "Bearer ${access_token.$}",
+          "App-Language": app_language.$!,
+        },
+        middleware: BannedUser(),
+        body: post_body);
+    print(response.body);
+
+    return walletFromJson(response.body);
   }
 }

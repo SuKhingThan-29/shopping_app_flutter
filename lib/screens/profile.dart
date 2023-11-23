@@ -112,13 +112,16 @@ class _ProfileState extends State<Profile> {
   }
 
   fetchData() async {
-    var notiCountResponse = await ChatRepository().getUnReadNotiResponse();
-    var conversationCountResponse =
-        await ChatRepository().getUnReadConversationCountResponse();
-    _notitotalcount = notiCountResponse.count;
-    _conversationtotalcount = conversationCountResponse.count;
-    setState(() {});
-    print("_conversationtotalcount: $_conversationtotalcount");
+    if (is_logged_in.$) {
+      var notiCountResponse = await ChatRepository().getUnReadNotiResponse();
+      print(notiCountResponse.result);
+      var conversationCountResponse =
+          await ChatRepository().getUnReadConversationCountResponse();
+      _notitotalcount = notiCountResponse.count;
+      _conversationtotalcount = conversationCountResponse.count;
+      setState(() {});
+      print("_conversationtotalcount: $_conversationtotalcount");
+    }
   }
 
   getUserInfo() async {
