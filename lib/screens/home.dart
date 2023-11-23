@@ -31,7 +31,7 @@ import '../presenter/currency_presenter.dart';
 import '../ui_elements/brand_square_card.dart';
 
 class Home extends StatefulWidget {
-  Home({
+   Home({
     Key? key,
     this.title,
     this.show_back_button = false,
@@ -47,8 +47,6 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> with TickerProviderStateMixin {
-  final GlobalKey<HomeState> customScrollViewKey = GlobalKey<HomeState>();
-
   HomePresenter homeData = HomePresenter();
   ScrollController? _scrollController;
 
@@ -171,7 +169,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                 onRefresh: homeData.onRefresh,
                 displacement: 0,
                 child: CustomScrollView(
-                  key: customScrollViewKey,
                   controller: homeData.mainScrollController,
                   physics: const BouncingScrollPhysics(
                       parent: AlwaysScrollableScrollPhysics()),
@@ -1622,12 +1619,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
   void scrollToPosition() {
     _refreshUI();
-    homeData.mainScrollController.animateTo(
-      // specify the position you want to scroll to
-      0.0, // adjust this value based on your requirements
-      duration: Duration(milliseconds: 500), // adjust the duration if needed
-      curve: Curves.easeInOut,
-    );
+   setState(() {
+     homeData.mainScrollController.animateTo(
+       // specify the position you want to scroll to
+       0.0, // adjust this value based on your requirements
+       duration: Duration(milliseconds: 500), // adjust the duration if needed
+       curve: Curves.easeInOut,
+     );
+   });
   }
   void _refreshUI() {
     homeData.onRefresh(); // Call the refresh method from your homeData

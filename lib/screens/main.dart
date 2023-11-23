@@ -38,7 +38,8 @@ class _MainState extends State<Main> {
   HomePresenter homeData=HomePresenter();
 
   BottomAppbarIndex bottomAppbarIndex = BottomAppbarIndex();
-  final customScrollViewState = HomeState().customScrollViewKey.currentState;
+  final GlobalKey<HomeState> homeWidgetKey=GlobalKey<HomeState>();
+
 
   CartCounter counter = CartCounter();
   var _children = [];
@@ -66,31 +67,17 @@ class _MainState extends State<Main> {
 
     setState(() {
       _currentIndex = i;
+      widget.isHomeTap=true;
       if(_currentIndex==0 && widget.isHomeTap==false){
         print("HomeTap false: ${widget.isHomeTap}");
-
-        widget.isHomeTap=true;
-        print("HomeTap : ${widget.isHomeTap}");
-
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (context) {
               return Main(isHomeTap:true);
             }), (route) => false);
       }else if(_currentIndex==0 && widget.isHomeTap==true){
-        if(HomeState().customScrollViewKey.currentState!=null){
-          print("HomeTap not null");
-        }
-        if (customScrollViewState?.homeData.mainScrollController != null) {
-          print("HomeTap true: ${widget.isHomeTap}");
-          customScrollViewState?.homeData.mainScrollController.animateTo(
-            0.0,
-            duration: Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-          );
-        }
+        homeWidgetKey.currentState?.scrollToPosition();
+
       }
-
-
     });
     //print("i$i");
   }
@@ -101,7 +88,7 @@ class _MainState extends State<Main> {
 
   void initState() {
     _children = [
-      Home(),
+      Home(key: homeWidgetKey,),
       CategoryList(
         is_base_category: true,
       ),
