@@ -45,29 +45,32 @@ class TutorialOverlayState extends State<TutorialOverlay> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      child: SafeArea(
-        child: _buildOverlayContent(context),
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
+      // type: MaterialType.transparency,
+      body: _buildOverlayContent(context)
     );
   }
 
   Widget _buildOverlayContent(BuildContext context) {
     return Container(
-      width: DeviceInfo(context).height,
+      width: DeviceInfo(context).width,
       height: DeviceInfo(context).height,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/full_dialog.jpg'),
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
         ),
       ),
       child: Stack(
         children: <Widget>[
           Center(),
           Positioned(
-            top: 10,
+            top: 40,
             right: 30,
             child: GestureDetector(
               onTap: widget.onButtonPressed,
