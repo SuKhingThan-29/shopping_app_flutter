@@ -142,15 +142,6 @@ class _WalletState extends State<Wallet> {
   onPressProceed() async {
     loading();
     var amount_String = _amountController.text.toString();
-    print(amount_String);
-
-    if (amount_String == "") {
-      ToastComponent.showSnackBar(
-        context,
-        AppLocalizations.of(context)!.amount_cannot_be_empty,
-      );
-      return;
-    } else {
       var buywallet = await WalletRepository().buywallet(amount_String);
       print(buywallet.result);
       if (buywallet.result == true) {
@@ -158,7 +149,7 @@ class _WalletState extends State<Wallet> {
       } else {
         ToastComponent.showSnackBar(context, buywallet.message);
       }
-    }
+
 
     // Navigator.of(context, rootNavigator: true).pop();
     // Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -650,7 +641,19 @@ class _WalletState extends State<Wallet> {
                                 fontWeight: FontWeight.normal),
                           ),
                           onPressed: () {
-                            onPressProceed();
+                            var amount_String = _amountController.text.toString();
+
+                            if (amount_String == "") {
+                              ToastComponent.showSnackBar(
+                                context,
+                                AppLocalizations.of(context)!.amount_cannot_be_empty,
+                              );
+                              return;
+                            }else{
+                              Navigator.of(context, rootNavigator: true).pop();
+                              onPressProceed();
+                            }
+
                           },
                         ),
                       )

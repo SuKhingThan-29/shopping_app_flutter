@@ -113,7 +113,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" />
                 <data android:host="ethicaldigit.page.link"
-                                    />
+                    android:pathPrefix="/gap" />
+                <data android:host="ethicaldigit.page.link"
+                    android:pathPrefix="/wallet" />
 
             </intent-filter>
             <intent-filter>

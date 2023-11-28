@@ -321,9 +321,10 @@ class _CheckoutState extends State<Checkout> {
       _launchUrl(orderCreateEDResponse.url);
     } else if (orderCreateEDResponse.result == true &&
         orderCreateEDResponse.url == null) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return OrderList(from_checkout: true);
-      }));
+      ToastComponent.showSnackBar(
+        context,
+        orderCreateEDResponse.message,
+      );
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return Main();

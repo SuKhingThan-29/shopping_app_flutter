@@ -191,8 +191,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   }
   void _showTutorialOverlay(BuildContext context) {
-    // Navigator.of(context).push(TutorialOverlay());
-
     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TutorialOverlay(onButtonPressed:onOverlayButtonPressed,callback:myCallback)));
   }
   @override

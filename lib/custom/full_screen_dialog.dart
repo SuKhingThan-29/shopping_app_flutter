@@ -50,6 +50,8 @@ class TutorialOverlayState extends State<TutorialOverlay> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        automaticallyImplyLeading: false, // Set this to false to hide the back button
+
       ),
       // type: MaterialType.transparency,
       body: _buildOverlayContent(context)
