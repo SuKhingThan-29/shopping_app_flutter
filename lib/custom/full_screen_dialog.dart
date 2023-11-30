@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 typedef BoolCallback = bool Function();
 
 class TutorialOverlay extends StatefulWidget {
-  VoidCallback onButtonPressed;
+  final VoidCallback onButtonPressed;
   final BoolCallback callback;
   TutorialOverlay({required this.onButtonPressed,required this.callback});
 
@@ -16,13 +16,12 @@ class TutorialOverlay extends StatefulWidget {
 class TutorialOverlayState extends State<TutorialOverlay> {
   int timerCount = 3;
   Timer? _timer;
-  bool isEnabled = false;
 
   @override
   void initState() {
     super.initState();
 
-    const _duration = Duration(seconds: 1);
+    const _duration = Duration(seconds: 3);
 
     _timer = Timer.periodic(_duration, (Timer timer) {
       setState(() {
@@ -30,9 +29,7 @@ class TutorialOverlayState extends State<TutorialOverlay> {
       });
 
       if (timerCount == 0) {
-        isEnabled=widget.callback();
-        print('isEnable: $isEnabled');
-
+      widget.callback();
       }
     });
   }
@@ -45,21 +42,24 @@ class TutorialOverlayState extends State<TutorialOverlay> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: false, // Set this to false to hide the back button
-
-      ),
-      // type: MaterialType.transparency,
-      body: _buildOverlayContent(context)
+    return Material(
+      type: MaterialType.transparency,
+      // child:  Scaffold(
+      //     extendBodyBehindAppBar: true,
+      //     appBar: AppBar(
+      //       backgroundColor: Colors.transparent,
+      //       elevation: 0,
+      //       automaticallyImplyLeading: false, // Set this to false to hide the back button
+      //
+      //     ),
+      //     body:_buildOverlayContent(context)
+      // ),
+      child: _buildOverlayContent(context),
     );
   }
 
   Widget _buildOverlayContent(BuildContext context) {
-    return Container(
+    return  Container(
       width: DeviceInfo(context).width,
       height: DeviceInfo(context).height,
       decoration: BoxDecoration(
@@ -68,32 +68,33 @@ class TutorialOverlayState extends State<TutorialOverlay> {
           fit: BoxFit.cover,
         ),
       ),
+      child: GestureDetector(onTap: widget.onButtonPressed,
       child: Stack(
         children: <Widget>[
           Center(),
           Positioned(
             top: 40,
             right: 30,
-            child: GestureDetector(
-              onTap: widget.onButtonPressed,
-              child:Container(
-                width: 70,
-                height: 30,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: Center(
-                  child: Text(
-                    'Skip $timerCount',
-                    style: TextStyle(color: Colors.white),
-                  ),
+
+            child:Container(
+              width: 70,
+              height: 30,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Center(
+                child: Text(
+                  'Skip $timerCount',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
-          )
+          ),
+
         ],
-      ),
+      ),),
+
     );
   }
 }

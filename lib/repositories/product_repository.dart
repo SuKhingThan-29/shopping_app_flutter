@@ -63,6 +63,7 @@ class ProductRepository {
     String url = ("${AppConfig.BASE_URL}/products/category/" +
         id.toString() +
         "?page=$page&name=$name");
+    print("CategoryProduct url: $url");
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
       "Currency-Code": SystemConfig.systemCurrency!.code!,

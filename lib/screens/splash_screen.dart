@@ -25,11 +25,11 @@ class SplashScreen extends StatefulWidget {
   String? deepLink;
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<SplashScreen> createState() => SplashScreenState();
 }
 typedef BoolCallback = bool Function();
 
-class _SplashScreenState extends State<SplashScreen> {
+class SplashScreenState extends State<SplashScreen> {
   int ver = 1;
   PackageInfo _packageInfo = PackageInfo(
     appName: AppConfig.app_name,
@@ -55,10 +55,12 @@ class _SplashScreenState extends State<SplashScreen> {
     final PackageInfo info = await PackageInfo.fromPlatform();
     setState(() {
       _packageInfo = info;
+      print("version: ${_packageInfo.version}");
     });
   }
 
   bool isCancel = false;
+  final GlobalKey<TutorialOverlayState> splashWidgetKey=GlobalKey<TutorialOverlayState>();
 
 
   @override
@@ -76,7 +78,7 @@ class _SplashScreenState extends State<SplashScreen> {
             .setLocale(app_mobile_language.$!);
         print("SplashScreen: ${widget.deepLink}");
         if(widget.deepLink==null){
-          _showEntertiment(context);
+          _showTutorialOverlay(context);
         }
         else{
           callUpdateApp();
@@ -86,9 +88,7 @@ class _SplashScreenState extends State<SplashScreen> {
       });
     });
   }
-  void _showEntertiment(BuildContext context){
-    _showTutorialOverlay(context);
-  }
+
   bool myCallback() {
     // Your code here
     print("callback: ");
@@ -96,12 +96,7 @@ class _SplashScreenState extends State<SplashScreen> {
     callUpdateApp();
     return true; // Replace with your own boolean logic
   }
-  void onOverlayButtonPressed(){
-    print("overlay button");
-    Navigator.of(context).pop();
-    callUpdateApp();
 
-  }
   void callUpdateApp(){
     if (ver != _packageInfo.version ) {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -191,7 +186,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   }
   void _showTutorialOverlay(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TutorialOverlay(onButtonPressed:onOverlayButtonPressed,callback:myCallback)));
+    Navigator.push(context, MaterialPageRoute(
+      fullscreenDialog: true,
+        builder: (BuildContext context)=> TutorialOverlay(onButtonPressed:(){
+      setState(() {
+        print("button pressed");
+        Navigator.of(context).pop();
+        callUpdateApp();
+      });
+    },callback:myCallback)));
   }
   @override
   Widget build(BuildContext context) {

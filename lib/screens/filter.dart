@@ -403,7 +403,6 @@ class _FilterState extends State<Filter> {
             left: 0.0,
             right: 0.0,
             child: Container(
-                margin: EdgeInsets.only(bottom: 0),
                 child: buildAppBar(context)),
           ),
 
@@ -426,7 +425,7 @@ class _FilterState extends State<Filter> {
       actions: [new Container()],
       centerTitle: false,
       flexibleSpace: Column(
-        mainAxisSize: MainAxisSize.min, // Add this line
+        mainAxisSize: MainAxisSize.max, // Add this line
         children: [buildTopAppbar(context), buildBottomAppBar(context)],
       ),
     );
@@ -613,7 +612,6 @@ class _FilterState extends State<Filter> {
   }
 
   Row buildTopAppbar(BuildContext context) {
-    print("view ${MediaQuery.of(context).viewPadding.top}");
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -624,11 +622,11 @@ class _FilterState extends State<Filter> {
         // ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 20, top: 0),
+            padding: const EdgeInsets.only(left: 0, right: 5, top: 0),
             child: Container(
               margin: EdgeInsets.only(top: 8),
-              width: MediaQuery.of(context).size.width * 0.6,
-              height: MediaQuery.of(context).viewPadding.top>30?85:MediaQuery.of(context).size.height / 9.5,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).viewPadding.top>30?85:MediaQuery.of(context).size.height /9,
               child: Padding(
                 padding: MediaQuery.of(context).viewPadding.top > 30
                     ? const EdgeInsets.symmetric(
@@ -662,26 +660,22 @@ class _FilterState extends State<Filter> {
                       subtitle =
                           "${suggestion.type_string} ${AppLocalizations.of(context)!.found_all_lower}";
                     }
-                    return Container(
-                      width: double
-                          .infinity, // This will make the ListTile full screen width
-                      child: ListTile(
-                        dense: true,
-                        title: Text(
-                          suggestion.query,
-                          style: TextStyle(
-                            color: suggestion.type != "search"
-                                ? MyTheme.accent_color
-                                : MyTheme.font_grey,
-                          ),
+                    return ListTile(
+                      dense: true,
+                      title: Text(
+                        suggestion.query,
+                        style: TextStyle(
+                          color: suggestion.type != "search"
+                              ? MyTheme.accent_color
+                              : MyTheme.font_grey,
                         ),
-                        subtitle: Text(
-                          subtitle,
-                          style: TextStyle(
-                            color: suggestion.type != "search"
-                                ? MyTheme.font_grey
-                                : MyTheme.medium_grey,
-                          ),
+                      ),
+                      subtitle: Text(
+                        subtitle,
+                        style: TextStyle(
+                          color: suggestion.type != "search"
+                              ? MyTheme.font_grey
+                              : MyTheme.medium_grey,
                         ),
                       ),
                     );
@@ -733,7 +727,7 @@ class _FilterState extends State<Filter> {
                             BorderSide(color: MyTheme.grey_153, width: 1.0),
                       ),
                       contentPadding: EdgeInsets.only(
-                          left: 15.0, right: 5, top: 5, bottom: 5),
+                          left: 15.0, right: 0, top: 5, bottom: 5),
                     ),
                   ),
                 ),

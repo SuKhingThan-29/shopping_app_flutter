@@ -18,10 +18,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 #android
-version: 1.0.8+13
+#version: 1.0.8+14
 
 #ios
-#version: 1.1.0+15
+version: 1.1.0+15
 
 
 
@@ -100,6 +100,7 @@ dependencies:
   image_cropper: ^4.0.1
   overlay_support: ^2.1.0
   fluttertoast: ^8.2.2
+  package_info_plus: ^4.2.0
 
 dev_dependencies:
   flutter_test:

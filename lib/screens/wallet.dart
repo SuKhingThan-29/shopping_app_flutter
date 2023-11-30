@@ -466,7 +466,7 @@ class _WalletState extends State<Wallet> {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
-                  _balanceDetails.balance ?? 0 as String,
+                  _balanceDetails.balance ?? "0" ,
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
