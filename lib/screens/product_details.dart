@@ -101,7 +101,7 @@ Page resource error:
               }
             }
         ));
-  double webViewHeight = 50.0;
+  double webViewHeight = 60.0;
 
   CarouselController _carouselController = CarouselController();
   late BuildContext loadingcontext;
@@ -2427,27 +2427,36 @@ Page resource error:
         children: [
           Container(
             width: DeviceInfo(context).width,
-            height: webViewHeight,
+            height:  webViewHeight,
             child: WebViewWidget(
               controller: controller,
             ),
           ),
           Btn.basic(
               onPressed: () async {
-                if (webViewHeight == 50) {
+                if (webViewHeight == 60) {
                   webViewHeight = double.parse(
                     (await controller.runJavaScriptReturningResult(
                             "document.getElementById('scaled-frame').clientHeight")
                     )
                         .toString(),
                   );
+                  print("WebviewHight: $webViewHeight");
+                  if(webViewHeight<30){
+                    webViewHeight=40;
+                  }else{
+                    webViewHeight;
+                  }
+                  print("WebviewHight: $webViewHeight");
+
                 } else {
-                  webViewHeight = 50;
+                  webViewHeight = 60;
+                  print("WebviewHight less: $webViewHeight");
                 }
                 setState(() {});
               },
               child: Text(
-                webViewHeight == 50 ? "Show More..." : "Less",
+                webViewHeight == 60 ? "Show More..." : "Less",
                 style: TextStyle(color: Colors.black),
               ))
         ],

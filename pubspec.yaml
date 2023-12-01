@@ -102,6 +102,7 @@ dependencies:
   fluttertoast: ^8.2.2
   package_info_plus: ^4.2.0
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
